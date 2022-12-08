@@ -24,7 +24,7 @@ enum Action: CustomStringConvertible, Labelable {
     case .undo: return "arrow.uturn.backward.circle"
     case .redo: return "arrow.uturn.forward.circle"
     case .previewMode: return "eye"
-    case .editMode: return "square.and.pencil"
+    case .editMode: return "eye.fill"
     case .export: return "square.and.arrow.up"
     case .toTop: return "square.3.stack.3d.top.fill"
     case .up: return "square.2.stack.3d.top.fill"

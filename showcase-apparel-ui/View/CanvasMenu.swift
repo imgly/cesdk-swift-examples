@@ -3,6 +3,20 @@ import SwiftUI
 struct CanvasMenu: View {
   @EnvironmentObject private var interactor: Interactor
 
+  enum ButtonType: IdentifiableByHash {
+    case sheet(SheetMode)
+    case action(Action)
+  }
+
+  @ViewBuilder func button(_ type: ButtonType) -> some View {
+    switch type {
+    case let .sheet(mode):
+      button(mode)
+    case let .action(action):
+      button(action)
+    }
+  }
+
   @ViewBuilder func button(_ mode: SheetMode) -> some View {
     Button {
       interactor.canvasMenuButtonTapped(for: mode)
@@ -10,6 +24,7 @@ struct CanvasMenu: View {
       mode.label(suffix: .ellipsis)
     }
     .padding(8)
+    .labelStyle(.titleOnly)
   }
 
   @ViewBuilder func button(_ action: Action) -> some View {
@@ -19,6 +34,7 @@ struct CanvasMenu: View {
       action.label
     }
     .padding(8)
+    .labelStyle(.iconOnly)
   }
 
   @ViewBuilder var divider: some View {
@@ -26,40 +42,76 @@ struct CanvasMenu: View {
       .overlay(.tertiary)
   }
 
-  var body: some View {
-    if let type = interactor.sheetTypeForSelection {
-      HStack {
-        Group {
-          if type == .text {
-            button(.edit)
-            divider
-          }
-          if type == .text || type == .shape {
-            button(.style)
-            divider
-          } else if type == .image || type == .sticker {
-            button(.replace)
-            divider
-          }
-          button(.arrange)
-          divider
+  func buttons(for type: SheetType) -> [ButtonType] {
+    var buttons = [ButtonType]()
+
+    func button(_ type: ButtonType) {
+      switch type {
+      case let .sheet(mode):
+        if interactor.isAllowed(mode) {
+          buttons.append(type)
         }
-        .labelStyle(.titleOnly)
-        Group {
-          button(.duplicate)
-          divider
-          button(.delete)
+      case let .action(action):
+        if interactor.isAllowed(action) {
+          buttons.append(type)
         }
-        .labelStyle(.iconOnly)
       }
-      .padding([.leading, .trailing], 8)
-      .background(
-        RoundedRectangle(cornerRadius: 8).fill(.bar)
-          .shadow(color: .black.opacity(0.2), radius: 10)
-      )
-      .fixedSize()
-      .offset(y: -32)
     }
+
+    if type == .text {
+      button(.sheet(.edit))
+    }
+    if type == .text || type == .shape {
+      button(.sheet(.style))
+    } else if type == .image || type == .sticker {
+      button(.sheet(.replace))
+    }
+    button(.sheet(.arrange))
+    button(.action(.duplicate))
+    button(.action(.delete))
+
+    return buttons
+  }
+
+  @ViewBuilder var menu: some View {
+    if let type = interactor.sheetTypeForSelection {
+      let buttons = buttons(for: type)
+      if let last = buttons.last {
+        HStack {
+          if buttons.count > 1 {
+            ForEach(buttons.dropLast()) {
+              button($0)
+              divider
+            }
+          }
+          button(last)
+        }
+        .padding([.leading, .trailing], 8)
+        .background(
+          RoundedRectangle(cornerRadius: 8).fill(.bar)
+            .shadow(color: .black.opacity(0.2), radius: 10)
+        )
+      }
+    }
+  }
+
+  @State private var size: CGSize?
+
+  private var halfHeight: CGFloat { (size?.height ?? 0) / 2 }
+
+  var body: some View {
+    menu
+      .fixedSize()
+      .background {
+        GeometryReader { geo in
+          Color.clear
+            .preference(key: CanvasMenuSizeKey.self, value: geo.size)
+        }
+      }
+      .onPreferenceChange(CanvasMenuSizeKey.self) { newValue in
+        size = newValue
+      }
+      .offset(y: -halfHeight - 24)
   }
 }
 

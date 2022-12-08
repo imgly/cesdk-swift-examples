@@ -30,6 +30,22 @@ extension Engine {
     try engine.editor.setSettingEnum("ubq://touch/rotateAction", value: "None")
     try engine.editor.setSettingBool("ubq://doubleClickToCropEnabled", value: false)
     try engine.editor.setSettingString("ubq://basePath", value: Self.basePath.absoluteString)
+    try engine.editor.setSettingEnum("role", value: "Adopter")
+    try [
+      "design/style",
+      "design/arrange",
+      "design/arrange/move",
+      "design/arrange/resize",
+      "design/arrange/rotate",
+      "design/arrange/flip",
+      "content/replace",
+      "lifecycle/destroy",
+      "lifecycle/duplicate",
+//      "editor/add", // Cannot be restricted in web Dektop UI for now.
+      "editor/select"
+    ].forEach { scope in
+      try engine.editor.setGlobalScope(key: scope, value: .defer)
+    }
     _ = try await engine.scene.load(fromURL: url)
     try enableEditMode()
     try await zoomToPage(insets)
@@ -37,11 +53,14 @@ extension Engine {
   }
 
   func exportScene() async throws -> (Data, UTType) {
-    let prevPageFill = try engine.block.getBool(getPage(), property: "fill/enabled")
-    try engine.block.setBool(getPage(), property: "fill/enabled", value: true)
-    // We always want a background color when exporting
-    let data = try await engine.block.export(getPage(), mimeType: .pdf)
-    try engine.block.setBool(getPage(), property: "fill/enabled", value: prevPageFill)
+    var data = Data()
+    try await overrideAndRestore(getPage(), scope: "design/style") {
+      let prevPageFill = try engine.block.getBool(getPage(), property: "fill/enabled")
+      try engine.block.setBool($0, property: "fill/enabled", value: true)
+      // We always want a background color when exporting
+      data = try await engine.block.export(getPage(), mimeType: .pdf)
+      try engine.block.setBool($0, property: "fill/enabled", value: prevPageFill)
+    }
     return (data, UTType.pdf)
   }
 
@@ -50,15 +69,19 @@ extension Engine {
   func enablePreviewMode() throws {
     try deselectAllBlocks()
 
-    try engine.editor.setSettingBool("ubq://page/dimOutOfPageAreas", value: false)
-    try engine.block.setClipped(getPage(), clipped: true)
-    try engine.block.setBool(getPage(), property: "fill/enabled", value: false)
+    try overrideAndRestore(getPage(), scope: "design/style") {
+      try engine.editor.setSettingBool("ubq://page/dimOutOfPageAreas", value: false)
+      try engine.block.setClipped($0, clipped: true)
+      try engine.block.setBool($0, property: "fill/enabled", value: false)
+    }
   }
 
   func enableEditMode() throws {
-    try engine.editor.setSettingBool("ubq://page/dimOutOfPageAreas", value: true)
-    try engine.block.setClipped(getPage(), clipped: false)
-    try engine.block.setBool(getPage(), property: "fill/enabled", value: true)
+    try overrideAndRestore(getPage(), scope: "design/style") {
+      try engine.editor.setSettingBool("ubq://page/dimOutOfPageAreas", value: true)
+      try engine.block.setClipped($0, clipped: false)
+      try engine.block.setBool($0, property: "fill/enabled", value: true)
+    }
   }
 
   // MARK: - Zoom
@@ -112,7 +135,9 @@ extension Engine {
 
       if cursorPosY > visiblePageAreaY ||
         cursorPosY < (overlapTop + paddingTop) {
-        try engine.block.setPositionY(getCamera(), value: newCameraPosY)
+        try overrideAndRestore(getCamera(), scope: "design/arrange/move") {
+          try engine.block.setPositionY($0, value: newCameraPosY)
+        }
       }
     }
   }
@@ -299,7 +324,11 @@ extension Engine {
     let imageElements = try getAllSelectedElements(of: .image)
     if try setIfNeeded(imageElements, property: "image/imageFileURI", value: url, addUndoStep: false) {
       try imageElements.forEach {
-        try engine.block.resetCrop($0)
+        try overrideAndRestore($0, scope: "design/style") {
+          try engine.block.resetCrop($0)
+        }
+        try engine.block.setBool($0, property: "image/showsPlaceholderButton", value: false)
+        try engine.block.setBool($0, property: "image/showsPlaceholderOverlay", value: false)
       }
       try engine.editor.addUndoStep()
     }
@@ -319,6 +348,16 @@ extension Engine {
   }
 
   // MARK: - Actions
+
+  func isAllowedForSelectedElement(_ scope: String) throws -> Bool {
+    let allSelected = engine.block.findAllSelected()
+    if allSelected.isEmpty {
+      return true // Default to true for convenient SwiftUI previews as there is initially nothing selected.
+    }
+    return try allSelected.allSatisfy {
+      try engine.block.isAllowedByScope($0, key: scope)
+    }
+  }
 
   func canBringForwardSelectedElement() throws -> Bool {
     let allSelected = engine.block.findAllSelected()
@@ -398,15 +437,25 @@ extension Engine {
     try engine.block.findAllSelected().forEach {
       let duplicate = try engine.block.duplicate($0)
 
-      try engine.block.setPositionXMode($0, mode: .absolute)
-      let x = try engine.block.getPositionX($0)
-      try engine.block.setPositionYMode($0, mode: .absolute)
-      let y = try engine.block.getPositionY($0)
+      // Remember values
+      let positionModeX = try engine.block.getPositionXMode($0)
+      let positionModeY = try engine.block.getPositionYMode($0)
 
-      try engine.block.setPositionXMode(duplicate, mode: .absolute)
-      try engine.block.setPositionX(duplicate, value: x + 5)
-      try engine.block.setPositionYMode(duplicate, mode: .absolute)
-      try engine.block.setPositionY(duplicate, value: y - 5)
+      try overrideAndRestore($0, scope: "design/arrange/move") {
+        try engine.block.setPositionXMode($0, mode: .absolute)
+        let x = try engine.block.getPositionX($0)
+        try engine.block.setPositionYMode($0, mode: .absolute)
+        let y = try engine.block.getPositionY($0)
+
+        try engine.block.setPositionXMode(duplicate, mode: .absolute)
+        try engine.block.setPositionX(duplicate, value: x + 5)
+        try engine.block.setPositionYMode(duplicate, mode: .absolute)
+        try engine.block.setPositionY(duplicate, value: y - 5)
+
+        // Restore values
+        try engine.block.setPositionXMode($0, mode: positionModeX)
+        try engine.block.setPositionYMode($0, mode: positionModeY)
+      }
 
       try engine.block.setSelected(duplicate, selected: true)
       try engine.block.setSelected($0, selected: false)
@@ -422,6 +471,46 @@ extension Engine {
   }
 
   // MARK: - Utilities
+
+  private func overrideAndRestore(_ block: DesignBlockID, scope: String,
+                                  action: (DesignBlockID) throws -> Void) throws {
+    try overrideAndRestore(block, scopes: [scope], action: action)
+  }
+
+  private func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
+                                  action: (DesignBlockID) throws -> Void) throws {
+    let isScopeEnabled = try scopes.map { scope in
+      let wasEnabled = try engine.block.isScopeEnabled(block, key: scope)
+      try engine.block.setScopeEnabled(block, key: scope, enabled: true)
+      return (scope: scope, isEnabled: wasEnabled)
+    }
+
+    try action(block)
+
+    try isScopeEnabled.forEach { scope, isEnabled in
+      try engine.block.setScopeEnabled(block, key: scope, enabled: isEnabled)
+    }
+  }
+
+  private func overrideAndRestore(_ block: DesignBlockID, scope: String,
+                                  action: (DesignBlockID) async throws -> Void) async throws {
+    try await overrideAndRestore(block, scopes: [scope], action: action)
+  }
+
+  private func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
+                                  action: (DesignBlockID) async throws -> Void) async throws {
+    let isScopeEnabled = try scopes.map { scope in
+      let wasEnabled = try engine.block.isScopeEnabled(block, key: scope)
+      try engine.block.setScopeEnabled(block, key: scope, enabled: true)
+      return (scope: scope, isEnabled: wasEnabled)
+    }
+
+    try await action(block)
+
+    try isScopeEnabled.forEach { scope, isEnabled in
+      try engine.block.setScopeEnabled(block, key: scope, enabled: isEnabled)
+    }
+  }
 
   private func pointToCanvasUnit(_ point: CGFloat) throws -> Float {
     let sceneUnit = try engine.block.getEnum(getScene(), property: "scene/designUnit")

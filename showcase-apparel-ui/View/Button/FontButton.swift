@@ -11,9 +11,8 @@ struct FontButton: View {
       selectedFontFamilyID = fontFamily.id
     } label: {
       Label(fontFamily.name, systemImage: "checkmark")
-        .font(.custom(fontFamily.someFontName ?? "", size: 17))
     }
-    .labelStyle(.icon(hidden: !isSelected))
+    .labelStyle(.icon(hidden: !isSelected, titleFont: .custom(fontFamily.someFontName ?? "", size: 17)))
     .foregroundColor(isSelected ? .accentColor : .primary)
   }
 }
