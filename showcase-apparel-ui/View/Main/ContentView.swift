@@ -5,7 +5,14 @@ public struct ContentView: View {
 
   @Environment(\.layoutDirection) private var layoutDirection
 
-  public init() {}
+  private var url = Bundle.bundle.url(forResource: "apparel-ui", withExtension: "scene")!
+
+  /// Initialize with `url` to load a custom scene.
+  public init(scene url: URL? = nil) {
+    if let url {
+      self.url = url
+    }
+  }
 
   /// Initialize with `sheet` for previews.
   init(sheet: SheetState? = nil) {
@@ -15,7 +22,7 @@ public struct ContentView: View {
   @State private var canvasGeometry: Geometry?
   @State private var sheetGeometry: Geometry?
   private var sheetGeometryIfPresented: Geometry? { interactor.sheet.isPresented ? sheetGeometry : nil }
-  private let zoomPadding: CGFloat = 10
+  private let zoomPadding: CGFloat = 16
 
   private func zoomParameters(canvasGeometry: Geometry?,
                               sheetGeometry: Geometry?) -> (insets: EdgeInsets?, canvasHeight: CGFloat) {
@@ -41,11 +48,18 @@ public struct ContentView: View {
     return (insets, canvasHeight)
   }
 
+  @State private var interactivePopGestureRecognizer: UIGestureRecognizer?
+
   public var body: some View {
     Canvas(zoomPadding: zoomPadding)
       .allowsHitTesting(interactor.isEditing)
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(!interactor.isEditing)
+      .introspectNavigationController { navigationController in
+        // Disable swipe-back gesture and restore `onDisappear`
+        interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer
+        interactivePopGestureRecognizer?.isEnabled = false
+      }
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbar {
         ToolbarItemGroup(placement: .principal) {
@@ -97,7 +111,6 @@ public struct ContentView: View {
       .errorAlert(isSheet: false)
       .onAppear {
         interactor.onAppear()
-        let url = Bundle.bundle.url(forResource: "kiosk", withExtension: "scene")!
         let zoom = zoomParameters(canvasGeometry: canvasGeometry, sheetGeometry: sheetGeometryIfPresented)
         interactor.loadScene(from: url, with: zoom.insets)
       }
@@ -106,6 +119,7 @@ public struct ContentView: View {
       }
       .onDisappear {
         interactor.onDisappear()
+        interactivePopGestureRecognizer?.isEnabled = true
       }
       .environmentObject(interactor)
   }

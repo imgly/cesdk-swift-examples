@@ -9,10 +9,13 @@ class AssetLibrary {
   }
 
   let images = [
-    "image2.jpg",
-    "image1.jpg",
-    "image4.png",
-    "image3.png"
+    "ampersand-creative-co-pp_oXEb2H48-unsplash.jpg",
+    "carles-rabada-DD1fSz2HF1s-unsplash.jpg",
+    "etienne-bosiger-OWsdJ-MllYA-unsplash.jpg",
+    "geran-de-klerk-WJkc3xZjSXw-unsplash.jpg",
+    "ivana-cajina-HDd-NQ_AMNQ-unsplash.jpg",
+    "jake-blucker-tMzCrBkM99Y-unsplash.jpg",
+    "jordan-mcqueen-u9tAl8WR3DI-unsplash.jpg"
   ].enumerated().map { index, image in
     let url = Bundle.bundle.url(forResource: image, withExtension: nil)!
     return Image(url: url, label: "Image \(index + 1)")
