@@ -23,19 +23,22 @@ struct PrincipalToolbar: View {
       }
       .allowsHitTesting(interactor.isEditing)
       .opacity(interactor.isEditing ? 1 : 0)
-      .animation(nil, value: interactor.isEditing)
       Spacer()
         .frame(maxWidth: 42)
 
-      ZStack(alignment: .leading) {
+      ZStack {
         button(.previewMode)
           .opacity(interactor.isEditing ? 1 : 0)
+          .labelStyle(.adaptiveIconOnly)
 
         button(.editMode)
           .fixedSize()
           .opacity(interactor.isEditing ? 0 : 1)
+          .labelStyle(.adaptiveTitleOnly)
+          .buttonStyle(.borderedProminent)
+          .buttonBorderShape(.capsule)
+          .controlSize(verticalSizeClass == .compact ? .small : .regular)
       }
-      .labelStyle(.adaptiveIconOnly)
       .disabled(interactor.isLoading)
     }
   }

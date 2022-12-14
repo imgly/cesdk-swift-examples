@@ -1,20 +1,12 @@
 import SwiftUI
 
 struct SheetModePicker: View {
-  @EnvironmentObject private var interactor: Interactor
-
   @Binding var sheet: SheetModel
   let modes: [SheetMode]
 
-  var allowedModes: [SheetMode] {
-    modes.filter { mode in
-      interactor.isAllowed(mode)
-    }
-  }
-
   var body: some View {
     Picker(sheet.type.localizedStringKey(suffix: " Options"), selection: $sheet.mode) {
-      ForEach(allowedModes) { mode in
+      ForEach(modes) { mode in
         mode.taggedLabel
       }
     }
