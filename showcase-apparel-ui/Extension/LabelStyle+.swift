@@ -5,9 +5,7 @@ extension LabelStyle where Self == TileLabelStyle {
 }
 
 extension LabelStyle where Self == HiddenIconLabelStyle {
-  static func icon(hidden: Bool, titleFont: SwiftUI.Font? = nil) -> Self {
-    Self(hidden: hidden, titleFont: titleFont)
-  }
+  static func icon(hidden: Bool) -> Self { Self(hidden: hidden) }
 }
 
 extension LabelStyle where Self == AdaptiveTileLabelStyle {
