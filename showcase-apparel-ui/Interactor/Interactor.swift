@@ -41,6 +41,14 @@ final class Interactor: ObservableObject {
 
   var sheetTypeForSelection: SheetType? { sheetType(for: selection) }
 
+  var rotationForSelection: CGFloat? {
+    guard let first = selection?.blocks.first,
+          let rotation = try? engine?.block.getRotation(first) else {
+      return nil
+    }
+    return CGFloat(rotation)
+  }
+
   // MARK: - Utilities
 
   static func resignFirstResponder() {
@@ -94,6 +102,58 @@ final class Interactor: ObservableObject {
   private var sceneTask: Task<Void, Never>?
   private var selectionTask: Task<Void, Never>?
   private var zoom: (task: Task<Void, Never>?, toTextCursor: Bool) = (nil, false)
+}
+
+// MARK: - Constraints
+
+extension Interactor {
+  func isAllowed(_ mode: SheetMode) -> Bool {
+    guard let engine else {
+      return false
+    }
+    do {
+      switch mode {
+      case .add:
+        return true
+      case .replace, .edit:
+        return try engine.isAllowedForSelectedElement("content/replace")
+      case .style:
+        return try engine.isAllowedForSelectedElement("design/style")
+      case .arrange:
+        let layer = isAllowed(.toTop)
+        let duplicate = isAllowed(.duplicate)
+        let delete = isAllowed(.delete)
+        return layer || duplicate || delete
+      }
+    } catch {
+      handleError(error)
+    }
+    return false
+  }
+
+  func isAllowed(_ action: Action) -> Bool {
+    guard let engine else {
+      return false
+    }
+    do {
+      switch action {
+      case .undo: return canUndo
+      case .redo: return canRedo
+      case .previewMode: return true
+      case .editMode: return true
+      case .export: return true
+      case .toTop, .up, .down, .toBottom:
+        return try engine.isAllowedForSelectedElement("editor/add")
+      case .duplicate:
+        return try engine.isAllowedForSelectedElement("lifecycle/duplicate")
+      case .delete:
+        return try engine.isAllowedForSelectedElement("lifecycle/destroy")
+      }
+    } catch {
+      handleError(error)
+    }
+    return false
+  }
 }
 
 // MARK: - Actions
@@ -222,13 +282,18 @@ extension Interactor {
       if Task.isCancelled {
         return
       }
-      if isEditing {
-        try? await engine?.zoomToPage(insets)
-        if editMode == .text {
-          try? engine?.zoomToSelectedText(insets, canvasHeight: canvasHeight)
+      do {
+        if isEditing {
+          try await engine?.zoomToPage(insets)
+          if editMode == .text {
+            try engine?.zoomToSelectedText(insets, canvasHeight: canvasHeight)
+          }
+        } else {
+          try await engine?.zoomToBackdrop(insets)
+          try engine?.enablePreviewMode()
         }
-      } else {
-        try? await engine?.zoomToBackdrop(insets)
+      } catch {
+        handleError(error)
       }
     }
   }
@@ -278,7 +343,7 @@ private extension Interactor {
   }
 
   func enablePreviewMode() throws {
-    try engine?.enablePreviewMode()
+    // Call engine?.enablePreviewMode() in updateZoom to avoid page fill flickering.
     withAnimation(.default) {
       isEditing = false
     }
@@ -335,6 +400,28 @@ private extension Interactor {
       return type
     }
     return nil
+  }
+
+  func placeholderType(for selection: Selection?) -> SheetType? {
+    guard let engine,
+          let selection, selection.blocks.count == 1,
+          let block = selection.blocks.first,
+          let type = sheetType(for: block) else {
+      return nil
+    }
+    do {
+      let showsPlaceholderContent = try engine.block.showsPlaceholderContent(block)
+      let showsPlaceholderButton = try engine.block.getBool(block, property: "image/showsPlaceholderButton")
+      let showsPlaceholderOverlay = try engine.block.getBool(block, property: "image/showsPlaceholderOverlay")
+
+      if showsPlaceholderContent, showsPlaceholderButton || showsPlaceholderOverlay {
+        return type
+      } else {
+        return nil
+      }
+    } catch {
+      return nil
+    }
   }
 
   func updateState() {
@@ -437,6 +524,9 @@ private extension Interactor {
       if sheet.mode == .add, selection != nil {
         sheet.isPresented = false
       }
+    } else if oldValue?.blocks != selection?.blocks,
+              let type = placeholderType(for: selection) {
+      sheet = .init(.replace, type)
     }
   }
 

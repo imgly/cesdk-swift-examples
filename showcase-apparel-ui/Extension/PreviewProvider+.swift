@@ -6,12 +6,15 @@ extension PreviewProvider {
   }
 
   @ViewBuilder static func defaultPreviews(sheet: SheetState? = nil) -> some View {
-    NavigationView {
-      ContentView(sheet: sheet)
+    Group {
+      NavigationView {
+        ContentView(sheet: sheet)
+      }
+      NavigationView {
+        ContentView(sheet: sheet)
+      }
+      .nonDefaultPreviewSettings()
     }
-    NavigationView {
-      ContentView(sheet: sheet)
-    }
-    .nonDefaultPreviewSettings()
+    .navigationViewStyle(.stack)
   }
 }

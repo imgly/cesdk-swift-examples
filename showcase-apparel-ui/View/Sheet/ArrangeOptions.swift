@@ -32,23 +32,25 @@ struct ArrangeOptions: View {
 
   var body: some View {
     List {
-      Section {
-        EmptyView()
-      } header: {
-        layerButtons
+      if interactor.isAllowed(.toTop) {
+        Section {
+          EmptyView()
+        } header: {
+          layerButtons
+        }
+        .listRowInsets(EdgeInsets(top: 20, leading: 0, bottom: 0, trailing: 0))
+        .textCase(.none)
       }
-      .listRowInsets(EdgeInsets(top: 20, leading: 0, bottom: 0, trailing: 0))
-      .textCase(.none)
-
       Section {
-        button(.duplicate)
+        if interactor.isAllowed(.duplicate) {
+          button(.duplicate)
+            .foregroundColor(.primary)
+        }
+        if interactor.isAllowed(.delete) {
+          button(.delete)
+            .foregroundColor(.red)
+        }
       }
-      .foregroundColor(.primary)
-
-      Section {
-        button(.delete)
-      }
-      .foregroundColor(.red)
     }
   }
 }
