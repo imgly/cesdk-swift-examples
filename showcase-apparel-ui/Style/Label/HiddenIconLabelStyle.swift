@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HiddenIconLabelStyle: LabelStyle {
   let hidden: Bool
+  let titleFont: SwiftUI.Font?
 
   func makeBody(configuration: Configuration) -> some View {
     HStack {
@@ -11,6 +12,7 @@ struct HiddenIconLabelStyle: LabelStyle {
         configuration.icon
       }
       configuration.title
+        .font(titleFont)
     }
   }
 }
