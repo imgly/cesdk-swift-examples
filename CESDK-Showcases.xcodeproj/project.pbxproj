@@ -47,6 +47,7 @@
 		4E058C672C1D07D03F359956 /* TextPropertyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E982CFA3C5DAB6EAFDA383 /* TextPropertyButton.swift */; };
 		4E72ED4EB76D646F29F28A05 /* WillDisappearHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DD4F9D93A62013A391A675 /* WillDisappearHandler.swift */; };
 		4F4CA2F39E0525C73EF0D82F /* StoreMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8304E439B9101F0F2112CD2 /* StoreMetadata.swift */; };
+		513FC6A5B042E25F40505E5E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = "TEMP_D021A9BB-B1D7-4EB5-9035-F9033EF82B2D" /* Secrets.swift */; };
 		54E1DE1E6B543125D496E3A3 /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E983C87CDB0D3D598C8D280 /* ErrorAlert.swift */; };
 		564018F634A798A8D8E34618 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461123A1FE401BBB44CE03F /* BottomSheet.swift */; };
 		5718C57B9AA61ECD7CBDAFC2 /* CreateSceneFromImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D715E2CEB9F91EB3F72074B1 /* CreateSceneFromImageURL.swift */; };
@@ -98,7 +99,6 @@
 		C6EAA3E944414AF4C06EE924 /* ModifyingScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFD93736092EB1FDF3BB328 /* ModifyingScenes.swift */; };
 		C7E5EC17F7A54CCD8055CEC2 /* CGColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6FC54102868983B2F02F0C /* CGColor+.swift */; };
 		CB2B6E3D5F5961EDB96F4457 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC0834D911BDA3AC3819E38 /* View+.swift */; };
-		CDBFD1E360E398A5C0C52459 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = "TEMP_F8388207-035A-4C92-BE22-92C278DEC318" /* Secrets.swift */; };
 		D1375A61C73103334745EBBB /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2498AA92B70B2CD7DFA48E4 /* ExportButton.swift */; };
 		D1772705B593D75B0E0A3186 /* HiddenIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7827E5290E72958B5A98DAC /* HiddenIconLabelStyle.swift */; };
 		D1E4B8537F8E4E96DA04FFE7 /* UsingEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E96F71DE888B4541448012C /* UsingEffects.swift */; };
@@ -253,7 +253,7 @@
 		F819BCA67125791C4E0FA6A2 /* CanvasMenuSizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasMenuSizeKey.swift; sourceTree = "<group>"; };
 		F8304E439B9101F0F2112CD2 /* StoreMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMetadata.swift; sourceTree = "<group>"; };
 		FD68EDF31A2BAE79066E2107 /* CreateSceneFromImageBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSceneFromImageBlob.swift; sourceTree = "<group>"; };
-		"TEMP_F8388207-035A-4C92-BE22-92C278DEC318" /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		"TEMP_D021A9BB-B1D7-4EB5-9035-F9033EF82B2D" /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -736,10 +736,10 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		"TEMP_20C5C9B7-AA4B-4D9E-814A-228BFB7B2D20" /* cesdk-swift-examples */ = {
+		"TEMP_72CCB81B-2D4C-4849-9CEC-0E20FA7831EF" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_F8388207-035A-4C92-BE22-92C278DEC318" /* Secrets.swift */,
+				"TEMP_D021A9BB-B1D7-4EB5-9035-F9033EF82B2D" /* Secrets.swift */,
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
 				C70D45E34D2022E6799F149A /* guides-engine-custom-asset-source */,
 				C9BA78F599FEFE105B667FDD /* integrate-with-uikit */,
@@ -761,7 +761,7 @@
 				66A0FCE32D6EAEB6109BF4A7 /* guides-engine-exporting-blocks */,
 				17668B475F84FBE03AEB5DE6 /* integrate-with-swiftui */,
 			);
-			path = "cesdk-swift-examples";
+			path = build_github;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -920,7 +920,7 @@
 				F5F1DB4AFBBA1A2C614F4D62 /* SaveSceneToBlob.swift in Sources */,
 				93A281249972085593F51AF1 /* SaveSceneToString.swift in Sources */,
 				33EE81B336F8CA0BE882A44D /* Scopes.swift in Sources */,
-				CDBFD1E360E398A5C0C52459 /* Secrets.swift in Sources */,
+				513FC6A5B042E25F40505E5E /* Secrets.swift in Sources */,
 				20BF29AA915C43C501EB1935 /* SpotColors.swift in Sources */,
 				4F4CA2F39E0525C73EF0D82F /* StoreMetadata.swift in Sources */,
 				FC8A611A836C13CB146AA137 /* URIResolver.swift in Sources */,
@@ -1063,7 +1063,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1167,7 +1167,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1363,7 +1363,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-SP";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.1;
+				minimumVersion = 1.9.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
