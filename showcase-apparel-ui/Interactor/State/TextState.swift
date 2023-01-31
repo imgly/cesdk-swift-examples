@@ -6,28 +6,25 @@ struct TextState: BatchMutable {
 
   var bold: TextProperty?
   var italic: TextProperty?
-  var alignment: TextProperty?
-
-  var color: CGColor = .black
 
   var isBold: Bool { bold == .bold }
   var isItalic: Bool { italic == .italic }
 
   mutating func setFontProperties(_ properties: FontProperties?) {
     guard let properties else {
-      bold = .notAvailable
-      italic = .notAvailable
+      bold = nil
+      italic = nil
       return
     }
     if let bold = properties.bold {
-      self.bold = bold ? .bold : nil
+      self.bold = bold ? .bold : .inactive
     } else {
-      bold = .notAvailable
+      bold = nil
     }
     if let italic = properties.italic {
-      self.italic = italic ? .italic : nil
+      self.italic = italic ? .italic : .inactive
     } else {
-      italic = .notAvailable
+      italic = nil
     }
   }
 

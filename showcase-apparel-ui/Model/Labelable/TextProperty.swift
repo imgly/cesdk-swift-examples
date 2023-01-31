@@ -1,27 +1,21 @@
 import Foundation
 
-enum TextProperty: CustomStringConvertible, IdentifiableByHash, Labelable, CaseIterable {
-  case notAvailable, bold, italic, alignLeft, alignCenter, alignRight
+enum TextProperty: Labelable, IdentifiableByHash, CaseIterable {
+  case inactive, bold, italic
 
   var description: String {
     switch self {
-    case .notAvailable: return "Not Available"
+    case .inactive: return "Inactive"
     case .bold: return "Bold"
     case .italic: return "Italic"
-    case .alignLeft: return "Align Left"
-    case .alignCenter: return "Align Center"
-    case .alignRight: return "Align Right"
     }
   }
 
-  var systemImage: String {
+  var imageName: String? {
     switch self {
-    case .notAvailable: return "exclamationmark.triangle.fill"
+    case .inactive: return nil
     case .bold: return "bold"
     case .italic: return "italic"
-    case .alignLeft: return "text.alignleft"
-    case .alignCenter: return "text.aligncenter"
-    case .alignRight: return "text.alignright"
     }
   }
 }

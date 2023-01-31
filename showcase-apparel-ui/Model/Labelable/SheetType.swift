@@ -1,6 +1,6 @@
 import Foundation
 
-enum SheetType: CustomStringConvertible, Labelable {
+enum SheetType: Labelable {
   case text, image, shape, sticker
 
   var description: String {
@@ -12,7 +12,7 @@ enum SheetType: CustomStringConvertible, Labelable {
     }
   }
 
-  var systemImage: String {
+  var imageName: String? {
     switch self {
     case .text: return "textformat.alt"
     case .image: return "photo"

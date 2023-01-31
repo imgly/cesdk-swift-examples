@@ -9,8 +9,6 @@ final class Interactor: ObservableObject {
   @ViewBuilder var canvas: some View {
     if let engine {
       IMGLYEngine.Canvas(engine: engine)
-    } else {
-      EmptyView()
     }
   }
 
@@ -24,8 +22,6 @@ final class Interactor: ObservableObject {
   @Published var export: ActivityItem?
   @Published var error = AlertState()
   @Published var sheet = SheetState() { didSet { sheetChanged(oldValue) } }
-  @Published var text = TextState() { didSet { textChanged(oldValue) } }
-  @Published var shape = ShapeState() { didSet { shapeChanged(oldValue) } }
 
   typealias Selection = IMGLYEngine.SelectionBox
   typealias EditMode = IMGLYEngine.EditMode
@@ -104,6 +100,139 @@ final class Interactor: ObservableObject {
   private var zoom: (task: Task<Void, Never>?, toTextCursor: Bool) = (nil, false)
 }
 
+// MARK: - Property bindings
+
+extension Interactor {
+  var hasFill: Bool {
+    guard let engine, let id = sheet.selection,
+          let value = try? engine.block.hasFill(id) else {
+      return false
+    }
+    return value
+  }
+
+  var hasStroke: Bool {
+    guard let engine, let id = sheet.selection,
+          let value = try? engine.block.hasStroke(id) else {
+      return false
+    }
+    return value
+  }
+
+  var hasOpacity: Bool {
+    guard let engine, let id = sheet.selection,
+          let value = try? engine.block.hasOpacity(id) else {
+      return false
+    }
+    return value
+  }
+
+  var hasBlendMode: Bool {
+    guard let engine, let id = sheet.selection,
+          let value = try? engine.block.hasBlendMode(id) else {
+      return false
+    }
+    return value
+  }
+
+  /// Create a `property` `Binding` for `sheet.selection`. The`defaultValue` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ propertyBlock: PropertyBlock? = nil,
+                           property: String, default defaultValue: T,
+                           completion: SetPropertyCompletion? = Completion.addUndoStep) -> Binding<T> {
+    guard let id = sheet.selection else {
+      return .constant(defaultValue)
+    }
+    return bind(id, propertyBlock, property: property, default: defaultValue, completion: completion)
+  }
+
+  /// Create a `property` `Binding` for `sheet.selection`. The value `nil` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ propertyBlock: PropertyBlock? = nil,
+                           property: String,
+                           completion: SetPropertyCompletion? = Completion.addUndoStep) -> Binding<T?> {
+    guard let id = sheet.selection else {
+      return .constant(nil)
+    }
+    return bind(id, propertyBlock, property: property, completion: completion)
+  }
+
+  /// Create a `property` `Binding` for a block `id`. The`defaultValue` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
+                           property: String, default defaultValue: T,
+                           completion: SetPropertyCompletion? = Completion.addUndoStep) -> Binding<T> {
+    .init {
+      self.get(id, propertyBlock, property: property) ?? defaultValue
+    } set: { value, _ in
+      self.set([id], propertyBlock, property: property, value: value, completion: completion)
+    }
+  }
+
+  /// Create a `property` `Binding` for a block `id`. The value `nil` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
+                           property: String,
+                           completion: SetPropertyCompletion? = Completion.addUndoStep) -> Binding<T?> {
+    .init {
+      self.get(id, propertyBlock, property: property)
+    } set: { value, _ in
+      if let value {
+        self.set([id], propertyBlock, property: property, value: value, completion: completion)
+      }
+    }
+  }
+
+  func addUndoStep() {
+    do {
+      try engine?.editor.addUndoStep()
+    } catch {
+      handleError(error)
+    }
+  }
+
+  typealias SetPropertyCompletion = @Sendable @MainActor (
+    _ engine: Engine,
+    _ blocks: [DesignBlockID],
+    _ didChange: Bool
+  ) throws -> Void
+
+  enum Completion {
+    static let addUndoStep: SetPropertyCompletion = addUndoStep()
+
+    static func addUndoStep(completion: Interactor.SetPropertyCompletion? = nil) -> Interactor.SetPropertyCompletion {
+      { engine, blocks, didChange in
+        if didChange {
+          try engine.editor.addUndoStep()
+        }
+        try completion?(engine, blocks, didChange)
+      }
+    }
+
+    static func set(_ propertyBlock: PropertyBlock? = nil,
+                    property: String, value: some MappedType,
+                    completion: Interactor.SetPropertyCompletion? = nil) -> Interactor.SetPropertyCompletion {
+      { engine, blocks, didChange in
+        let didSet = try engine.block.set(blocks, propertyBlock, property: property, value: value)
+        try completion?(engine, blocks, didChange || didSet)
+      }
+    }
+  }
+
+  func enumValues<T>(property: String) -> [T]
+    where T: CaseIterable & RawRepresentable, T.RawValue == String {
+    guard let engine else {
+      return []
+    }
+    do {
+      return try engine.block.enumValues(property: property)
+    } catch {
+      handleErrorWithTask(error)
+      return []
+    }
+  }
+}
+
 // MARK: - Constraints
 
 extension Interactor {
@@ -120,10 +249,11 @@ extension Interactor {
       case .style:
         return try engine.isAllowedForSelectedElement("design/style")
       case .arrange:
+        let style = isAllowed(.style)
         let layer = isAllowed(.toTop)
         let duplicate = isAllowed(.duplicate)
         let delete = isAllowed(.delete)
-        return layer || duplicate || delete
+        return style || layer || duplicate || delete
       }
     } catch {
       handleError(error)
@@ -162,7 +292,20 @@ extension Interactor {
   func assetTapped(_ asset: AssetLibrary.Image) {
     if sheet.mode == .replace {
       do {
-        try engine?.changeImageFile(asset.url)
+        if let id = sheet.selection {
+          try engine?.set([id], property: "image/imageFileURI", value: asset.url) { engine, blocks, didChange in
+            if didChange {
+              try blocks.forEach {
+                try engine.overrideAndRestore($0, scope: "design/style") {
+                  try engine.block.resetCrop($0)
+                }
+                try engine.block.set($0, property: "image/showsPlaceholderButton", value: false)
+                try engine.block.set($0, property: "image/showsPlaceholderOverlay", value: false)
+              }
+            }
+            try engine.editor.addUndoStep()
+          }
+        }
         if sheet.detent == .large {
           sheet.isPresented = false
         }
@@ -195,7 +338,9 @@ extension Interactor {
   func assetTapped(_ asset: AssetLibrary.Sticker) {
     do {
       if sheet.mode == .replace {
-        try engine?.changeStickerFile(asset.url)
+        if let id = sheet.selection {
+          try engine?.set([id], property: "sticker/imageFileURI", value: asset.url)
+        }
         if sheet.detent == .large {
           sheet.isPresented = false
         }
@@ -210,7 +355,7 @@ extension Interactor {
 
   func canvasMenuButtonTapped(for mode: SheetMode) {
     if let type = sheetTypeForSelection {
-      sheet = .init(mode, type)
+      sheet = .init(mode, type, selection: selection?.blocks.first)
     }
   }
 
@@ -219,10 +364,10 @@ extension Interactor {
       switch type {
       case .text:
         try engine?.addText()
-        sheet = .init(.edit, .text)
+        sheet = .init(.edit, .text, selection: selection?.blocks.first)
       case .image, .shape, .sticker:
         try engine?.deselectAllBlocks()
-        sheet = .init(.add, type)
+        sheet = .init(.add, type, selection: nil)
       }
     } catch {
       handleError(error)
@@ -338,8 +483,40 @@ private extension Interactor {
     self.error = .init(error, dismiss: false)
   }
 
+  func handleErrorWithTask(_ error: Swift.Error) {
+    // Only show most recent error once.
+    if error.localizedDescription != self.error.details?.message {
+      Task {
+        handleError(error)
+      }
+    }
+  }
+
   func handleErrorAndDismiss(_ error: Swift.Error) {
     self.error = .init(error, dismiss: true)
+  }
+
+  func get<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock?,
+                          property: String) -> T? {
+    guard let engine, engine.block.isValid(id) else {
+      return nil
+    }
+    do {
+      return try engine.block.get(id, propertyBlock, property: property)
+    } catch {
+      handleErrorWithTask(error)
+      return nil
+    }
+  }
+
+  func set(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock?,
+           property: String, value: some MappedType,
+           completion: SetPropertyCompletion? = Completion.addUndoStep()) {
+    do {
+      try engine?.set(ids, propertyBlock, property: property, value: value, completion: completion)
+    } catch {
+      handleErrorWithTask(error)
+    }
   }
 
   func enablePreviewMode() throws {
@@ -380,7 +557,7 @@ private extension Interactor {
     switch designBlockType {
     case DesignBlockType.text.rawValue: return .text
     case DesignBlockType.image.rawValue: return .image
-    case let type where type.starts(with: DesignBlockType.shapes): return .shape
+    case _ where designBlockType.hasPrefix(DesignBlockType.shapes): return .shape
     case DesignBlockType.sticker.rawValue: return .sticker
     default: return nil
     }
@@ -435,39 +612,6 @@ private extension Interactor {
     canRedo = (try? engine.editor.canRedo()) ?? false
     canBringForward = (try? engine.canBringForwardSelectedElement()) ?? false
     canBringBackward = (try? engine.canBringBackwardSelectedElement()) ?? false
-
-    updateState(for: sheet)
-  }
-
-  func updateState(for sheet: SheetState) {
-    guard let engine, sheet.isPresented else {
-      return
-    }
-
-    switch (sheet.mode, sheet.type) {
-    case (.style, .text):
-      if let textProperties = try? engine.getSelectedTextProperties(),
-         let color = try? textProperties.fillSolidColor.color() {
-        let selected = assets.fontFor(url: textProperties.fontFileURL)
-
-        text.commit { text in
-          text.fontID = selected?.font.id
-          text.fontFamilyID = selected?.family.id
-          text.setFontProperties(selected?.family.fontProperties(for: selected?.font.id))
-          text.color = color
-          text.alignment = textProperties.horizontalAlignment?.textProperty
-        }
-      }
-    case (.style, .shape):
-      if let shapeProperties = try? engine.getSelectedShapeProperties(),
-         let color = try? shapeProperties.fillSolidColor.color() {
-        shape.commit { shape in
-          shape.color = color
-        }
-      }
-    default:
-      break
-    }
   }
 
   func observeState() -> Task<Void, Never> {
@@ -524,9 +668,13 @@ private extension Interactor {
       if sheet.mode == .add, selection != nil {
         sheet.isPresented = false
       }
+      if sheet.isPresented {
+        // Update sheet selection if sheet is not dismissed.
+        sheet.selection = selection?.blocks.first
+      }
     } else if oldValue?.blocks != selection?.blocks,
               let type = placeholderType(for: selection) {
-      sheet = .init(.replace, type)
+      sheet = .init(.replace, type, selection: selection?.blocks.first)
     }
   }
 
@@ -574,55 +722,6 @@ private extension Interactor {
           sheet.isPresented = false
         }
       }
-    }
-  }
-
-  func textChanged(_ oldValue: TextState) {
-    guard oldValue != text else {
-      return
-    }
-    do {
-      if text.fontID == oldValue.fontID, // Change was triggered from UI and not from engine.
-         text.fontFamilyID != oldValue.fontFamilyID ||
-         text.bold != oldValue.bold ||
-         text.italic != oldValue.italic {
-        // Update font based on (family, bold, italic) tuple.
-        if let fontFamilyID = text.fontFamilyID, let fontFamily = assets.fontFamilyFor(id: fontFamilyID),
-           let font = fontFamily.font(for: .init(bold: text.isBold, italic: text.isItalic)) ?? fontFamily.someFont,
-           let selected = assets.fontFor(id: font.id) {
-          text.commit { text in
-            text.fontID = selected.font.id
-            text.fontFamilyID = selected.family.id
-            text.setFontProperties(selected.family.fontProperties(for: selected.font.id))
-          }
-          try engine?.changeTextFont(selected.font.url)
-        }
-      }
-
-      if text.alignment != oldValue.alignment {
-        if let newValue = text.alignment {
-          try engine?.changeTextAlignment(.init(newValue))
-        }
-      }
-
-      if text.color != oldValue.color {
-        try engine?.changeTextColor(text.color.rgba())
-      }
-    } catch {
-      handleError(error)
-    }
-  }
-
-  func shapeChanged(_ oldValue: ShapeState) {
-    guard oldValue != shape else {
-      return
-    }
-    do {
-      if shape.color != oldValue.color {
-        try engine?.changeShapeColor(shape.color.rgba())
-      }
-    } catch {
-      handleError(error)
     }
   }
 }
