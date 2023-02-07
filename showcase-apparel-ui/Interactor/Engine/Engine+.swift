@@ -142,62 +142,6 @@ extension Engine {
     }
   }
 
-  // MARK: - Properties
-
-  struct TextProperties {
-    var horizontalAlignment: HorizontalAlignment?
-    var fontFileURL: URL
-    var fillSolidColor: RGBA
-
-    // swiftlint:disable:next nesting
-    enum HorizontalAlignment: String {
-      case left = "Left"
-      case center = "Center"
-      case right = "Right"
-
-      init?(_ textProperty: TextProperty) {
-        switch textProperty {
-        case .alignLeft: self = .left
-        case .alignCenter: self = .center
-        case .alignRight: self = .right
-        default: return nil
-        }
-      }
-
-      var textProperty: TextProperty {
-        switch self {
-        case .left: return .alignLeft
-        case .center: return .alignCenter
-        case .right: return .alignRight
-        }
-      }
-    }
-  }
-
-  func getSelectedTextProperties() throws -> TextProperties? {
-    guard let textBlock = try getAllSelectedElements(of: .text).first else {
-      return nil
-    }
-    return TextProperties(
-      horizontalAlignment: .init(rawValue: try engine.block.getEnum(textBlock, property: "text/horizontalAlignment")),
-      fontFileURL: URL(string: try engine.block.getString(textBlock, property: "text/fontFileUri"))!,
-      fillSolidColor: try engine.block.getFillSolidColor(textBlock)
-    )
-  }
-
-  struct ShapeProperties {
-    var fillSolidColor: RGBA
-  }
-
-  func getSelectedShapeProperties() throws -> ShapeProperties? {
-    guard let shapeBlock = try getAllSelectedElements(of: DesignBlockType.shapes).first else {
-      return nil
-    }
-    return ShapeProperties(
-      fillSolidColor: try engine.block.getFillSolidColor(shapeBlock)
-    )
-  }
-
   // MARK: - Add
 
   func addText() throws {
@@ -256,95 +200,6 @@ extension Engine {
     try engine.block.setString(block, property: "sticker/imageFileURI", value: url.absoluteString)
     try setSize(block)
     try addBlockToPage(block)
-  }
-
-  // MARK: - Change
-
-  @discardableResult
-  private func setIfNeeded<T: Equatable>(_ ids: [DesignBlockID], property: String,
-                                         value newValue: T, addUndoStep: Bool = true) throws -> Bool {
-    func getter(_ id: DesignBlockID) throws -> T {
-      try engine.block.get(id, property: property)
-    }
-    func setter(_ id: DesignBlockID, value: T) throws {
-      try engine.block.set(id, property: property, value: value)
-    }
-    return try setIfNeeded(ids, getter: getter, setter: setter, value: newValue, addUndoStep: addUndoStep)
-  }
-
-  @discardableResult
-  private func setIfNeeded<T: Equatable>(_ ids: [DesignBlockID],
-                                         getter: @MainActor (DesignBlockID) throws -> T,
-                                         setter: @MainActor (DesignBlockID, T) throws -> Void,
-                                         value newValue: T, addUndoStep: Bool = true) throws -> Bool {
-    let changed = try ids.filter {
-      let oldValue = try getter($0)
-      return oldValue != newValue
-    }
-
-    try changed.forEach {
-      try setter($0, newValue)
-    }
-
-    let someValueChanged = !changed.isEmpty
-    if someValueChanged, addUndoStep {
-      try engine.editor.addUndoStep()
-    }
-
-    return someValueChanged
-  }
-
-  private func rgba(setter: @MainActor @escaping (DesignBlockID, Float, Float, Float, Float) throws -> Void) rethrows
-    -> @MainActor (DesignBlockID, RGBA) throws -> Void {
-    func result(_ id: DesignBlockID, value: RGBA) throws {
-      try setter(id, value.r, value.g, value.b, value.a)
-    }
-    return result
-  }
-
-  func changeTextFont(_ url: URL) throws {
-    let textElements = try getAllSelectedElements(of: .text)
-    _ = try setIfNeeded(textElements, property: "text/fontFileUri", value: url)
-  }
-
-  func changeTextColor(_ color: RGBA) throws {
-    let textElements = try getAllSelectedElements(of: .text)
-    _ = try setIfNeeded(textElements,
-                        getter: engine.block.getFillSolidColor,
-                        setter: rgba(setter: engine.block.setFillSolidColor),
-                        value: color)
-  }
-
-  func changeTextAlignment(_ alignment: TextProperties.HorizontalAlignment?) throws {
-    let textElements = try getAllSelectedElements(of: .text)
-    _ = try setIfNeeded(textElements, property: "text/horizontalAlignment", value: alignment?.rawValue ?? "")
-  }
-
-  func changeImageFile(_ url: URL) throws {
-    let imageElements = try getAllSelectedElements(of: .image)
-    if try setIfNeeded(imageElements, property: "image/imageFileURI", value: url, addUndoStep: false) {
-      try imageElements.forEach {
-        try overrideAndRestore($0, scope: "design/style") {
-          try engine.block.resetCrop($0)
-        }
-        try engine.block.setBool($0, property: "image/showsPlaceholderButton", value: false)
-        try engine.block.setBool($0, property: "image/showsPlaceholderOverlay", value: false)
-      }
-      try engine.editor.addUndoStep()
-    }
-  }
-
-  func changeShapeColor(_ color: RGBA) throws {
-    let shapeElements = try getAllSelectedElements(of: DesignBlockType.shapes)
-    _ = try setIfNeeded(shapeElements,
-                        getter: engine.block.getFillSolidColor,
-                        setter: rgba(setter: engine.block.setFillSolidColor),
-                        value: color)
-  }
-
-  func changeStickerFile(_ url: URL) throws {
-    let stickerElements = try getAllSelectedElements(of: .sticker)
-    _ = try setIfNeeded(stickerElements, property: "sticker/imageFileURI", value: url)
   }
 
   // MARK: - Actions
@@ -472,13 +327,29 @@ extension Engine {
 
   // MARK: - Utilities
 
-  private func overrideAndRestore(_ block: DesignBlockID, scope: String,
-                                  action: (DesignBlockID) throws -> Void) throws {
+  func deselectAllBlocks() throws {
+    try engine.block.findAllSelected().forEach {
+      try engine.block.setSelected($0, selected: false)
+    }
+  }
+
+  func set(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,
+           property: String, value: some MappedType,
+           completion: Interactor.SetPropertyCompletion? = Interactor.Completion.addUndoStep) throws {
+    let valid = ids.filter {
+      engine.block.isValid($0)
+    }
+    let didChange = try engine.block.set(valid, propertyBlock, property: property, value: value)
+    try completion?(engine, valid, didChange)
+  }
+
+  func overrideAndRestore(_ block: DesignBlockID, scope: String,
+                          action: (DesignBlockID) throws -> Void) throws {
     try overrideAndRestore(block, scopes: [scope], action: action)
   }
 
-  private func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
-                                  action: (DesignBlockID) throws -> Void) throws {
+  func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
+                          action: (DesignBlockID) throws -> Void) throws {
     let isScopeEnabled = try scopes.map { scope in
       let wasEnabled = try engine.block.isScopeEnabled(block, key: scope)
       try engine.block.setScopeEnabled(block, key: scope, enabled: true)
@@ -492,13 +363,13 @@ extension Engine {
     }
   }
 
-  private func overrideAndRestore(_ block: DesignBlockID, scope: String,
-                                  action: (DesignBlockID) async throws -> Void) async throws {
+  func overrideAndRestore(_ block: DesignBlockID, scope: String,
+                          action: (DesignBlockID) async throws -> Void) async throws {
     try await overrideAndRestore(block, scopes: [scope], action: action)
   }
 
-  private func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
-                                  action: (DesignBlockID) async throws -> Void) async throws {
+  func overrideAndRestore(_ block: DesignBlockID, scopes: Set<String>,
+                          action: (DesignBlockID) async throws -> Void) async throws {
     let isScopeEnabled = try scopes.map { scope in
       let wasEnabled = try engine.block.isScopeEnabled(block, key: scope)
       try engine.block.setScopeEnabled(block, key: scope, enabled: true)
@@ -560,12 +431,6 @@ extension Engine {
     return imageID
   }
 
-  func deselectAllBlocks() throws {
-    try engine.block.findAllSelected().forEach {
-      try engine.block.setSelected($0, selected: false)
-    }
-  }
-
   private func getAllSelectedElements(of elementType: DesignBlockType? = nil) throws -> [DesignBlockID] {
     try getAllSelectedElements(of: elementType?.rawValue)
   }
@@ -596,7 +461,7 @@ extension Engine {
     return page
   }
 
-  func getScene() throws -> DesignBlockID {
+  private func getScene() throws -> DesignBlockID {
     guard let scene = try engine.block.find(byType: .scene).first else {
       throw Error(errorDescription: "No scene found.")
     }

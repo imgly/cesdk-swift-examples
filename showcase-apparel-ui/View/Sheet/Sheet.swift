@@ -21,6 +21,7 @@ struct Sheet: View {
         case .sticker: StickerSheet()
         }
       }
+      .pickerStyle(.menu)
       .onPreferenceChange(SheetContentGeometryKey.self) { newValue in
         sheetContentGeometry = newValue
       }

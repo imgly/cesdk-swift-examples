@@ -1,16 +1,31 @@
 import SwiftUI
 
 protocol Labelable: Localizable, Hashable {
-  var systemImage: String { get }
+  var imageName: String? { get }
+  var isSystemImage: Bool { get }
 }
 
 extension Labelable {
+  var isSystemImage: Bool { true }
+
   @ViewBuilder var label: some View {
     label(suffix: nil)
   }
 
   @ViewBuilder func label(suffix: String?) -> some View {
-    Label(localizedStringKey(suffix: suffix), systemImage: systemImage)
+    if let imageName {
+      if isSystemImage {
+        Label(localizedStringKey(suffix: suffix), systemImage: imageName)
+      } else {
+        Label {
+          Text(localizedStringKey(suffix: suffix))
+        } icon: {
+          Image(imageName, bundle: Bundle.bundle)
+        }
+      }
+    } else {
+      Text(localizedStringKey(suffix: suffix))
+    }
   }
 
   @ViewBuilder var taggedLabel: some View {

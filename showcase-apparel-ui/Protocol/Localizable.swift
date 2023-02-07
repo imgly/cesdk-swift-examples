@@ -1,6 +1,6 @@
 import SwiftUI
 
-protocol Localizable {}
+protocol Localizable: CustomStringConvertible {}
 
 extension Localizable {
   var localizedStringKey: LocalizedStringKey {
