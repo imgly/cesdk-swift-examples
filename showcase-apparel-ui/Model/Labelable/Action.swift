@@ -1,6 +1,6 @@
 import Foundation
 
-enum Action: CustomStringConvertible, Labelable {
+enum Action: Labelable {
   case undo, redo, previewMode, editMode, export, toTop, up, down, toBottom, duplicate, delete
 
   var description: String {
@@ -19,7 +19,7 @@ enum Action: CustomStringConvertible, Labelable {
     }
   }
 
-  var systemImage: String {
+  var imageName: String? {
     switch self {
     case .undo: return "arrow.uturn.backward.circle"
     case .redo: return "arrow.uturn.forward.circle"

@@ -1,11 +1,11 @@
 import SwiftUI
 
-struct TextPropertyButton: View {
-  let property: TextProperty
-  @Binding var selection: TextProperty?
+struct PropertyButton<T: Labelable>: View {
+  let property: T
+  @Binding var selection: T?
 
   private var isSelected: Bool { selection == property }
-  private var isDisabled: Bool { selection == .notAvailable }
+  private var isDisabled: Bool { selection == nil }
 
   var body: some View {
     Button {
@@ -19,12 +19,12 @@ struct TextPropertyButton: View {
 }
 
 struct TextPropertyButton_Previews: PreviewProvider {
-  @State static var property: TextProperty? = .italic
+  @State static var property: HorizontalAlignment? = .center
 
   static var previews: some View {
     HStack {
-      ForEach(TextProperty.allCases) {
-        TextPropertyButton(property: $0, selection: $property)
+      ForEach(HorizontalAlignment.allCases) {
+        PropertyButton(property: $0, selection: $property)
       }
     }
     .labelStyle(.iconOnly)

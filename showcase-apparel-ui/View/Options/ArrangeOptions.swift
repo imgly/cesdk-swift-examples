@@ -32,6 +32,18 @@ struct ArrangeOptions: View {
 
   var body: some View {
     List {
+      if interactor.isAllowed(.style) {
+        if interactor.hasOpacity {
+          Section("Opacity") {
+            PropertySlider<Float>("Opacity", in: 0 ... 1, property: "opacity")
+          }
+        }
+        if interactor.hasBlendMode {
+          Section {
+            PropertyNavigationLink<BlendMode>("Blend Mode", property: "blend/mode")
+          }
+        }
+      }
       if interactor.isAllowed(.toTop) {
         Section {
           EmptyView()

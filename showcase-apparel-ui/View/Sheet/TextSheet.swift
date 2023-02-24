@@ -6,47 +6,46 @@ struct TextSheet: View {
   private var sheet: SheetModel { interactor.sheet.model }
 
   @ViewBuilder var textStyleOptions: some View {
-    List {
-      NavigationLink {
-        ScrollViewReader { proxy in
-          List(assets.fonts) {
-            FontButton(fontFamily: $0, selectedFontFamilyID: $interactor.text.fontFamilyID)
-              .id($0.id)
-          }
-          .safeAreaInset(edge: .top) { Color.clear.frame(height: 15) }
-          .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 15) }
-          .toolbarBackground(.visible, for: .navigationBar)
-          .task {
-            proxy.scrollTo(interactor.text.fontFamilyID, anchor: .center)
-          }
-          .onChange(of: interactor.text.fontFamilyID) { newValue in
-            withAnimation {
-              proxy.scrollTo(newValue)
-            }
-          }
-        }
-        .navigationTitle("Font")
-      } label: {
-        HStack {
-          Text("Font")
-          Spacer()
-          Text(interactor.text.fontFamilyName(assets) ?? "")
-            .foregroundColor(.secondary)
-            .lineLimit(1)
-        }
+    let fontURL: Binding<URL?> = interactor.bind(property: "text/fontFileUri")
+    let text = Binding<TextState> {
+      if let fontURL = fontURL.wrappedValue {
+        let selected = assets.fontFor(url: fontURL)
+        var text = TextState()
+        text.fontID = selected?.font.id
+        text.fontFamilyID = selected?.family.id
+        text.setFontProperties(selected?.family.fontProperties(for: selected?.font.id))
+        return text
+      } else {
+        return TextState()
       }
-      .accessibilityLabel("Font")
+    } set: { text in
+      if let fontFamilyID = text.fontFamilyID, let fontFamily = assets.fontFamilyFor(id: fontFamilyID),
+         let font = fontFamily.font(for: .init(bold: text.isBold, italic: text.isItalic)) ?? fontFamily.someFont,
+         let selected = assets.fontFor(id: font.id) {
+        fontURL.wrappedValue = selected.font.url
+      }
+    }
+
+    List {
+      NavigationLinkPicker(title: "Font", data: assets.fonts,
+                           selection: text.fontFamilyID) { fontFamily, isSelected in
+        Label(fontFamily.name, systemImage: "checkmark")
+          .labelStyle(.icon(hidden: !isSelected, titleFont: .custom(fontFamily.someFontName ?? "", size: 17)))
+      } linkLabel: { selection in
+        Text(selection?.name ?? "")
+      }
       Group {
         HStack(spacing: 32) {
-          TextPropertyButton(property: .bold, selection: $interactor.text.bold)
-          TextPropertyButton(property: .italic, selection: $interactor.text.italic)
+          PropertyButton(property: .bold, selection: text.bold)
+          PropertyButton(property: .italic, selection: text.italic)
           Spacer()
-          TextPropertyButton(property: .alignLeft, selection: $interactor.text.alignment)
-          TextPropertyButton(property: .alignCenter, selection: $interactor.text.alignment)
-          TextPropertyButton(property: .alignRight, selection: $interactor.text.alignment)
+          let alignment: Binding<HorizontalAlignment?> = interactor.bind(property: "text/horizontalAlignment")
+          PropertyButton(property: .left, selection: alignment)
+          PropertyButton(property: .center, selection: alignment)
+          PropertyButton(property: .right, selection: alignment)
         }
         .padding([.leading, .trailing], 16)
-        ColorOptions(selection: $interactor.text.color)
+        FillAndStrokeOptions()
       }
       .labelStyle(.iconOnly)
       .buttonStyle(.borderless) // or .plain will do the job
@@ -69,6 +68,6 @@ struct TextSheet: View {
 
 struct TextSheet_Previews: PreviewProvider {
   static var previews: some View {
-    defaultPreviews(sheet: .init(.edit, .text))
+    defaultPreviews(sheet: .init(.style, .text))
   }
 }

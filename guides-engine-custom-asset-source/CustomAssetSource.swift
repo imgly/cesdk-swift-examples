@@ -20,6 +20,30 @@ func customAssetSource(engine: Engine) async throws {
     query: .init(query: "banana", page: 1, perPage: 10)
   )
   // highlight-unsplash-list
+
+  // highlight-add-local-source
+  try engine.asset.addLocalSource(sourceID: "background-videos")
+  // highlight-add-local-source
+
+  // highlight-add-asset-to-source
+  let asset = AssetDefinition(id: "ocean-waves-1",
+                              meta: [
+                                "uri": "https://example.com/ocean-waves-1.mp4",
+                                "thumbUri": "https://example.com/thumbnails/ocean-waves-1.jpg",
+                                "mimeType": "video/mp4",
+                                "width": "1920",
+                                "height": "1080"
+                              ],
+                              labels: [
+                                "en": "relaxing ocean waves",
+                                "es": "olas del mar relajantes"
+                              ],
+                              tags: [
+                                "en": ["ocean", "waves", "soothing", "slow"],
+                                "es": ["mar", "olas", "calmante", "lento"]
+                              ])
+  try engine.asset.addAsset(toSource: "background-videos", asset: asset)
+  // highlight-add-asset-to-source
 }
 
 // highlight-unsplash-api-creation
@@ -38,7 +62,7 @@ final class UnsplashAPI: NSObject {
 
     static func search(queryData: AssetQueryData) -> Self {
       Endpoint(
-        path: "/photos/search/photos",
+        path: "/unsplashProxy/search/photos",
         query: [
           URLQueryItem(name: "query", value: queryData.query),
           URLQueryItem(name: "page", value: String(queryData.page)),
@@ -49,7 +73,7 @@ final class UnsplashAPI: NSObject {
 
     static func list(queryData: AssetQueryData) -> Self {
       Endpoint(
-        path: "/photos/photos",
+        path: "/unsplashProxy/photos",
         query: [
           URLQueryItem(name: "order_by", value: "popular"),
           URLQueryItem(name: "page", value: String(queryData.page)),
@@ -113,6 +137,10 @@ extension UnsplashAPI: AssetSource {
     // highlight-unsplash-result-mapping
   }
 
+  var supportedMIMETypes: [String]? {
+    ["image/jpeg"]
+  }
+
   // highlight-unsplash-credits-license
   var credits: AssetCredits? {
     .init(
@@ -146,18 +174,24 @@ extension AssetResult {
       // highlight-result-tags
       tags: image.tags?.compactMap(\.title),
       // highlight-result-tags
-      // highlight-result-thumbUri
-      thumbURI: image.urls.thumb,
-      // highlight-result-thumbUri
-      // highlight-result-size
-      width: Float(image.width),
-      height: Float(image.height),
-      // highlight-result-size
-      // highlight-result-uri
-      meta: ["uri": image.urls.full.absoluteString],
-      // highlight-result-uri
+      // highlight-result-meta
+      meta: [
+        // highlight-result-uri
+        "uri": image.urls.full.absoluteString,
+        // highlight-result-uri
+        // highlight-result-thumbUri
+        "thumbURI": image.urls.thumb.absoluteString,
+        // highlight-result-blockType
+        "blockType": "//ly.img.ubq/image",
+        // highlight-result-blockType
+        // highlight-result-size
+        "width": String(image.width),
+        "height": String(image.height)
+        // highlight-result-size
+      ],
+      // highlight-result-meta
       // highlight-result-context
-      context: .init(sourceID: "unsplash", createdByRole: ""),
+      context: .init(sourceID: "unsplash"),
       // highlight-result-context
       // highlight-result-credits
       credits: .init(name: image.user.name!, url: image.user.links?.html),

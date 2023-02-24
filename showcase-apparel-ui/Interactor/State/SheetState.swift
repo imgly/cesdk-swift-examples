@@ -1,3 +1,4 @@
+import IMGLYEngine
 import SwiftUI
 
 struct SheetState: BatchMutable {
@@ -5,6 +6,9 @@ struct SheetState: BatchMutable {
   var model: SheetModel
   var detent: PresentationDetent = .adaptiveMedium
   var detents: Set<PresentationDetent> = [.adaptiveMedium, .large]
+
+  /// The inspected block.
+  var selection: DesignBlockID?
 
   /// Forwarded `model.mode`.
   var mode: SheetMode {
@@ -24,9 +28,10 @@ struct SheetState: BatchMutable {
     model = .init(.add, .image)
   }
 
-  /// Show sheet with `mode` and `type`.
-  init(_ mode: SheetMode, _ type: SheetType) {
+  /// Show sheet with `mode` and `type` for the inspected block `selection`.
+  init(_ mode: SheetMode, _ type: SheetType, selection: DesignBlockID? = nil) {
     isPresented = true
     model = .init(mode, type)
+    self.selection = selection
   }
 }

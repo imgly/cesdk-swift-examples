@@ -24,11 +24,9 @@ struct ShapeSheet: View {
 
   @ViewBuilder var shapeStyleOptions: some View {
     List {
-      Group {
-        ColorOptions(selection: $interactor.shape.color)
-      }
-      .labelStyle(.iconOnly)
-      .buttonStyle(.borderless)
+      FillAndStrokeOptions()
+        .labelStyle(.iconOnly)
+        .buttonStyle(.borderless)
     }
   }
 
@@ -51,6 +49,6 @@ struct ShapeSheet: View {
 
 struct ShapeSheet_Previews: PreviewProvider {
   static var previews: some View {
-    defaultPreviews(sheet: .init(.add, .shape))
+    defaultPreviews(sheet: .init(.style, .shape))
   }
 }

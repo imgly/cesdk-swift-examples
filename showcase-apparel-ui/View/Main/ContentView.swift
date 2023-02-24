@@ -81,7 +81,7 @@ public struct ContentView: View {
       .onChange(of: interactor.editMode) { newValue in
         if newValue == .text, !interactor.sheet.isPresented {
           Interactor.resignFirstResponder()
-          interactor.sheet = .init(.edit, .text)
+          interactor.sheet = .init(.edit, .text, selection: interactor.selection?.blocks.first)
         }
         let zoom = zoomParameters(canvasGeometry: canvasGeometry, sheetGeometry: sheetGeometryIfPresented)
         interactor.updateZoom(with: zoom.insets, canvasHeight: zoom.canvasHeight)

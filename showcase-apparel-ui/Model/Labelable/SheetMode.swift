@@ -1,6 +1,6 @@
 import Foundation
 
-enum SheetMode: CustomStringConvertible, IdentifiableByHash, Labelable {
+enum SheetMode: Labelable, IdentifiableByHash {
   case add, replace, edit, style, arrange
 
   var description: String {
@@ -13,7 +13,7 @@ enum SheetMode: CustomStringConvertible, IdentifiableByHash, Labelable {
     }
   }
 
-  var systemImage: String {
+  var imageName: String? {
     switch self {
     case .add: return "plus"
     case .replace: return "arrow.triangle.swap"
