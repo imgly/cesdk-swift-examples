@@ -1,19 +1,19 @@
+import IMGLYEditorUI
 import SwiftUI
 
 extension PreviewProvider {
-  @ViewBuilder static var defaultPreviews: some View {
-    defaultPreviews()
+  private static var url: URL { Bundle.main.url(forResource: "apparel-ui-b-1-default", withExtension: "scene")! }
+
+  @ViewBuilder static var apparelUI: some View {
+    NavigationView {
+      ApparelUI(scene: Self.url)
+    }
   }
 
-  @ViewBuilder static func defaultPreviews(sheet: SheetState? = nil) -> some View {
+  @ViewBuilder static var defaultPreviews: some View {
     Group {
-      NavigationView {
-        ContentView(sheet: sheet)
-      }
-      NavigationView {
-        ContentView(sheet: sheet)
-      }
-      .nonDefaultPreviewSettings()
+      apparelUI
+      apparelUI.nonDefaultPreviewSettings()
     }
     .navigationViewStyle(.stack)
   }

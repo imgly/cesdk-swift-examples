@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "gesture_thumbs_up.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
