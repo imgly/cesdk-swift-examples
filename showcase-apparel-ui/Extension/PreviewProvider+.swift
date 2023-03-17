@@ -2,7 +2,7 @@ import IMGLYEditorUI
 import SwiftUI
 
 extension PreviewProvider {
-  private static var url: URL { Bundle.main.url(forResource: "apparel-ui-b-1-default", withExtension: "scene")! }
+  private static var url: URL { Bundle.main.url(forResource: "apparel-ui-b-1", withExtension: "scene")! }
 
   @ViewBuilder static var apparelUI: some View {
     NavigationView {

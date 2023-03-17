@@ -27,13 +27,9 @@ struct CanvasMenu: View {
   }
 
   @ViewBuilder func button(_ action: Action) -> some View {
-    Button {
-      interactor.actionButtonTapped(for: action)
-    } label: {
-      action.label
-    }
-    .frame(width: 48, height: 38)
-    .disabled(isDisabled(action))
+    ActionButton(action)
+      .frame(width: 48, height: 38)
+      .disabled(isDisabled(action))
   }
 
   @ViewBuilder var divider: some View {

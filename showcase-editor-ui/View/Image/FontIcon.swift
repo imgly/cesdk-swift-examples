@@ -6,7 +6,7 @@ struct FontIcon: View {
   private var assets: AssetLibrary { interactor.assets }
 
   var body: some View {
-    let text = interactor.bindTextState(id)
+    let text = interactor.bindTextState(id, resetFontProperties: true)
 
     if let fontFamilyID = text.wrappedValue.fontFamilyID,
        let fontFamily = assets.fontFamilyFor(id: fontFamilyID),

@@ -30,7 +30,7 @@ struct BottomBar: View {
     if type == .text {
       modes += [.edit, .format]
     }
-    if type == .shape, interactor.blockTypeForSelection == .starShape {
+    if type == .shape, Set([.lineShape, .starShape, .polygonShape]).contains(interactor.blockType(id)) {
       modes += [.options]
     }
     if Set([.text, .image, .shape]).contains(type) {

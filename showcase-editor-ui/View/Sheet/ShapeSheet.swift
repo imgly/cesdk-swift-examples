@@ -2,38 +2,56 @@ import SwiftUI
 
 struct ShapeSheet: View {
   @EnvironmentObject private var interactor: Interactor
-  private var assets: AssetLibrary { interactor.assets }
+  @Environment(\.selection) private var id
+
   private var sheet: SheetModel { interactor.sheet.model }
 
+  @StateObject private var searchText = Debouncer(initialValue: "")
+
   @ViewBuilder var shapeGrid: some View {
-    ScrollView {
-      LazyVGrid(columns: [GridItem(.adaptive(minimum: 80, maximum: 100), spacing: 8)], spacing: 8) {
-        ForEach(assets.shapes) { asset in
-          ZStack {
-            GridItemBackground()
-              .aspectRatio(1, contentMode: .fit)
-            Image(asset.imageName, bundle: Bundle.bundle, label: Text(asset.label))
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .aspectRatio(1, contentMode: .fit)
-              .padding(8)
-          }
-          .onTapGesture {
-            interactor.assetTapped(asset)
-          }
-        }
+    VStack {
+      ShapeGrid(sourceID: AssetLibrary.shapeSourceID, search: $searchText.debouncedValue)
+    }
+    .toolbar {
+      ToolbarItemGroup(placement: .principal) {
+        SearchField(searchText: $searchText.value, prompt: Text("Search Shapes"))
       }
-      .padding(8)
     }
   }
 
   @ViewBuilder var shapeOptions: some View {
     List {
-      Section("Points") {
-        PropertySlider<Float>("Points", in: 3 ... 12, property: .key(.shapesStarPoints))
-      }
-      Section("Inner Diameter") {
-        PropertySlider<Float>("Inner Diameter", in: 0.1 ... 1, property: .key(.shapesStarInnerDiameter))
+      switch interactor.blockType(id) {
+      case .lineShape:
+        Section("Line Width") {
+          let setter: Interactor.PropertySetter<Float> = { engine, blocks, _, _, value, completion in
+            let changed = try blocks.filter {
+              try engine.block.getHeight($0) != value
+            }
+
+            try changed.forEach {
+              try engine.block.setWidth($0, value: engine.block.getFrameWidth($0))
+              try engine.block.setHeight($0, value: value)
+            }
+
+            let didChange = !changed.isEmpty
+            return try (completion?(engine, blocks, didChange) ?? false) || didChange
+          }
+          PropertySlider<Float>("Line Width", in: 0.1 ... 30, property: .key(.lastFrameHeight), setter: setter)
+        }
+      case .starShape:
+        Section("Points") {
+          PropertySlider<Float>("Points", in: 3 ... 12, property: .key(.shapesStarPoints))
+        }
+        Section("Inner Diameter") {
+          PropertySlider<Float>("Inner Diameter", in: 0.1 ... 1, property: .key(.shapesStarInnerDiameter))
+        }
+      case .polygonShape:
+        Section("Sides") {
+          PropertySlider<Float>("Sides", in: 3 ... 12, property: .key(.shapesPolygonSides))
+        }
+      default:
+        EmptyView()
       }
     }
   }

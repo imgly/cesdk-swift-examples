@@ -1,13 +1,49 @@
+import Kingfisher
 import SwiftUI
 
-struct AssetGrid: View {
+struct Message: View {
+  static let noResults = Message("No results found", systemImage: "magnifyingglass")
+  static let noService = Message("Cannot connect to service", systemImage: "exclamationmark.triangle")
+
+  private let title: LocalizedStringKey
+  private let systemImage: String
+
+  init(_ title: LocalizedStringKey, systemImage: String) {
+    self.title = title
+    self.systemImage = systemImage
+  }
+
+  var body: some View {
+    VStack(spacing: 10) {
+      Image(systemName: systemImage)
+      Text(title)
+    }
+    .imageScale(.large)
+    .foregroundColor(.secondary)
+  }
+}
+
+struct AssetGrid<Item: View, Empty: View>: View {
   private let sourceID: String
   @Binding private var searchText: String
+  private let columns: [GridItem]
+  private let spacing: CGFloat?
+  private let padding: CGFloat?
+  @ViewBuilder private let item: (Asset) -> Item
+  @ViewBuilder private let empty: (_ search: String) -> Empty
 
-  init(sourceID: String, search: Binding<String> = .constant("")) {
+  init(sourceID: String, search: Binding<String> = .constant(""),
+       columns: [GridItem], spacing: CGFloat? = nil, padding: CGFloat? = nil,
+       @ViewBuilder item: @escaping (Asset) -> Item,
+       @ViewBuilder empty: @escaping (_ search: String) -> Empty = { _ in Message.noResults }) {
     self.sourceID = sourceID
     _searchText = search
     _model = .init(initialValue: .search(search.wrappedValue))
+    self.columns = columns
+    self.spacing = spacing
+    self.padding = padding
+    self.item = item
+    self.empty = empty
   }
 
   @EnvironmentObject private var interactor: Interactor
@@ -33,9 +69,9 @@ struct AssetGrid: View {
 
   @ViewBuilder private var scrollView: some View {
     ScrollView {
-      LazyVGrid(columns: [GridItem(.adaptive(minimum: 108, maximum: 152), spacing: 2)], spacing: 2) {
+      LazyVGrid(columns: columns, spacing: spacing) {
         ForEach(assets) { asset in
-          ReloadableAsyncImage(asset: asset, sourceID: sourceID)
+          item(asset)
             .onAppear {
               loadMoreContentIfNeeded(currentItem: asset)
             }
@@ -44,16 +80,8 @@ struct AssetGrid: View {
           ProgressIndicator()
         }
       }
+      .padding(.all, padding)
     }
-  }
-
-  @ViewBuilder private func label(_ title: LocalizedStringKey, systemImage: String) -> some View {
-    VStack(spacing: 10) {
-      Image(systemName: systemImage)
-      Text(title)
-    }
-    .imageScale(.large)
-    .foregroundColor(.secondary)
   }
 
   @ViewBuilder private var messageView: some View {
@@ -61,10 +89,10 @@ struct AssetGrid: View {
       .overlay {
         switch state {
         case .loading: ProgressIndicator()
-        case .loaded: label("No results found", systemImage: "magnifyingglass")
+        case .loaded: empty(searchText)
         case .error:
           VStack(spacing: 30) {
-            label("Cannot connect to service", systemImage: "exclamationmark.triangle")
+            Message.noService
             Button {
               retry()
             } label: {
@@ -119,99 +147,71 @@ struct AssetGrid: View {
   }
 }
 
-private extension AssetGrid {
-  private struct ProgressIndicator: View {
-    var body: some View {
-      ProgressView()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
-    }
+struct Asset: Identifiable {
+  var id: String { result.id }
+
+  var thumbURL: URL? {
+    result.thumbURL ?? result.url
   }
 
-  private struct ReloadableAsyncImage: View {
-    let asset: Asset
-    let sourceID: String
+  let result: Interactor.AssetResult
+}
 
-    @EnvironmentObject private var interactor: Interactor
-    @State private var url: URL?
-    @State private var phase: AsyncImagePhase?
+private struct ProgressIndicator: View {
+  var body: some View {
+    ProgressView()
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .aspectRatio(1, contentMode: .fit)
+  }
+}
 
-    @ViewBuilder private var progressView: some View {
-      ProgressView()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
-    }
+struct ReloadableAsyncImage<Content: View>: View {
+  let asset: Asset
+  let sourceID: String
+  @ViewBuilder let content: (KFImage) -> Content
 
-    @ViewBuilder private var imageError: some View {
-      Image("custom.photo.badge.exclamationmark", bundle: Bundle.bundle)
-        .imageScale(.large)
-        .foregroundColor(.secondary)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
-    }
+  @EnvironmentObject private var interactor: Interactor
+  @State private var failed = false
 
-    @ViewBuilder func content(phase: AsyncImagePhase) -> some View {
-      Group {
-        if let image = phase.image {
-          image
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(minWidth: 0, minHeight: 0)
-            .clipped()
-            .aspectRatio(1, contentMode: .fit)
-            .onTapGesture {
-              interactor.assetTapped(asset.result, from: sourceID)
-            }
-            .accessibilityLabel(asset.result.label ?? "")
-        } else if phase.error != nil {
-          imageError
-            .onTapGesture {
-              retry()
-            }
-        } else {
-          ProgressIndicator()
-        }
-      }
-      .onAppear {
-        self.phase = phase
-      }
-    }
+  @ViewBuilder private var progressView: some View {
+    ProgressView()
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .aspectRatio(1, contentMode: .fit)
+  }
 
-    private func retry() {
-      url = nil
-    }
+  @ViewBuilder private var imageError: some View {
+    Image("custom.photo.badge.exclamationmark", bundle: Bundle.bundle)
+      .imageScale(.large)
+      .foregroundColor(.secondary)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .aspectRatio(1, contentMode: .fit)
+  }
 
-    var body: some View {
-      AsyncImage(url: url) { phase in
-        content(phase: phase)
-      }
-      .onAppear {
-        switch phase {
-        case .none, .empty:
-          // Init AsyncImage
-          url = asset.url
-        case let .failure(error as NSError):
-          if error.domain == NSURLErrorDomain {
-            switch error.code {
-            case NSURLErrorCancelled, NSURLErrorNetworkConnectionLost:
-              retry()
-            default:
-              break
-            }
+  var body: some View {
+    if failed {
+      imageError
+    } else {
+      content(
+        KFImage(asset.thumbURL)
+          .retry(maxCount: 3)
+          .placeholder { _ in
+            progressView.allowsHitTesting(false)
           }
-        default:
-          break
-        }
+          .onFailure { _ in
+            failed = true
+          }
+          .fade(duration: 0.15)
+      )
+      .onTapGesture {
+        interactor.assetTapped(asset.result, from: sourceID)
       }
-      .onChange(of: url) { newValue in
-        if newValue == nil {
-          // Reload AsyncImage
-          url = asset.url
-        }
-      }
+      .allowsHitTesting(!failed)
+      .accessibilityLabel(asset.result.label ?? "")
     }
   }
+}
 
+private extension AssetGrid {
   struct Query: Equatable {
     let text: String
     let page: Int
@@ -246,37 +246,67 @@ private extension AssetGrid {
     let error: Swift.Error
   }
 
-  struct Asset: Identifiable {
-    let id = UUID()
-    var url: URL? {
-      guard let string = result.meta?["thumbUri"] ?? result.meta?["uri"] else {
-        return nil
-      }
-      return URL(string: string)
-    }
-
-    let result: Interactor.AssetResult
-  }
-
   enum Source {
     case loading(Query)
     case loaded(Result)
     case error(Error)
   }
 
-  struct Model {
-    let id: UUID
-    let state: Source
-    let assets: [Asset]
+  struct Assets {
+    var ids: Set<String>
+    var assets: [Asset]
 
-    private init(_ id: UUID, _ source: Source, _ assets: [Asset]) {
-      self.id = id
-      state = source
+    init() {
+      ids = []
+      assets = []
+    }
+
+    init(_ result: AssetGrid.Result) {
+      var ids = Set<String>()
+      var assets = [Asset]()
+
+      result.response.assets
+        .map { Asset(result: $0) }
+        .forEach {
+          if ids.contains($0.id) {
+            print("Ignoring duplicate asset with id: \($0.id)")
+          } else {
+            ids.insert($0.id)
+            assets.append($0)
+          }
+        }
+
+      self.ids = ids
       self.assets = assets
     }
 
+    mutating func append(_ other: Assets) {
+      assets.append(contentsOf: other.assets.filter {
+        if ids.contains($0.id) {
+          print("Ignoring duplicate asset with id: \($0.id)")
+          return false
+        } else {
+          return true
+        }
+      })
+      ids = ids.union(other.ids)
+    }
+  }
+
+  struct Model {
+    let id: UUID
+    let state: Source
+    private let _assets: Assets
+    var assets: [Asset] { _assets.assets }
+
+    private init(_ id: UUID, _ source: Source, _ assets: Assets) {
+      self.id = id
+      state = source
+      _assets = assets
+    }
+
     static func search(_ text: String) -> Self {
-      .init(UUID(), .loading(.init(text)), [])
+      .init(UUID(), .loading(.init(text)), AssetGrid.Assets())
     }
 
     mutating func search(_ text: String) {
@@ -284,24 +314,25 @@ private extension AssetGrid {
     }
 
     mutating func loaded(_ result: AssetGrid.Result) {
-      let assets = assets + result.response.assets.map { .init(result: $0) }
+      var assets = _assets
+      assets.append(AssetGrid.Assets(result))
       self = .init(id, .loaded(result), assets)
     }
 
     mutating func loadNextPage() {
       if case let .loaded(result) = state, result.hasNextPage {
-        self = .init(UUID(), .loading(result.nextPage), assets)
+        self = .init(UUID(), .loading(result.nextPage), _assets)
       }
     }
 
     mutating func retry() {
       if case let .error(error) = state {
-        self = .init(UUID(), .loading(error.query), assets)
+        self = .init(UUID(), .loading(error.query), _assets)
       }
     }
 
     mutating func error(_ error: AssetGrid.Error) {
-      self = .init(id, .error(error), assets)
+      self = .init(id, .error(error), _assets)
     }
 
     var isValid: Bool {
