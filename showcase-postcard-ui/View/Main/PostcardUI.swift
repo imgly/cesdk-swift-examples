@@ -39,17 +39,11 @@ public struct PostcardUI: View {
             PageNavigationButton(to: previousPage, direction: .backward)
           }
         }
-        ToolbarItemGroup(placement: .principal) {
-          HStack {
-            UndoRedoButtons()
-            Spacer().frame(maxWidth: 42)
-            PreviewButton()
-          }
-          .labelStyle(.adaptiveIconOnly)
-        }
         ToolbarItem(placement: .navigationBarTrailing) {
-          if let nextPage = page?.next, interactor.isEditing {
-            PageNavigationButton(to: nextPage, direction: .forward)
+          if let nextPage = page?.next {
+            if interactor.isEditing {
+              PageNavigationButton(to: nextPage, direction: .forward)
+            }
           } else {
             ExportButton()
               .labelStyle(.adaptiveIconOnly)

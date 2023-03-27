@@ -5,8 +5,16 @@ public struct ExportButton: View {
 
   public init() {}
 
+  @ViewBuilder func button(_ action: Action) -> some View {
+    Button {
+      interactor.actionButtonTapped(for: action)
+    } label: {
+      action.label
+    }
+  }
+
   public var body: some View {
-    ActionButton(.export)
+    button(.export)
       .disabled(interactor.isLoading || interactor.isExporting)
       .activitySheet($interactor.export)
   }

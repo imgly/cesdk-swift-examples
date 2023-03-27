@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension PreviewProvider {
-  private static var url: URL { Bundle.main.url(forResource: "apparel-ui-b-1", withExtension: "scene")! }
+  private static var url: URL { Bundle.main.url(forResource: "apparel-ui-b-1-default", withExtension: "scene")! }
 
   @ViewBuilder static var defaultPreviews: some View {
     defaultPreviews()
@@ -35,13 +35,9 @@ private struct EditorUIPreview: View {
   var body: some View {
     EditorUI(scene: url)
       .toolbar {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-          Group {
-            UndoRedoButtons()
-            PreviewButton()
-            ExportButton()
-          }
-          .labelStyle(.adaptiveIconOnly)
+        ToolbarItem(placement: .navigationBarTrailing) {
+          ExportButton()
+            .labelStyle(.adaptiveIconOnly)
         }
       }
       .interactor(interactor)

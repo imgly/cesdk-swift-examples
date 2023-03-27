@@ -27,20 +27,6 @@ struct SheetState: BatchMutable {
   /// Combined `model` and `isPresented`.
   var state: SheetModel? { isPresented ? model : nil }
 
-  var isSearchable: Bool {
-    switch mode {
-    case .add, .replace:
-      switch type {
-      case .image, .shape, .sticker, .upload:
-        return true
-      default:
-        return false
-      }
-    default:
-      return false
-    }
-  }
-
   /// Hide sheet.
   init() {
     isPresented = false

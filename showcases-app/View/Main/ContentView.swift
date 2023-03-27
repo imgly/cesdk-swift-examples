@@ -52,7 +52,7 @@ struct ContentView: View {
       List {
         Section(title: "UI Types", subtitle: "UIs that fit every use case.") {
           Showcase(
-            view: ApparelUI(scene: Bundle.main.url(forResource: "apparel-ui-b-1", withExtension: "scene")!),
+            view: ApparelUI(scene: Bundle.main.url(forResource: "apparel-ui-b-1-default", withExtension: "scene")!),
             title: "Apparel UI",
             subtitle: "Customize and export a print-ready design with a mobile apparel editor."
           )

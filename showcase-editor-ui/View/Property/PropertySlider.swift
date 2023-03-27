@@ -4,30 +4,18 @@ struct PropertySlider<T: MappedType & BinaryFloatingPoint>: View where T.Stride:
   let title: LocalizedStringKey
   let bounds: ClosedRange<T>
   let property: Property
-  let mapping: Mapping
-  let setter: Interactor.PropertySetter<T>
-
-  typealias Mapping = (_ value: Binding<T>, _ bounds: ClosedRange<T>) -> Binding<T>
 
   @EnvironmentObject private var interactor: Interactor
   @Environment(\.selection) private var id
 
-  init(_ title: LocalizedStringKey, in bounds: ClosedRange<T>, property: Property,
-       mapping: @escaping Mapping = { value, _ in value },
-       setter: @escaping Interactor.PropertySetter<T> = Interactor.Setter.set()) {
+  init(_ title: LocalizedStringKey, in bounds: ClosedRange<T>, property: Property) {
     self.title = title
     self.bounds = bounds
     self.property = property
-    self.mapping = mapping
-    self.setter = setter
-  }
-
-  var binding: Binding<T> {
-    interactor.bind(id, property: property, default: bounds.lowerBound, setter: setter, completion: nil)
   }
 
   var body: some View {
-    Slider(value: mapping(binding, bounds),
+    Slider(value: interactor.bind(id, property: property, default: bounds.lowerBound, completion: nil),
            in: bounds) { started in
       if !started {
         interactor.addUndoStep()

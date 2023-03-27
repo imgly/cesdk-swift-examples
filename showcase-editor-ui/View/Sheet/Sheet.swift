@@ -10,12 +10,12 @@ struct Sheet: View {
 
   @ViewBuilder func sheet(_ type: SheetType) -> some View {
     switch type {
-    case .image: ImageSheet()
     case .text: TextSheet()
+    case .image: ImageSheet()
     case .shape: ShapeSheet()
     case .sticker: StickerSheet()
-    case .upload: UploadSheet()
     case .group: GroupSheet()
+    case .upload: UploadSheet()
     case .selectionColors: SelectionColorsSheet()
     case .font: FontSheet()
     case .fontSize: FontSizeSheet()
@@ -23,11 +23,13 @@ struct Sheet: View {
     }
   }
 
-  var tabs: [SheetType] { [.image, .text, .shape, .sticker, .upload] }
+  var tabs: [SheetType] { [.text, .image, .shape, .sticker, .upload] }
 
   var dragIndicatorVisibility: Visibility {
-    if sheet.isSearchable {
+    switch sheet.type {
+    case .image, .upload:
       return .hidden
+    default: break
     }
     if verticalSizeClass == .compact {
       return .hidden

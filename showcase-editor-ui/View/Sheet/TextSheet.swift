@@ -48,12 +48,11 @@ struct TextSheet: View {
   }
 
   @ViewBuilder var textFormatOptions: some View {
-    let text = interactor.bindTextState(id, resetFontProperties: false)
-    let textReset = interactor.bindTextState(id, resetFontProperties: true)
+    let text = interactor.bindTextState(id)
 
     List {
       NavigationLinkPicker(title: "Font", data: assets.fonts,
-                           selection: textReset.fontFamilyID) { fontFamily, isSelected in
+                           selection: text.fontFamilyID) { fontFamily, isSelected in
         Label(fontFamily.name, systemImage: "checkmark")
           .labelStyle(.icon(hidden: !isSelected, titleFont: .custom(fontFamily.someFontName ?? "", size: 17)))
       } linkLabel: { selection in
@@ -83,10 +82,6 @@ struct TextSheet: View {
             SheetDismissButton()
           }
         }
-      }
-
-      Section("Font Size") {
-        PropertySlider<Float>("Font Size", in: 6 ... 90, property: .key(.textFontSize))
       }
     }
   }

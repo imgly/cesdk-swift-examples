@@ -17,7 +17,7 @@ struct FontSheet: View {
   }
 
   var body: some View {
-    let text = interactor.bindTextState(id, resetFontProperties: true)
+    let text = interactor.bindTextState(id)
 
     BottomSheet {
       ListPicker(data: fonts, selection: text.fontFamilyID) { fontFamily, isSelected in

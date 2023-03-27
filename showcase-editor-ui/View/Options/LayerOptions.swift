@@ -4,16 +4,24 @@ struct LayerOptions: View {
   @EnvironmentObject private var interactor: Interactor
   @Environment(\.selection) private var id
 
+  @ViewBuilder func button(_ action: Action) -> some View {
+    Button {
+      interactor.actionButtonTapped(for: action)
+    } label: {
+      action.label
+    }
+  }
+
   @ViewBuilder var layerButtons: some View {
     HStack(spacing: 8) {
       Group {
-        ActionButton(.toTop)
-        ActionButton(.up)
+        button(.toTop)
+        button(.up)
       }
       .disabled(!interactor.canBringForward(id))
       Group {
-        ActionButton(.down)
-        ActionButton(.toBottom)
+        button(.down)
+        button(.toBottom)
       }
       .disabled(!interactor.canBringBackward(id))
     }
@@ -47,11 +55,11 @@ struct LayerOptions: View {
       }
       Section {
         if interactor.isAllowed(id, .duplicate) {
-          ActionButton(.duplicate)
+          button(.duplicate)
             .foregroundColor(.primary)
         }
         if interactor.isAllowed(id, .delete) {
-          ActionButton(.delete)
+          button(.delete)
             .foregroundColor(.red)
         }
       }

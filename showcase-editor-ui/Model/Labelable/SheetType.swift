@@ -1,17 +1,17 @@
 import Foundation
 
 enum SheetType: Labelable, IdentifiableByHash {
-  case image, text, shape, sticker, upload, group
+  case text, image, shape, sticker, group, upload
   case selectionColors, font, fontSize, color
 
   var description: String {
     switch self {
-    case .image: return "Image"
     case .text: return "Text"
+    case .image: return "Image"
     case .shape: return "Shape"
     case .sticker: return "Sticker"
-    case .upload: return "Upload"
     case .group: return "Group"
+    case .upload: return "Upload"
     case .selectionColors: return "Template Colors"
     case .font: return "Font"
     case .fontSize: return "Size"
@@ -21,12 +21,12 @@ enum SheetType: Labelable, IdentifiableByHash {
 
   var imageName: String? {
     switch self {
-    case .image: return "photo"
     case .text: return "textformat.alt"
+    case .image: return "photo"
     case .shape: return "square.on.circle"
     case .sticker: return "custom.face.smiling"
-    case .upload: return "arrow.up.circle"
     case .group: return nil
+    case .upload: return "square.and.arrow.up"
     case .selectionColors, .font, .fontSize, .color: return nil
     }
   }

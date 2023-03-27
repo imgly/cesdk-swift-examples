@@ -54,12 +54,7 @@ public final class Interactor: ObservableObject, KeyboardObserver {
 
   var sheetTypeForSelection: SheetType? { sheetType(for: selection) }
 
-  func blockType(_ id: BlockID?) -> DesignBlockType? {
-    guard let id, let engine, let type = try? engine.block.getType(id) else {
-      return nil
-    }
-    return DesignBlockType(rawValue: type)
-  }
+  var blockTypeForSelection: DesignBlockType? { blockType(for: selection) }
 
   var rotationForSelection: CGFloat? {
     guard let first = selection?.blocks.first,
@@ -174,8 +169,7 @@ extension Interactor {
 
 extension Interactor {
   /// Create a `TextState` binding for a block `id`.
-  /// If `resetFontProperties` is enabled bold and italic states would not be preserved on set.
-  func bindTextState(_ id: BlockID?, resetFontProperties: Bool) -> Binding<TextState> {
+  func bindTextState(_ id: BlockID?) -> Binding<TextState> {
     let fontURL: Binding<URL?> = bind(id, property: .key(.textFontFileURI))
     return .init {
       if let fontURL = fontURL.wrappedValue {
@@ -189,16 +183,8 @@ extension Interactor {
         return TextState()
       }
     } set: { text in
-      func font(fontFamily: FontFamily) -> Font? {
-        if resetFontProperties {
-          return fontFamily.someFont
-        } else {
-          return fontFamily.font(for: .init(bold: text.isBold, italic: text.isItalic)) ?? fontFamily.someFont
-        }
-      }
-
       if let fontFamilyID = text.fontFamilyID, let fontFamily = self.assets.fontFamilyFor(id: fontFamilyID),
-         let font = font(fontFamily: fontFamily),
+         let font = fontFamily.font(for: .init(bold: text.isBold, italic: text.isItalic)) ?? fontFamily.someFont,
          let selected = self.assets.fontFor(id: font.id) {
         fontURL.wrappedValue = selected.font.url
       }
@@ -244,9 +230,7 @@ extension Interactor {
             return
           }
           properties.forEach { property, ids in
-            _ = self.set(ids, property: property, value: value,
-                         setter: Setter.set(overrideScope: .key(.designStyle)),
-                         completion: completion)
+            _ = self.set(ids, property: property, value: value, completion: completion)
           }
         })
       }
@@ -314,15 +298,6 @@ extension Interactor {
     static func set<T: MappedType>() -> Interactor.PropertySetter<T> {
       { engine, blocks, propertyBlock, property, value, completion in
         let didChange = try engine.block.set(blocks, propertyBlock, property: property, value: value)
-        return try (completion?(engine, blocks, didChange) ?? false) || didChange
-      }
-    }
-
-    static func set<T: MappedType>(overrideScope: Scope) -> Interactor.PropertySetter<T> {
-      { engine, blocks, propertyBlock, property, value, completion in
-        let didChange = try engine.block.overrideAndRestore(blocks, scope: overrideScope) {
-          try engine.block.set($0, propertyBlock, property: property, value: value)
-        }
         return try (completion?(engine, blocks, didChange) ?? false) || didChange
       }
     }
@@ -445,18 +420,7 @@ extension Interactor {
     Task(priority: .userInitiated) {
       do {
         if sheet.mode == .replace, let id = selection?.blocks.first {
-          switch sheet.type {
-          case .sticker:
-            guard let url = asset.url else {
-              return
-            }
-            _ = try engine.set([id], property: .key(.stickerImageFileURI), value: url)
-          default:
-            try await engine.asset.applyToBlock(sourceID: sourceID, assetResult: asset, block: id)
-          }
-          if try engine.editor.getSettingEnum("role") == "Adopter" {
-            try engine.block.setPlaceholderEnabled(id, enabled: false)
-          }
+          try await engine.asset.applyToBlock(sourceID: sourceID, assetResult: asset, block: id)
           try engine.editor.addUndoStep()
           if sheet.detent == .adaptiveLarge || isKeyboardPresented {
             sheet.isPresented = false
@@ -487,6 +451,33 @@ extension Interactor {
     }
   }
 
+  func assetTapped(_ asset: AssetLibrary.Shape) {
+    do {
+      try engine?.addShape(asset.shape, toPage: page)
+      sheet.isPresented = false
+    } catch {
+      handleErrorAndDismiss(error)
+    }
+  }
+
+  func assetTapped(_ asset: AssetLibrary.Sticker) {
+    do {
+      if sheet.mode == .replace {
+        if let id = selection?.blocks.first {
+          _ = try engine?.set([id], property: .key(.stickerImageFileURI), value: asset.url)
+        }
+        if sheet.detent == .adaptiveLarge || isKeyboardPresented {
+          sheet.isPresented = false
+        }
+      } else {
+        try engine?.addSticker(asset.url, toPage: page)
+        sheet.isPresented = false
+      }
+    } catch {
+      handleErrorAndDismiss(error)
+    }
+  }
+
   func sheetDismissButtonTapped() {
     sheet.isPresented = false
   }
@@ -510,7 +501,7 @@ extension Interactor {
       case .add:
         try engine?.block.deselectAll()
         sheet.commit { model in
-          model = .init(mode, .image)
+          model = .init(mode, .text)
           model.detent = .adaptiveLarge
         }
       case .edit:
@@ -593,15 +584,13 @@ extension Interactor {
       async let loadScene: () = behavior.loadScene(.init(engine, self), from: url, with: insets)
       async let loadDefaultAssets: () = engine.addDefaultAssetSources()
       async let loadDemoAssetSources: () = engine.addDemoAssetSources(withUploadAssetSources: true)
-
-      let baseURL = URL(string: "https://cdn.img.ly/assets/showcases/v1")!
-      async let loadImages: () = engine.populateAssetSource(id: ImageSource.images.sourceID, baseURL: baseURL)
-      async let loadShapes: () = engine.populateAssetSource(id: AssetLibrary.shapeSourceID, baseURL: baseURL)
-      async let loadStickers: () = engine.populateAssetSource(id: AssetLibrary.stickerSourceID, baseURL: baseURL)
-
+      async let loadImages: () = engine.populateAssetSource(id: ImageSource.images.sourceID,
+                                                            jsonURL: Bundle.bundle.url(
+                                                              forResource: ImageSource.images.sourceID,
+                                                              withExtension: "json"
+                                                            )!)
       do {
-        let (fonts, _, _, _, _, _, _) = try await (loadFonts, loadScene, loadDefaultAssets, loadDemoAssetSources,
-                                                   loadImages, loadShapes, loadStickers)
+        let (fonts, _, _, _, _) = try await (loadFonts, loadScene, loadDefaultAssets, loadDemoAssetSources, loadImages)
         assets.fonts = fonts
         try engine.asset.addSource(UnsplashAssetSource())
         isLoading = false
@@ -611,7 +600,7 @@ extension Interactor {
     }
   }
 
-  func uploadImage(_ url: URL) {
+  func uploadImage(_ image: AssetLibrary.Image) {
     guard let engine else {
       return
     }
@@ -619,17 +608,17 @@ extension Interactor {
 
     Task {
       do {
-        let (data, _) = try await URLSession.get(url)
+        let (data, _) = try await URLSession.get(image.url)
         guard let size = UIImage(data: data)?.size else {
           return
         }
 
-        let assetID = url.absoluteString
+        let assetID = image.id.absoluteString
         try engine.asset.addAsset(toSource: sourceID, asset:
           .init(id: assetID,
                 meta: [
-                  "uri": url.absoluteString,
-                  "thumbUri": url.absoluteString,
+                  "uri": image.url.absoluteString,
+                  "thumbUri": image.url.absoluteString,
                   "blockType": DesignBlockType.image.rawValue,
                   "width": String(Int(size.width)),
                   "height": String(Int(size.height))
@@ -809,7 +798,6 @@ private extension Interactor {
     case DesignBlockType.text.rawValue: return .text
     case DesignBlockType.image.rawValue: return .image
     case _ where designBlockType.hasPrefix(DesignBlockType.shapes): return .shape
-    case DesignBlockType.vectorPath.rawValue: return .shape
     case DesignBlockType.sticker.rawValue: return .sticker
     case DesignBlockType.group.rawValue: return .group
     default: return nil
@@ -827,6 +815,22 @@ private extension Interactor {
     if let selection, selection.blocks.count == 1,
        let block = selection.blocks.first,
        let type = sheetType(for: block) {
+      return type
+    }
+    return nil
+  }
+
+  func blockType(for designBlockID: DesignBlockID) -> DesignBlockType? {
+    guard let engine, let type = try? engine.block.getType(designBlockID) else {
+      return nil
+    }
+    return DesignBlockType(rawValue: type)
+  }
+
+  func blockType(for selection: Selection?) -> DesignBlockType? {
+    if let selection, selection.blocks.count == 1,
+       let block = selection.blocks.first,
+       let type = blockType(for: block) {
       return type
     }
     return nil
@@ -951,8 +955,7 @@ private extension Interactor {
       return
     }
     let wasPresented = sheet.isPresented
-
-    if sheet.isPresented {
+    if wasPresented {
       if sheet.mode != .add,
          oldValue?.blocks != selection?.blocks {
         sheet.isPresented = false
@@ -961,23 +964,10 @@ private extension Interactor {
         sheet.isPresented = false
       }
     }
-    if oldValue?.blocks != selection?.blocks,
+    if !wasPresented || oldValue != nil,
+       oldValue?.blocks != selection?.blocks,
        let type = placeholderType(for: selection) {
-      func showReplaceSheet() {
-        sheet = .init(.replace, type)
-      }
-
-      if wasPresented, sheet.mode != .replace, sheet.type != type {
-        if sheet.isPresented {
-          sheet.isPresented = false
-        }
-        Task {
-          try? await Task.sleep(for: .milliseconds(200))
-          showReplaceSheet()
-        }
-      } else {
-        showReplaceSheet()
-      }
+      sheet = .init(.replace, type)
     }
   }
 

@@ -17,14 +17,14 @@ struct ImageSheet: View {
     .accessibilityLabel("Image Source")
   }
 
-  @ViewBuilder func imageGrid(for imageSource: ImageSource) -> some View {
+  @ViewBuilder func assetGrid(for imageSource: ImageSource) -> some View {
     VStack {
       // Needs to be in VStack to keep `imageSourcePicker` animation.
       // Needs to be an explicit switch to update the view.
       switch imageSource {
-      case .uploads: UploadGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
-      case .images: ImageGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
-      case .unsplash: ImageGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .uploads: AssetGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .images: AssetGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .unsplash: AssetGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
       }
     }
   }
@@ -45,7 +45,7 @@ struct ImageSheet: View {
   @StateObject private var searchText = Debouncer(initialValue: "")
 
   @ViewBuilder var imageSources: some View {
-    imageGrid(for: imageSource)
+    assetGrid(for: imageSource)
       .overlay(alignment: .top) {
         Rectangle()
           .fill(.bar)

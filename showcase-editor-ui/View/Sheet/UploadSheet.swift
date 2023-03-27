@@ -5,9 +5,9 @@ struct UploadSheet: View {
   private var assets: AssetLibrary { interactor.assets }
   private var sheet: SheetModel { interactor.sheet.model }
 
-  @ViewBuilder var imageGrid: some View {
+  @ViewBuilder var assetGrid: some View {
     VStack {
-      UploadGrid(sourceID: ImageSource.uploads.sourceID, search: $searchText.debouncedValue)
+      AssetGrid(sourceID: ImageSource.uploads.sourceID, search: $searchText.debouncedValue)
     }
   }
 
@@ -17,7 +17,7 @@ struct UploadSheet: View {
     BottomSheet {
       switch sheet.mode {
       case .add, .replace:
-        imageGrid
+        assetGrid
           .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
               AddImageButton()
@@ -35,6 +35,6 @@ struct UploadSheet: View {
 
 struct UploadSheet_Previews: PreviewProvider {
   static var previews: some View {
-    defaultPreviews(sheet: .init(.add, .upload))
+    defaultPreviews(sheet: .init(.add, .image))
   }
 }

@@ -8,8 +8,7 @@ final class PostcardInteractorBehavior: InteractorBehavior {
     context.interactor.selectionColors = try context.engine.selectionColors(
       forPage: 0,
       includeDisabled: true,
-      setDisabled: true,
-      ignoreScope: true
+      setDisabled: true
     )
     try context.engine.editor.setGlobalScope(key: ScopeKey.editorAdd.rawValue, value: .defer)
   }

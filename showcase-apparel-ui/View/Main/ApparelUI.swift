@@ -12,15 +12,10 @@ public struct ApparelUI: View {
 
   public var body: some View {
     EditorUI(scene: url)
-      .navigationTitle("")
       .toolbar {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-          HStack(spacing: 16) {
-            UndoRedoButtons()
-            PreviewButton()
-            ExportButton()
-          }
-          .labelStyle(.adaptiveIconOnly)
+        ToolbarItem(placement: .navigationBarTrailing) {
+          ExportButton()
+            .labelStyle(.adaptiveIconOnly)
         }
       }
       .interactor(interactor)

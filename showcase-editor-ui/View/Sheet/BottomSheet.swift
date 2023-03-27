@@ -11,17 +11,14 @@ struct BottomSheet<Content: View>: View {
   var title: LocalizedStringKey {
     switch sheet.mode {
     case .add:
-      if sheet.isSearchable {
-        return "" // Fixes searchbar offset.
+      if Set([.image, .upload]).contains(sheet.type) {
+        // Fixes searchbar offset.
+        return ""
       } else {
         return sheet.type.localizedStringKey(suffix: sheet.type != .text ? "s" : "")
       }
     case .replace:
-      if sheet.isSearchable {
-        return "" // Fixes searchbar offset.
-      } else {
-        return sheet.model.localizedStringKey
-      }
+      return sheet.model.localizedStringKey
     case .options:
       return LocalizedStringKey("\(String(describing: sheet.type)) \(String(describing: sheet.mode))")
     case .selectionColors, .font, .fontSize, .color:
@@ -45,18 +42,8 @@ struct BottomSheet<Content: View>: View {
       content
         .navigationBarTitleDisplayMode(.inline)
         .introspectNavigationController { navigationController in
-          let navigationBar = navigationController.navigationBar
           // Fix cases when `.navigationBarTitleDisplayMode(.inline)` does not work.
-          navigationBar.prefersLargeTitles = false
-          // Fix cases when `.toolbarBackground(toolbarBackground, for: .navigationBar)` does not work.
-          if toolbarBackground == .hidden {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            navigationBar.standardAppearance = appearance
-            navigationBar.compactAppearance = appearance
-            navigationBar.scrollEdgeAppearance = appearance
-            navigationBar.compactScrollEdgeAppearance = appearance
-          }
+          navigationController.navigationBar.prefersLargeTitles = false
         }
         .navigationTitle(title)
         .toolbarBackground(toolbarBackground, for: .navigationBar)

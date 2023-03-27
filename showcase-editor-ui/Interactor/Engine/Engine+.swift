@@ -30,20 +30,19 @@ extension Engine {
     try engine.block.setOpacity(outline, value: isVisible ? 1 : 0)
   }
 
-  public func selectionColors(forPage index: Int, includeUnnamed: Bool = false, includeDisabled: Bool = false,
-                              setDisabled: Bool = false, ignoreScope: Bool = false) throws -> SelectionColors {
+  public func selectionColors(forPage index: Int, includeUnnamed: Bool = false,
+                              includeDisabled: Bool = false, setDisabled: Bool = false) throws -> SelectionColors {
     try selectionColors(
       getPage(index),
       includeUnnamed: includeUnnamed,
       includeDisabled: includeDisabled,
-      setDisabled: setDisabled,
-      ignoreScope: ignoreScope
+      setDisabled: setDisabled
     )
   }
 
   private func getSelectionColors(_ id: DesignBlockID, includeUnnamed: Bool, includeDisabled: Bool, setDisabled: Bool,
-                                  ignoreScope: Bool, selectionColors: inout SelectionColors) throws {
-    guard try engine.block.isScopeEnabled(id, key: ScopeKey.designStyle.rawValue) || ignoreScope else {
+                                  selectionColors: inout SelectionColors) throws {
+    guard try engine.block.isScopeEnabled(id, key: ScopeKey.designStyle.rawValue) else {
       return
     }
     let name = try engine.block.getName(id)
@@ -70,9 +69,7 @@ extension Engine {
 
       func setAndAddColor(property: Property, color: CGColor) throws {
         if setDisabled, try engine.block.get(id, property: property) != color {
-          try engine.block.overrideAndRestore(id, scope: .key(.designStyle)) {
-            try engine.block.set($0, property: property, value: color)
-          }
+          try engine.block.set(id, property: property, value: color)
         }
         _ = try addColor(property: property, includeDisabled: includeDisabled)
       }
@@ -102,7 +99,7 @@ extension Engine {
   /// scene template creation.
   /// - Returns: The collected selection colors.
   func selectionColors(_ id: DesignBlockID, includeUnnamed: Bool, includeDisabled: Bool,
-                       setDisabled: Bool, ignoreScope: Bool) throws -> SelectionColors {
+                       setDisabled: Bool) throws -> SelectionColors {
     if setDisabled {
       print(
         // swiftlint:disable:next line_length
@@ -115,7 +112,6 @@ extension Engine {
         includeUnnamed: includeUnnamed,
         includeDisabled: includeDisabled,
         setDisabled: setDisabled,
-        ignoreScope: ignoreScope,
         selectionColors: &selectionColors
       )
       let children = try engine.block.getChildren(id)
@@ -226,6 +222,36 @@ extension Engine {
     try engine.block.set(block, property: .key(.textFontSize), value: fontSize)
     try engine.block.set(block, property: .key(.textHorizontalAlignment), value: HorizontalAlignment.center)
     try engine.block.setHeightMode(block, mode: .auto)
+    try addBlock(block, toPage: index)
+  }
+
+  func addShape(_ shapeBlockType: DesignBlockType, toPage index: Int) throws {
+    let block = try engine.block.create(shapeBlockType)
+    try setSize(block)
+    // Set default parameters for some shape types
+    // When we add a polygon, we add a triangle
+    if shapeBlockType == .polygonShape {
+      try engine.block.set(block, property: .key(.shapesPolygonSides), value: 3)
+    }
+    // When we add a line, we need to resize the height again
+    else if shapeBlockType == .lineShape {
+      try engine.block.setHeightMode(block, mode: .absolute)
+      try engine.block.setHeight(block, value: 1)
+    } else if shapeBlockType == .starShape {
+      try engine.block.set(block, property: .key(.shapesStarInnerDiameter), value: 0.4)
+    }
+
+    if shapeBlockType != .lineShape {
+      try engine.block.set(block, property: .key(.strokePosition), value: StrokePosition.inside)
+    }
+
+    try addBlock(block, toPage: index)
+  }
+
+  func addSticker(_ url: URL, toPage index: Int) throws {
+    let block = try engine.block.create(.sticker)
+    try engine.block.set(block, property: .key(.stickerImageFileURI), value: url)
+    try setSize(block)
     try addBlock(block, toPage: index)
   }
 

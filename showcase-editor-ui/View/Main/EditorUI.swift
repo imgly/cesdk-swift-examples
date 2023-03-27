@@ -60,6 +60,12 @@ public struct EditorUI: View {
         interactivePopGestureRecognizer?.isEnabled = false
       }
       .toolbarBackground(.visible, for: .navigationBar)
+      .toolbar {
+        ToolbarItemGroup(placement: .principal) {
+          PrincipalToolbar()
+            .labelStyle(.adaptiveIconOnly)
+        }
+      }
       .onPreferenceChange(CanvasGeometryKey.self) { newValue in
         canvasGeometry = newValue
       }

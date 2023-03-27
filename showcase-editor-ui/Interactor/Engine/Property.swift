@@ -19,8 +19,6 @@ public enum PropertyKey: String {
 
   case heightMode = "height/mode"
 
-  case lastFrameHeight = "lastFrame/height"
-
   case textFontFileURI = "text/fontFileUri"
   case textFontSize = "text/fontSize"
   case textHorizontalAlignment = "text/horizontalAlignment"
@@ -30,9 +28,9 @@ public enum PropertyKey: String {
 
   case imageImageFileURI = "image/imageFileURI"
 
+  case shapesPolygonSides = "shapes/polygon/sides"
   case shapesStarPoints = "shapes/star/points"
   case shapesStarInnerDiameter = "shapes/star/innerDiameter"
-  case shapesPolygonSides = "shapes/polygon/sides"
 
   case stickerImageFileURI = "sticker/imageFileURI"
 
