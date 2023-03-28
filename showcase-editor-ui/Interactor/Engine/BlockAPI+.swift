@@ -19,7 +19,7 @@ extension String: MappedType {}
 extension URL: MappedType {}
 extension RGBA: MappedType {}
 extension CGColor: MappedType {}
-extension SwiftUI.Color: MappedType {}
+extension Color: MappedType {}
 
 /// Property block type to redirect the generic get/set `BlockAPI` methods.
 public enum PropertyBlock {
@@ -101,8 +101,8 @@ public extension BlockAPI {
       return try unwrap(getColor(id, property: property) as? T)
     case (CGColor.objectIdentifier, .color):
       return try unwrap(getColor(id, property: property).color() as? T)
-    case (SwiftUI.Color.objectIdentifier, .color):
-      return try unwrap(SwiftUI.Color(cgColor: getColor(id, property: property).color()) as? T)
+    case (Color.objectIdentifier, .color):
+      return try unwrap(Color(cgColor: getColor(id, property: property).color()) as? T)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -167,7 +167,7 @@ public extension BlockAPI {
       let color = try (value as! CGColor).rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
     case (Color.objectIdentifier, .color):
-      let color = try unwrap(value as? SwiftUI.Color).asCGColor.rgba()
+      let color = try unwrap(value as? Color).asCGColor.rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
     default:
       throw Error(
