@@ -65,6 +65,17 @@ struct ContentView: View {
       }
       .listStyle(.sidebar)
       .navigationTitle(title)
+      .toolbar {
+        ToolbarItemGroup(placement: .bottomBar) {
+          if !ProcessInfo.processInfo.arguments.contains("UI-Testing"),
+             let branch = Bundle.main.infoDictionary?["GitBranch"] as? String,
+             let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            Text("branch: " + branch + ", build: " + build)
+              .font(.system(size: 10))
+              .monospaced()
+          }
+        }
+      }
     }
     // Currently, IMGLYEngine.Engine does not support multiple instances.
     // `StackNavigationViewStyle` forces to deinitialize the view and thus its engine when exiting a showcase.
