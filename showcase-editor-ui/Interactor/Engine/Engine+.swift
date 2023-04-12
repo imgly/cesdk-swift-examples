@@ -16,8 +16,8 @@ private struct Random: RandomNumberGenerator {
 extension Engine {
   private var engine: Engine { self }
 
-  static var isUITesting = ProcessInfo.processInfo.arguments.contains("UI-Testing")
-  private static var rng: RandomNumberGenerator = isUITesting ? Random(seed: 0) : SystemRandomNumberGenerator()
+  private static var rng: RandomNumberGenerator = ProcessInfo
+    .isUITesting ? Random(seed: 0) : SystemRandomNumberGenerator()
 
   // MARK: - Scene
 
@@ -52,7 +52,7 @@ extension Engine {
     }
 
     func addColor(property: Property, includeDisabled: Bool = false) throws -> CGColor? {
-      guard let enabeld = property.enabled, try engine.block.get(id, property: enabeld) || includeDisabled else {
+      guard let enabled = property.enabled, try engine.block.get(id, property: enabled) || includeDisabled else {
         return nil
       }
       let color: CGColor = try engine.block.get(id, property: property)
@@ -289,7 +289,7 @@ extension Engine {
     try engine.editor.addUndoStep()
   }
 
-  func deleteSelectedElement(delay: Duration = .zero) throws {
+  func deleteSelectedElement(delay nanoseconds: UInt64 = .zero) throws {
     let ids = engine.block.findAllSelected()
 
     func delete() throws {
@@ -299,7 +299,7 @@ extension Engine {
       try engine.editor.addUndoStep()
     }
 
-    if delay != .zero {
+    if nanoseconds != .zero {
       // Delay real deletion, e.g., to wait for sheet disappear animations
       // to complete but fake deletion in the meantime.
       try ids.forEach {
@@ -309,7 +309,7 @@ extension Engine {
         try engine.block.setSelected($0, selected: false)
       }
       Task {
-        try await Task.sleep(for: delay)
+        try await Task.sleep(nanoseconds: nanoseconds)
         try delete()
       }
     } else {

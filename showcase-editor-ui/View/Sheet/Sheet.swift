@@ -1,5 +1,3 @@
-import Introspect
-import Media
 import SwiftUI
 
 struct Sheet: View {
@@ -59,17 +57,9 @@ struct Sheet: View {
       }
     }
     .pickerStyle(.menu)
-    .presentationDetents(sheet.detents, selection: $interactor.sheet.detent)
-    .presentationDragIndicator(dragIndicatorVisibility)
-    .introspectViewController { viewController in
-      viewController.presentingViewController?.view.tintAdjustmentMode = .normal
-      if let sheet = viewController.sheetPresentationController {
-        let largestUndimmedDetentIdentifier = interactor.sheet.largestUndimmedDetent?.identifier
-        sheet.largestUndimmedDetentIdentifier = largestUndimmedDetentIdentifier
-        sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-        sheet.prefersEdgeAttachedInCompactHeight = true
-      }
-    }
+    .conditionalPresentationConfiguration(sheet.largestUndimmedDetent)
+    .conditionalPresentationDetents(sheet.detents, selection: $interactor.sheet.detent)
+    .conditionalPresentationDragIndicator(dragIndicatorVisibility)
   }
 }
 

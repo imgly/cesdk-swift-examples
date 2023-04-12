@@ -54,6 +54,13 @@ public final class Interactor: ObservableObject, KeyboardObserver {
 
   var sheetTypeForSelection: SheetType? { sheetType(for: selection) }
 
+  func sheetType(_ id: BlockID?) -> SheetType? {
+    guard let id, let engine, let type = try? engine.block.getType(id) else {
+      return nil
+    }
+    return sheetType(for: type)
+  }
+
   func blockType(_ id: BlockID?) -> DesignBlockType? {
     guard let id, let engine, let type = try? engine.block.getType(id) else {
       return nil
@@ -458,13 +465,13 @@ extension Interactor {
             try engine.block.setPlaceholderEnabled(id, enabled: false)
           }
           try engine.editor.addUndoStep()
-          if sheet.detent == .adaptiveLarge || isKeyboardPresented {
+          if sheet.detent == .large || isKeyboardPresented {
             sheet.isPresented = false
           }
         } else {
           if let id = try await engine.asset.apply(sourceID: sourceID, assetResult: asset) {
             try engine.block.appendChild(to: engine.getPage(page), child: id)
-            if Engine.isUITesting {
+            if ProcessInfo.isUITesting {
               try engine.block.setPositionX(id, value: 15)
               try engine.block.setPositionY(id, value: 5)
             }
@@ -511,7 +518,7 @@ extension Interactor {
         try engine?.block.deselectAll()
         sheet.commit { model in
           model = .init(mode, .image)
-          model.detent = .adaptiveLarge
+          model.detent = .large
         }
       case .edit:
         setEditMode(.text)
@@ -534,14 +541,14 @@ extension Interactor {
       case .fontSize:
         sheet.commit { model in
           model = .init(mode, .fontSize)
-          model.detent = .adaptiveSmall
-          model.detents = [.adaptiveSmall]
+          model.detent = .small
+          model.detents = [.small]
         }
       case .color:
         sheet.commit { model in
           model = .init(mode, .color)
-          model.detent = .adaptiveSmall
-          model.detents = [.adaptiveSmall]
+          model.detent = .small
+          model.detents = [.small]
         }
       default:
         guard let type = sheetTypeForSelection else {
@@ -570,7 +577,7 @@ extension Interactor {
       case .down: try engine?.sendBackwardSelectedElement()
       case .toBottom: try engine?.sendToBackSelectedElement()
       case .duplicate: try engine?.duplicateSelectedElement()
-      case .delete: try engine?.deleteSelectedElement(delay: .milliseconds(200))
+      case .delete: try engine?.deleteSelectedElement(delay: NSEC_PER_MSEC * 200)
       case .previousPage: try setPage(page - 1)
       case .nextPage: try setPage(page + 1)
       case let .page(index): try setPage(index)
@@ -816,17 +823,10 @@ private extension Interactor {
     }
   }
 
-  func sheetType(for designBlockID: DesignBlockID) -> SheetType? {
-    guard let engine, let type = try? engine.block.getType(designBlockID) else {
-      return nil
-    }
-    return sheetType(for: type)
-  }
-
   func sheetType(for selection: Selection?) -> SheetType? {
     if let selection, selection.blocks.count == 1,
        let block = selection.blocks.first,
-       let type = sheetType(for: block) {
+       let type = sheetType(block) {
       return type
     }
     return nil
@@ -836,7 +836,7 @@ private extension Interactor {
     guard let engine,
           let selection, selection.blocks.count == 1,
           let block = selection.blocks.first,
-          let type = sheetType(for: block) else {
+          let type = sheetType(block) else {
       return nil
     }
     do {
@@ -972,7 +972,7 @@ private extension Interactor {
           sheet.isPresented = false
         }
         Task {
-          try? await Task.sleep(for: .milliseconds(200))
+          try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
           showReplaceSheet()
         }
       } else {

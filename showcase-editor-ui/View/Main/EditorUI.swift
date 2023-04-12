@@ -59,7 +59,7 @@ public struct EditorUI: View {
         interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer
         interactivePopGestureRecognizer?.isEnabled = false
       }
-      .toolbarBackground(.visible, for: .navigationBar)
+      .conditionalNavigationBarBackground(.visible)
       .onPreferenceChange(CanvasGeometryKey.self) { newValue in
         canvasGeometry = newValue
       }

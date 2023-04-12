@@ -59,7 +59,7 @@ struct BottomSheet<Content: View>: View {
           }
         }
         .navigationTitle(title)
-        .toolbarBackground(toolbarBackground, for: .navigationBar)
+        .conditionalNavigationBarBackground(toolbarBackground)
         .toolbar {
           ToolbarItem(placement: .navigationBarTrailing) {
             SheetDismissButton()

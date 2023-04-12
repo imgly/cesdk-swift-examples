@@ -11,8 +11,7 @@ struct UploadGrid: View {
   @ViewBuilder var mesage: some View {
     VStack(spacing: 10) {
       Image(systemName: "folder")
-        .font(.largeTitle)
-        .fontWeight(.thin)
+        .font(.largeTitle.weight(.thin))
       Text("Nothing here yet")
     }
     .imageScale(.large)

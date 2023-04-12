@@ -22,7 +22,7 @@ struct KeyboardToolbar: View {
               Button("Done") {
                 interactor.keyboardBarDismissButtonTapped()
               }
-              .bold()
+              .font(.body.weight(.bold))
             }
           }
       }

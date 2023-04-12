@@ -23,13 +23,14 @@ struct MenuPicker<Data>: View
             EmptyView()
           }
           .pickerStyle(.inline)
+          .labelStyle(.titleAndIcon) // Make sure to show labels for iOS 15
         } label: {
           HStack(spacing: 4) {
             if let selection {
               Text(selection.localizedStringKey)
             }
             Image(systemName: "chevron.up.chevron.down")
-              .font(.system(.footnote, weight: .medium))
+              .font(.footnote.weight(.medium))
           }
           .frame(maxWidth: .infinity, alignment: .trailing)
           .lineLimit(1)

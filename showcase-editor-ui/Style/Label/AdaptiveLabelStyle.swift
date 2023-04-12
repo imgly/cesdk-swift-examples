@@ -47,7 +47,7 @@ struct AdaptiveTitleOnlyLabelStyle: LabelStyle {
 }
 
 struct BottomBarLabelStyle: LabelStyle {
-  static let titleFont = SwiftUI.Font.system(.caption2, weight: .semibold)
+  static let titleFont = SwiftUI.Font.caption2.weight(.semibold)
   static let size = CGSize(width: 72, height: 56)
 
   var alignment: Alignment = .center

@@ -21,7 +21,8 @@ struct FontSizeSheet: View {
       Label {
         Text(property.localizedStringKey)
       } icon: {
-        property.icon(.headline)
+        property.icon
+          .font(.system(.headline, design: .rounded))
       }
     }
   }

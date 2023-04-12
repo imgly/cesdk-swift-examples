@@ -33,8 +33,7 @@ extension SizeLetter {
     }
   }
 
-  @ViewBuilder func icon(_ style: SwiftUI.Font.TextStyle) -> some View {
+  @ViewBuilder var icon: some View {
     Text(sizeLetter)
-      .font(.system(style, design: .rounded))
   }
 }

@@ -17,6 +17,7 @@ struct NavigationLinkPicker<Data, ElementLabel: View, LinkLabel: View>: View whe
   var body: some View {
     NavigationLink {
       ListPicker(data: data, selection: $selection, elementLabel: elementLabel)
+        .conditionalNavigationBarBackground(.visible)
         .navigationTitle(title)
         .toolbar {
           ToolbarItem(placement: .navigationBarTrailing) {

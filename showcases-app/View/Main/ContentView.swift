@@ -65,6 +65,7 @@ struct ContentView: View {
       }
       .listStyle(.sidebar)
       .navigationTitle(title)
+      .buildInfo()
     }
     // Currently, IMGLYEngine.Engine does not support multiple instances.
     // `StackNavigationViewStyle` forces to deinitialize the view and thus its engine when exiting a showcase.

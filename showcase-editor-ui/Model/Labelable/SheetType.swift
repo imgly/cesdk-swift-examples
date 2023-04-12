@@ -24,7 +24,12 @@ enum SheetType: Labelable, IdentifiableByHash {
     case .image: return "photo"
     case .text: return "textformat.alt"
     case .shape: return "square.on.circle"
-    case .sticker: return "custom.face.smiling"
+    case .sticker:
+      if #available(iOS 16.0, *) {
+        return "custom.face.smiling"
+      } else {
+        return "face.smiling"
+      }
     case .upload: return "arrow.up.circle"
     case .group: return nil
     case .selectionColors, .font, .fontSize, .color: return nil
@@ -33,7 +38,12 @@ enum SheetType: Labelable, IdentifiableByHash {
 
   var isSystemImage: Bool {
     switch self {
-    case .sticker: return false
+    case .sticker:
+      if #available(iOS 16.0, *) {
+        return false
+      } else {
+        return true
+      }
     default: return true
     }
   }
