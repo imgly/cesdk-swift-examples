@@ -4,7 +4,8 @@ import IMGLYEngine
 @MainActor
 func scopes(engine: Engine) async throws {
   // highlight-setup
-  let scene = try await engine.scene.create(from: .init(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!)
+  let scene = try await engine.scene.create(fromImage:
+    .init(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!)
   let image = try engine.block.find(byType: .image).first!
   // highlight-setup
 
