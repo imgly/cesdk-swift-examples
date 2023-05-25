@@ -317,6 +317,23 @@ extension Engine {
     }
   }
 
+  func resetCropSelectedElement() throws {
+    try engine.block.findAllSelected().forEach {
+      try engine.block.overrideAndRestore($0, scope: .key(.designStyle)) {
+        // Reset crop requires "design/style" scope but crop UI should be based on "content/replace".
+        try engine.block.resetCrop($0)
+      }
+    }
+    try engine.editor.addUndoStep()
+  }
+
+  func flipCropSelectedElement() throws {
+    try engine.block.findAllSelected().forEach {
+      try engine.block.flipCropHorizontal($0)
+    }
+    try engine.editor.addUndoStep()
+  }
+
   // MARK: - Utilities
 
   func set(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,

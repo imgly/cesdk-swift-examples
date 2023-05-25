@@ -23,7 +23,7 @@ public final class Interactor: ObservableObject, KeyboardObserver {
 
   @Published var export: ActivityItem?
   @Published var error = AlertState()
-  @Published var sheet = SheetState()
+  @Published var sheet = SheetState() { didSet { sheetChanged(oldValue) } }
 
   typealias AssetQueryData = IMGLYEngine.AssetQueryData
   typealias AssetQueryResult = IMGLYEngine.AssetQueryResult
@@ -174,6 +174,8 @@ extension Interactor {
   func hasOpacity(_ id: BlockID?) -> Bool { block(id, engine?.block.hasOpacity) ?? false }
   func hasBlendMode(_ id: BlockID?) -> Bool { block(id, engine?.block.hasBlendMode) ?? false }
   func hasBlur(_ id: BlockID?) -> Bool { block(id, engine?.block.hasBlur) ?? false }
+  func hasCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.hasCrop) ?? false }
+  func canResetCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.canResetCrop) ?? false }
   func isGrouped(_ id: BlockID?) -> Bool { block(id, engine?.block.isGrouped) ?? false }
 }
 
@@ -399,6 +401,8 @@ extension Interactor {
       return true
     case .replace, .edit:
       return isAllowed(id, scope: .key(.contentReplace))
+    case .crop:
+      return isAllowed(id, scope: .key(.contentReplace)) || isAllowed(id, scope: .key(.designStyle))
     case .format, .options, .fillAndStroke:
       return isAllowed(id, scope: .key(.designStyle))
     case .layer:
@@ -430,6 +434,8 @@ extension Interactor {
     case .delete:
       return isAllowed(id, scope: .key(.lifecycleDestroy)) && !isGrouped(id)
     case .previousPage, .nextPage, .page: return true
+    case .resetCrop, .flipCrop:
+      return isAllowed(id, .crop) && !isGrouped(id)
     }
   }
 }
@@ -522,6 +528,8 @@ extension Interactor {
         }
       case .edit:
         setEditMode(.text)
+      case .crop:
+        setEditMode(.crop)
       case .enterGroup:
         if let group = selection?.blocks.first {
           try engine?.block.enterGroup(group)
@@ -541,14 +549,14 @@ extension Interactor {
       case .fontSize:
         sheet.commit { model in
           model = .init(mode, .fontSize)
-          model.detent = .small
-          model.detents = [.small]
+          model.detent = .tiny
+          model.detents = [.tiny]
         }
       case .color:
         sheet.commit { model in
           model = .init(mode, .color)
-          model.detent = .small
-          model.detents = [.small]
+          model.detent = .tiny
+          model.detents = [.tiny]
         }
       default:
         guard let type = sheetTypeForSelection else {
@@ -581,6 +589,8 @@ extension Interactor {
       case .previousPage: try setPage(page - 1)
       case .nextPage: try setPage(page + 1)
       case let .page(index): try setPage(index)
+      case .resetCrop: try engine?.resetCropSelectedElement()
+      case .flipCrop: try engine?.flipCropSelectedElement()
       }
     } catch {
       handleError(error)
@@ -840,7 +850,8 @@ private extension Interactor {
       return nil
     }
     do {
-      guard try engine.block.hasPlaceholderControls(block) else {
+      guard try engine.editor.getSettingEnum("role") == "Adopter",
+            try engine.block.hasPlaceholderControls(block) else {
         return nil
       }
       let isPlaceholder = try engine.block.isPlaceholderEnabled(block)
@@ -946,6 +957,15 @@ private extension Interactor {
     }
   }
 
+  func sheetChanged(_ oldValue: SheetState) {
+    guard oldValue != sheet else {
+      return
+    }
+    if !sheet.isPresented, oldValue.state == .init(.crop, .image) {
+      setEditMode(.transform)
+    }
+  }
+
   func selectionChanged(_ oldValue: Selection?) {
     guard oldValue != selection else {
       return
@@ -986,8 +1006,27 @@ private extension Interactor {
       return
     }
     if sheet.isPresented {
-      if editMode == .text {
+      if editMode == .text || oldValue == .crop {
         sheet.isPresented = false
+      }
+    }
+    if editMode == .crop, sheet.state != .init(.crop, .image) {
+      func showCropSheet() {
+        sheet.commit { model in
+          model = .init(.crop, .image)
+          model.detent = .small
+          model.detents = [.small, .large]
+        }
+      }
+
+      if sheet.isPresented {
+        sheet.isPresented = false
+        Task {
+          try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
+          showCropSheet()
+        }
+      } else {
+        showCropSheet()
       }
     }
   }

@@ -10,6 +10,8 @@ struct SheetState: BatchMutable {
       return .medium
     } else if detents.contains(.small) {
       return .small
+    } else if detents.contains(.tiny) {
+      return .tiny
     } else {
       return nil
     }

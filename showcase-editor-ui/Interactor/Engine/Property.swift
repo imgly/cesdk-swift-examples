@@ -42,6 +42,9 @@ public enum PropertyKey: String {
   case stackAxis = "stack/axis"
   case stackSpacing = "stack/spacing"
   case stackSpacingInScreenspace = "stack/spacingInScreenspace"
+
+  case cropRotation = "crop/rotation"
+  case cropScaleRatio = "crop/scaleRatio"
 }
 
 extension Property {
