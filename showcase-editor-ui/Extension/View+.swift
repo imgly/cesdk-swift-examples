@@ -95,7 +95,7 @@ extension View {
           .presentationContentInteraction(.scrolls)
           .presentationCompactAdaptation(.sheet)
       #else
-        #warning("Use Xcode 14.3 otherwise the sheet dimming is broken on iOS 16.4+ devices!")
+        #error("Use Xcode 14.3+ otherwise the sheet dimming is broken on iOS 16.4+!")
         legacyPresentationConfiguration(largestUndimmedDetent)
       #endif
     } else {
@@ -127,5 +127,15 @@ extension View {
     perform action: @escaping (Notification) -> Void
   ) -> some View {
     onReceive(center.publisher(for: name, object: object), perform: action)
+  }
+
+  func inverseMask(alignment: Alignment = .center, @ViewBuilder _ mask: () -> some View) -> some View {
+    self.mask {
+      Rectangle()
+        .overlay(alignment: alignment) {
+          mask()
+            .blendMode(.destinationOut)
+        }
+    }
   }
 }

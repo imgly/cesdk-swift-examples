@@ -49,7 +49,7 @@ public extension InteractorBehavior {
     try context.engine.editor.setSettingBool("touch/dragStartCanSelect", value: false)
     try context.engine.editor.setSettingEnum("touch/pinchAction", value: "Zoom")
     try context.engine.editor.setSettingEnum("touch/rotateAction", value: "None")
-    try context.engine.editor.setSettingBool("doubleClickToCropEnabled", value: false)
+    try context.engine.editor.setSettingBool("doubleClickToCropEnabled", value: true)
     try context.engine.editor.setSettingEnum("doubleClickSelectionMode", value: "Direct")
     try context.engine.editor.setSettingString("basePath", value: Interactor.basePath.absoluteString)
     try context.engine.editor.setSettingEnum("role", value: "Adopter")

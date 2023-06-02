@@ -3,17 +3,17 @@ import IMGLYEngine
 
 @MainActor
 func createSceneFromImageURL(engine: Engine) async throws {
-  // highlight-initialImageURL
-  let scene = try await engine.scene.create(from: URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!)
-  // highlight-initialImageURL
+  // highlight-createFromImage
+  let scene = try await engine.scene.create(fromImage: URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!)
+  // highlight-createFromImage
 
-  // highlight-find-image
+  // highlight-findByType
   // Find the automatically added image element in the scene.
-  let image = try engine.block.find(byType: .image).first!
-  // highlight-find-image
+  let block = try engine.block.find(byType: .image).first!
+  // highlight-findByType
 
-  // highlight-set-opacity
+  // highlight-setOpacity
   // Change its opacity.
-  try engine.block.setOpacity(image, value: 0.5)
-  // highlight-set-opacity
+  try engine.block.setOpacity(block, value: 0.5)
+  // highlight-setOpacity
 }

@@ -2,13 +2,14 @@ import SwiftUI
 import SwiftUIBackports
 
 enum PresentationDetent: Comparable {
-  case small, medium, large
+  case tiny, small, medium, large
 
   /// If enabled detents with custom heights are used if iOS 16 is available.
   static let customDetentsEnabled = true
 
   var backport: Backport<Any>.PresentationDetent {
     switch self {
+    case .tiny: return .medium
     case .small: return .medium
     case .medium: return .medium
     case .large: return .large
@@ -19,12 +20,14 @@ enum PresentationDetent: Comparable {
   var detent: SwiftUI.PresentationDetent {
     if Self.customDetentsEnabled {
       switch self {
+      case .tiny: return .adaptiveTiny
       case .small: return .adaptiveSmall
       case .medium: return .adaptiveMedium
       case .large: return .adaptiveLarge
       }
     } else {
       switch self {
+      case .tiny: return .medium
       case .small: return .medium
       case .medium: return .medium
       case .large: return .large
@@ -35,12 +38,14 @@ enum PresentationDetent: Comparable {
   var identifier: UISheetPresentationController.Detent.Identifier? {
     if Self.customDetentsEnabled, #available(iOS 16.0, *) {
       switch self {
+      case .tiny: return AdaptiveTinyPresentationDetent.identifier
       case .small: return AdaptiveSmallPresentationDetent.identifier
       case .medium: return AdaptiveMediumPresentationDetent.identifier
       case .large: return AdaptiveLargePresentationDetent.identifier
       }
     } else {
       switch self {
+      case .tiny: return .medium
       case .small: return .medium
       case .medium: return .medium
       case .large: return .large
@@ -63,6 +68,7 @@ enum PresentationDetent: Comparable {
     switch detent {
     case .medium: self = .medium
     case .large: self = .large
+    case .adaptiveTiny: self = .tiny
     case .adaptiveSmall: self = .small
     case .adaptiveMedium: self = .medium
     case .adaptiveLarge: self = .large
@@ -98,6 +104,7 @@ extension Binding where Value == PresentationDetent {
 
 @available(iOS 16.0, *)
 extension SwiftUI.PresentationDetent {
+  static let adaptiveTiny = Self.custom(AdaptiveTinyPresentationDetent.self)
   static let adaptiveSmall = Self.custom(AdaptiveSmallPresentationDetent.self)
   static let adaptiveMedium = Self.custom(AdaptiveMediumPresentationDetent.self)
   static let adaptiveLarge = Self.custom(AdaptiveLargePresentationDetent.self)
@@ -112,9 +119,20 @@ extension CustomPresentationDetent {
 }
 
 @available(iOS 16.0, *)
-private struct AdaptiveSmallPresentationDetent: CustomPresentationDetent {
+private struct AdaptiveTinyPresentationDetent: CustomPresentationDetent {
   static func height(in _: Context) -> CGFloat? {
     160
+  }
+}
+
+@available(iOS 16.0, *)
+private struct AdaptiveSmallPresentationDetent: CustomPresentationDetent {
+  static func height(in context: Context) -> CGFloat? {
+    if context.verticalSizeClass == .compact {
+      return 160
+    } else {
+      return 280
+    }
   }
 }
 

@@ -225,6 +225,14 @@ public extension BlockAPI {
   }
 }
 
+// MARK: - Crop
+
+extension BlockAPI {
+  func canResetCrop(_ id: DesignBlockID) throws -> Bool {
+    try getContentFillMode(id) == .crop
+  }
+}
+
 // MARK: - Layering
 
 extension BlockAPI {

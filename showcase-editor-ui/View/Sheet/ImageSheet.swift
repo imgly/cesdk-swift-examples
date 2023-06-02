@@ -89,6 +89,7 @@ struct ImageSheet: View {
     BottomSheet {
       switch sheet.mode {
       case .add, .replace: imageSources
+      case .crop: CropOptions()
       case .fillAndStroke: FillAndStrokeOptions()
       case .layer: LayerOptions()
       default: EmptyView()

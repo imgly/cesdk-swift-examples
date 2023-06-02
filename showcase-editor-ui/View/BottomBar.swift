@@ -30,6 +30,9 @@ struct BottomBar: View {
     if type == .text {
       modes += [.edit, .format]
     }
+    if type == .image {
+      modes += [.crop]
+    }
     if type == .shape, Set([.lineShape, .starShape, .polygonShape]).contains(interactor.blockType(id)) {
       modes += [.options]
     }

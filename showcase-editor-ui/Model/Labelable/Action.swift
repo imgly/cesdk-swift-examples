@@ -3,6 +3,7 @@ import Foundation
 public enum Action: Labelable, IdentifiableByHash {
   case undo, redo, previewMode, editMode, export, toTop, up, down, toBottom, duplicate, delete
   case previousPage, nextPage, page(Int)
+  case resetCrop, flipCrop
 
   public var description: String {
     switch self {
@@ -20,6 +21,8 @@ public enum Action: Labelable, IdentifiableByHash {
     case .previousPage: return "Back"
     case .nextPage: return "Next"
     case let .page(index): return "Page \(index + 1)"
+    case .resetCrop: return "Reset Crop"
+    case .flipCrop: return "Flip"
     }
   }
 
@@ -39,6 +42,8 @@ public enum Action: Labelable, IdentifiableByHash {
     case .previousPage: return "chevron.backward"
     case .nextPage: return "chevron.forward"
     case .page: return "doc"
+    case .resetCrop: return "arrow.counterclockwise"
+    case .flipCrop: return "arrow.left.and.right.righttriangle.left.righttriangle.right"
     }
   }
 }
