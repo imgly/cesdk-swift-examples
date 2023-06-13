@@ -1339,7 +1339,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		"TEMP_08394A35-9E40-468E-83B1-6E78464F4C3C" /* build_github */ = {
+		"TEMP_66ABB4E0-BCCC-4137-8DFF-958FF969B0EB" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
@@ -1879,7 +1879,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.12.0;
+				MARKETING_VERSION = 1.12.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2031,7 +2031,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.12.0;
+				MARKETING_VERSION = 1.12.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2270,7 +2270,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-SP";
 			requirement = {
 				kind = exactVersion;
-				version = 1.12.0;
+				version = 1.12.1;
 			};
 		};
 		F943A20B845A972EA75B98D4 /* XCRemoteSwiftPackageReference "Media" */ = {
