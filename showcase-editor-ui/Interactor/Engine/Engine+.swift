@@ -1,3 +1,4 @@
+import IMGLYCore
 import IMGLYEngine
 import SwiftUI
 import UniformTypeIdentifiers

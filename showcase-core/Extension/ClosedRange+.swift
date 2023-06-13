@@ -1,6 +1,6 @@
 import Foundation
 
-extension ClosedRange where Bound: AdditiveArithmetic {
+public extension ClosedRange where Bound: AdditiveArithmetic {
   var length: Bound {
     upperBound - lowerBound
   }

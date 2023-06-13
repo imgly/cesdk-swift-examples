@@ -5,13 +5,6 @@ import SwiftUIBackports
 // MARK: - Public interface
 
 public extension View {
-  func nonDefaultPreviewSettings() -> some View {
-    previewDisplayName("Landscape, dark mode, RTL")
-      .previewInterfaceOrientation(.landscapeRight)
-      .preferredColorScheme(.dark)
-      .environment(\.layoutDirection, .rightToLeft)
-  }
-
   @MainActor
   func interactor(_ interactor: Interactor) -> some View {
     selection(interactor.selection?.blocks.first)
@@ -118,24 +111,5 @@ extension View {
 
   func onWillDisappear(_ perform: @escaping () -> Void) -> some View {
     background(WillDisappearHandler(onWillDisappear: perform))
-  }
-
-  func onReceive(
-    _ name: Notification.Name,
-    center: NotificationCenter = .default,
-    object: AnyObject? = nil,
-    perform action: @escaping (Notification) -> Void
-  ) -> some View {
-    onReceive(center.publisher(for: name, object: object), perform: action)
-  }
-
-  func inverseMask(alignment: Alignment = .center, @ViewBuilder _ mask: () -> some View) -> some View {
-    self.mask {
-      Rectangle()
-        .overlay(alignment: alignment) {
-          mask()
-            .blendMode(.destinationOut)
-        }
-    }
   }
 }
