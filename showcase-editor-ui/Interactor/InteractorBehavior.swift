@@ -75,7 +75,7 @@ public extension InteractorBehavior {
     try context.engine.showPage(context.interactor.page)
     try enableEditMode(context)
     try await context.engine.zoomToPage(context.interactor.page, insets)
-    try context.engine.editor.addUndoStep()
+    try context.engine.editor.resetHistory()
   }
 
   private func showAllPages(_ context: InteractorContext) throws {

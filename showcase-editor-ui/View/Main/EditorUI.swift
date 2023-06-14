@@ -1,3 +1,4 @@
+import IMGLYCoreUI
 import SwiftUI
 
 public struct EditorUI: View {

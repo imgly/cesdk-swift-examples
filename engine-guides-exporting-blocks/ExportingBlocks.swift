@@ -5,7 +5,7 @@ import UIKit
 @MainActor
 func exportingBlocks(engine: Engine) async throws {
   let sceneUrl =
-    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-js/latest/assets/templates/cesdk_postcard_1.scene")!
+    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(fromURL: sceneUrl)
 
   /* Export the scene as PDF. */

@@ -1,14 +1,15 @@
+import IMGLYCore
 import SwiftUI
 
-struct MeasurementScalePicker<V, UnitType>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint,
+public struct MeasurementScalePicker<V, UnitType>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint,
   UnitType: Dimension {
-  init(value: Binding<V>,
-       unit: UnitType,
-       in bounds: ClosedRange<V>,
-       neutralValue: V? = 0,
-       tickStep: V.Stride = 1,
-       tickSpacing: CGFloat = 8,
-       onEditingChanged: @escaping (Bool) -> Void = { _ in }) {
+  public init(value: Binding<V>,
+              unit: UnitType,
+              in bounds: ClosedRange<V>,
+              neutralValue: V? = 0,
+              tickStep: V.Stride = 1,
+              tickSpacing: CGFloat = 8,
+              onEditingChanged: @escaping (Bool) -> Void = { _ in }) {
     _value = value
     self.unit = unit
     self.bounds = bounds
@@ -41,15 +42,15 @@ struct MeasurementScalePicker<V, UnitType>: View where V: BinaryFloatingPoint, V
     return formattedString
   }
 
-  var cursorColor: Color? {
+  var cursorColor: AnyShapeStyle {
     guard let neutralValue else {
-      return nil
+      return AnyShapeStyle(.primary)
     }
     let neutral = V(neutralValue)
     if formatNonNegativeZero(value) == formatNonNegativeZero(neutral) {
-      return nil
+      return AnyShapeStyle(.primary)
     } else {
-      return .accentColor
+      return AnyShapeStyle(.tint)
     }
   }
 
@@ -57,10 +58,10 @@ struct MeasurementScalePicker<V, UnitType>: View where V: BinaryFloatingPoint, V
     Text(formatNonNegativeZero(value))
       .padding(4)
       .font(.headline)
-      .foregroundColor(cursorColor)
+      .foregroundStyle(cursorColor)
   }
 
-  var body: some View {
+  public var body: some View {
     ScalePicker(value: $value, in: bounds, neutralValue: neutralValue,
                 tickStep: tickStep, tickSpacing: tickSpacing, onEditingChanged: onEditingChanged)
       .inverseMask(alignment: .center) {

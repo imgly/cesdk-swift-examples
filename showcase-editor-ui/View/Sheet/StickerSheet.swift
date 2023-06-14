@@ -1,3 +1,4 @@
+import IMGLYCoreUI
 import SwiftUI
 
 struct StickerSheet: View {
@@ -8,7 +9,7 @@ struct StickerSheet: View {
 
   @ViewBuilder var stickerGrid: some View {
     VStack {
-      StickerGrid(sourceID: AssetLibrary.stickerSourceID, search: $searchText.debouncedValue)
+      StickerGrid(interactor: interactor, sourceID: AssetLibrary.stickerSourceID, search: $searchText.debouncedValue)
     }
     .toolbar {
       ToolbarItemGroup(placement: .principal) {

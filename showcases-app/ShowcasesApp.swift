@@ -1,4 +1,4 @@
-import IMGLYEditorUI
+import IMGLYCore
 import SwiftUI
 
 @main

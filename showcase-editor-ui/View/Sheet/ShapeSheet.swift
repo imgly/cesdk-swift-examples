@@ -1,3 +1,4 @@
+import IMGLYCoreUI
 import SwiftUI
 
 struct ShapeSheet: View {
@@ -9,7 +10,7 @@ struct ShapeSheet: View {
 
   @ViewBuilder var shapeGrid: some View {
     VStack {
-      ShapeGrid(sourceID: AssetLibrary.shapeSourceID, search: $searchText.debouncedValue)
+      ShapeGrid(interactor: interactor, sourceID: AssetLibrary.shapeSourceID, search: $searchText.debouncedValue)
     }
     .toolbar {
       ToolbarItemGroup(placement: .principal) {

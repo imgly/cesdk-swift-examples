@@ -1,16 +1,17 @@
+import IMGLYCore
 import Introspect
 import SwiftUI
 
 /// A scale picker a.k.a. sliding ruler that picks values at its center position. A cursor view is not part of it for
 /// best versatility. A cursor can be added with a centered overlay. See `MeasurementScalePicker` or
 /// `ScalePicker_Previews` for examples.
-struct ScalePicker<V>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
-  init(value: Binding<V>,
-       in bounds: ClosedRange<V>,
-       neutralValue: V? = nil,
-       tickStep: V.Stride = 1,
-       tickSpacing: CGFloat = 8,
-       onEditingChanged: @escaping (Bool) -> Void = { _ in }) {
+public struct ScalePicker<V>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
+  public init(value: Binding<V>,
+              in bounds: ClosedRange<V>,
+              neutralValue: V? = nil,
+              tickStep: V.Stride = 1,
+              tickSpacing: CGFloat = 8,
+              onEditingChanged: @escaping (Bool) -> Void = { _ in }) {
     _storedValue = .init(initialValue: value.wrappedValue)
     _bindingValue = value
     self.bounds = .init(uncheckedBounds: (lower: CGFloat(bounds.lowerBound), upper: CGFloat(bounds.upperBound)))
@@ -114,17 +115,17 @@ struct ScalePicker<V>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloati
     scrollView.setContentOffset(CGPoint(x: contentOffset, y: scrollView.contentOffset.y), animated: animated)
   }
 
-  func tickColor(value: V) -> Color? {
+  func tickColor(value: V) -> AnyShapeStyle {
     guard let neutralValue else {
-      return nil
+      return AnyShapeStyle(.primary)
     }
     let neutral = V(neutralValue)
     if storedValue < neutral, (storedValue ... neutral).contains(value) {
-      return .accentColor
+      return AnyShapeStyle(.tint)
     } else if neutral < storedValue, (neutral ... storedValue).contains(value) {
-      return .accentColor
+      return AnyShapeStyle(.tint)
     } else {
-      return nil
+      return AnyShapeStyle(.primary)
     }
   }
 
@@ -138,7 +139,7 @@ struct ScalePicker<V>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloati
             smallTick(value: value)
           }
         }
-        .foregroundColor(tickColor(value: value))
+        .foregroundStyle(tickColor(value: value))
       }
     }
     .environment(\.layoutDirection, .leftToRight)
@@ -271,7 +272,7 @@ struct ScalePicker<V>: View where V: BinaryFloatingPoint, V.Stride: BinaryFloati
     }
   }
 
-  var body: some View {
+  public var body: some View {
     slidingRuler
       .frame(height: height)
   }
@@ -338,17 +339,27 @@ struct ScalePicker_Previews: PreviewProvider {
     previewState(Float(20)) { binding in
       VStack {
         ScalePicker(value: binding, in: -10 ... 45).overlay { Capsule().frame(width: 2) }
-        ScalePicker(value: binding, in: -45 ... 10).overlay {
+        ScalePicker(value: binding, in: -45 ... 10, neutralValue: 0).overlay {
           VStack(spacing: -2) {
             Text("\(Int(binding.wrappedValue.rounded()))")
-            Color.clear.frame(width: 4).border(.red)
+            Color.clear.frame(width: 4).border(.foreground)
           }
-          .foregroundColor(.red)
         }
+        .foregroundColor(.red)
+        .tint(.green)
+        .background(.primary)
         List {
+          let minus20 = Binding {
+            binding.wrappedValue - 20
+          } set: {
+            binding.wrappedValue = $0 + 20
+          }
+          MeasurementScalePicker(value: minus20, unit: UnitAngle.degrees, in: -45 ... 45)
           MeasurementScalePicker(value: binding, unit: UnitAngle.degrees, in: -45 ... 45)
           Slider(value: binding, in: -45 ... 45)
         }
+        .foregroundColor(.red)
+        .tint(.green)
         Button("Random Float") {
           binding.wrappedValue = .random(in: -45 ... 45)
         }

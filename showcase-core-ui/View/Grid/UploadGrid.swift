@@ -1,11 +1,18 @@
+import IMGLYCore
 import Media
 import SwiftUI
 
-struct UploadGrid: View {
+public struct UploadGrid: View {
+  let interactor: AssetLibraryInteractor
   let sourceID: String
   @Binding var search: String
 
-  @EnvironmentObject private var interactor: Interactor
+  public init(interactor: AssetLibraryInteractor, sourceID: String, search: Binding<String>) {
+    self.interactor = interactor
+    self.sourceID = sourceID
+    _search = search
+  }
+
   @State private var showImagePicker = false
 
   @ViewBuilder var mesage: some View {
@@ -18,6 +25,7 @@ struct UploadGrid: View {
     .foregroundColor(.secondary)
   }
 
+  @MainActor
   @ViewBuilder var addImage: some View {
     VStack(spacing: 30) {
       mesage
@@ -39,14 +47,14 @@ struct UploadGrid: View {
       .tint(.accentColor)
       .imagePicker(isPresented: $showImagePicker) { result in
         if let url = try? result.get() {
-          interactor.uploadImage(url)
+          interactor.uploadImage(sourceID: sourceID, url: url)
         }
       }
     }
   }
 
-  var body: some View {
-    ImageGrid(sourceID: sourceID, search: $search) { search in
+  public var body: some View {
+    ImageGrid(interactor: interactor, sourceID: sourceID, search: $search) { search in
       if search.isEmpty {
         addImage
       } else {
