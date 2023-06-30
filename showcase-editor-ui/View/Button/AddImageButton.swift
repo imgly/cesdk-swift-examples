@@ -37,12 +37,12 @@ struct AddImageButton<Label: View>: View {
     }
     .imagePicker(isPresented: $showImagePicker) { result in
       if let url = try? result.get() {
-        interactor.uploadImage(url)
+        interactor.uploadImage(sourceID: ImageSource.uploads.sourceID, url: url)
       }
     }
     .camera(isPresented: $showCamera) { result in
       if let url = try? result.get() {
-        interactor.uploadImage(url)
+        interactor.uploadImage(sourceID: ImageSource.uploads.sourceID, url: url)
       }
     }
   }

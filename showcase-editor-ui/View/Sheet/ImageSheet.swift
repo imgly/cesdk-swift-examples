@@ -1,3 +1,4 @@
+import IMGLYCoreUI
 import SwiftUI
 
 struct ImageSheet: View {
@@ -22,9 +23,12 @@ struct ImageSheet: View {
       // Needs to be in VStack to keep `imageSourcePicker` animation.
       // Needs to be an explicit switch to update the view.
       switch imageSource {
-      case .uploads: UploadGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
-      case .images: ImageGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
-      case .unsplash: ImageGrid(sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .uploads:
+        UploadGrid(interactor: interactor, sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .images:
+        ImageGrid(interactor: interactor, sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
+      case .unsplash:
+        ImageGrid(interactor: interactor, sourceID: imageSource.sourceID, search: $searchText.debouncedValue)
       }
     }
   }

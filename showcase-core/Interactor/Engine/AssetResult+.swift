@@ -1,7 +1,7 @@
 import Foundation
 import IMGLYEngine
 
-extension AssetResult {
+public extension AssetResult {
   var thumbURL: URL? {
     guard let string = meta?["thumbUri"] else {
       return nil
@@ -15,4 +15,10 @@ extension AssetResult {
     }
     return URL(string: string)
   }
+
+  var thumbURLorURL: URL? {
+    thumbURL ?? url
+  }
 }
+
+extension AssetResult: Identifiable {}

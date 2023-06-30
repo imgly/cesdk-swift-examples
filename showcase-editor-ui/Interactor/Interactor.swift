@@ -1,4 +1,6 @@
 import ActivityView
+import IMGLYCore
+import IMGLYCoreUI
 import IMGLYEngine
 import SwiftUI
 
@@ -19,15 +21,12 @@ public final class Interactor: ObservableObject, KeyboardObserver {
   @Published public private(set) var isLoading = true
   @Published public private(set) var isEditing = true
   @Published private(set) var isExporting = false
-  @Published private(set) var isAddingAsset = false
+  @Published public private(set) var isAddingAsset = false
 
   @Published var export: ActivityItem?
   @Published var error = AlertState()
   @Published var sheet = SheetState() { didSet { sheetChanged(oldValue) } }
 
-  typealias AssetQueryData = IMGLYEngine.AssetQueryData
-  typealias AssetQueryResult = IMGLYEngine.AssetQueryResult
-  typealias AssetResult = IMGLYEngine.AssetResult
   typealias BlockID = IMGLYEngine.DesignBlockID
   typealias BlockType = IMGLYEngine.DesignBlockType
   typealias EditMode = IMGLYEngine.EditMode
@@ -442,15 +441,15 @@ extension Interactor {
 
 // MARK: - Actions
 
-extension Interactor {
-  func findAssets(sourceID: String, query: AssetQueryData) async throws -> AssetQueryResult {
+extension Interactor: AssetLibraryInteractor {
+  public func findAssets(sourceID: String, query: AssetQueryData) async throws -> AssetQueryResult {
     guard let engine else {
       throw Error(errorDescription: "Engine unavailable.")
     }
     return try await engine.asset.findAssets(sourceID: sourceID, query: query)
   }
 
-  func assetTapped(_ asset: AssetResult, from sourceID: String) {
+  public func assetTapped(sourceID: String, asset: AssetResult) {
     guard let engine else {
       return
     }
@@ -491,6 +490,46 @@ extension Interactor {
     }
   }
 
+  public func uploadAsset(sourceID: String, url: URL, thumb: URL, type: DesignBlockType) {
+    guard let engine else {
+      return
+    }
+
+    Task {
+      do {
+        let (data, _) = try await URLSession.get(url)
+        guard let size = UIImage(data: data)?.size else {
+          return
+        }
+
+        let assetID = url.absoluteString
+        try engine.asset.addAsset(toSource: sourceID, asset:
+          .init(id: assetID,
+                meta: [
+                  "uri": url.absoluteString,
+                  "thumbUri": thumb.absoluteString,
+                  "blockType": type.rawValue,
+                  "width": String(Int(size.width)),
+                  "height": String(Int(size.height))
+                ]))
+
+        let result = try await engine.asset.findAssets(
+          sourceID: sourceID,
+          query: .init(query: assetID, page: 0, perPage: 10)
+        )
+        NotificationCenter.default.post(name: .AssetSourceDidChange, object: nil, userInfo: ["sourceID": sourceID])
+
+        if result.assets.count == 1, let asset = result.assets.first {
+          assetTapped(sourceID: sourceID, asset: asset)
+        }
+      } catch {
+        handleErrorAndDismiss(error)
+      }
+    }
+  }
+}
+
+extension Interactor {
   func assetTapped(_ asset: AssetLibrary.Text) {
     do {
       try engine?.addText(asset.url, fontSize: asset.size, toPage: page)
@@ -622,45 +661,6 @@ extension Interactor {
         assets.fonts = fonts
         try engine.asset.addSource(UnsplashAssetSource())
         isLoading = false
-      } catch {
-        handleErrorAndDismiss(error)
-      }
-    }
-  }
-
-  func uploadImage(_ url: URL) {
-    guard let engine else {
-      return
-    }
-    let sourceID = ImageSource.uploads.sourceID
-
-    Task {
-      do {
-        let (data, _) = try await URLSession.get(url)
-        guard let size = UIImage(data: data)?.size else {
-          return
-        }
-
-        let assetID = url.absoluteString
-        try engine.asset.addAsset(toSource: sourceID, asset:
-          .init(id: assetID,
-                meta: [
-                  "uri": url.absoluteString,
-                  "thumbUri": url.absoluteString,
-                  "blockType": DesignBlockType.image.rawValue,
-                  "width": String(Int(size.width)),
-                  "height": String(Int(size.height))
-                ]))
-
-        let result = try await engine.asset.findAssets(
-          sourceID: sourceID,
-          query: .init(query: assetID, page: 0, perPage: 10)
-        )
-        NotificationCenter.default.post(name: .AssetSourceDidChange, object: nil, userInfo: ["sourceID": sourceID])
-
-        if result.assets.count == 1, let asset = result.assets.first {
-          assetTapped(asset, from: sourceID)
-        }
       } catch {
         handleErrorAndDismiss(error)
       }
@@ -943,13 +943,7 @@ private extension Interactor {
     }
     do {
       try engine.showPage(page)
-
-      let oldHistory = engine.editor.getActiveHistory()
-      let newHistory = engine.editor.createHistory()
-      try engine.editor.addUndoStep()
-      engine.editor.setActiveHistory(newHistory)
-      engine.editor.destroyHistory(oldHistory)
-
+      try engine.editor.resetHistory()
       try behavior.pageChanged(.init(engine, self))
       sheet.isPresented = false
     } catch {

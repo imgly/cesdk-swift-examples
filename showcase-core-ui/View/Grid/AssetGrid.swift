@@ -1,9 +1,11 @@
+import IMGLYCore
+import IMGLYEngine
 import Kingfisher
 import SwiftUI
 
-struct Message: View {
-  static let noResults = Message("No results found", systemImage: "magnifyingglass")
-  static let noService = Message("Cannot connect to service", systemImage: "exclamationmark.triangle")
+public struct Message: View {
+  public static let noResults = Message("No results found", systemImage: "magnifyingglass")
+  public static let noService = Message("Cannot connect to service", systemImage: "exclamationmark.triangle")
 
   private let title: LocalizedStringKey
   private let systemImage: String
@@ -13,7 +15,7 @@ struct Message: View {
     self.systemImage = systemImage
   }
 
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 10) {
       Image(systemName: systemImage)
       Text(title)
@@ -23,19 +25,21 @@ struct Message: View {
   }
 }
 
-struct AssetGrid<Item: View, Empty: View>: View {
+public struct AssetGrid<Item: View, Empty: View>: View {
+  private let interactor: AssetLibraryInteractor
   private let sourceID: String
   @Binding private var searchText: String
   private let columns: [GridItem]
   private let spacing: CGFloat?
   private let padding: CGFloat?
-  @ViewBuilder private let item: (Asset) -> Item
+  @ViewBuilder private let item: (AssetResult) -> Item
   @ViewBuilder private let empty: (_ search: String) -> Empty
 
-  init(sourceID: String, search: Binding<String> = .constant(""),
-       columns: [GridItem], spacing: CGFloat? = nil, padding: CGFloat? = nil,
-       @ViewBuilder item: @escaping (Asset) -> Item,
-       @ViewBuilder empty: @escaping (_ search: String) -> Empty = { _ in Message.noResults }) {
+  public init(interactor: AssetLibraryInteractor, sourceID: String, search: Binding<String> = .constant(""),
+              columns: [GridItem], spacing: CGFloat? = nil, padding: CGFloat? = nil,
+              @ViewBuilder item: @escaping (AssetResult) -> Item,
+              @ViewBuilder empty: @escaping (_ search: String) -> Empty = { _ in Message.noResults }) {
+    self.interactor = interactor
     self.sourceID = sourceID
     _searchText = search
     _model = .init(initialValue: .search(search.wrappedValue))
@@ -46,11 +50,9 @@ struct AssetGrid<Item: View, Empty: View>: View {
     self.empty = empty
   }
 
-  @EnvironmentObject private var interactor: Interactor
-
   @State private var model: Model
   private var state: Source { model.state }
-  private var assets: [Asset] { model.assets }
+  private var assets: [AssetResult] { model.assets }
 
   private func search(_ text: String) {
     model.search(text)
@@ -105,7 +107,7 @@ struct AssetGrid<Item: View, Empty: View>: View {
       }
   }
 
-  var body: some View {
+  public var body: some View {
     Group {
       if model.isValid {
         scrollView
@@ -147,16 +149,6 @@ struct AssetGrid<Item: View, Empty: View>: View {
   }
 }
 
-struct Asset: Identifiable {
-  var id: String { result.id }
-
-  var thumbURL: URL? {
-    result.thumbURL ?? result.url
-  }
-
-  let result: Interactor.AssetResult
-}
-
 private struct ProgressIndicator: View {
   var body: some View {
     ProgressView()
@@ -166,11 +158,11 @@ private struct ProgressIndicator: View {
 }
 
 struct ReloadableAsyncImage<Content: View>: View {
-  let asset: Asset
+  let interactor: AssetLibraryInteractor
+  let asset: AssetResult
   let sourceID: String
   @ViewBuilder let content: (KFImage) -> Content
 
-  @EnvironmentObject private var interactor: Interactor
   @State private var failed = false
 
   @ViewBuilder private var progressView: some View {
@@ -192,7 +184,7 @@ struct ReloadableAsyncImage<Content: View>: View {
       imageError
     } else {
       content(
-        KFImage(asset.thumbURL)
+        KFImage(asset.thumbURLorURL)
           .retry(maxCount: 3)
           .placeholder { _ in
             progressView.allowsHitTesting(false)
@@ -203,10 +195,10 @@ struct ReloadableAsyncImage<Content: View>: View {
           .fade(duration: 0.15)
       )
       .onTapGesture {
-        interactor.assetTapped(asset.result, from: sourceID)
+        interactor.assetTapped(sourceID: sourceID, asset: asset)
       }
       .allowsHitTesting(!failed)
-      .accessibilityLabel(asset.result.label ?? "")
+      .accessibilityLabel(asset.label ?? "")
     }
   }
 }
@@ -221,7 +213,7 @@ private extension AssetGrid {
       self.page = page
     }
 
-    var request: Interactor.AssetQueryData {
+    var request: AssetQueryData {
       .init(query: text, page: page, locale: "en", perPage: 30)
     }
   }
@@ -229,7 +221,7 @@ private extension AssetGrid {
   struct Result {
     /// The used `query` that produced the `response`.
     let query: Query
-    let response: Interactor.AssetQueryResult
+    let response: AssetQueryResult
 
     var hasNextPage: Bool {
       response.nextPage > 0
@@ -254,7 +246,7 @@ private extension AssetGrid {
 
   struct Assets {
     var ids: Set<String>
-    var assets: [Asset]
+    var assets: [AssetResult]
 
     init() {
       ids = []
@@ -263,10 +255,9 @@ private extension AssetGrid {
 
     init(_ result: AssetGrid.Result) {
       var ids = Set<String>()
-      var assets = [Asset]()
+      var assets = [AssetResult]()
 
       result.response.assets
-        .map { Asset(result: $0) }
         .forEach {
           if ids.contains($0.id) {
             print("Ignoring duplicate asset with id: \($0.id)")
@@ -297,7 +288,7 @@ private extension AssetGrid {
     let id: UUID
     let state: Source
     private let _assets: Assets
-    var assets: [Asset] { _assets.assets }
+    var assets: [AssetResult] { _assets.assets }
 
     private init(_ id: UUID, _ source: Source, _ assets: Assets) {
       self.id = id
