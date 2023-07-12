@@ -134,6 +134,7 @@
 		85931E5C5FC83A268C953A98 /* ColorPropertyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B2B7057099BE94245487B3 /* ColorPropertyButton.swift */; };
 		86C4D2876606B91F89F78A53 /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC84863D5257C9ED5579E1F5 /* ExportButton.swift */; };
 		86CFBDA8FB4A93796F51DDB0 /* FontFamily.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8554B9D0766721CD805CD5 /* FontFamily.swift */; };
+		86FE388594868CDBA26A4080 /* IntegrateWithAppKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A412DF4A107FDFE818D659 /* IntegrateWithAppKit.swift */; };
 		879215DC7DC2A83AED33C8E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FB2A06BB837610D4958404 /* Assets.xcassets */; };
 		8822D1A2BDE0969BA8E29ABE /* wish_you_were_here_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7DF4A545EEBE96EB84EA95 /* wish_you_were_here_grid.png */; };
 		89C7EA4763C581E9E1123565 /* FontSizeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F792915A9B9C4B89084D1C /* FontSizeSheet.swift */; };
@@ -242,6 +243,7 @@
 		F6E76F98D70632A22A6D5836 /* CGColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269C373CF5ACC2D1DE738C7 /* CGColor+.swift */; };
 		F7739CC80F6FC24DCC8211C4 /* UsingFills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5DB03388A1973977B06DD2 /* UsingFills.swift */; };
 		FA5BC061B22FAAD7FD7FFC36 /* FontSizeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6302E7942C3C6EC0A79431 /* FontSizeIcon.swift */; };
+		FB2F4D3344C559C86FA6B6E1 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0CA7D79F8D6879D8D323C /* Video.swift */; };
 		FBA5034E3CA0A448C5788DE3 /* apparel-ui-b-empty.scene in Resources */ = {isa = PBXBuildFile; fileRef = 2C9A4B937EED2C8AECA37DF6 /* apparel-ui-b-empty.scene */; };
 		FCE4C3DDE3B3B55D92234ACC /* ShapeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D1D8EAACF064CB45FA126A /* ShapeOptions.swift */; };
 		FD1094E2BB50F698EE1B04CB /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C82E6289AE9F1E6FE75CDC /* Geometry.swift */; };
@@ -400,6 +402,7 @@
 		4614C29D61018BB5DC711793 /* OptionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionButtonStyle.swift; sourceTree = "<group>"; };
 		4773562DC9F2B6A89E8A822F /* Showcase-EditorUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Showcase-EditorUI.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		488D609AFB6DABFD76ABC697 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		48E0CA7D79F8D6879D8D323C /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		493A9B770199BA4B76B7A7CA /* NoColorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoColorButton.swift; sourceTree = "<group>"; };
 		4980EA95A2B61D81968477CE /* apparel-ui-b-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apparel-ui-b-2.png"; sourceTree = "<group>"; };
 		49ABC0729735E86C09611B7A /* ApparelUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApparelUI.swift; sourceTree = "<group>"; };
@@ -458,6 +461,7 @@
 		930CF3F09F21ED1D5D56D27B /* thank_you.scene */ = {isa = PBXFileReference; path = thank_you.scene; sourceTree = "<group>"; };
 		93767C62355077E786558D24 /* bonjour_paris.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bonjour_paris.png; sourceTree = "<group>"; };
 		94A40C978234024C6A48BCBC /* URIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIResolver.swift; sourceTree = "<group>"; };
+		94A412DF4A107FDFE818D659 /* IntegrateWithAppKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrateWithAppKit.swift; sourceTree = "<group>"; };
 		95133EE38C4FF70F60EE404C /* VerticalAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalAlignment.swift; sourceTree = "<group>"; };
 		9A2954EA6EA702F7337ECC66 /* AssetLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetLibrary.swift; sourceTree = "<group>"; };
 		9B30A71BB2852A5DBDE6452B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -880,6 +884,14 @@
 			path = Engine;
 			sourceTree = "<group>";
 		};
+		5355A98845ED845547F6DFFB /* engine-guides-video */ = {
+			isa = PBXGroup;
+			children = (
+				48E0CA7D79F8D6879D8D323C /* Video.swift */,
+			);
+			path = "engine-guides-video";
+			sourceTree = "<group>";
+		};
 		566A7FBBF8D9A35991DA1421 /* engine-guides-exporting-blocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1063,6 +1075,8 @@
 				FBB6BB3B2512F5D725B820D4 /* engine-guides-uri-resolver */,
 				7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */,
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
+				5355A98845ED845547F6DFFB /* engine-guides-video */,
+				9EF2DB44EA111DA44F756547 /* integrate-with-appkit */,
 				17668B475F84FBE03AEB5DE6 /* integrate-with-swiftui */,
 				C9BA78F599FEFE105B667FDD /* integrate-with-uikit */,
 				AC1B6A81F6C01048DA7A4197 /* scenes */,
@@ -1183,6 +1197,14 @@
 				B9F28E94E9E5E1FDD880847B /* SaveSceneToString.swift */,
 			);
 			path = "engine-guides-save-scene-to-string";
+			sourceTree = "<group>";
+		};
+		9EF2DB44EA111DA44F756547 /* integrate-with-appkit */ = {
+			isa = PBXGroup;
+			children = (
+				94A412DF4A107FDFE818D659 /* IntegrateWithAppKit.swift */,
+			);
+			path = "integrate-with-appkit";
 			sourceTree = "<group>";
 		};
 		A7E92E4E865AB3BDACEC1EFE /* Grid */ = {
@@ -1486,7 +1508,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		"TEMP_FF236549-494C-4573-B040-E6BCA9660359" /* build_github */ = {
+		"TEMP_6074F31D-F341-4E06-90EE-24EEE0BFD33F" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
@@ -1508,11 +1530,13 @@
 				49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */,
 				3C69826BBAA43A3BF7E26D5A /* engine-guides-load-scene-from-blob */,
 				23185FF6D7AA31815DED1371 /* engine-guides-test */,
+				5355A98845ED845547F6DFFB /* engine-guides-video */,
 				6CFFDCF44F860519A1D16C7B /* engine-guides-scopes */,
 				9280B544468AEE47D6AA05CC /* engine-guides-save-scene-to-archive */,
 				35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */,
 				6FC46A30761D2F46CD8ED91D /* third-party */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
+				9EF2DB44EA111DA44F756547 /* integrate-with-appkit */,
 				F8DC65FBD532739B10DD56DF /* engine-guides-create-scene-from-video-url */,
 				17668B475F84FBE03AEB5DE6 /* integrate-with-swiftui */,
 				566A7FBBF8D9A35991DA1421 /* engine-guides-exporting-blocks */,
@@ -1774,6 +1798,7 @@
 				E1124C64E873853DC33D23D5 /* Cutouts.swift in Sources */,
 				F6B223A77B7BA8E13B5E02AF /* ExportingBlocks.swift in Sources */,
 				B131414277B5ABC5DC4F3208 /* GuidesTest.swift in Sources */,
+				86FE388594868CDBA26A4080 /* IntegrateWithAppKit.swift in Sources */,
 				2DD382E84D630937FE106BDE /* IntegrateWithSwiftUI.swift in Sources */,
 				47A2180BAB9D6999DFBB83FB /* IntegrateWithUIKit.swift in Sources */,
 				EB1DA29327CAEEEF86D987BA /* LoadSceneFromBlob.swift in Sources */,
@@ -1795,6 +1820,7 @@
 				B3D602EDBAFC73CFEED6B9C5 /* UnsplashResponse.swift in Sources */,
 				F65D286BE1E8D1EC6B5CE313 /* UsingEffects.swift in Sources */,
 				F7739CC80F6FC24DCC8211C4 /* UsingFills.swift in Sources */,
+				FB2F4D3344C559C86FA6B6E1 /* Video.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2119,7 +2145,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = "1.14.0-rc.1";
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2294,7 +2320,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.13.1;
+				MARKETING_VERSION = "1.14.0-rc.1";
 				PRODUCT_BUNDLE_IDENTIFIER = "ly.img.ubq.CESDK-Showcases";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2620,7 +2646,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-SP";
 			requirement = {
 				kind = exactVersion;
-				version = 1.13.1;
+				version = "1.14.0-rc.1";
 			};
 		};
 		F943A20B845A972EA75B98D4 /* XCRemoteSwiftPackageReference "Media" */ = {

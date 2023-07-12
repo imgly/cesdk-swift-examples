@@ -503,7 +503,7 @@ extension Interactor: AssetLibraryInteractor {
         }
 
         let assetID = url.absoluteString
-        try engine.asset.addAsset(toSource: sourceID, asset:
+        try engine.asset.addAsset(to: sourceID, asset:
           .init(id: assetID,
                 meta: [
                   "uri": url.absoluteString,

@@ -7,7 +7,15 @@ class QuickstartTest: XCTestCase {
     _ = IntegrateWithSwiftUI().body
   }
 
-  func testIntegrateWithUIKit() {
-    _ = IntegrateWithUIKit().view
-  }
+  #if os(iOS)
+    func testIntegrateWithUIKit() {
+      _ = IntegrateWithUIKit(nibName: nil, bundle: nil).view
+    }
+  #endif
+
+  #if os(macOS)
+    func testIntegrateWithAppKit() {
+      _ = IntegrateWithAppKit(nibName: nil, bundle: nil).view
+    }
+  #endif
 }

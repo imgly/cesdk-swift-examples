@@ -52,7 +52,7 @@ func storeMetadata(engine: Engine) async throws {
   // highlight-persistence
   /* We save our scene and reload it from scratch */
   let sceneString = try await engine.scene.saveToString()
-  scene = try await engine.scene.load(fromString: sceneString)
+  scene = try await engine.scene.load(from: sceneString)
 
   /* This still returns "img.ly" */
   try engine.block.getMetadata(scene, key: "author")

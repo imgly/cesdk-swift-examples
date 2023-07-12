@@ -68,7 +68,7 @@ public extension InteractorBehavior {
     ]).forEach { scope in
       try context.engine.editor.setGlobalScope(key: scope.rawValue, value: .defer)
     }
-    let scene = try await context.engine.scene.load(fromURL: url)
+    let scene = try await context.engine.scene.load(from: url)
     let page = try context.engine.getPage(context.interactor.page)
     _ = try context.engine.block.addOutline(Engine.outlineBlockName, for: page, to: scene)
     try context.engine.showOutline(false)
