@@ -104,4 +104,8 @@ class GuidesTest: XCTestCase {
   func testCutouts() async throws {
     try await cutouts(engine: engine)
   }
+
+  func testEditVideo() async throws {
+    try await editVideo(engine: engine)
+  }
 }

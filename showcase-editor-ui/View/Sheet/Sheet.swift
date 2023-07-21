@@ -6,6 +6,7 @@ struct Sheet: View {
 
   @Environment(\.verticalSizeClass) private var verticalSizeClass
 
+  // swiftlint:disable:next cyclomatic_complexity
   @ViewBuilder func sheet(_ type: SheetType) -> some View {
     switch type {
     case .image: ImageSheet()
@@ -18,6 +19,7 @@ struct Sheet: View {
     case .font: FontSheet()
     case .fontSize: FontSizeSheet()
     case .color: ColorSheet()
+    case .page: PageSheet()
     }
   }
 

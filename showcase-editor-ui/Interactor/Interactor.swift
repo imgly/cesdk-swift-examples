@@ -31,6 +31,8 @@ public final class Interactor: ObservableObject, KeyboardObserver {
   typealias BlockType = IMGLYEngine.DesignBlockType
   typealias EditMode = IMGLYEngine.EditMode
   typealias RGBA = IMGLYEngine.RGBA
+  typealias GradientColorStop = IMGLYEngine.GradientColorStop
+  typealias Color = IMGLYEngine.Color
 
   struct Selection: Equatable {
     let blocks: [BlockID]
@@ -166,6 +168,12 @@ extension Interactor {
     }
   }
 
+  private func hasFillType(_ id: DesignBlockID?, type: ColorFillType) -> Bool {
+    guard let id else { return false }
+    let fillType: ColorFillType? = get(id, property: .key(.fillType))
+    return fillType == type
+  }
+
   func canBringForward(_ id: BlockID?) -> Bool { block(id, engine?.block.canBringForward) ?? false }
   func canBringBackward(_ id: BlockID?) -> Bool { block(id, engine?.block.canBringBackward) ?? false }
   func hasFill(_ id: BlockID?) -> Bool { block(id, engine?.block.hasFill) ?? false }
@@ -176,6 +184,8 @@ extension Interactor {
   func hasCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.hasCrop) ?? false }
   func canResetCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.canResetCrop) ?? false }
   func isGrouped(_ id: BlockID?) -> Bool { block(id, engine?.block.isGrouped) ?? false }
+  func hasSolidFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .solid) }
+  func hasGradientFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .gradient) }
 }
 
 // MARK: - Property bindings
@@ -240,8 +250,23 @@ extension Interactor {
               }()
               return engine.block.isValid(id) && isEnabled
             }
-            if let validBlock, let value: CGColor = self.get(validBlock, property: property) {
-              return value
+
+            if let validBlock {
+              // If the property is set to solid fill color we need to
+              // check for gradient color as well.
+              if property == .key(.fillSolidColor), self.hasGradientFill(validBlock) {
+                if let engine = self.engine, let colorStops: [GradientColorStop] = try? engine.block.get(
+                  validBlock,
+                  .fill,
+                  property: .key(.fillGradientColors)
+                ), let color = colorStops.first?.color.cgColor {
+                  return color
+                }
+              } else {
+                if let value: CGColor = self.get(validBlock, property: property) {
+                  return value
+                }
+              }
             }
           }
 
@@ -252,6 +277,13 @@ extension Interactor {
             return
           }
           properties.forEach { property, ids in
+            var gradientIDs: [DesignBlockID] = []
+            ids.forEach { id in
+              if self.hasGradientFill(id) {
+                gradientIDs.append(id)
+              }
+            }
+            _ = self.set(gradientIDs, property: .key(.fillType), value: ColorFillType.solid, completion: nil)
             _ = self.set(ids, property: property, value: value,
                          setter: Setter.set(overrideScope: .key(.designStyle)),
                          completion: completion)
@@ -267,10 +299,11 @@ extension Interactor {
   /// cannot be resolved.
   func bind<T: MappedType>(_ id: BlockID?, _ propertyBlock: PropertyBlock? = nil,
                            property: Property, default defaultValue: T,
+                           getter: @escaping PropertyGetter<T> = Getter.get(),
                            setter: @escaping PropertySetter<T> = Setter.set(),
                            completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T> {
     .init {
-      guard let id, let value: T = self.get(id, propertyBlock, property: property) else {
+      guard let id, let value: T = self.get(id, propertyBlock, property: property, getter: getter) else {
         return defaultValue
       }
       return value
@@ -286,13 +319,14 @@ extension Interactor {
   /// cannot be resolved.
   func bind<T: MappedType>(_ id: BlockID?, _ propertyBlock: PropertyBlock? = nil,
                            property: Property,
+                           getter: @escaping PropertyGetter<T> = Getter.get(),
                            setter: @escaping PropertySetter<T> = Setter.set(),
                            completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T?> {
     .init {
       guard let id else {
         return nil
       }
-      return self.get(id, propertyBlock, property: property)
+      return self.get(id, propertyBlock, property: property, getter: getter)
     } set: { value, _ in
       guard let value, let id else {
         return
@@ -306,6 +340,21 @@ extension Interactor {
       try engine?.editor.addUndoStep()
     } catch {
       handleError(error)
+    }
+  }
+
+  typealias PropertyGetter<T: MappedType> = @MainActor (
+    _ engine: Engine,
+    _ block: DesignBlockID,
+    _ propertyBlock: PropertyBlock?,
+    _ property: Property
+  ) throws -> T
+
+  enum Getter {
+    static func get<T: MappedType>() -> Interactor.PropertyGetter<T> {
+      { engine, block, propertyBlock, property in
+        try engine.block.get(block, propertyBlock, property: property)
+      }
     }
   }
 
@@ -503,7 +552,7 @@ extension Interactor: AssetLibraryInteractor {
         }
 
         let assetID = url.absoluteString
-        try engine.asset.addAsset(toSource: sourceID, asset:
+        try engine.asset.addAsset(to: sourceID, asset:
           .init(id: assetID,
                 meta: [
                   "uri": url.absoluteString,
@@ -756,12 +805,13 @@ private extension Interactor {
   }
 
   func get<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
-                          property: Property) -> T? {
+                          property: Property,
+                          getter: PropertyGetter<T> = Getter.get()) -> T? {
     guard let engine, engine.block.isValid(id) else {
       return nil
     }
     do {
-      return try engine.block.get(id, propertyBlock, property: property)
+      return try getter(engine, id, propertyBlock, property)
     } catch {
       handleErrorWithTask(error)
       return nil
@@ -829,6 +879,7 @@ private extension Interactor {
     case DesignBlockType.vectorPath.rawValue: return .shape
     case DesignBlockType.sticker.rawValue: return .sticker
     case DesignBlockType.group.rawValue: return .group
+    case DesignBlockType.page.rawValue: return .page
     default: return nil
     }
   }

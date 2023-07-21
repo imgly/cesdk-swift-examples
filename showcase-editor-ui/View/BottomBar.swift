@@ -36,10 +36,12 @@ struct BottomBar: View {
     if type == .shape, Set([.lineShape, .starShape, .polygonShape]).contains(interactor.blockType(id)) {
       modes += [.options]
     }
-    if Set([.text, .image, .shape]).contains(type) {
+    if Set([.text, .image, .shape, .page]).contains(type) {
       modes += [.fillAndStroke]
     }
-    modes += [.layer]
+    if type != .page {
+      modes += [.layer]
+    }
     if type == .group {
       modes += [.enterGroup]
     }
