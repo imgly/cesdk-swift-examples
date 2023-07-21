@@ -20,6 +20,8 @@ extension URL: MappedType {}
 extension RGBA: MappedType {}
 extension CGColor: MappedType {}
 extension SwiftUI.Color: MappedType {}
+extension GradientColorStop: MappedType {}
+extension Array: MappedType where Element: MappedType {}
 
 /// Property block type to redirect the generic get/set `BlockAPI` methods.
 public enum PropertyBlock {
@@ -103,6 +105,10 @@ public extension BlockAPI {
       return try unwrap(getColor(id, property: property).color() as? T)
     case (SwiftUI.Color.objectIdentifier, .color):
       return try unwrap(SwiftUI.Color(cgColor: getColor(id, property: property).color()) as? T)
+
+    // .struct mappings
+    case ([GradientColorStop].objectIdentifier, .struct):
+      return try unwrap(getGradientColorStops(id, property: property) as? T)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -169,6 +175,11 @@ public extension BlockAPI {
     case (Color.objectIdentifier, .color):
       let color = try unwrap(value as? SwiftUI.Color).asCGColor.rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
+
+    // .struct mappings
+    case ([GradientColorStop].objectIdentifier, .struct):
+      let colorStops = try unwrap(value as? [GradientColorStop])
+      try setGradientColorStops(id, property: property, colors: colorStops)
     default:
       throw Error(
         // swiftlint:disable:next line_length

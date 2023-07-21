@@ -9,7 +9,7 @@ func loadSceneFromRemote(engine: Engine) async throws {
   // highlight-url
 
   // highlight-load
-  let scene = try await engine.scene.load(fromURL: sceneUrl)
+  let scene = try await engine.scene.load(from: sceneUrl)
   // highlight-load
 
   // highlight-set-text-dropshadow

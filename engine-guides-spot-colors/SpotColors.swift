@@ -28,6 +28,7 @@ func spotColors(engine: Engine) async throws {
   engine.editor.setSpotColor(name: "Crayola-Pink-Flamingo", r: 0.988, g: 0.455, b: 0.992)
   engine.editor.setSpotColor(name: "Pantone-ColorOfTheYear-2022", r: 0.4, g: 0.404, b: 0.671)
   engine.editor.setSpotColor(name: "Yellow", r: 1, g: 1, b: 0)
+  engine.editor.getSpotColor(name: "Yellow") // (r: 1, g: 1, b: 0)
   engine.editor.findAllSpotColors() // ["Crayola-Pink-Flamingo", "Pantone-ColorOfTheYear-2022", "Yellow"]
   // highlight-create
 

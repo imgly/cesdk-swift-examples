@@ -56,9 +56,20 @@ extension Engine {
       guard let enabled = property.enabled, try engine.block.get(id, property: enabled) || includeDisabled else {
         return nil
       }
-      let color: CGColor = try engine.block.get(id, property: property)
-      selectionColors.add(id, property: property, value: color, name: name)
-      return color
+      if property == .key(.fillSolidColor),
+         let fillType: ColorFillType = try? engine.block.get(id, property: .key(.fillType)),
+         fillType == .gradient {
+        let colorStops: [GradientColorStop] = try engine.block.get(id, .fill, property: .key(.fillGradientColors))
+        if let color = colorStops.first?.color.cgColor {
+          selectionColors.add(id, property: property, value: color, name: name)
+          return color
+        }
+        return nil
+      } else {
+        let color: CGColor = try engine.block.get(id, property: property)
+        selectionColors.add(id, property: property, value: color, name: name)
+        return color
+      }
     }
 
     let hasFill = try engine.block.hasFill(id)

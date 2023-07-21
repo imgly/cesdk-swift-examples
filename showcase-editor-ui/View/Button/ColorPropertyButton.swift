@@ -1,10 +1,16 @@
 import SwiftUI
 
+enum ColorPropertyButtonStyle {
+  case fill
+  case stroke
+}
+
 struct ColorPropertyButton: View {
   let name: LocalizedStringKey
   let color: CGColor
   let isEnabled: Bool
   @Binding var selection: CGColor
+  var style: ColorPropertyButtonStyle = .fill
 
   private var isSelected: Bool {
     if isEnabled,
@@ -23,8 +29,18 @@ struct ColorPropertyButton: View {
         Image(systemName: "circle")
           .foregroundColor(.secondary)
           .scaleEffect(1.05)
-        Label(name, systemImage: "circle.fill")
-          .foregroundStyle(Color(cgColor: color))
+        if style == .fill {
+          Label(name, systemImage: "circle.fill")
+            .foregroundStyle(Color(cgColor: color))
+        } else {
+          Image("custom.circle.circle.fill", bundle: Bundle.bundle)
+            .foregroundColor(.secondary)
+            .scaleEffect(0.9)
+          Image("custom.circle.circle.fill", bundle: Bundle.bundle)
+            .foregroundStyle(.image(Image("transparent_color_pattern", bundle: Bundle.bundle)))
+          Image("custom.circle.circle.fill", bundle: Bundle.bundle)
+            .foregroundStyle(Color(cgColor: color))
+        }
         Image(systemName: "circle")
           .opacity(isSelected ? 1 : 0)
           .scaleEffect(1.4)

@@ -1,15 +1,19 @@
-#if os(iOS)
+#if os(macOS)
+  import Cocoa
   // highlight-import
   import IMGLYEngine
   // highlight-import
   import MetalKit
-  import UIKit
 
-  class IntegrateWithUIKit: UIViewController {
+  class IntegrateWithAppKit: NSViewController {
     // highlight-setup
     private lazy var engine = Engine(context: .metalView(view: canvas))
     private lazy var canvas = MTKView(frame: .zero, device: MTLCreateSystemDefaultDevice())
     // highlight-setup
+
+    override func loadView() {
+      view = .init(frame: .init(x: 0, y: 0, width: 1000, height: 1000))
+    }
 
     override func viewDidLoad() {
       super.viewDidLoad()
@@ -25,22 +29,7 @@
       ])
       // highlight-view
 
-      let button = UIButton(
-        type: .system,
-        primaryAction: UIAction(title: "Use the engine", handler: { [unowned self] _ in
-          // highlight-work
-          Task {
-            let url = URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
-            try? await engine.scene.load(from: url)
-
-            try? self.engine.block.find(byType: .text).forEach { id in
-              try? self.engine.block.setOpacity(id, value: 0.5)
-            }
-          }
-          // highlight-work
-        })
-      )
-
+      let button = NSButton(title: "Use the engine", target: self, action: #selector(buttonClicked))
       view.addSubview(button)
       button.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
@@ -49,14 +38,27 @@
       ])
     }
 
+    @objc func buttonClicked() {
+      // highlight-work
+      Task {
+        let url = URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
+        try? await engine.scene.load(from: url)
+
+        try? self.engine.block.find(byType: .text).forEach { id in
+          try? self.engine.block.setOpacity(id, value: 0.5)
+        }
+      }
+      // highlight-work
+    }
+
     // highlight-lifecycle
-    override func viewDidAppear(_ animated: Bool) {
-      super.viewDidAppear(animated)
+    override func viewDidAppear() {
+      super.viewDidAppear()
       engine.onAppear()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-      super.viewWillDisappear(animated)
+    override func viewWillDisappear() {
+      super.viewWillDisappear()
       engine.onDisappear()
     }
     // highlight-lifecycle
