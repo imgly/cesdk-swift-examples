@@ -42,6 +42,6 @@ func customAssetSource(engine: Engine) async throws {
                                 "en": ["ocean", "waves", "soothing", "slow"],
                                 "es": ["mar", "olas", "calmante", "lento"]
                               ])
-  try engine.asset.addAsset(to: "background-videos", asset: asset)
+  try engine.asset.addAsset(toSource: "background-videos", asset: asset)
   // highlight-add-asset-to-source
 }

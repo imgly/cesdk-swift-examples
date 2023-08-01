@@ -1,7 +1,7 @@
 import Foundation
 
 enum SheetType: Labelable, IdentifiableByHash {
-  case image, text, shape, sticker, upload, group, page
+  case image, text, shape, sticker, upload, group
   case selectionColors, font, fontSize, color
 
   var description: String {
@@ -16,7 +16,6 @@ enum SheetType: Labelable, IdentifiableByHash {
     case .font: return "Font"
     case .fontSize: return "Size"
     case .color: return "Color"
-    case .page: return "Page"
     }
   }
 
@@ -33,7 +32,7 @@ enum SheetType: Labelable, IdentifiableByHash {
       }
     case .upload: return "arrow.up.circle"
     case .group: return nil
-    case .selectionColors, .font, .fontSize, .color, .page: return nil
+    case .selectionColors, .font, .fontSize, .color: return nil
     }
   }
 

@@ -40,17 +40,7 @@ private struct ColorPickerSheet: UIViewRepresentable {
     }
 
     func colorPickerViewController(_: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
-      // Workaround for `displayP3` color space as the engine does not convert it yet.
-      let cgColor = color.cgColor
-      if cgColor.colorSpace?.name == CGColorSpace.displayP3, let convertedColor = cgColor.converted(
-        to: .init(name: CGColorSpace.sRGB)!,
-        intent: .defaultIntent,
-        options: nil
-      ) {
-        selection = convertedColor
-      } else {
-        selection = color.cgColor
-      }
+      selection = color.cgColor
       if !continuously || continuously != lastContinuously {
         onEditingChanged(continuously)
       }

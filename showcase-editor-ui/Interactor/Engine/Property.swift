@@ -5,13 +5,6 @@ public typealias Property = RawRepresentableKey<PropertyKey>
 public enum PropertyKey: String {
   case fillEnabled = "fill/enabled"
   case fillSolidColor = "fill/solid/color"
-  case fillType = "fill/type"
-  case fillGradientColors = "fill/gradient/colors"
-
-  case fillGradientLinearStartX = "fill/gradient/linear/startPointX"
-  case fillGradientLinearStartY = "fill/gradient/linear/startPointY"
-  case fillGradientLinearEndX = "fill/gradient/linear/endPointX"
-  case fillGradientLinearEndY = "fill/gradient/linear/endPointY"
 
   case strokeEnabled = "stroke/enabled"
   case strokeColor = "stroke/color"
