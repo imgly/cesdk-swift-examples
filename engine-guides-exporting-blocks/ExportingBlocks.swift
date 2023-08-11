@@ -9,6 +9,8 @@ import IMGLYEngine
 
 @MainActor
 func exportingBlocks(engine: Engine) async throws {
+  try engine.editor.setSettingString("basePath", value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.15.0-rc.0/assets")
+  try await engine.addDefaultAssetSources()
   let sceneUrl =
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: sceneUrl)
