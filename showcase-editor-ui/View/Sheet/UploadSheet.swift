@@ -1,4 +1,3 @@
-import IMGLYCoreUI
 import SwiftUI
 
 struct UploadSheet: View {
@@ -8,7 +7,7 @@ struct UploadSheet: View {
 
   @ViewBuilder var imageGrid: some View {
     VStack {
-      UploadGrid(interactor: interactor, sourceID: ImageSource.uploads.sourceID, search: $searchText.debouncedValue)
+      UploadGrid(sourceID: ImageSource.uploads.sourceID, search: $searchText.debouncedValue)
     }
   }
 

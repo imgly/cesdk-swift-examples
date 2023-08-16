@@ -19,9 +19,7 @@ extension String: MappedType {}
 extension URL: MappedType {}
 extension RGBA: MappedType {}
 extension CGColor: MappedType {}
-extension SwiftUI.Color: MappedType {}
-extension GradientColorStop: MappedType {}
-extension Array: MappedType where Element: MappedType {}
+extension Color: MappedType {}
 
 /// Property block type to redirect the generic get/set `BlockAPI` methods.
 public enum PropertyBlock {
@@ -56,7 +54,7 @@ public extension BlockAPI {
     let type = try getType(ofProperty: property)
 
     // Map enum types
-    if type == .enum, let type = T.self as? any MappedEnum.Type {
+    if type == .enum, let type = T.self as? any RawRepresentable<String>.Type {
       let rawValue = try getEnum(id, property: property)
       if let value = type.init(rawValue: rawValue) {
         return try unwrap(value as? T)
@@ -103,12 +101,8 @@ public extension BlockAPI {
       return try unwrap(getColor(id, property: property) as? T)
     case (CGColor.objectIdentifier, .color):
       return try unwrap(getColor(id, property: property).color() as? T)
-    case (SwiftUI.Color.objectIdentifier, .color):
-      return try unwrap(SwiftUI.Color(cgColor: getColor(id, property: property).color()) as? T)
-
-    // .struct mappings
-    case ([GradientColorStop].objectIdentifier, .struct):
-      return try unwrap(getGradientColorStops(id, property: property) as? T)
+    case (Color.objectIdentifier, .color):
+      return try unwrap(Color(cgColor: getColor(id, property: property).color()) as? T)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -129,7 +123,7 @@ public extension BlockAPI {
     let type = try getType(ofProperty: property)
 
     // Map enum types
-    if type == .enum, let value = value as? any MappedEnum {
+    if type == .enum, let value = value as? any RawRepresentable<String> {
       try setEnum(id, property: property, value: value.rawValue)
       return
     }
@@ -173,13 +167,8 @@ public extension BlockAPI {
       let color = try (value as! CGColor).rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
     case (Color.objectIdentifier, .color):
-      let color = try unwrap(value as? SwiftUI.Color).asCGColor.rgba()
+      let color = try unwrap(value as? Color).asCGColor.rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
-
-    // .struct mappings
-    case ([GradientColorStop].objectIdentifier, .struct):
-      let colorStops = try unwrap(value as? [GradientColorStop])
-      try setGradientColorStops(id, property: property, colors: colorStops)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -233,14 +222,6 @@ public extension BlockAPI {
       throw Error(errorDescription: message + " while mapping enum property '\(property)' to type '\(T.self)'.")
     }
     return orderedCases
-  }
-}
-
-// MARK: - Crop
-
-extension BlockAPI {
-  func canResetCrop(_ id: DesignBlockID) throws -> Bool {
-    try getContentFillMode(id) == .crop
   }
 }
 

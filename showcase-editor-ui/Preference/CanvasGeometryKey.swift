@@ -1,4 +1,3 @@
-import IMGLYCoreUI
 import SwiftUI
 
 struct CanvasGeometryKey: PreferenceKey {

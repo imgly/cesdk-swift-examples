@@ -158,7 +158,7 @@ struct FontFamily: Identifiable, Comparable {
 private func loadFontData(_ fonts: [Font], basePath: URL) async -> [String: Data] {
   await withThrowingTaskGroup(of: (String, Data).self) { group -> [String: Data] in
     for font in fonts {
-      let url = basePath.appendingPathComponent(font.fontPath, isDirectory: false)
+      let url = basePath.appending(path: font.fontPath)
       group.addTask {
         let (data, _) = try await URLSession.shared.data(from: url)
         return (font.id, data)
@@ -178,8 +178,8 @@ private func loadFontData(_ fonts: [Font], basePath: URL) async -> [String: Data
 }
 
 func loadFonts() async throws -> [FontFamily] {
-  let basePath = Interactor.basePath.appendingPathComponent(Font.basePath.path, isDirectory: true)
-  let url = basePath.appendingPathComponent("manifest.json", conformingTo: .json)
+  let basePath = Interactor.basePath.appending(path: Font.basePath.path())
+  let url = basePath.appending(path: "manifest.json")
   let (data, _) = try await URLSession.shared.data(from: url)
   let decoder = JSONDecoder()
   let fonts = try decoder.decode(Manifest.self, from: data).assets.first?.assets ?? []
@@ -271,7 +271,7 @@ extension Font: Comparable {
 
   static let basePath = URL(string: "/extensions/ly.img.cesdk.fonts")!
 
-  var url: URL { Font.basePath.appendingPathComponent(fontPath, isDirectory: false) }
+  var url: URL { Font.basePath.appending(path: fontPath) }
 
   var isRegular: Bool {
     switch fontWeight {

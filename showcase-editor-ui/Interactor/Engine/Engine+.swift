@@ -1,4 +1,3 @@
-import IMGLYCore
 import IMGLYEngine
 import SwiftUI
 import UniformTypeIdentifiers
@@ -17,8 +16,8 @@ private struct Random: RandomNumberGenerator {
 extension Engine {
   private var engine: Engine { self }
 
-  private static var rng: RandomNumberGenerator = ProcessInfo
-    .isUITesting ? Random(seed: 0) : SystemRandomNumberGenerator()
+  static var isUITesting = ProcessInfo.processInfo.arguments.contains("UI-Testing")
+  private static var rng: RandomNumberGenerator = isUITesting ? Random(seed: 0) : SystemRandomNumberGenerator()
 
   // MARK: - Scene
 
@@ -53,23 +52,12 @@ extension Engine {
     }
 
     func addColor(property: Property, includeDisabled: Bool = false) throws -> CGColor? {
-      guard let enabled = property.enabled, try engine.block.get(id, property: enabled) || includeDisabled else {
+      guard let enabeld = property.enabled, try engine.block.get(id, property: enabeld) || includeDisabled else {
         return nil
       }
-      if property == .key(.fillSolidColor),
-         let fillType: ColorFillType = try? engine.block.get(id, property: .key(.fillType)),
-         fillType == .gradient {
-        let colorStops: [GradientColorStop] = try engine.block.get(id, .fill, property: .key(.fillGradientColors))
-        if let color = colorStops.first?.color.cgColor {
-          selectionColors.add(id, property: property, value: color, name: name)
-          return color
-        }
-        return nil
-      } else {
-        let color: CGColor = try engine.block.get(id, property: property)
-        selectionColors.add(id, property: property, value: color, name: name)
-        return color
-      }
+      let color: CGColor = try engine.block.get(id, property: property)
+      selectionColors.add(id, property: property, value: color, name: name)
+      return color
     }
 
     let hasFill = try engine.block.hasFill(id)
@@ -301,7 +289,7 @@ extension Engine {
     try engine.editor.addUndoStep()
   }
 
-  func deleteSelectedElement(delay nanoseconds: UInt64 = .zero) throws {
+  func deleteSelectedElement(delay: Duration = .zero) throws {
     let ids = engine.block.findAllSelected()
 
     func delete() throws {
@@ -311,7 +299,7 @@ extension Engine {
       try engine.editor.addUndoStep()
     }
 
-    if nanoseconds != .zero {
+    if delay != .zero {
       // Delay real deletion, e.g., to wait for sheet disappear animations
       // to complete but fake deletion in the meantime.
       try ids.forEach {
@@ -321,29 +309,12 @@ extension Engine {
         try engine.block.setSelected($0, selected: false)
       }
       Task {
-        try await Task.sleep(nanoseconds: nanoseconds)
+        try await Task.sleep(for: delay)
         try delete()
       }
     } else {
       try delete()
     }
-  }
-
-  func resetCropSelectedElement() throws {
-    try engine.block.findAllSelected().forEach {
-      try engine.block.overrideAndRestore($0, scope: .key(.designStyle)) {
-        // Reset crop requires "design/style" scope but crop UI should be based on "content/replace".
-        try engine.block.resetCrop($0)
-      }
-    }
-    try engine.editor.addUndoStep()
-  }
-
-  func flipCropSelectedElement() throws {
-    try engine.block.findAllSelected().forEach {
-      try engine.block.flipCropHorizontal($0)
-    }
-    try engine.editor.addUndoStep()
   }
 
   // MARK: - Utilities

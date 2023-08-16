@@ -1,6 +1,4 @@
 import ActivityView
-import IMGLYCore
-import IMGLYCoreUI
 import IMGLYEngine
 import SwiftUI
 
@@ -21,18 +19,19 @@ public final class Interactor: ObservableObject, KeyboardObserver {
   @Published public private(set) var isLoading = true
   @Published public private(set) var isEditing = true
   @Published private(set) var isExporting = false
-  @Published public private(set) var isAddingAsset = false
+  @Published private(set) var isAddingAsset = false
 
   @Published var export: ActivityItem?
   @Published var error = AlertState()
-  @Published var sheet = SheetState() { didSet { sheetChanged(oldValue) } }
+  @Published var sheet = SheetState()
 
+  typealias AssetQueryData = IMGLYEngine.AssetQueryData
+  typealias AssetQueryResult = IMGLYEngine.AssetQueryResult
+  typealias AssetResult = IMGLYEngine.AssetResult
   typealias BlockID = IMGLYEngine.DesignBlockID
   typealias BlockType = IMGLYEngine.DesignBlockType
   typealias EditMode = IMGLYEngine.EditMode
   typealias RGBA = IMGLYEngine.RGBA
-  typealias GradientColorStop = IMGLYEngine.GradientColorStop
-  typealias Color = IMGLYEngine.Color
 
   struct Selection: Equatable {
     let blocks: [BlockID]
@@ -54,13 +53,6 @@ public final class Interactor: ObservableObject, KeyboardObserver {
   }
 
   var sheetTypeForSelection: SheetType? { sheetType(for: selection) }
-
-  func sheetType(_ id: BlockID?) -> SheetType? {
-    guard let id, let engine, let type = try? engine.block.getType(id) else {
-      return nil
-    }
-    return sheetType(for: type)
-  }
 
   func blockType(_ id: BlockID?) -> DesignBlockType? {
     guard let id, let engine, let type = try? engine.block.getType(id) else {
@@ -168,12 +160,6 @@ extension Interactor {
     }
   }
 
-  private func hasFillType(_ id: DesignBlockID?, type: ColorFillType) -> Bool {
-    guard let id else { return false }
-    let fillType: ColorFillType? = get(id, property: .key(.fillType))
-    return fillType == type
-  }
-
   func canBringForward(_ id: BlockID?) -> Bool { block(id, engine?.block.canBringForward) ?? false }
   func canBringBackward(_ id: BlockID?) -> Bool { block(id, engine?.block.canBringBackward) ?? false }
   func hasFill(_ id: BlockID?) -> Bool { block(id, engine?.block.hasFill) ?? false }
@@ -181,11 +167,7 @@ extension Interactor {
   func hasOpacity(_ id: BlockID?) -> Bool { block(id, engine?.block.hasOpacity) ?? false }
   func hasBlendMode(_ id: BlockID?) -> Bool { block(id, engine?.block.hasBlendMode) ?? false }
   func hasBlur(_ id: BlockID?) -> Bool { block(id, engine?.block.hasBlur) ?? false }
-  func hasCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.hasCrop) ?? false }
-  func canResetCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.canResetCrop) ?? false }
   func isGrouped(_ id: BlockID?) -> Bool { block(id, engine?.block.isGrouped) ?? false }
-  func hasSolidFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .solid) }
-  func hasGradientFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .gradient) }
 }
 
 // MARK: - Property bindings
@@ -250,23 +232,8 @@ extension Interactor {
               }()
               return engine.block.isValid(id) && isEnabled
             }
-
-            if let validBlock {
-              // If the property is set to solid fill color we need to
-              // check for gradient color as well.
-              if property == .key(.fillSolidColor), self.hasGradientFill(validBlock) {
-                if let engine = self.engine, let colorStops: [GradientColorStop] = try? engine.block.get(
-                  validBlock,
-                  .fill,
-                  property: .key(.fillGradientColors)
-                ), let color = colorStops.first?.color.cgColor {
-                  return color
-                }
-              } else {
-                if let value: CGColor = self.get(validBlock, property: property) {
-                  return value
-                }
-              }
+            if let validBlock, let value: CGColor = self.get(validBlock, property: property) {
+              return value
             }
           }
 
@@ -277,13 +244,6 @@ extension Interactor {
             return
           }
           properties.forEach { property, ids in
-            var gradientIDs: [DesignBlockID] = []
-            ids.forEach { id in
-              if self.hasGradientFill(id) {
-                gradientIDs.append(id)
-              }
-            }
-            _ = self.set(gradientIDs, property: .key(.fillType), value: ColorFillType.solid, completion: nil)
             _ = self.set(ids, property: property, value: value,
                          setter: Setter.set(overrideScope: .key(.designStyle)),
                          completion: completion)
@@ -299,11 +259,10 @@ extension Interactor {
   /// cannot be resolved.
   func bind<T: MappedType>(_ id: BlockID?, _ propertyBlock: PropertyBlock? = nil,
                            property: Property, default defaultValue: T,
-                           getter: @escaping PropertyGetter<T> = Getter.get(),
                            setter: @escaping PropertySetter<T> = Setter.set(),
                            completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T> {
     .init {
-      guard let id, let value: T = self.get(id, propertyBlock, property: property, getter: getter) else {
+      guard let id, let value: T = self.get(id, propertyBlock, property: property) else {
         return defaultValue
       }
       return value
@@ -319,14 +278,13 @@ extension Interactor {
   /// cannot be resolved.
   func bind<T: MappedType>(_ id: BlockID?, _ propertyBlock: PropertyBlock? = nil,
                            property: Property,
-                           getter: @escaping PropertyGetter<T> = Getter.get(),
                            setter: @escaping PropertySetter<T> = Setter.set(),
                            completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T?> {
     .init {
       guard let id else {
         return nil
       }
-      return self.get(id, propertyBlock, property: property, getter: getter)
+      return self.get(id, propertyBlock, property: property)
     } set: { value, _ in
       guard let value, let id else {
         return
@@ -340,21 +298,6 @@ extension Interactor {
       try engine?.editor.addUndoStep()
     } catch {
       handleError(error)
-    }
-  }
-
-  typealias PropertyGetter<T: MappedType> = @MainActor (
-    _ engine: Engine,
-    _ block: DesignBlockID,
-    _ propertyBlock: PropertyBlock?,
-    _ property: Property
-  ) throws -> T
-
-  enum Getter {
-    static func get<T: MappedType>() -> Interactor.PropertyGetter<T> {
-      { engine, block, propertyBlock, property in
-        try engine.block.get(block, propertyBlock, property: property)
-      }
     }
   }
 
@@ -449,8 +392,6 @@ extension Interactor {
       return true
     case .replace, .edit:
       return isAllowed(id, scope: .key(.contentReplace))
-    case .crop:
-      return isAllowed(id, scope: .key(.contentReplace)) || isAllowed(id, scope: .key(.designStyle))
     case .format, .options, .fillAndStroke:
       return isAllowed(id, scope: .key(.designStyle))
     case .layer:
@@ -482,23 +423,21 @@ extension Interactor {
     case .delete:
       return isAllowed(id, scope: .key(.lifecycleDestroy)) && !isGrouped(id)
     case .previousPage, .nextPage, .page: return true
-    case .resetCrop, .flipCrop:
-      return isAllowed(id, .crop) && !isGrouped(id)
     }
   }
 }
 
 // MARK: - Actions
 
-extension Interactor: AssetLibraryInteractor {
-  public func findAssets(sourceID: String, query: AssetQueryData) async throws -> AssetQueryResult {
+extension Interactor {
+  func findAssets(sourceID: String, query: AssetQueryData) async throws -> AssetQueryResult {
     guard let engine else {
       throw Error(errorDescription: "Engine unavailable.")
     }
     return try await engine.asset.findAssets(sourceID: sourceID, query: query)
   }
 
-  public func assetTapped(sourceID: String, asset: AssetResult) {
+  func assetTapped(_ asset: AssetResult, from sourceID: String) {
     guard let engine else {
       return
     }
@@ -519,13 +458,13 @@ extension Interactor: AssetLibraryInteractor {
             try engine.block.setPlaceholderEnabled(id, enabled: false)
           }
           try engine.editor.addUndoStep()
-          if sheet.detent == .large || isKeyboardPresented {
+          if sheet.detent == .adaptiveLarge || isKeyboardPresented {
             sheet.isPresented = false
           }
         } else {
           if let id = try await engine.asset.apply(sourceID: sourceID, assetResult: asset) {
             try engine.block.appendChild(to: engine.getPage(page), child: id)
-            if ProcessInfo.isUITesting {
+            if Engine.isUITesting {
               try engine.block.setPositionX(id, value: 15)
               try engine.block.setPositionY(id, value: 5)
             }
@@ -539,46 +478,6 @@ extension Interactor: AssetLibraryInteractor {
     }
   }
 
-  public func uploadAsset(sourceID: String, url: URL, thumb: URL, type: DesignBlockType) {
-    guard let engine else {
-      return
-    }
-
-    Task {
-      do {
-        let (data, _) = try await URLSession.get(url)
-        guard let size = UIImage(data: data)?.size else {
-          return
-        }
-
-        let assetID = url.absoluteString
-        try engine.asset.addAsset(to: sourceID, asset:
-          .init(id: assetID,
-                meta: [
-                  "uri": url.absoluteString,
-                  "thumbUri": thumb.absoluteString,
-                  "blockType": type.rawValue,
-                  "width": String(Int(size.width)),
-                  "height": String(Int(size.height))
-                ]))
-
-        let result = try await engine.asset.findAssets(
-          sourceID: sourceID,
-          query: .init(query: assetID, page: 0, perPage: 10)
-        )
-        NotificationCenter.default.post(name: .AssetSourceDidChange, object: nil, userInfo: ["sourceID": sourceID])
-
-        if result.assets.count == 1, let asset = result.assets.first {
-          assetTapped(sourceID: sourceID, asset: asset)
-        }
-      } catch {
-        handleErrorAndDismiss(error)
-      }
-    }
-  }
-}
-
-extension Interactor {
   func assetTapped(_ asset: AssetLibrary.Text) {
     do {
       try engine?.addText(asset.url, fontSize: asset.size, toPage: page)
@@ -612,12 +511,10 @@ extension Interactor {
         try engine?.block.deselectAll()
         sheet.commit { model in
           model = .init(mode, .image)
-          model.detent = .large
+          model.detent = .adaptiveLarge
         }
       case .edit:
         setEditMode(.text)
-      case .crop:
-        setEditMode(.crop)
       case .enterGroup:
         if let group = selection?.blocks.first {
           try engine?.block.enterGroup(group)
@@ -637,14 +534,14 @@ extension Interactor {
       case .fontSize:
         sheet.commit { model in
           model = .init(mode, .fontSize)
-          model.detent = .tiny
-          model.detents = [.tiny]
+          model.detent = .adaptiveSmall
+          model.detents = [.adaptiveSmall]
         }
       case .color:
         sheet.commit { model in
           model = .init(mode, .color)
-          model.detent = .tiny
-          model.detents = [.tiny]
+          model.detent = .adaptiveSmall
+          model.detents = [.adaptiveSmall]
         }
       default:
         guard let type = sheetTypeForSelection else {
@@ -673,12 +570,10 @@ extension Interactor {
       case .down: try engine?.sendBackwardSelectedElement()
       case .toBottom: try engine?.sendToBackSelectedElement()
       case .duplicate: try engine?.duplicateSelectedElement()
-      case .delete: try engine?.deleteSelectedElement(delay: NSEC_PER_MSEC * 200)
+      case .delete: try engine?.deleteSelectedElement(delay: .milliseconds(200))
       case .previousPage: try setPage(page - 1)
       case .nextPage: try setPage(page + 1)
       case let .page(index): try setPage(index)
-      case .resetCrop: try engine?.resetCropSelectedElement()
-      case .flipCrop: try engine?.flipCropSelectedElement()
       }
     } catch {
       handleError(error)
@@ -710,6 +605,45 @@ extension Interactor {
         assets.fonts = fonts
         try engine.asset.addSource(UnsplashAssetSource())
         isLoading = false
+      } catch {
+        handleErrorAndDismiss(error)
+      }
+    }
+  }
+
+  func uploadImage(_ url: URL) {
+    guard let engine else {
+      return
+    }
+    let sourceID = ImageSource.uploads.sourceID
+
+    Task {
+      do {
+        let (data, _) = try await URLSession.get(url)
+        guard let size = UIImage(data: data)?.size else {
+          return
+        }
+
+        let assetID = url.absoluteString
+        try engine.asset.addAsset(toSource: sourceID, asset:
+          .init(id: assetID,
+                meta: [
+                  "uri": url.absoluteString,
+                  "thumbUri": url.absoluteString,
+                  "blockType": DesignBlockType.image.rawValue,
+                  "width": String(Int(size.width)),
+                  "height": String(Int(size.height))
+                ]))
+
+        let result = try await engine.asset.findAssets(
+          sourceID: sourceID,
+          query: .init(query: assetID, page: 0, perPage: 10)
+        )
+        NotificationCenter.default.post(name: .AssetSourceDidChange, object: nil, userInfo: ["sourceID": sourceID])
+
+        if result.assets.count == 1, let asset = result.assets.first {
+          assetTapped(asset, from: sourceID)
+        }
       } catch {
         handleErrorAndDismiss(error)
       }
@@ -805,13 +739,12 @@ private extension Interactor {
   }
 
   func get<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
-                          property: Property,
-                          getter: PropertyGetter<T> = Getter.get()) -> T? {
+                          property: Property) -> T? {
     guard let engine, engine.block.isValid(id) else {
       return nil
     }
     do {
-      return try getter(engine, id, propertyBlock, property)
+      return try engine.block.get(id, propertyBlock, property: property)
     } catch {
       handleErrorWithTask(error)
       return nil
@@ -879,15 +812,21 @@ private extension Interactor {
     case DesignBlockType.vectorPath.rawValue: return .shape
     case DesignBlockType.sticker.rawValue: return .sticker
     case DesignBlockType.group.rawValue: return .group
-    case DesignBlockType.page.rawValue: return .page
     default: return nil
     }
+  }
+
+  func sheetType(for designBlockID: DesignBlockID) -> SheetType? {
+    guard let engine, let type = try? engine.block.getType(designBlockID) else {
+      return nil
+    }
+    return sheetType(for: type)
   }
 
   func sheetType(for selection: Selection?) -> SheetType? {
     if let selection, selection.blocks.count == 1,
        let block = selection.blocks.first,
-       let type = sheetType(block) {
+       let type = sheetType(for: block) {
       return type
     }
     return nil
@@ -897,12 +836,11 @@ private extension Interactor {
     guard let engine,
           let selection, selection.blocks.count == 1,
           let block = selection.blocks.first,
-          let type = sheetType(block) else {
+          let type = sheetType(for: block) else {
       return nil
     }
     do {
-      guard try engine.editor.getSettingEnum("role") == "Adopter",
-            try engine.block.hasPlaceholderControls(block) else {
+      guard try engine.block.hasPlaceholderControls(block) else {
         return nil
       }
       let isPlaceholder = try engine.block.isPlaceholderEnabled(block)
@@ -994,20 +932,17 @@ private extension Interactor {
     }
     do {
       try engine.showPage(page)
-      try engine.editor.resetHistory()
+
+      let oldHistory = engine.editor.getActiveHistory()
+      let newHistory = engine.editor.createHistory()
+      try engine.editor.addUndoStep()
+      engine.editor.setActiveHistory(newHistory)
+      engine.editor.destroyHistory(oldHistory)
+
       try behavior.pageChanged(.init(engine, self))
       sheet.isPresented = false
     } catch {
       handleError(error)
-    }
-  }
-
-  func sheetChanged(_ oldValue: SheetState) {
-    guard oldValue != sheet else {
-      return
-    }
-    if !sheet.isPresented, oldValue.state == .init(.crop, .image) {
-      setEditMode(.transform)
     }
   }
 
@@ -1037,7 +972,7 @@ private extension Interactor {
           sheet.isPresented = false
         }
         Task {
-          try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
+          try? await Task.sleep(for: .milliseconds(200))
           showReplaceSheet()
         }
       } else {
@@ -1051,27 +986,8 @@ private extension Interactor {
       return
     }
     if sheet.isPresented {
-      if editMode == .text || oldValue == .crop {
+      if editMode == .text {
         sheet.isPresented = false
-      }
-    }
-    if editMode == .crop, sheet.state != .init(.crop, .image) {
-      func showCropSheet() {
-        sheet.commit { model in
-          model = .init(.crop, .image)
-          model.detent = .small
-          model.detents = [.small, .large]
-        }
-      }
-
-      if sheet.isPresented {
-        sheet.isPresented = false
-        Task {
-          try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
-          showCropSheet()
-        }
-      } else {
-        showCropSheet()
       }
     }
   }

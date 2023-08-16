@@ -3,15 +3,13 @@ import SwiftUI
 struct SheetState: BatchMutable {
   var isPresented: Bool
   var model: SheetModel
-  var detent: PresentationDetent = .medium
-  var detents: Set<PresentationDetent> = [.medium, .large]
+  var detent: PresentationDetent = .adaptiveMedium
+  var detents: Set<PresentationDetent> = [.adaptiveMedium, .adaptiveLarge]
   var largestUndimmedDetent: PresentationDetent? {
-    if detents.contains(.medium) {
-      return .medium
-    } else if detents.contains(.small) {
-      return .small
-    } else if detents.contains(.tiny) {
-      return .tiny
+    if detents.contains(.adaptiveMedium) {
+      return .adaptiveMedium
+    } else if detents.contains(.adaptiveSmall) {
+      return .adaptiveSmall
     } else {
       return nil
     }

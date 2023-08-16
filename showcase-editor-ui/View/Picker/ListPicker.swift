@@ -24,6 +24,7 @@ struct ListPicker<Data, ElementLabel: View>: View where
       }
       .safeAreaInset(edge: .top) { Color.clear.frame(height: 15) }
       .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 15) }
+      .toolbarBackground(.visible, for: .navigationBar)
       .task {
         proxy.scrollTo(selection, anchor: .center)
       }

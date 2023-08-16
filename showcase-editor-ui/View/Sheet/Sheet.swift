@@ -1,3 +1,5 @@
+import Introspect
+import Media
 import SwiftUI
 
 struct Sheet: View {
@@ -6,7 +8,6 @@ struct Sheet: View {
 
   @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-  // swiftlint:disable:next cyclomatic_complexity
   @ViewBuilder func sheet(_ type: SheetType) -> some View {
     switch type {
     case .image: ImageSheet()
@@ -19,7 +20,6 @@ struct Sheet: View {
     case .font: FontSheet()
     case .fontSize: FontSizeSheet()
     case .color: ColorSheet()
-    case .page: PageSheet()
     }
   }
 
@@ -59,9 +59,17 @@ struct Sheet: View {
       }
     }
     .pickerStyle(.menu)
-    .conditionalPresentationConfiguration(sheet.largestUndimmedDetent)
-    .conditionalPresentationDetents(sheet.detents, selection: $interactor.sheet.detent)
-    .conditionalPresentationDragIndicator(dragIndicatorVisibility)
+    .presentationDetents(sheet.detents, selection: $interactor.sheet.detent)
+    .presentationDragIndicator(dragIndicatorVisibility)
+    .introspectViewController { viewController in
+      viewController.presentingViewController?.view.tintAdjustmentMode = .normal
+      if let sheet = viewController.sheetPresentationController {
+        let largestUndimmedDetentIdentifier = interactor.sheet.largestUndimmedDetent?.identifier
+        sheet.largestUndimmedDetentIdentifier = largestUndimmedDetentIdentifier
+        sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        sheet.prefersEdgeAttachedInCompactHeight = true
+      }
+    }
   }
 }
 

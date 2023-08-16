@@ -1,4 +1,3 @@
-import IMGLYCoreUI
 import SwiftUI
 
 struct Canvas: View {

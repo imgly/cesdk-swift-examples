@@ -1,7 +1,7 @@
 import Foundation
 
 enum SheetType: Labelable, IdentifiableByHash {
-  case image, text, shape, sticker, upload, group, page
+  case image, text, shape, sticker, upload, group
   case selectionColors, font, fontSize, color
 
   var description: String {
@@ -16,7 +16,6 @@ enum SheetType: Labelable, IdentifiableByHash {
     case .font: return "Font"
     case .fontSize: return "Size"
     case .color: return "Color"
-    case .page: return "Page"
     }
   }
 
@@ -25,26 +24,16 @@ enum SheetType: Labelable, IdentifiableByHash {
     case .image: return "photo"
     case .text: return "textformat.alt"
     case .shape: return "square.on.circle"
-    case .sticker:
-      if #available(iOS 16.0, *) {
-        return "custom.face.smiling"
-      } else {
-        return "face.smiling"
-      }
+    case .sticker: return "custom.face.smiling"
     case .upload: return "arrow.up.circle"
     case .group: return nil
-    case .selectionColors, .font, .fontSize, .color, .page: return nil
+    case .selectionColors, .font, .fontSize, .color: return nil
     }
   }
 
   var isSystemImage: Bool {
     switch self {
-    case .sticker:
-      if #available(iOS 16.0, *) {
-        return false
-      } else {
-        return true
-      }
+    case .sticker: return false
     default: return true
     }
   }

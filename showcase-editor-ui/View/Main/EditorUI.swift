@@ -1,4 +1,3 @@
-import IMGLYCoreUI
 import SwiftUI
 
 public struct EditorUI: View {
@@ -60,7 +59,7 @@ public struct EditorUI: View {
         interactivePopGestureRecognizer = navigationController.interactivePopGestureRecognizer
         interactivePopGestureRecognizer?.isEnabled = false
       }
-      .conditionalNavigationBarBackground(.visible)
+      .toolbarBackground(.visible, for: .navigationBar)
       .onPreferenceChange(CanvasGeometryKey.self) { newValue in
         canvasGeometry = newValue
       }

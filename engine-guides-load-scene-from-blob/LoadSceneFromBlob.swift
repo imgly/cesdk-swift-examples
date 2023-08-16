@@ -5,7 +5,7 @@ import IMGLYEngine
 func loadSceneFromBlob(engine: Engine) async throws {
   // highlight-fetch-blob
   let sceneURL =
-    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
+    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-js/latest/assets/templates/cesdk_postcard_1.scene")!
   let sceneBlob = try await URLSession.shared.data(from: sceneURL).0
   // highlight-fetch-blob
 
@@ -14,7 +14,7 @@ func loadSceneFromBlob(engine: Engine) async throws {
   // highlight-read-blob
 
   // highlight-load
-  let scene = try await engine.scene.load(from: blobString)
+  let scene = try await engine.scene.load(fromString: blobString)
   // highlight-load
 
   // highlight-set-text-dropshadow

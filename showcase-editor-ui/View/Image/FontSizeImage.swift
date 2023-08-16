@@ -9,8 +9,8 @@ struct FontSizeImage: View {
     ZStack {
       Image(systemName: "circle")
         .foregroundColor(.secondary)
-      sizeLetter.icon
-        .font(.system(.caption, design: .rounded).weight(.heavy))
+      sizeLetter.icon(.caption)
+        .fontWeight(.heavy)
     }
   }
 }
