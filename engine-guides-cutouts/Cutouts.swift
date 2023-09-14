@@ -14,11 +14,11 @@ func cutouts(engine: Engine) async throws {
 
   // highlight-create-cutouts
   let circle = try engine.block.createCutoutFromPath("M 0,25 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0 Z")
-  try engine.block.setCutoutOffset(circle, offset: 3.0)
-  try engine.block.setCutoutType(circle, cutoutType: .dashed)
+  try engine.block.setFloat(circle, property: "cutout/offset", value: 3.0)
+  try engine.block.setEnum(circle, property: "cutout/type", value: "Dashed")
 
   var square = try engine.block.createCutoutFromPath("M 0,0 H 50 V 50 H 0 Z")
-  try engine.block.setCutoutOffset(square, offset: 6.0)
+  try engine.block.setFloat(square, property: "cutout/offset", value: 6.0)
   // highlight-create-cutouts
 
   // highlight-cutout-union
