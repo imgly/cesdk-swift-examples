@@ -1,4 +1,5 @@
 import CoreGraphics
+import IMGLYCore
 import IMGLYEngine
 import UIKit
 

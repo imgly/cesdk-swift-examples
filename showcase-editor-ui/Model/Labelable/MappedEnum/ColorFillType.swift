@@ -1,8 +1,8 @@
 import Foundation
 
-enum ColorFillType: String, MappedEnum {
-  case solid = "Solid"
-  case gradient = "Gradient"
+enum FillType: String, MappedEnum {
+  case solid = "//ly.img.ubq/fill/color"
+  case gradient = "//ly.img.ubq/fill/gradient/linear"
   case none
 
   var description: String {

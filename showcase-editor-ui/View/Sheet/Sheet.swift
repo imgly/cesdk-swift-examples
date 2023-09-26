@@ -1,3 +1,4 @@
+import IMGLYCoreUI
 import SwiftUI
 
 struct Sheet: View {
@@ -6,14 +7,12 @@ struct Sheet: View {
 
   @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-  // swiftlint:disable:next cyclomatic_complexity
   @ViewBuilder func sheet(_ type: SheetType) -> some View {
     switch type {
     case .image: ImageSheet()
     case .text: TextSheet()
     case .shape: ShapeSheet()
     case .sticker: StickerSheet()
-    case .upload: UploadSheet()
     case .group: GroupSheet()
     case .selectionColors: SelectionColorsSheet()
     case .font: FontSheet()
@@ -23,10 +22,10 @@ struct Sheet: View {
     }
   }
 
-  var tabs: [SheetType] { [.image, .text, .shape, .sticker, .upload] }
+  @State var hidePresentationDragIndicator: Bool = false
 
   var dragIndicatorVisibility: Visibility {
-    if sheet.isSearchable {
+    if hidePresentationDragIndicator {
       return .hidden
     }
     if verticalSizeClass == .compact {
@@ -35,19 +34,24 @@ struct Sheet: View {
     return .visible
   }
 
+  var assetLibrary: AssetLibrary {
+    AssetLibrary(sceneMode: .design)
+  }
+
   var body: some View {
     Group {
-      if sheet.mode == .add {
-        TabView(selection: $interactor.sheet.model.type) {
-          ForEach(tabs) { type in
-            sheet(type)
-              .tabItem {
-                type.label(suffix: type != .text ? "s" : "")
-              }
-              .tag(type)
+      switch sheet.mode {
+      case .add: assetLibrary
+      case .replace:
+        Group {
+          switch sheet.type {
+          case .image: assetLibrary.imagesTab
+          case .sticker: assetLibrary.stickersTab
+          default: EmptyView()
           }
         }
-      } else {
+        .assetLibraryTitleDisplayMode(.inline)
+      default:
         if let id = sheet.mode.pinnedBlockID {
           sheet(sheet.type)
             .selection(id)
@@ -57,6 +61,11 @@ struct Sheet: View {
           sheet(sheet.type)
         }
       }
+    }
+    .assetLibraryInteractor(interactor)
+    .assetLibraryDismissButton(SheetDismissButton())
+    .onPreferenceChange(PresentationDragIndicatorHiddenKey.self) { newValue in
+      hidePresentationDragIndicator = newValue
     }
     .pickerStyle(.menu)
     .conditionalPresentationConfiguration(sheet.largestUndimmedDetent)

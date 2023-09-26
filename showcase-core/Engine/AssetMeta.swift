@@ -1,0 +1,16 @@
+import Foundation
+
+public typealias AssetMeta = [AssetMetaKey: String]
+
+public enum AssetMetaKey: String {
+  case uri
+  case thumbUri
+  case blockType
+  case width
+  case height
+  case duration
+  case fontSize
+  case artist
+  case title
+  case filename
+}

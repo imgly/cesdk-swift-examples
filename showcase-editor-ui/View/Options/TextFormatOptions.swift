@@ -3,13 +3,13 @@ import SwiftUI
 struct TextFormatOptions: View {
   @EnvironmentObject private var interactor: Interactor
   @Environment(\.selection) private var id
-  private var assets: AssetLibrary { interactor.assets }
+  private var fontLibrary: FontLibrary { interactor.fontLibrary }
 
   @ViewBuilder var textFormatOptions: some View {
     let text = interactor.bindTextState(id, resetFontProperties: false)
     let textReset = interactor.bindTextState(id, resetFontProperties: true)
 
-    NavigationLinkPicker(title: "Font", data: assets.fonts,
+    NavigationLinkPicker(title: "Font", data: fontLibrary.fonts,
                          selection: textReset.fontFamilyID) { fontFamily, isSelected in
       Label(fontFamily.name, systemImage: "checkmark")
         .labelStyle(.icon(hidden: !isSelected, titleFont: .custom(fontFamily.someFontName ?? "", size: 17)))

@@ -1,4 +1,5 @@
 import Foundation
+import IMGLYCore
 import IMGLYEngine
 import SwiftUI
 
@@ -97,10 +98,12 @@ public extension BlockAPI {
       return try unwrap(URL(string: getString(id, property: property)) as? T)
     case (String.objectIdentifier, .enum):
       return try unwrap(getEnum(id, property: property) as? T)
+    case (FillType.objectIdentifier, .string):
+      return try unwrap(FillType(rawValue: getString(id, property: property)) as? T)
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
-      return try unwrap(getColor(id, property: property) as? T)
+      return try unwrap(getColor(id, property: property) as RGBA as? T)
     case (CGColor.objectIdentifier, .color):
       return try unwrap(getColor(id, property: property).color() as? T)
     case (SwiftUI.Color.objectIdentifier, .color):
@@ -125,6 +128,7 @@ public extension BlockAPI {
   // swiftlint:disable:next cyclomatic_complexity
   func set<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
                           property: String, value: T) throws {
+    let parentId = id
     let id = try resolve(propertyBlock, parent: id)
     let type = try getType(ofProperty: property)
 
@@ -163,6 +167,17 @@ public extension BlockAPI {
       try setString(id, property: property, value: unwrap(value as? URL).absoluteString)
     case (String.objectIdentifier, .enum):
       try setEnum(id, property: property, value: unwrap(value as? String))
+    case (FillType.objectIdentifier, .string):
+      let fillType = try unwrap(value as? FillType)
+      if fillType == .none {
+        try setFillEnabled(parentId, enabled: false)
+      } else {
+        if try hasFill(parentId) {
+          try destroy(getFill(parentId))
+        }
+        let newFill = try createFill(fillType.rawValue)
+        try setFill(parentId, fill: newFill)
+      }
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
@@ -307,20 +322,25 @@ extension BlockAPI {
 // MARK: - Scopes
 
 public extension BlockAPI {
-  func overrideAndRestore<T>(_ id: DesignBlockID, scope: Scope,
+  func overrideAndRestore<T>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
+                             scope: Scope,
                              action: (DesignBlockID) throws -> T) throws -> T {
     let action: ([DesignBlockID]) throws -> T = { ids in try action(ids.first!) }
-    return try overrideAndRestore([id], scopes: [scope], action: action)
+    return try overrideAndRestore([id], propertyBlock, scopes: [scope], action: action)
   }
 
-  func overrideAndRestore<T>(_ ids: [DesignBlockID], scope: Scope,
+  func overrideAndRestore<T>(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,
+                             scope: Scope,
                              action: ([DesignBlockID]) throws -> T) throws -> T {
-    try overrideAndRestore(ids, scopes: [scope], action: action)
+    try overrideAndRestore(ids, propertyBlock, scopes: [scope], action: action)
   }
 
-  func overrideAndRestore<T>(_ ids: [DesignBlockID], scopes: Set<Scope>,
+  func overrideAndRestore<T>(_ ids: [DesignBlockID],
+                             _ propertyBlock: PropertyBlock? = nil,
+                             scopes: Set<Scope>,
                              action: ([DesignBlockID]) throws -> T) throws -> T {
-    let enabledScopesPerID = try ids.map { id in
+    let resolvedIds = try ids.map { try resolve(propertyBlock, parent: $0) }
+    let enabledScopesPerID = try resolvedIds.map { id in
       let enabledScopes = try scopes.map { scope in
         let wasEnabled = try isScopeEnabled(id, key: scope.rawValue)
         try setScopeEnabled(id, key: scope.rawValue, enabled: true)
@@ -329,7 +349,7 @@ public extension BlockAPI {
       return (id: id, enabledScopes: enabledScopes)
     }
 
-    let result = try action(ids)
+    let result = try action(resolvedIds)
 
     try enabledScopesPerID.forEach { id, enabledScopes in
       try enabledScopes.forEach { scope, isEnabled in

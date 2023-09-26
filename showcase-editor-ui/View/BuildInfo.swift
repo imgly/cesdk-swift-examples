@@ -44,7 +44,7 @@ public struct BuildInfo: View {
     Button {
       showSwitchBranchSheet = true
     } label: {
-      Label("Switch Branch …", systemImage: "shuffle")
+      Label("Switch Branch" + String.ellipsis, systemImage: "shuffle")
     }
   }
 
@@ -94,7 +94,7 @@ public struct BuildInfo: View {
             showSwitchBranchSheet = true
           }
         } label: {
-          Label("Switch deleted branch …", systemImage: "shuffle")
+          Label("Switch deleted branch" + String.ellipsis, systemImage: "shuffle")
             .padding([.leading, .trailing], 1)
         }
       }
