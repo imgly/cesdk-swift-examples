@@ -100,7 +100,7 @@ public extension BlockAPI {
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
-      return try unwrap(getColor(id, property: property) as? T)
+      return try unwrap(getColor(id, property: property) as RGBA as? T)
     case (CGColor.objectIdentifier, .color):
       return try unwrap(getColor(id, property: property).color() as? T)
     case (SwiftUI.Color.objectIdentifier, .color):
