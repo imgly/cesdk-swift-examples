@@ -8,7 +8,7 @@ import SwiftUI
 public final class Interactor: ObservableObject, KeyboardObserver {
   // MARK: - Properties
 
-  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.16.1/assets")!
+  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.17.0/assets")!
 
   @ViewBuilder var canvas: some View {
     if let engine {
@@ -16,7 +16,7 @@ public final class Interactor: ObservableObject, KeyboardObserver {
     }
   }
 
-  let assets = AssetLibrary()
+  let fontLibrary = FontLibrary()
 
   @Published public private(set) var isLoading = true
   @Published public private(set) var isEditing = true
@@ -168,9 +168,9 @@ extension Interactor {
     }
   }
 
-  private func hasFillType(_ id: DesignBlockID?, type: ColorFillType) -> Bool {
+  private func hasFillType(_ id: DesignBlockID?, type: FillType) -> Bool {
     guard let id else { return false }
-    let fillType: ColorFillType? = get(id, property: .key(.fillType))
+    let fillType: FillType? = get(id, .fill, property: .key(.type))
     return fillType == type
   }
 
@@ -197,7 +197,7 @@ extension Interactor {
     let fontURL: Binding<URL?> = bind(id, property: .key(.textFontFileURI))
     return .init {
       if let fontURL = fontURL.wrappedValue {
-        let selected = self.assets.fontFor(url: fontURL)
+        let selected = self.fontLibrary.fontFor(url: fontURL)
         var text = TextState()
         text.fontID = selected?.font.id
         text.fontFamilyID = selected?.family.id
@@ -215,13 +215,15 @@ extension Interactor {
         }
       }
 
-      if let fontFamilyID = text.fontFamilyID, let fontFamily = self.assets.fontFamilyFor(id: fontFamilyID),
+      if let fontFamilyID = text.fontFamilyID, let fontFamily = self.fontLibrary.fontFamilyFor(id: fontFamilyID),
          let font = font(fontFamily: fontFamily),
-         let selected = self.assets.fontFor(id: font.id) {
+         let selected = self.fontLibrary.fontFor(id: font.id) {
         fontURL.wrappedValue = selected.font.url
       }
     }
   }
+
+  // swiftlint:disable cyclomatic_complexity
 
   /// Create `SelectionColor` bindings categorized by block names for a given set of `selectionColors`.
   func bind(_ selectionColors: SelectionColors,
@@ -276,17 +278,23 @@ extension Interactor {
           guard let properties = selectionColors[name, color] else {
             return
           }
-          properties.forEach { property, ids in
-            var gradientIDs: [DesignBlockID] = []
-            ids.forEach { id in
-              if self.hasGradientFill(id) {
-                gradientIDs.append(id)
+          do {
+            try properties.forEach { property, ids in
+              var gradientIDs: [DesignBlockID] = []
+              ids.forEach { id in
+                if self.hasGradientFill(id) {
+                  gradientIDs.append(id)
+                }
               }
+              _ = try self.engine?.block.overrideAndRestore(gradientIDs, .fill, scope: .key(.lifecycleDestroy)) { _ in
+                self.set(gradientIDs, .fill, property: .key(.type), value: FillType.solid, completion: nil)
+              }
+              _ = self.set(ids, property: property, value: value,
+                           setter: Setter.set(overrideScope: .key(.designStyle)),
+                           completion: completion)
             }
-            _ = self.set(gradientIDs, property: .key(.fillType), value: ColorFillType.solid, completion: nil)
-            _ = self.set(ids, property: property, value: value,
-                         setter: Setter.set(overrideScope: .key(.designStyle)),
-                         completion: completion)
+          } catch {
+            self.handleErrorWithTask(error)
           }
         })
       }
@@ -294,6 +302,8 @@ extension Interactor {
       return (name: name, colors: colors)
     }
   }
+
+  // swiftlint:enable cyclomatic_complexity
 
   /// Create a `property` `Binding` for a block `id`. The`defaultValue` will be used as fallback if the property
   /// cannot be resolved.
@@ -488,7 +498,7 @@ extension Interactor {
   }
 }
 
-// MARK: - Actions
+// MARK: - AssetLibraryInteractor
 
 extension Interactor: AssetLibraryInteractor {
   public func findAssets(sourceID: String, query: AssetQueryData) async throws -> AssetQueryResult {
@@ -496,6 +506,39 @@ extension Interactor: AssetLibraryInteractor {
       throw Error(errorDescription: "Engine unavailable.")
     }
     return try await engine.asset.findAssets(sourceID: sourceID, query: query)
+  }
+
+  public func getGroups(sourceID: String) async throws -> [String] {
+    guard let engine else {
+      throw Error(errorDescription: "Engine unavailable.")
+    }
+    return try await engine.asset.getGroups(sourceID: sourceID)
+  }
+
+  public func getCredits(sourceID: String) -> AssetCredits? {
+    engine?.asset.getCredits(sourceID: sourceID)
+  }
+
+  public func getLicense(sourceID: String) -> AssetLicense? {
+    engine?.asset.getLicense(sourceID: sourceID)
+  }
+
+  public func addAsset(to sourceID: String, asset: AssetDefinition) throws {
+    guard let engine else {
+      throw Error(errorDescription: "Engine unavailable.")
+    }
+    return try engine.asset.addAsset(to: sourceID, asset: asset)
+  }
+
+  public func uploadAsset(to sourceID: String, asset: AssetUpload) async throws -> AssetResult {
+    do {
+      let asset = try await Self.uploadAsset(interactor: self, to: sourceID, asset: asset)
+      assetTapped(sourceID: sourceID, asset: asset)
+      return asset
+    } catch {
+      handleErrorAndDismiss(error)
+      throw error
+    }
   }
 
   public func assetTapped(sourceID: String, asset: AssetResult) {
@@ -539,55 +582,17 @@ extension Interactor: AssetLibraryInteractor {
     }
   }
 
-  public func uploadAsset(sourceID: String, url: URL, thumb: URL, type: DesignBlockType) {
+  public func getBasePath() throws -> String {
     guard let engine else {
-      return
+      throw Error(errorDescription: "Engine unavailable.")
     }
-
-    Task {
-      do {
-        let (data, _) = try await URLSession.get(url)
-        guard let size = UIImage(data: data)?.size else {
-          return
-        }
-
-        let assetID = url.absoluteString
-        try engine.asset.addAsset(to: sourceID, asset:
-          .init(id: assetID,
-                meta: [
-                  "uri": url.absoluteString,
-                  "thumbUri": thumb.absoluteString,
-                  "blockType": type.rawValue,
-                  "width": String(Int(size.width)),
-                  "height": String(Int(size.height))
-                ]))
-
-        let result = try await engine.asset.findAssets(
-          sourceID: sourceID,
-          query: .init(query: assetID, page: 0, perPage: 10)
-        )
-        NotificationCenter.default.post(name: .AssetSourceDidChange, object: nil, userInfo: ["sourceID": sourceID])
-
-        if result.assets.count == 1, let asset = result.assets.first {
-          assetTapped(sourceID: sourceID, asset: asset)
-        }
-      } catch {
-        handleErrorAndDismiss(error)
-      }
-    }
+    return try engine.editor.getSettingString("basePath")
   }
 }
 
-extension Interactor {
-  func assetTapped(_ asset: AssetLibrary.Text) {
-    do {
-      try engine?.addText(asset.url, fontSize: asset.size, toPage: page)
-      sheet.isPresented = false
-    } catch {
-      handleErrorAndDismiss(error)
-    }
-  }
+// MARK: - Actions
 
+extension Interactor {
   func sheetDismissButtonTapped() {
     sheet.isPresented = false
   }
@@ -694,21 +699,18 @@ extension Interactor {
       guard let engine else {
         return
       }
-      async let loadFonts = loadFonts()
-      async let loadScene: () = behavior.loadScene(.init(engine, self), from: url, with: insets)
-      async let loadDefaultAssets: () = engine.addDefaultAssetSources()
-      async let loadDemoAssetSources: () = engine.addDemoAssetSources(withUploadAssetSources: true)
-
-      let baseURL = URL(string: "https://cdn.img.ly/assets/showcases/v1")!
-      async let loadImages: () = engine.populateAssetSource(id: ImageSource.images.sourceID, baseURL: baseURL)
-      async let loadShapes: () = engine.populateAssetSource(id: AssetLibrary.shapeSourceID, baseURL: baseURL)
-      async let loadStickers: () = engine.populateAssetSource(id: AssetLibrary.stickerSourceID, baseURL: baseURL)
-
       do {
-        let (fonts, _, _, _, _, _, _) = try await (loadFonts, loadScene, loadDefaultAssets, loadDemoAssetSources,
-                                                   loadImages, loadShapes, loadStickers)
-        assets.fonts = fonts
+        try await behavior.loadScene(.init(engine, self), from: url, with: insets)
+
+        async let loadFonts = loadFonts()
+        async let loadDefaultAssets: () = engine.addDefaultAssetSources()
+        async let loadDemoAssetSources: () = engine.addDemoAssetSources(sceneMode: engine.scene.getMode(),
+                                                                        withUploadAssetSources: true)
+
+        let (fonts, _, _) = try await (loadFonts, loadDefaultAssets, loadDemoAssetSources)
+        fontLibrary.fonts = fonts
         try engine.asset.addSource(UnsplashAssetSource())
+        try engine.asset.addSource(TextAssetSource(engine: engine))
         isLoading = false
       } catch {
         handleErrorAndDismiss(error)

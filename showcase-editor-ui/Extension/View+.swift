@@ -50,21 +50,6 @@ extension View {
   }
 
   @ViewBuilder
-  func conditionalPresentationDragIndicator(_ visibility: Visibility) -> some View {
-    if #available(iOS 16.0, *) {
-      presentationDragIndicator(visibility)
-    } else {
-      backport.presentationDragIndicator({
-        switch visibility {
-        case .automatic: return .automatic
-        case .visible: return .visible
-        case .hidden: return .hidden
-        }
-      }())
-    }
-  }
-
-  @ViewBuilder
   func conditionalPresentationDetents(_ detents: Set<PresentationDetent>,
                                       selection: Binding<PresentationDetent>) -> some View {
     if #available(iOS 16.0, *) {

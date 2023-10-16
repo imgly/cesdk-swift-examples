@@ -1,4 +1,5 @@
 import CoreGraphics
+import IMGLYCore
 import SwiftUI
 
 extension CGColor: HSBAConvertible {

@@ -150,6 +150,6 @@ private struct AdaptiveMediumPresentationDetent: CustomPresentationDetent {
 @available(iOS 16.0, *)
 private struct AdaptiveLargePresentationDetent: CustomPresentationDetent {
   static func height(in context: Context) -> CGFloat? {
-    context.maxDetentValue * 0.95
+    context.maxDetentValue * 1
   }
 }

@@ -295,14 +295,6 @@ private struct ScrollViewWidthKey: PreferenceKey {
   }
 }
 
-private class GestureHelper: ObservableObject {
-  @Published var state: UIGestureRecognizer.State?
-
-  @MainActor @objc func handleGesture(_ recognizer: UIGestureRecognizer) {
-    state = recognizer.state
-  }
-}
-
 private class HapticsHelper: ObservableObject {
   private var impact: UIImpactFeedbackGenerator?
   private var selection: UISelectionFeedbackGenerator?

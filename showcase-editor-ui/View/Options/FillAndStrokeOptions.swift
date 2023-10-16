@@ -10,8 +10,8 @@ struct FillAndStrokeOptions: View {
   @ViewBuilder var fillAndStrokeOptions: some View {
     if interactor.hasFill(id) {
       Section("Fill") {
-        let fillType: Binding<ColorFillType?> = interactor
-          .bind(id, property: .key(.fillType), getter: fillTypeGetter, setter: fillTypeSetter)
+        let fillType: Binding<FillType?> = interactor
+          .bind(id, .fill, property: .key(.type), getter: fillTypeGetter, setter: fillTypeSetter)
         FillColorOptions(fillType: fillType)
       }
     }
@@ -35,61 +35,70 @@ struct FillAndStrokeOptions: View {
   // MARK: - Getter/Setter
 
   // The `PropertyGetter` for retrieving the fill type.
-  let fillTypeGetter: Interactor.PropertyGetter<ColorFillType> = { engine, id, _, _ in
+  let fillTypeGetter: Interactor.PropertyGetter<FillType> = { engine, id, propertyBlock, _ in
     let fillEnabled = try engine.block.isFillEnabled(id)
-    if !fillEnabled { return ColorFillType.none }
-    return try engine.block.get(id, property: .key(.fillType))
+    if !fillEnabled { return FillType.none }
+    return try engine.block.get(id, propertyBlock, property: .key(.type))
   }
 
   // The `PropertySetter` for setting the fill type.
-  let fillTypeSetter: Interactor.PropertySetter<ColorFillType> = { engine, blocks, _, _, value, completion in
-    let isNone = value == ColorFillType.none
-    let fallbackValue = ColorFillType.solid
+  let fillTypeSetter: Interactor.PropertySetter<FillType> = { engine, blocks, propertyBlock, _, value, completion in
+    let hasChanged = try engine.block.overrideAndRestore(
+      blocks,
+      propertyBlock,
+      scope: .key(.lifecycleDestroy),
+      action: { _ in
+        let isNone = value == FillType.none
+        let fallbackValue = FillType.solid
 
-    let changed = try blocks.filter {
-      let fillType: ColorFillType = try engine.block.get($0, property: .key(.fillType))
-      let enabledChanged = try engine.block.isFillEnabled($0) == isNone
-      let hasChanged = fillType != (isNone ? fallbackValue : value) || enabledChanged
-      return hasChanged
-    }
+        let changed = try blocks.filter {
+          let fillType: FillType = try engine.block.get($0, propertyBlock, property: .key(.type))
+          let enabledChanged = try engine.block.isFillEnabled($0) == isNone
+          let hasChanged = fillType != (isNone ? fallbackValue : value) || enabledChanged
+          return hasChanged
+        }
 
-    try changed.forEach {
-      var colorStops: [GradientColorStop]?
-      var solidColor: Color?
+        try changed.forEach {
+          var colorStops: [GradientColorStop]?
+          var solidColor: Color?
 
-      let currentFillType: ColorFillType = try engine.block.get($0, property: .key(.fillType))
-      if currentFillType != .gradient, value == .gradient {
-        let currentSolidFill = try engine.block.getFillSolidColor($0)
-        let newColor = try currentSolidFill.changeBrightness(by: 0.4)
-        colorStops = [
-          .init(
-            color: Color
-              .rgba(r: currentSolidFill.r, g: currentSolidFill.g, b: currentSolidFill.b, a: currentSolidFill.a),
-            stop: 0
-          ),
-          .init(color: Color.rgba(r: newColor.r, g: newColor.g, b: newColor.b, a: newColor.a), stop: 1)
-        ]
-      } else if value == .solid, currentFillType == .gradient {
-        let currentColorStops: [GradientColorStop] = try engine.block
-          .get($0, .fill, property: .key(.fillGradientColors))
-        solidColor = currentColorStops.first?.color
+          let currentFillType: FillType = try engine.block.get($0, propertyBlock, property: .key(.type))
+          if currentFillType != (isNone ? fallbackValue : value) {
+            if currentFillType != .gradient, value == .gradient {
+              let currentSolidFill = try engine.block.getFillSolidColor($0)
+              let newColor = try currentSolidFill.changeBrightness(by: 0.4)
+              colorStops = [
+                .init(
+                  color: Color
+                    .rgba(r: currentSolidFill.r, g: currentSolidFill.g, b: currentSolidFill.b, a: currentSolidFill.a),
+                  stop: 0
+                ),
+                .init(color: Color.rgba(r: newColor.r, g: newColor.g, b: newColor.b, a: newColor.a), stop: 1)
+              ]
+            } else if value == .solid, currentFillType == .gradient {
+              let currentColorStops: [GradientColorStop] = try engine.block
+                .get($0, propertyBlock, property: .key(.fillGradientColors))
+              solidColor = currentColorStops.first?.color
+            }
+
+            try engine.block.set(
+              $0,
+              propertyBlock,
+              property: .key(.type),
+              value: isNone ? value : value
+            )
+
+            if let colorStops {
+              try engine.block.set($0, propertyBlock, property: .key(.fillGradientColors), value: colorStops)
+            } else if let color = try solidColor?.cgColor?.rgba() {
+              try engine.block.setFillSolidColor($0, r: color.r, g: color.g, b: color.b, a: color.a)
+            }
+          }
+          try engine.block.setFillEnabled($0, enabled: !isNone)
+        }
+        return !changed.isEmpty
       }
-
-      try engine.block.set(
-        $0,
-        property: Property(.fillType),
-        value: isNone ? fallbackValue : value
-      )
-
-      if let colorStops {
-        try engine.block.set($0, .fill, property: .key(.fillGradientColors), value: colorStops)
-      } else if let color = try solidColor?.cgColor?.rgba() {
-        try engine.block.setFillSolidColor($0, r: color.r, g: color.g, b: color.b, a: color.a)
-      }
-
-      try engine.block.setFillEnabled($0, enabled: !isNone)
-    }
-    let didChange = !changed.isEmpty
-    return try (completion?(engine, blocks, didChange) ?? false) || didChange
+    )
+    return try (completion?(engine, blocks, hasChanged) ?? false) || hasChanged
   }
 }

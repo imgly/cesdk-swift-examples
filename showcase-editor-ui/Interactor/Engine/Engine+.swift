@@ -57,7 +57,7 @@ extension Engine {
         return nil
       }
       if property == .key(.fillSolidColor),
-         let fillType: ColorFillType = try? engine.block.get(id, property: .key(.fillType)),
+         let fillType: FillType = try? engine.block.get(id, .fill, property: .key(.type)),
          fillType == .gradient {
         let colorStops: [GradientColorStop] = try engine.block.get(id, .fill, property: .key(.fillGradientColors))
         if let color = colorStops.first?.color.cgColor {

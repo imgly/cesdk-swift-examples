@@ -16,7 +16,7 @@ struct FillColorIcon: View {
   }
 
   let backgroundColorGetter: Interactor.PropertyGetter<[CGColor]> = { engine, id, _, _ in
-    let fillType: ColorFillType = try engine.block.get(id, property: .key(.fillType))
+    let fillType: FillType = try engine.block.get(id, .fill, property: .key(.type))
     if fillType == .solid {
       let color: CGColor = try engine.block.get(id, property: .key(.fillSolidColor))
       return [color]

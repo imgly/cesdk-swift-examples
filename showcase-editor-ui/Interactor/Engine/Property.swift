@@ -5,7 +5,6 @@ public typealias Property = RawRepresentableKey<PropertyKey>
 public enum PropertyKey: String {
   case fillEnabled = "fill/enabled"
   case fillSolidColor = "fill/solid/color"
-  case fillType = "fill/type"
   case fillGradientColors = "fill/gradient/colors"
 
   case fillGradientLinearStartX = "fill/gradient/linear/startPointX"
@@ -52,6 +51,8 @@ public enum PropertyKey: String {
 
   case cropRotation = "crop/rotation"
   case cropScaleRatio = "crop/scaleRatio"
+
+  case type
 }
 
 extension Property {

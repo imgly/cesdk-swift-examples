@@ -17,7 +17,7 @@ struct UnsplashImage: Decodable {
   let promotedAt: String?
   let width, height: Int
   let color, blurHash: String?
-  let resultDescription: String?
+  let description: String?
   let altDescription: String?
   let urls: Urls
   let likes: Int?
