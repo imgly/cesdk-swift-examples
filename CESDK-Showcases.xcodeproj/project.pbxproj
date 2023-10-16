@@ -1514,7 +1514,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		"TEMP_38ACD37B-0AF6-4940-A04E-FB127B275DBA" /* build_github */ = {
+		"TEMP_7E622EF8-B327-4C02-B1D6-A08AF03BBEC9" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
@@ -2206,7 +2206,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.16.0;
+				MARKETING_VERSION = 1.16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2456,7 +2456,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.16.0;
+				MARKETING_VERSION = 1.16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2654,7 +2654,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-SP";
 			requirement = {
 				kind = exactVersion;
-				version = 1.16.0;
+				version = 1.16.1;
 			};
 		};
 		F943A20B845A972EA75B98D4 /* XCRemoteSwiftPackageReference "Media" */ = {
