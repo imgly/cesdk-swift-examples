@@ -1,5 +1,4 @@
-import Foundation
-import IMGLYCoreUI
+import UIKit
 
 struct FontPair {
   let family: FontFamily
@@ -159,10 +158,10 @@ struct FontFamily: Identifiable, Comparable {
 private func loadFontData(_ fonts: [Font], basePath: URL) async -> [String: Data] {
   await withThrowingTaskGroup(of: (String, Data).self) { group -> [String: Data] in
     for font in fonts {
-      let url = basePath.appendingPathComponent(font.fontPath, isDirectory: false)
+      let url = basePath.appending(path: font.fontPath)
       group.addTask {
         let (data, _) = try await URLSession.shared.data(from: url)
-        return (url.absoluteString, data)
+        return (font.id, data)
       }
     }
 
@@ -179,8 +178,8 @@ private func loadFontData(_ fonts: [Font], basePath: URL) async -> [String: Data
 }
 
 func loadFonts() async throws -> [FontFamily] {
-  let basePath = Interactor.basePath.appendingPathComponent(Font.basePath.path, isDirectory: true)
-  let url = basePath.appendingPathComponent("manifest.json", conformingTo: .json)
+  let basePath = Interactor.basePath.appending(path: Font.basePath.path())
+  let url = basePath.appending(path: "manifest.json")
   let (data, _) = try await URLSession.shared.data(from: url)
   let decoder = JSONDecoder()
   let fonts = try decoder.decode(Manifest.self, from: data).assets.first?.assets ?? []
@@ -207,14 +206,62 @@ func loadFonts() async throws -> [FontFamily] {
 
   for (index, family) in fontFamilies.enumerated() {
     fontTypes(for: family).forEach {
-      if let fontPath = family.font($0)?.fontPath {
-        let url = basePath.appendingPathComponent(fontPath, isDirectory: false)
-        fontFamilies[index].setFontName($0, value: previewFontNames[url.absoluteString])
+      if let fontID = family.font($0)?.id {
+        fontFamilies[index].setFontName($0, value: previewFontNames[fontID])
       }
     }
   }
 
   return fontFamilies
+}
+
+@MainActor
+enum FontImporter {
+  private static var registeredFontNames = [String]()
+
+  static func importFonts(_ fonts: [String: Data]) -> [String: String] {
+    // There is a bug in Apple's font loading system, dating back to at least 2010
+    // (https://lists.apple.com/archives/cocoa-dev/2010/Sep/msg00450.html and
+    // http://www.openradar.me/18778790) which can lead to a deadlock when loading custom fonts.
+    // This seems to happen very rarely and has only been reproduced with iOS 10 so far, but adding
+    // the below line works around the issue, so we're adding it to be on the safe side.
+    _ = UIFont()
+
+    var fontIDtoName = [String: String]()
+
+    for font in fonts {
+      guard
+        let provider = CGDataProvider(data: font.value as CFData),
+        let cgfont = CGFont(provider) else {
+        continue
+      }
+
+      var error: Unmanaged<CFError>?
+
+      guard let fontName = cgfont.postScriptName as String? else {
+        continue
+      }
+
+      fontIDtoName[font.key] = fontName
+
+      if registeredFontNames.contains(fontName) {
+        // Font has already been registered
+        continue
+      }
+
+      let registered = CTFontManagerRegisterGraphicsFont(cgfont, &error)
+
+      if !registered {
+        if let error = error?.takeUnretainedValue() as Swift.Error? {
+          print("Failed to register font, error: \(error.localizedDescription)")
+        }
+      } else {
+        registeredFontNames.append(fontName)
+      }
+    }
+
+    return fontIDtoName
+  }
 }
 
 extension Font: Comparable {
@@ -224,7 +271,7 @@ extension Font: Comparable {
 
   static let basePath = URL(string: "/extensions/ly.img.cesdk.fonts")!
 
-  var url: URL { Font.basePath.appendingPathComponent(fontPath, isDirectory: false) }
+  var url: URL { Font.basePath.appending(path: fontPath) }
 
   var isRegular: Bool {
     switch fontWeight {

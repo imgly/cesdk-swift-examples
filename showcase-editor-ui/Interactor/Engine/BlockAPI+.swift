@@ -1,5 +1,4 @@
 import Foundation
-import IMGLYCore
 import IMGLYEngine
 import SwiftUI
 
@@ -20,9 +19,7 @@ extension String: MappedType {}
 extension URL: MappedType {}
 extension RGBA: MappedType {}
 extension CGColor: MappedType {}
-extension SwiftUI.Color: MappedType {}
-extension GradientColorStop: MappedType {}
-extension Array: MappedType where Element: MappedType {}
+extension Color: MappedType {}
 
 /// Property block type to redirect the generic get/set `BlockAPI` methods.
 public enum PropertyBlock {
@@ -57,7 +54,7 @@ public extension BlockAPI {
     let type = try getType(ofProperty: property)
 
     // Map enum types
-    if type == .enum, let type = T.self as? any MappedEnum.Type {
+    if type == .enum, let type = T.self as? any RawRepresentable<String>.Type {
       let rawValue = try getEnum(id, property: property)
       if let value = type.init(rawValue: rawValue) {
         return try unwrap(value as? T)
@@ -98,20 +95,14 @@ public extension BlockAPI {
       return try unwrap(URL(string: getString(id, property: property)) as? T)
     case (String.objectIdentifier, .enum):
       return try unwrap(getEnum(id, property: property) as? T)
-    case (FillType.objectIdentifier, .string):
-      return try unwrap(FillType(rawValue: getString(id, property: property)) as? T)
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
-      return try unwrap(getColor(id, property: property) as RGBA as? T)
+      return try unwrap(getColor(id, property: property) as? T)
     case (CGColor.objectIdentifier, .color):
       return try unwrap(getColor(id, property: property).color() as? T)
-    case (SwiftUI.Color.objectIdentifier, .color):
-      return try unwrap(SwiftUI.Color(cgColor: getColor(id, property: property).color()) as? T)
-
-    // .struct mappings
-    case ([GradientColorStop].objectIdentifier, .struct):
-      return try unwrap(getGradientColorStops(id, property: property) as? T)
+    case (Color.objectIdentifier, .color):
+      return try unwrap(Color(cgColor: getColor(id, property: property).color()) as? T)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -128,12 +119,11 @@ public extension BlockAPI {
   // swiftlint:disable:next cyclomatic_complexity
   func set<T: MappedType>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
                           property: String, value: T) throws {
-    let parentId = id
     let id = try resolve(propertyBlock, parent: id)
     let type = try getType(ofProperty: property)
 
     // Map enum types
-    if type == .enum, let value = value as? any MappedEnum {
+    if type == .enum, let value = value as? any RawRepresentable<String> {
       try setEnum(id, property: property, value: value.rawValue)
       return
     }
@@ -167,17 +157,6 @@ public extension BlockAPI {
       try setString(id, property: property, value: unwrap(value as? URL).absoluteString)
     case (String.objectIdentifier, .enum):
       try setEnum(id, property: property, value: unwrap(value as? String))
-    case (FillType.objectIdentifier, .string):
-      let fillType = try unwrap(value as? FillType)
-      if fillType == .none {
-        try setFillEnabled(parentId, enabled: false)
-      } else {
-        if try hasFill(parentId) {
-          try destroy(getFill(parentId))
-        }
-        let newFill = try createFill(fillType.rawValue)
-        try setFill(parentId, fill: newFill)
-      }
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
@@ -188,13 +167,8 @@ public extension BlockAPI {
       let color = try (value as! CGColor).rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
     case (Color.objectIdentifier, .color):
-      let color = try unwrap(value as? SwiftUI.Color).asCGColor.rgba()
+      let color = try unwrap(value as? Color).asCGColor.rgba()
       try setColor(id, property: property, r: color.r, g: color.g, b: color.b, a: color.a)
-
-    // .struct mappings
-    case ([GradientColorStop].objectIdentifier, .struct):
-      let colorStops = try unwrap(value as? [GradientColorStop])
-      try setGradientColorStops(id, property: property, colors: colorStops)
     default:
       throw Error(
         // swiftlint:disable:next line_length
@@ -248,14 +222,6 @@ public extension BlockAPI {
       throw Error(errorDescription: message + " while mapping enum property '\(property)' to type '\(T.self)'.")
     }
     return orderedCases
-  }
-}
-
-// MARK: - Crop
-
-extension BlockAPI {
-  func canResetCrop(_ id: DesignBlockID) throws -> Bool {
-    try getContentFillMode(id) == .crop
   }
 }
 
@@ -322,25 +288,20 @@ extension BlockAPI {
 // MARK: - Scopes
 
 public extension BlockAPI {
-  func overrideAndRestore<T>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
-                             scope: Scope,
+  func overrideAndRestore<T>(_ id: DesignBlockID, scope: Scope,
                              action: (DesignBlockID) throws -> T) throws -> T {
     let action: ([DesignBlockID]) throws -> T = { ids in try action(ids.first!) }
-    return try overrideAndRestore([id], propertyBlock, scopes: [scope], action: action)
+    return try overrideAndRestore([id], scopes: [scope], action: action)
   }
 
-  func overrideAndRestore<T>(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,
-                             scope: Scope,
+  func overrideAndRestore<T>(_ ids: [DesignBlockID], scope: Scope,
                              action: ([DesignBlockID]) throws -> T) throws -> T {
-    try overrideAndRestore(ids, propertyBlock, scopes: [scope], action: action)
+    try overrideAndRestore(ids, scopes: [scope], action: action)
   }
 
-  func overrideAndRestore<T>(_ ids: [DesignBlockID],
-                             _ propertyBlock: PropertyBlock? = nil,
-                             scopes: Set<Scope>,
+  func overrideAndRestore<T>(_ ids: [DesignBlockID], scopes: Set<Scope>,
                              action: ([DesignBlockID]) throws -> T) throws -> T {
-    let resolvedIds = try ids.map { try resolve(propertyBlock, parent: $0) }
-    let enabledScopesPerID = try resolvedIds.map { id in
+    let enabledScopesPerID = try ids.map { id in
       let enabledScopes = try scopes.map { scope in
         let wasEnabled = try isScopeEnabled(id, key: scope.rawValue)
         try setScopeEnabled(id, key: scope.rawValue, enabled: true)
@@ -349,7 +310,7 @@ public extension BlockAPI {
       return (id: id, enabledScopes: enabledScopes)
     }
 
-    let result = try action(resolvedIds)
+    let result = try action(ids)
 
     try enabledScopesPerID.forEach { id, enabledScopes in
       try enabledScopes.forEach { scope, isEnabled in

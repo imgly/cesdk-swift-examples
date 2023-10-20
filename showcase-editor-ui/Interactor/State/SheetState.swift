@@ -3,15 +3,13 @@ import SwiftUI
 struct SheetState: BatchMutable {
   var isPresented: Bool
   var model: SheetModel
-  var detent: PresentationDetent = .medium
-  var detents: Set<PresentationDetent> = [.medium, .large]
+  var detent: PresentationDetent = .adaptiveMedium
+  var detents: Set<PresentationDetent> = [.adaptiveMedium, .adaptiveLarge]
   var largestUndimmedDetent: PresentationDetent? {
-    if detents.contains(.medium) {
-      return .medium
-    } else if detents.contains(.small) {
-      return .small
-    } else if detents.contains(.tiny) {
-      return .tiny
+    if detents.contains(.adaptiveMedium) {
+      return .adaptiveMedium
+    } else if detents.contains(.adaptiveSmall) {
+      return .adaptiveSmall
     } else {
       return nil
     }
@@ -28,6 +26,20 @@ struct SheetState: BatchMutable {
 
   /// Combined `model` and `isPresented`.
   var state: SheetModel? { isPresented ? model : nil }
+
+  var isSearchable: Bool {
+    switch mode {
+    case .add, .replace:
+      switch type {
+      case .image, .shape, .sticker, .upload:
+        return true
+      default:
+        return false
+      }
+    default:
+      return false
+    }
+  }
 
   /// Hide sheet.
   init() {

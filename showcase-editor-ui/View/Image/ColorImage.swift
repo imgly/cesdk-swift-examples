@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FillColorImage: View {
   let isEnabled: Bool
-  @Binding var colors: [CGColor]
+  @Binding var color: CGColor
 
   var body: some View {
     ZStack {
@@ -13,28 +13,12 @@ struct FillColorImage: View {
         .foregroundStyle(.image(Image("transparent_color_pattern", bundle: Bundle.bundle)))
       if isEnabled {
         Image(systemName: "circle.fill")
-          .foregroundStyle(.linearGradient(colors: colors.map { Color(cgColor: $0) }, startPoint: .leading,
-                                           endPoint: .trailing))
+          .foregroundStyle(Color(cgColor: color))
       } else {
         Image(systemName: "circle.slash")
           .foregroundStyle(.black, .clear)
       }
     }
-  }
-}
-
-extension FillColorImage {
-  init(isEnabled: Bool, color: Binding<CGColor>) {
-    let binding = Binding<[CGColor]>.init {
-      [color.wrappedValue]
-    } set: { value in
-      if let new = value.first {
-        color.wrappedValue = new
-      }
-    }
-
-    self.isEnabled = isEnabled
-    _colors = binding
   }
 }
 

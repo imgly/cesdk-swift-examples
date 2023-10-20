@@ -10,8 +10,7 @@ struct StrokeColorOptions: View {
                    isEnabled: interactor.bind(id, property: .key(.strokeEnabled), default: false),
                    color: interactor.bind(id, property: .key(.strokeColor), default: .black, completion:
                      Interactor.Completion.set(property: .key(.strokeEnabled), value: true)),
-                   addUndoStep: interactor.addUndoStep,
-                   style: .stroke)
+                   addUndoStep: interactor.addUndoStep)
     }
   }
 }

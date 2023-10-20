@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum SheetMode: Labelable, IdentifiableByHash {
-  case add, replace, edit, format, options, crop, fillAndStroke, layer, enterGroup, selectGroup
+  case add, replace, edit, format, options, fillAndStroke, layer, enterGroup, selectGroup
   case selectionColors
   case font(_ id: Interactor.BlockID?, _ fontFamilies: [String]?)
   case fontSize(_ id: Interactor.BlockID?)
@@ -37,7 +37,6 @@ enum SheetMode: Labelable, IdentifiableByHash {
     case .edit: return "Edit"
     case .format: return "Format"
     case .options: return "Options"
-    case .crop: return "Crop"
     case .fillAndStroke: return "Fill & Stroke"
     case .layer: return "Layer"
     case .enterGroup: return "Enter Group"
@@ -56,7 +55,6 @@ enum SheetMode: Labelable, IdentifiableByHash {
     case .edit: return "keyboard"
     case .format: return "textformat"
     case .options: return "slider.horizontal.below.rectangle"
-    case .crop: return "crop.rotate"
     case .fillAndStroke: return nil
     case .layer: return "square.3.stack.3d"
     case .enterGroup: return "enter_group"

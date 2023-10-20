@@ -28,10 +28,10 @@ struct TextState: BatchMutable {
     }
   }
 
-  func fontFamilyName(_ fontLibrary: FontLibrary) -> String? {
+  func fontFamilyName(_ assets: AssetLibrary) -> String? {
     guard let fontFamilyID else {
       return nil
     }
-    return fontLibrary.fontFamilyFor(id: fontFamilyID)?.name
+    return assets.fontFamilyFor(id: fontFamilyID)?.name
   }
 }

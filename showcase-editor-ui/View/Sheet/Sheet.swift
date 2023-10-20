@@ -1,4 +1,5 @@
-import IMGLYCoreUI
+import Introspect
+import Media
 import SwiftUI
 
 struct Sheet: View {
@@ -13,19 +14,19 @@ struct Sheet: View {
     case .text: TextSheet()
     case .shape: ShapeSheet()
     case .sticker: StickerSheet()
+    case .upload: UploadSheet()
     case .group: GroupSheet()
     case .selectionColors: SelectionColorsSheet()
     case .font: FontSheet()
     case .fontSize: FontSizeSheet()
     case .color: ColorSheet()
-    case .page: PageSheet()
     }
   }
 
-  @State var hidePresentationDragIndicator: Bool = false
+  var tabs: [SheetType] { [.image, .text, .shape, .sticker, .upload] }
 
   var dragIndicatorVisibility: Visibility {
-    if hidePresentationDragIndicator {
+    if sheet.isSearchable {
       return .hidden
     }
     if verticalSizeClass == .compact {
@@ -34,24 +35,19 @@ struct Sheet: View {
     return .visible
   }
 
-  var assetLibrary: AssetLibrary {
-    AssetLibrary(sceneMode: .design)
-  }
-
   var body: some View {
     Group {
-      switch sheet.mode {
-      case .add: assetLibrary
-      case .replace:
-        Group {
-          switch sheet.type {
-          case .image: assetLibrary.imagesTab
-          case .sticker: assetLibrary.stickersTab
-          default: EmptyView()
+      if sheet.mode == .add {
+        TabView(selection: $interactor.sheet.model.type) {
+          ForEach(tabs) { type in
+            sheet(type)
+              .tabItem {
+                type.label(suffix: type != .text ? "s" : "")
+              }
+              .tag(type)
           }
         }
-        .assetLibraryTitleDisplayMode(.inline)
-      default:
+      } else {
         if let id = sheet.mode.pinnedBlockID {
           sheet(sheet.type)
             .selection(id)
@@ -62,15 +58,18 @@ struct Sheet: View {
         }
       }
     }
-    .assetLibraryInteractor(interactor)
-    .assetLibraryDismissButton(SheetDismissButton())
-    .onPreferenceChange(PresentationDragIndicatorHiddenKey.self) { newValue in
-      hidePresentationDragIndicator = newValue
-    }
     .pickerStyle(.menu)
-    .conditionalPresentationConfiguration(sheet.largestUndimmedDetent)
-    .conditionalPresentationDetents(sheet.detents, selection: $interactor.sheet.detent)
-    .conditionalPresentationDragIndicator(dragIndicatorVisibility)
+    .presentationDetents(sheet.detents, selection: $interactor.sheet.detent)
+    .presentationDragIndicator(dragIndicatorVisibility)
+    .introspectViewController { viewController in
+      viewController.presentingViewController?.view.tintAdjustmentMode = .normal
+      if let sheet = viewController.sheetPresentationController {
+        let largestUndimmedDetentIdentifier = interactor.sheet.largestUndimmedDetent?.identifier
+        sheet.largestUndimmedDetentIdentifier = largestUndimmedDetentIdentifier
+        sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        sheet.prefersEdgeAttachedInCompactHeight = true
+      }
+    }
   }
 }
 

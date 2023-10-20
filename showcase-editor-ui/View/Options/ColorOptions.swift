@@ -5,18 +5,15 @@ struct ColorOptions: View {
   private let isEnabledBinding: Binding<Bool>?
   @Binding private var color: CGColor
   private let addUndoStep: @MainActor () -> Void
-  private let style: ColorPropertyButtonStyle
 
   init(title: LocalizedStringKey? = nil,
        isEnabled: Binding<Bool>? = nil,
        color: Binding<CGColor>,
-       addUndoStep: @escaping @MainActor () -> Void = {},
-       style: ColorPropertyButtonStyle = .fill) {
+       addUndoStep: @escaping @MainActor () -> Void = {}) {
     self.title = title
     isEnabledBinding = isEnabled
     _color = color
     self.addUndoStep = addUndoStep
-    self.style = style
   }
 
   @State private var showColorPicker = false
@@ -51,13 +48,7 @@ struct ColorOptions: View {
         Spacer()
       }
       ForEach(colors) {
-        ColorPropertyButton(
-          name: $0.name,
-          color: $0.color,
-          isEnabled: isEnabled,
-          selection: colorWithUndo,
-          style: style
-        )
+        ColorPropertyButton(name: $0.name, color: $0.color, isEnabled: isEnabled, selection: colorWithUndo)
         Spacer()
       }
 

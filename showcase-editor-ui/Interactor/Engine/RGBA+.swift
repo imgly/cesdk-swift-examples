@@ -1,7 +1,5 @@
 import CoreGraphics
-import IMGLYCore
 import IMGLYEngine
-import UIKit
 
 extension RGBA {
   func color() throws -> CGColor {
@@ -12,23 +10,5 @@ extension RGBA {
     }
 
     return color
-  }
-}
-
-extension RGBA {
-  func changeBrightness(by delta: CGFloat) throws -> RGBA {
-    guard let currentHSBA = try color().hsba else {
-      throw Error(errorDescription: "No HSBA value found.")
-    }
-
-    let adjustment = currentHSBA
-      .brightness > 0.5 ? max(currentHSBA.brightness - delta, 0) : min(currentHSBA.brightness + delta, 1)
-    let new = HSBA(
-      hue: currentHSBA.hue,
-      saturation: currentHSBA.saturation,
-      brightness: adjustment,
-      alpha: currentHSBA.alpha
-    )
-    return try UIColor(hsba: new).cgColor.rgba()
   }
 }

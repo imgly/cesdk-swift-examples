@@ -2,7 +2,7 @@ import Foundation
 import IMGLYEngine
 
 // highlight-unsplash-api-creation
-public final class UnsplashAssetSource: NSObject {
+final class UnsplashAssetSource: NSObject {
   private lazy var decoder: JSONDecoder = {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -12,9 +12,7 @@ public final class UnsplashAssetSource: NSObject {
   private let host: String
   private let path: String
 
-  public static let defaultHost = Secrets.unsplashHost
-
-  public init(host: String = defaultHost, path: String = "/unsplashProxy") {
+  init(host: String = Secrets.unsplashHost, path: String = "/unsplashProxy") {
     self.host = host
     self.path = path
   }
@@ -61,9 +59,9 @@ public final class UnsplashAssetSource: NSObject {
 // highlight-unsplash-api-creation
 
 extension UnsplashAssetSource: AssetSource {
-  public static let id = "ly.img.asset.source.unsplash"
+  static let id = "ly.img.asset.source.unsplash"
 
-  public var id: String {
+  var id: String {
     Self.id
   }
 
@@ -71,7 +69,7 @@ extension UnsplashAssetSource: AssetSource {
   // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
   private static let get: (URL) async throws -> (Data, URLResponse) = URLSession.shared.data
 
-  public func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
+  func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     // highlight-unsplash-query
     let endpoint: Endpoint = queryData.query?
       .isEmpty ?? true ? .list(queryData: queryData) : .search(queryData: queryData)
@@ -88,7 +86,7 @@ extension UnsplashAssetSource: AssetSource {
         assets: response.map(AssetResult.init),
         currentPage: queryData.page,
         nextPage: nextPage,
-        total: -1
+        total: 0
       )
     } else {
       let response = try decoder.decode(UnsplashSearchResponse.self, from: data)
@@ -105,19 +103,19 @@ extension UnsplashAssetSource: AssetSource {
     // highlight-unsplash-result-mapping
   }
 
-  public var supportedMIMETypes: [String]? {
+  var supportedMIMETypes: [String]? {
     [MIMEType.jpeg.rawValue]
   }
 
   // highlight-unsplash-credits-license
-  public var credits: AssetCredits? {
+  var credits: AssetCredits? {
     .init(
       name: "Unsplash",
       url: URL(string: "https://unsplash.com/")!
     )
   }
 
-  public var license: AssetLicense? {
+  var license: AssetLicense? {
     .init(
       name: "Unsplash license (free)",
       url: URL(string: "https://unsplash.com/license")!
@@ -137,7 +135,7 @@ extension AssetResult {
       locale: "en",
       // highlight-result-locale
       // highlight-result-label
-      label: image.description ?? image.altDescription,
+      label: image.resultDescription ?? image.altDescription,
       // highlight-result-label
       // highlight-result-tags
       tags: image.tags?.compactMap(\.title),

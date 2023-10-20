@@ -49,7 +49,7 @@ public extension InteractorBehavior {
     try context.engine.editor.setSettingBool("touch/dragStartCanSelect", value: false)
     try context.engine.editor.setSettingEnum("touch/pinchAction", value: "Zoom")
     try context.engine.editor.setSettingEnum("touch/rotateAction", value: "None")
-    try context.engine.editor.setSettingBool("doubleClickToCropEnabled", value: true)
+    try context.engine.editor.setSettingBool("doubleClickToCropEnabled", value: false)
     try context.engine.editor.setSettingEnum("doubleClickSelectionMode", value: "Direct")
     try context.engine.editor.setSettingString("basePath", value: Interactor.basePath.absoluteString)
     try context.engine.editor.setSettingEnum("role", value: "Adopter")
@@ -68,14 +68,14 @@ public extension InteractorBehavior {
     ]).forEach { scope in
       try context.engine.editor.setGlobalScope(key: scope.rawValue, value: .defer)
     }
-    let scene = try await context.engine.scene.load(from: url)
+    let scene = try await context.engine.scene.load(fromURL: url)
     let page = try context.engine.getPage(context.interactor.page)
     _ = try context.engine.block.addOutline(Engine.outlineBlockName, for: page, to: scene)
     try context.engine.showOutline(false)
     try context.engine.showPage(context.interactor.page)
     try enableEditMode(context)
     try await context.engine.zoomToPage(context.interactor.page, insets)
-    try context.engine.editor.resetHistory()
+    try context.engine.editor.addUndoStep()
   }
 
   private func showAllPages(_ context: InteractorContext) throws {

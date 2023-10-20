@@ -15,7 +15,7 @@ func createSceneFromImageBlob(engine: Engine) async throws {
   // highlight-objectURL
 
   // highlight-initialImageURL
-  let scene = try await engine.scene.create(fromImage: url)
+  let scene = try await engine.scene.create(from: url)
   // highlight-initialImageURL
 
   // highlight-find-image

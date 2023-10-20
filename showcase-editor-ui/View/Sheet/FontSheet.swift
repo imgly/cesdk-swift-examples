@@ -4,15 +4,15 @@ struct FontSheet: View {
   @EnvironmentObject private var interactor: Interactor
   @Environment(\.selection) private var id
   @Environment(\.fontFamilies) private var fontFamilies
-  private var fontLibrary: FontLibrary { interactor.fontLibrary }
+  private var assets: AssetLibrary { interactor.assets }
 
   var fonts: [FontFamily] {
     if let fontFamilies {
       return fontFamilies.compactMap {
-        fontLibrary.fontFamilyFor(id: $0)
+        assets.fontFamilyFor(id: $0)
       }
     } else {
-      return fontLibrary.fonts
+      return assets.fonts
     }
   }
 
