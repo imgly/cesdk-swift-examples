@@ -65,6 +65,7 @@
 		35E6129C1299997616BE6E51 /* Showcase-CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B9B446FEEF47B839FF3960 /* Showcase-CoreUI.framework */; };
 		365AA28C5503C3C9222E308A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF076F2176C125F36D939FE /* Error.swift */; };
 		376575AC3BAB6078E0C07F2E /* AudioPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734F1D5BF21F579DDE0362A3 /* AudioPreview.swift */; };
+		391A417B9631E8D7F01567FD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0814C7782975BA3FBBD7D8 /* Colors.swift */; };
 		3ACFC096283CADBDC1551ED0 /* AssetLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B231028B7D7AB6A45BD027B4 /* AssetLibrary.swift */; };
 		3C00D6CD3A1E742F2B1ADF02 /* BottomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152148CD49E4268F63239D3F /* BottomToolbar.swift */; };
 		3C4F9DB772DD7457D44BBCF1 /* SelectionColorsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A695518982DD04EFC620A9CD /* SelectionColorsSheet.swift */; };
@@ -637,6 +638,7 @@
 		E84AF2A4329B1B200BF51C0A /* StrokePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePosition.swift; sourceTree = "<group>"; };
 		E9F29417250387C8CDF04A28 /* ExportingBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportingBlocks.swift; sourceTree = "<group>"; };
 		EAD94D46C69D13DCDCFF489D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		EB0814C7782975BA3FBBD7D8 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		EB49ADE1FAC03E5887A4AB6A /* bonjour_paris.scene */ = {isa = PBXFileReference; path = bonjour_paris.scene; sourceTree = "<group>"; };
 		EB4E68AC1412CBC0B9861E49 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		EC927A5D9AEEA8FDFB0EF6CD /* ModifyingScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyingScenes.swift; sourceTree = "<group>"; };
@@ -1214,6 +1216,7 @@
 		70626161758B70813AF43B5F = {
 			isa = PBXGroup;
 			children = (
+				740609F297ADAEF236FFD009 /* engine-guides-colors */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
 				35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */,
 				BF0890538DFBAAAB3FBA7AE4 /* engine-guides-create-scene-from-scratch */,
@@ -1277,6 +1280,14 @@
 				4614C29D61018BB5DC711793 /* OptionButtonStyle.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		740609F297ADAEF236FFD009 /* engine-guides-colors */ = {
+			isa = PBXGroup;
+			children = (
+				EB0814C7782975BA3FBBD7D8 /* Colors.swift */,
+			);
+			path = "engine-guides-colors";
 			sourceTree = "<group>";
 		};
 		7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */ = {
@@ -1697,7 +1708,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		"TEMP_9A5E42EF-1834-4B17-9B88-B18F541358AF" /* build_github */ = {
+		"TEMP_4426A22E-F8B9-409B-8516-A772D390CDD6" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
@@ -1723,6 +1734,7 @@
 				6CFFDCF44F860519A1D16C7B /* engine-guides-scopes */,
 				9280B544468AEE47D6AA05CC /* engine-guides-save-scene-to-archive */,
 				35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */,
+				740609F297ADAEF236FFD009 /* engine-guides-colors */,
 				6FC46A30761D2F46CD8ED91D /* third-party */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
 				9EF2DB44EA111DA44F756547 /* integrate-with-appkit */,
@@ -1981,6 +1993,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F3DA872BA8853FF31311F89 /* Camera.swift in Sources */,
+				391A417B9631E8D7F01567FD /* Colors.swift in Sources */,
 				2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */,
 				5718C57B9AA61ECD7CBDAFC2 /* CreateSceneFromImageURL.swift in Sources */,
 				B3516693EC558A338D214901 /* CreateSceneFromScratch.swift in Sources */,
@@ -2442,7 +2455,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.17.0;
+				MARKETING_VERSION = "1.18.1-rc.0";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2693,7 +2706,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.17.0;
+				MARKETING_VERSION = "1.18.1-rc.0";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2891,7 +2904,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-SP";
 			requirement = {
 				kind = exactVersion;
-				version = 1.17.0;
+				version = "1.18.1-rc.0";
 			};
 		};
 		F943A20B845A972EA75B98D4 /* XCRemoteSwiftPackageReference "Media" */ = {
