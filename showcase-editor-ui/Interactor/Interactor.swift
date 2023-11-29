@@ -8,7 +8,7 @@ import SwiftUI
 public final class Interactor: ObservableObject, KeyboardObserver {
   // MARK: - Properties
 
-  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.18.0/assets")!
+  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.18.1/assets")!
 
   @ViewBuilder var canvas: some View {
     if let engine {
