@@ -7,7 +7,7 @@ import IMGLYEngine
 class AssetLibraryInteractorMock: ObservableObject {
   @Published private(set) var isAddingAsset = false
 
-  private lazy var engine = Engine()
+  private var engine: Engine?
   private var sceneTask: Task<Void, Swift.Error>?
 
   func loadScene() {
@@ -15,8 +15,10 @@ class AssetLibraryInteractorMock: ObservableObject {
       return
     }
     sceneTask = Task {
+      let engine = try await Engine(license: Secrets.licenseKey)
+      self.engine = engine
       try engine.scene.createVideo()
-      let basePath = "https://cdn.img.ly/packages/imgly/cesdk-engine/1.18.1/assets"
+      let basePath = "https://cdn.img.ly/packages/imgly/cesdk-engine/1.19.0-rc.0/assets"
       try engine.editor.setSettingString("basePath", value: basePath)
       try engine.asset.addSource(UnsplashAssetSource())
       try engine.asset.addSource(TextAssetSource(engine: engine))
@@ -32,24 +34,29 @@ extension AssetLibraryInteractorMock: AssetLibraryInteractor {
   func findAssets(sourceID: String, query: IMGLYEngine.AssetQueryData) async throws -> IMGLYEngine.AssetQueryResult {
     loadScene()
     _ = await sceneTask?.result
+    guard let engine else { throw Error(errorDescription: "Engine unavailable.") }
     return try await engine.asset.findAssets(sourceID: sourceID, query: query)
   }
 
   func getGroups(sourceID: String) async throws -> [String] {
     loadScene()
     _ = await sceneTask?.result
+    guard let engine else { throw Error(errorDescription: "Engine unavailable.") }
     return try await engine.asset.getGroups(sourceID: sourceID)
   }
 
   func getCredits(sourceID: String) -> AssetCredits? {
-    engine.asset.getCredits(sourceID: sourceID)
+    guard let engine else { return nil }
+    return engine.asset.getCredits(sourceID: sourceID)
   }
 
   func getLicense(sourceID: String) -> AssetLicense? {
-    engine.asset.getLicense(sourceID: sourceID)
+    guard let engine else { return nil }
+    return engine.asset.getLicense(sourceID: sourceID)
   }
 
   func addAsset(to sourceID: String, asset: IMGLYEngine.AssetDefinition) throws {
+    guard let engine else { throw Error(errorDescription: "Engine unavailable.") }
     try engine.asset.addAsset(to: sourceID, asset: asset)
   }
 
@@ -62,6 +69,7 @@ extension AssetLibraryInteractorMock: AssetLibraryInteractor {
   }
 
   func getBasePath() throws -> String {
-    try engine.editor.getSettingString("basePath")
+    guard let engine else { throw Error(errorDescription: "Engine unavailable.") }
+    return try engine.editor.getSettingString("basePath")
   }
 }

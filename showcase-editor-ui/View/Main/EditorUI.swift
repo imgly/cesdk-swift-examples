@@ -98,7 +98,6 @@ public struct EditorUI: View {
       }
       .errorAlert(isSheet: false)
       .onAppear {
-        interactor.onAppear()
         let zoom = zoomParameters(canvasGeometry: canvasGeometry, sheetGeometry: sheetGeometryIfPresented)
         interactor.loadScene(from: url, with: zoom.insets)
       }

@@ -8,8 +8,8 @@ func createSceneFromVideoURL(engine: Engine) async throws {
   // highlight-createFromVideo
 
   // highlight-findByType
-  // Find the automatically added rect block in the scene that contains the video fill.
-  let block = try engine.block.find(byType: .rectShape).first!
+  // Find the automatically added graphic block in the scene that contains the video fill.
+  let block = try engine.block.find(byType: .graphic).first!
   // highlight-findByType
 
   // highlight-setOpacity

@@ -13,4 +13,6 @@ public enum AssetMetaKey: String {
   case artist
   case title
   case filename
+  case kind
+  case fillType
 }

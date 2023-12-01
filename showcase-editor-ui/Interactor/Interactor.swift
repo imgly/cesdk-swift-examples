@@ -8,11 +8,14 @@ import SwiftUI
 public final class Interactor: ObservableObject, KeyboardObserver {
   // MARK: - Properties
 
-  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.18.1/assets")!
+  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.19.0-rc.0/assets")!
 
   @ViewBuilder var canvas: some View {
     if let engine {
       IMGLYEngine.Canvas(engine: engine)
+    } else {
+      ProgressView()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }
 
@@ -59,14 +62,21 @@ public final class Interactor: ObservableObject, KeyboardObserver {
     guard let id, let engine, let type = try? engine.block.getType(id) else {
       return nil
     }
-    return sheetType(for: type)
+    let fill = try? engine.block.getFill(id)
+    let kind: BlockKind? = try? engine.block.getKind(id)
+    var fillType: String?
+    if let fill {
+      fillType = try? engine.block.getType(fill)
+    }
+    return sheetType(for: type, with: fillType, and: kind)
   }
 
-  func blockType(_ id: BlockID?) -> DesignBlockType? {
-    guard let id, let engine, let type = try? engine.block.getType(id) else {
+  func shapeType(_ id: BlockID?) -> ShapeType? {
+    guard let id, let engine, let shape = try? engine.block.getShape(id),
+          let type = try? engine.block.getType(shape) else {
       return nil
     }
-    return DesignBlockType(rawValue: type)
+    return ShapeType(rawValue: type)
   }
 
   var rotationForSelection: CGFloat? {
@@ -120,7 +130,7 @@ public final class Interactor: ObservableObject, KeyboardObserver {
     zoom.task?.cancel()
   }
 
-  func onAppear() {
+  private func onAppear() {
     updateState()
     stateTask = observeState()
     eventTask = observeEvent()
@@ -143,9 +153,8 @@ public final class Interactor: ObservableObject, KeyboardObserver {
 
   private let behavior: InteractorBehavior
 
-  // Currently, IMGLYEngine.Engine does not support multiple instances.
   // The optional _engine instance allows to control the deinitialization.
-  private lazy var _engine: Engine? = Engine()
+  private var _engine: Engine?
 
   private var stateTask: Task<Void, Never>?
   private var eventTask: Task<Void, Never>?
@@ -168,10 +177,14 @@ extension Interactor {
     }
   }
 
-  private func hasFillType(_ id: DesignBlockID?, type: FillType) -> Bool {
-    guard let id else { return false }
-    let fillType: FillType? = get(id, .fill, property: .key(.type))
-    return fillType == type
+  private func hasColorFillType(_ id: DesignBlockID?, type: ColorFillType) -> Bool {
+    guard let id, let engine else { return false }
+    do {
+      let fillType: ColorFillType? = try engine.block.get(id, .fill, property: .key(.type))
+      return fillType == type
+    } catch {
+      return false
+    }
   }
 
   func canBringForward(_ id: BlockID?) -> Bool { block(id, engine?.block.canBringForward) ?? false }
@@ -184,8 +197,9 @@ extension Interactor {
   func hasCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.hasCrop) ?? false }
   func canResetCrop(_ id: BlockID?) -> Bool { block(id, engine?.block.canResetCrop) ?? false }
   func isGrouped(_ id: BlockID?) -> Bool { block(id, engine?.block.isGrouped) ?? false }
-  func hasSolidFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .solid) }
-  func hasGradientFill(_ id: DesignBlockID?) -> Bool { hasFillType(id, type: .gradient) }
+  func hasSolidFill(_ id: DesignBlockID?) -> Bool { hasColorFillType(id, type: .solid) }
+  func hasGradientFill(_ id: DesignBlockID?) -> Bool { hasColorFillType(id, type: .gradient) }
+  func hasColorFill(_ id: DesignBlockID?) -> Bool { hasSolidFill(id) || hasGradientFill(id) }
 }
 
 // MARK: - Property bindings
@@ -287,10 +301,10 @@ extension Interactor {
                 }
               }
               _ = try self.engine?.block.overrideAndRestore(gradientIDs, .fill, scope: .key(.lifecycleDestroy)) { _ in
-                self.set(gradientIDs, .fill, property: .key(.type), value: FillType.solid, completion: nil)
+                self.set(gradientIDs, .fill, property: .key(.type), value: ColorFillType.solid, completion: nil)
               }
               _ = self.set(ids, property: property, value: value,
-                           setter: Setter.set(overrideScope: .key(.designStyle)),
+                           setter: Setter.set(overrideScopes: [.key(.fillChange), .key(.strokeChange)]),
                            completion: completion)
             }
           } catch {
@@ -386,8 +400,12 @@ extension Interactor {
     }
 
     static func set<T: MappedType>(overrideScope: Scope) -> Interactor.PropertySetter<T> {
+      set(overrideScopes: [overrideScope])
+    }
+
+    static func set<T: MappedType>(overrideScopes: Set<Scope>) -> Interactor.PropertySetter<T> {
       { engine, blocks, propertyBlock, property, value, completion in
-        let didChange = try engine.block.overrideAndRestore(blocks, scope: overrideScope) {
+        let didChange = try engine.block.overrideAndRestore(blocks, scopes: overrideScopes) {
           try engine.block.set($0, propertyBlock, property: property, value: value)
         }
         return try (completion?(engine, blocks, didChange) ?? false) || didChange
@@ -441,34 +459,42 @@ extension Interactor {
 // MARK: - Constraints
 
 extension Interactor {
-  func isAllowed(_ id: BlockID?, scope: Scope) -> Bool {
+  func isAllowed(_ id: BlockID?, scope: ScopeKey) -> Bool {
     guard let engine, let id, engine.block.isValid(id) else {
       return false
     }
     do {
-      return try engine.block.isAllowedByScope(id, key: scope.rawValue)
+      return try engine.block.isAllowedByScope(id, scope: .init(scope))
     } catch {
       handleErrorWithTask(error)
       return false
     }
   }
 
+  // swiftlint:disable:next cyclomatic_complexity
   func isAllowed(_ id: BlockID?, _ mode: SheetMode) -> Bool {
     switch mode {
     case .add:
       return true
-    case .replace, .edit:
-      return isAllowed(id, scope: .key(.contentReplace))
+    case .replace:
+      return isAllowed(id, scope: .fillChange)
+    case .edit:
+      return isAllowed(id, scope: .textEdit)
     case .crop:
-      return isAllowed(id, scope: .key(.contentReplace)) || isAllowed(id, scope: .key(.designStyle))
-    case .format, .options, .fillAndStroke:
-      return isAllowed(id, scope: .key(.designStyle))
+      return isAllowed(id, scope: .layerCrop) || isAllowed(id, scope: .layerClipping)
+    case .format:
+      return isAllowed(id, scope: .textCharacter)
+    case .options:
+      return isAllowed(id, scope: .shapeChange)
+    case .fillAndStroke:
+      return isAllowed(id, scope: .fillChange) && isAllowed(id, scope: .strokeChange)
     case .layer:
-      let style = isAllowed(id, .fillAndStroke)
+      let opacity = isAllowed(id, scope: .layerOpacity)
+      let blend = isAllowed(id, scope: .layerBlendMode)
       let layer = isAllowed(id, .toTop)
       let duplicate = isAllowed(id, .duplicate)
       let delete = isAllowed(id, .delete)
-      return style || layer || duplicate || delete
+      return opacity || blend || layer || duplicate || delete
     case .enterGroup:
       return true
     case .selectGroup:
@@ -486,11 +512,11 @@ extension Interactor {
     case .editMode: return true
     case .export: return true
     case .toTop, .up, .down, .toBottom:
-      return isAllowed(id, scope: .key(.editorAdd)) && !isGrouped(id)
+      return isAllowed(id, scope: .editorAdd) && !isGrouped(id)
     case .duplicate:
-      return isAllowed(id, scope: .key(.lifecycleDuplicate)) && !isGrouped(id)
+      return isAllowed(id, scope: .lifecycleDuplicate) && !isGrouped(id)
     case .delete:
-      return isAllowed(id, scope: .key(.lifecycleDestroy)) && !isGrouped(id)
+      return isAllowed(id, scope: .lifecycleDestroy) && !isGrouped(id)
     case .previousPage, .nextPage, .page: return true
     case .resetCrop, .flipCrop:
       return isAllowed(id, .crop) && !isGrouped(id)
@@ -554,7 +580,10 @@ extension Interactor: AssetLibraryInteractor {
             guard let url = asset.url else {
               return
             }
-            _ = try engine.set([id], property: .key(.stickerImageFileURI), value: url)
+            try await engine.block.overrideAndRestore(id, scope: .key(.layerCrop)) {
+              _ = try engine.set([$0], .fill, property: .key(.fillImageImageFileURI), value: url)
+              try engine.block.setContentFillMode($0, mode: .contain)
+            }
           default:
             try await engine.asset.applyToBlock(sourceID: sourceID, assetResult: asset, block: id)
           }
@@ -695,11 +724,12 @@ extension Interactor {
       return
     }
 
-    sceneTask = Task { [engine] in
-      guard let engine else {
-        return
-      }
+    sceneTask = Task {
       do {
+        let engine = try await Engine(license: Secrets.licenseKey, userID: "showcase-user")
+        _engine = engine
+        onAppear()
+
         try await behavior.loadScene(.init(engine, self), from: url, with: insets)
 
         async let loadFonts = loadFonts()
@@ -712,6 +742,10 @@ extension Interactor {
         try engine.asset.addSource(UnsplashAssetSource())
         try engine.asset.addSource(TextAssetSource(engine: engine))
         isLoading = false
+      } catch LicenseError.missing {
+        let message = LicenseError.missing.errorDescription ?? ""
+        let error = Error(errorDescription: "Please enter a `licenseKey` in `Secrets.swift`!\n\(message)")
+        handleErrorAndDismiss(error)
       } catch {
         handleErrorAndDismiss(error)
       }
@@ -873,15 +907,26 @@ private extension Interactor {
     }
   }
 
-  func sheetType(for designBlockType: String) -> SheetType? {
+  func sheetType(for designBlockType: String, with fillType: String? = nil,
+                 and kind: BlockKind? = nil) -> SheetType? {
     switch designBlockType {
-    case DesignBlockType.text.rawValue: return .text
-    case DesignBlockType.image.rawValue: return .image
-    case _ where designBlockType.hasPrefix(DesignBlockType.shapes): return .shape
-    case DesignBlockType.vectorPath.rawValue: return .shape
-    case DesignBlockType.sticker.rawValue: return .sticker
-    case DesignBlockType.group.rawValue: return .group
-    case DesignBlockType.page.rawValue: return .page
+    case BlockType.text.rawValue: return .text
+    case BlockType.group.rawValue: return .group
+    case BlockType.page.rawValue: return .page
+    case BlockType.graphic.rawValue:
+      guard let fillType else { return nil }
+      switch fillType {
+      case FillType.image.rawValue:
+        if kind == .key(.sticker) {
+          return .sticker
+        }
+        return .image
+      default:
+        if kind == .key(.shape) {
+          return .shape
+        }
+        return nil
+      }
     default: return nil
     }
   }

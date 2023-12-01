@@ -26,7 +26,7 @@ extension Array: MappedType where Element: MappedType {}
 
 /// Property block type to redirect the generic get/set `BlockAPI` methods.
 public enum PropertyBlock {
-  case fill, blur
+  case fill, blur, shape
 }
 
 public extension BlockAPI {
@@ -42,6 +42,7 @@ public extension BlockAPI {
     case .none: return parent
     case .fill: return try getFill(parent)
     case .blur: return try getBlur(parent)
+    case .shape: return try getShape(parent)
     }
   }
 
@@ -98,8 +99,8 @@ public extension BlockAPI {
       return try unwrap(URL(string: getString(id, property: property)) as? T)
     case (String.objectIdentifier, .enum):
       return try unwrap(getEnum(id, property: property) as? T)
-    case (FillType.objectIdentifier, .string):
-      return try unwrap(FillType(rawValue: getString(id, property: property)) as? T)
+    case (ColorFillType.objectIdentifier, .string):
+      return try unwrap(ColorFillType(rawValue: getString(id, property: property)) as? T)
 
     // .color mappings
     case (RGBA.objectIdentifier, .color):
@@ -167,15 +168,15 @@ public extension BlockAPI {
       try setString(id, property: property, value: unwrap(value as? URL).absoluteString)
     case (String.objectIdentifier, .enum):
       try setEnum(id, property: property, value: unwrap(value as? String))
-    case (FillType.objectIdentifier, .string):
-      let fillType = try unwrap(value as? FillType)
-      if fillType == .none {
+    case (ColorFillType.objectIdentifier, .string):
+      let colorFillType = try unwrap(value as? ColorFillType)
+      if colorFillType == .none {
         try setFillEnabled(parentId, enabled: false)
       } else {
         if try hasFill(parentId) {
           try destroy(getFill(parentId))
         }
-        let newFill = try createFill(fillType.rawValue)
+        let newFill = try createFill(colorFillType.fillType())
         try setFill(parentId, fill: newFill)
       }
 
@@ -322,11 +323,30 @@ extension BlockAPI {
 // MARK: - Scopes
 
 public extension BlockAPI {
+  func setScopeEnabled(_ id: DesignBlockID, scope: Scope, enabled: Bool) throws {
+    try setScopeEnabled(id, key: scope.rawValue, enabled: enabled)
+  }
+
+  func isScopeEnabled(_ id: DesignBlockID, scope: Scope) throws -> Bool {
+    try isScopeEnabled(id, key: scope.rawValue)
+  }
+
+  func isAllowedByScope(_ id: DesignBlockID, scope: Scope) throws -> Bool {
+    try isAllowedByScope(id, key: scope.rawValue)
+  }
+
   func overrideAndRestore<T>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
                              scope: Scope,
                              action: (DesignBlockID) throws -> T) throws -> T {
     let action: ([DesignBlockID]) throws -> T = { ids in try action(ids.first!) }
     return try overrideAndRestore([id], propertyBlock, scopes: [scope], action: action)
+  }
+
+  func overrideAndRestore<T>(_ id: DesignBlockID, _ propertyBlock: PropertyBlock? = nil,
+                             scopes: Set<Scope>,
+                             action: (DesignBlockID) throws -> T) throws -> T {
+    let action: ([DesignBlockID]) throws -> T = { ids in try action(ids.first!) }
+    return try overrideAndRestore([id], propertyBlock, scopes: scopes, action: action)
   }
 
   func overrideAndRestore<T>(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,
@@ -342,8 +362,8 @@ public extension BlockAPI {
     let resolvedIds = try ids.map { try resolve(propertyBlock, parent: $0) }
     let enabledScopesPerID = try resolvedIds.map { id in
       let enabledScopes = try scopes.map { scope in
-        let wasEnabled = try isScopeEnabled(id, key: scope.rawValue)
-        try setScopeEnabled(id, key: scope.rawValue, enabled: true)
+        let wasEnabled = try isScopeEnabled(id, scope: scope)
+        try setScopeEnabled(id, scope: scope, enabled: true)
         return (scope: scope, isEnabled: wasEnabled)
       }
       return (id: id, enabledScopes: enabledScopes)
@@ -354,7 +374,7 @@ public extension BlockAPI {
     try enabledScopesPerID.forEach { id, enabledScopes in
       try enabledScopes.forEach { scope, isEnabled in
         if isValid(id) {
-          try setScopeEnabled(id, key: scope.rawValue, enabled: isEnabled)
+          try setScopeEnabled(id, scope: scope, enabled: isEnabled)
         }
       }
     }
@@ -370,8 +390,8 @@ public extension BlockAPI {
   func overrideAndRestore(_ id: DesignBlockID, scopes: Set<Scope>,
                           action: (DesignBlockID) async throws -> Void) async throws {
     let enabledScopes = try scopes.map { scope in
-      let wasEnabled = try isScopeEnabled(id, key: scope.rawValue)
-      try setScopeEnabled(id, key: scope.rawValue, enabled: true)
+      let wasEnabled = try isScopeEnabled(id, scope: scope)
+      try setScopeEnabled(id, scope: scope, enabled: true)
       return (scope: scope, isEnabled: wasEnabled)
     }
 
@@ -379,7 +399,7 @@ public extension BlockAPI {
 
     try enabledScopes.forEach { scope, isEnabled in
       if isValid(id) {
-        try setScopeEnabled(id, key: scope.rawValue, enabled: isEnabled)
+        try setScopeEnabled(id, scope: scope, enabled: isEnabled)
       }
     }
   }
@@ -403,7 +423,9 @@ extension BlockAPI {
   }
 
   func addOutline(_ name: String? = nil, for id: DesignBlockID, to parent: DesignBlockID) throws -> DesignBlockID {
-    let outline = try create(.rectShape)
+    let outline = try create(.graphic)
+    let rect = try createShape(.rect)
+    try setShape(outline, shape: rect)
 
     let height = try getHeight(id)
     let width = try getWidth(id)
@@ -423,8 +445,18 @@ extension BlockAPI {
     try set(outline, property: .key(.strokeStyle), value: StrokeStyle.dotted)
     try set(outline, property: .key(.strokeWidth), value: 1.0)
     try set(outline, property: .key(.blendMode), value: BlendMode.difference)
-    try setScopeEnabled(outline, key: ScopeKey.editorSelect.rawValue, enabled: false)
+    try setScopeEnabled(outline, scope: .key(.editorSelect), enabled: false)
 
     return outline
+  }
+}
+
+// MARK: - Kind
+
+extension BlockAPI {
+  func getKind(_ id: DesignBlockID) throws -> BlockKind {
+    let string: String = try getKind(id)
+    let kind = BlockKind(rawValue: string)
+    return kind
   }
 }

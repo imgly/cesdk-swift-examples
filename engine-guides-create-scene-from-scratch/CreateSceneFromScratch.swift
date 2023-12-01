@@ -2,7 +2,7 @@ import Foundation
 import IMGLYEngine
 
 @MainActor
-func createSceneFromScratch(engine: Engine) throws {
+func createSceneFromScratch(engine: Engine) async throws {
   // highlight-create
   let scene = try engine.scene.create()
   // highlight-create
@@ -12,8 +12,10 @@ func createSceneFromScratch(engine: Engine) throws {
   try engine.block.appendChild(to: scene, child: page)
   // highlight-add-page
 
-  // highlight-add-star
-  let star = try engine.block.create(.starShape)
-  try engine.block.appendChild(to: page, child: star)
-  // highlight-add-star
+  // highlight-add-block-with-star-shape
+  let block = try engine.block.create(.graphic)
+  try engine.block.setShape(block, shape: engine.block.createShape(.star))
+  try engine.block.setFill(block, fill: engine.block.createFill(.color))
+  try engine.block.appendChild(to: page, child: block)
+  // highlight-add-block-with-star-shape
 }

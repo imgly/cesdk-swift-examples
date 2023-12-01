@@ -41,7 +41,12 @@ struct AssetFileUploader: ViewModifier {
                 contentType = allowedContentType
               }
 
-              return try (url, blockType: contentType.blockType())
+              return try .init(
+                url: url,
+                blockType: contentType.blockType(),
+                blockKind: contentType.blockKind(),
+                fillType: contentType.fillType()
+              )
             }
             onCompletion(.success(asset))
           } catch {
@@ -62,15 +67,33 @@ private extension URL {
 }
 
 private extension UTType {
-  func blockType() throws -> String {
-    if conforms(to: .video) {
-      return "//ly.img.ubq/fill/video"
+  func blockType() throws -> DesignBlockType {
+    if conforms(to: .video) || conforms(to: .image) {
+      return .graphic
     } else if conforms(to: .audio) {
-      return DesignBlockType.audio.rawValue
-    } else if conforms(to: .image) {
-      return DesignBlockType.image.rawValue
+      return .audio
     }
     throw Error(errorDescription: "Unsupported content type to block type mapping.")
+  }
+
+  func blockKind() throws -> BlockKind {
+    if conforms(to: .video) {
+      return .key(.video)
+    } else if conforms(to: .audio) {
+      return .key(.audio)
+    } else if conforms(to: .image) {
+      return .key(.image)
+    }
+    throw Error(errorDescription: "Unsupported content type to block kind mapping.")
+  }
+
+  func fillType() throws -> FillType {
+    if conforms(to: .video) {
+      return .video
+    } else if conforms(to: .image) {
+      return .image
+    }
+    throw Error(errorDescription: "Unsupported content type to fill type mapping.")
   }
 }
 

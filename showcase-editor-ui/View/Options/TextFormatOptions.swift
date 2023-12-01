@@ -54,7 +54,7 @@ struct TextFormatOptions: View {
     Section("Line Height") {
       PropertySlider<Float>("Line Height", in: 0.5 ... 2.5, property: .key(.textLineHeight))
     }
-    if interactor.isAllowed(id, scope: .key(.designArrangeResize)) {
+    if interactor.isAllowed(id, scope: .layerResize) {
       PropertyStack("Vertical Alignment") {
         let alignment: Binding<VerticalAlignment?> = interactor.bind(id, property: .key(.textVerticalAlignment))
         PropertyButton(property: .top, selection: alignment)

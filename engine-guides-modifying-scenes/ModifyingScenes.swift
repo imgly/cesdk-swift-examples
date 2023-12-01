@@ -22,23 +22,26 @@ func modifyingScenes(engine: Engine) async throws {
   // highlight-page-get-create
 
   // highlight-create-image
-  /* Create an image block and add it to the scene's page. */
-  let image = try engine.block.create(.image)
+  /* Create a graphic block and add it to the scene's page. */
+  let block = try engine.block.create(.graphic)
+  let fill = try engine.block.createFill(.image)
+  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  try engine.block.setFill(block, fill: fill)
   // highlight-create-image
 
   // highlight-image-properties
   try engine.block.setString(
-    image,
-    property: "image/imageFileURI",
+    fill,
+    property: "fill/image/imageFileURI",
     value: "https://img.ly/static/ubq_samples/imgly_logo.jpg"
   )
 
   /* The content fill mode 'Contain' ensures the entire image is visible. */
-  try engine.block.setEnum(image, property: "contentFill/mode", value: "Contain")
+  try engine.block.setEnum(block, property: "contentFill/mode", value: "Contain")
   // highlight-image-properties
 
   // highlight-image-append
-  try engine.block.appendChild(to: page, child: image)
+  try engine.block.appendChild(to: page, child: block)
   // highlight-image-append
 
   // highlight-zoom-page

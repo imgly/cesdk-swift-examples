@@ -2,17 +2,17 @@ import Foundation
 import IMGLYEngine
 
 @MainActor
-func useCamera(engine: Engine) async throws {
+func usingCamera(engine: Engine) async throws {
   // highlight-setup
   let scene = try engine.scene.createVideo()
   let stack = try engine.block.find(byType: .stack).first!
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: stack, child: page)
 
-  let pixelStreamFill = try engine.block.createFill("pixelStream")
+  let pixelStreamFill = try engine.block.createFill(.pixelStream)
   try engine.block.setFill(page, fill: pixelStreamFill)
 
-  try engine.block.appendEffect(page, effectID: try engine.block.createEffect(type: "half_tone"))
+  try engine.block.appendEffect(page, effectID: try engine.block.createEffect(.halfTone))
   // highlight-setup
 
   // highlight-orientation
@@ -37,7 +37,7 @@ func useCamera(engine: Engine) async throws {
       // highlight-setNativePixelBuffer
       case let .videoCaptured(url):
         // Use a `VideoFill` for the recorded video file.
-        let videoFill = try engine.block.createFill("video")
+        let videoFill = try engine.block.createFill(.video)
         try engine.block.setFill(page, fill: videoFill)
         try engine.block.setString(
           videoFill,

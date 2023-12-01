@@ -6,7 +6,7 @@ struct ColorSheet: View {
 
   var fillColor: Binding<CGColor> {
     interactor.bind(id, property: .key(.fillSolidColor), default: .black,
-                    setter: Interactor.Setter.set(overrideScope: .key(.designStyle)),
+                    setter: Interactor.Setter.set(overrideScopes: [.key(.fillChange), .key(.strokeChange)]),
                     completion: nil)
   }
 

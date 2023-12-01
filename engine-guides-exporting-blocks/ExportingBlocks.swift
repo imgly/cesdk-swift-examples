@@ -9,7 +9,7 @@ import IMGLYEngine
 
 @MainActor
 func exportingBlocks(engine: Engine) async throws {
-  try engine.editor.setSettingString("basePath", value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.18.1/assets")
+  try engine.editor.setSettingString("basePath", value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.19.0-rc.0/assets")
   try await engine.addDefaultAssetSources()
   let sceneUrl =
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
@@ -21,7 +21,7 @@ func exportingBlocks(engine: Engine) async throws {
   let sceneBlob = try await engine.block.export(scene, mimeType: mimeTypePdf)
 
   /* Export a block as PNG image. */
-  let block = try engine.block.find(byType: .image).first!
+  let block = try engine.block.find(byType: .graphic).first!
   let mimeTypePng: MIMEType = .png
   let options = ExportOptions(pngCompressionLevel: 9)
   let blob = try await engine.block.export(block, mimeType: mimeTypePng, options: options)

@@ -5,8 +5,8 @@ struct ShapeOptions: View {
   @Environment(\.selection) private var id
 
   @ViewBuilder var shapeOptions: some View {
-    switch interactor.blockType(id) {
-    case .lineShape:
+    switch interactor.shapeType(id) {
+    case .line:
       Section("Line Width") {
         let setter: Interactor.PropertySetter<Float> = { engine, blocks, _, _, value, completion in
           let changed = try blocks.filter {
@@ -23,16 +23,17 @@ struct ShapeOptions: View {
         }
         PropertySlider<Float>("Line Width", in: 0.1 ... 30, property: .key(.lastFrameHeight), setter: setter)
       }
-    case .starShape:
+    case .star:
       Section("Points") {
-        PropertySlider<Float>("Points", in: 3 ... 12, property: .key(.shapesStarPoints))
+        PropertySlider<Float>("Points", in: 3 ... 12, property: .key(.shapeStarPoints), propertyBlock: .shape)
       }
       Section("Inner Diameter") {
-        PropertySlider<Float>("Inner Diameter", in: 0.1 ... 1, property: .key(.shapesStarInnerDiameter))
+        PropertySlider<Float>("Inner Diameter", in: 0.1 ... 1, property: .key(.shapeStarInnerDiameter),
+                              propertyBlock: .shape)
       }
-    case .polygonShape:
+    case .polygon:
       Section("Sides") {
-        PropertySlider<Float>("Sides", in: 3 ... 12, property: .key(.shapesPolygonSides))
+        PropertySlider<Float>("Sides", in: 3 ... 12, property: .key(.shapePolygonSides), propertyBlock: .shape)
       }
     default:
       EmptyView()

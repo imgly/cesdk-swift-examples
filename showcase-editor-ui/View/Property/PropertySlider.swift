@@ -6,6 +6,7 @@ struct PropertySlider<T: MappedType & BinaryFloatingPoint>: View where T.Stride:
   let property: Property
   let mapping: Mapping
   let setter: Interactor.PropertySetter<T>
+  let propertyBlock: PropertyBlock?
 
   typealias Mapping = (_ value: Binding<T>, _ bounds: ClosedRange<T>) -> Binding<T>
 
@@ -14,16 +15,18 @@ struct PropertySlider<T: MappedType & BinaryFloatingPoint>: View where T.Stride:
 
   init(_ title: LocalizedStringKey, in bounds: ClosedRange<T>, property: Property,
        mapping: @escaping Mapping = { value, _ in value },
-       setter: @escaping Interactor.PropertySetter<T> = Interactor.Setter.set()) {
+       setter: @escaping Interactor.PropertySetter<T> = Interactor.Setter.set(),
+       propertyBlock: PropertyBlock? = nil) {
     self.title = title
     self.bounds = bounds
     self.property = property
     self.mapping = mapping
     self.setter = setter
+    self.propertyBlock = propertyBlock
   }
 
   var binding: Binding<T> {
-    interactor.bind(id, property: property, default: bounds.lowerBound, setter: setter, completion: nil)
+    interactor.bind(id, propertyBlock, property: property, default: bounds.lowerBound, setter: setter, completion: nil)
   }
 
   var body: some View {

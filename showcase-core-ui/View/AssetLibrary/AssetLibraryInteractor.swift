@@ -3,6 +3,20 @@ import IMGLYCore
 import IMGLYEngine
 import UIKit
 
+public struct AssetUploadResult {
+  let url: URL
+  let blockType: DesignBlockType
+  let blockKind: BlockKind
+  let fillType: FillType?
+
+  init(url: URL, blockType: DesignBlockType, blockKind: BlockKind, fillType: FillType? = nil) {
+    self.url = url
+    self.blockType = blockType
+    self.blockKind = blockKind
+    self.fillType = fillType
+  }
+}
+
 @MainActor
 public protocol AssetLibraryInteractor: ObservableObject {
   var isAddingAsset: Bool { get }
@@ -16,25 +30,25 @@ public protocol AssetLibraryInteractor: ObservableObject {
   func assetTapped(sourceID: String, asset: AssetResult)
   func getBasePath() throws -> String
 
-  typealias AssetUpload = () throws -> (URL, blockType: String)
+  typealias AssetUpload = () throws -> AssetUploadResult
 }
 
 public extension AssetLibraryInteractor {
   func uploadImage(to sourceID: String, url: () throws -> URL) async throws -> AssetResult {
     try await uploadAsset(to: sourceID) {
-      try (url(), blockType: DesignBlockType.image.rawValue)
+      try .init(url: url(), blockType: .graphic, blockKind: .key(.image), fillType: .image)
     }
   }
 
   func uploadVideo(to sourceID: String, url: () throws -> URL) async throws -> AssetResult {
     try await uploadAsset(to: sourceID) {
-      try (url(), blockType: "//ly.img.ubq/fill/video")
+      try .init(url: url(), blockType: .graphic, blockKind: .key(.video), fillType: .video)
     }
   }
 
   func uploadAudio(to sourceID: String, url: () throws -> URL) async throws -> AssetResult {
     try await uploadAsset(to: sourceID) {
-      try (url(), blockType: DesignBlockType.audio.rawValue)
+      try .init(url: url(), blockType: .audio, blockKind: .key(.audio))
     }
   }
 
@@ -44,9 +58,9 @@ public extension AssetLibraryInteractor {
 
   static func uploadAsset(interactor: any AssetLibraryInteractor,
                           to sourceID: String, asset: AssetUpload) async throws -> AssetResult {
-    let (url, blockType) = try asset()
-    let meta = try await getMeta(url: url, blockType: blockType)
-    let assetID = url.absoluteString
+    let assetResult = try asset()
+    let meta = try await getMeta(url: assetResult.url, blockKind: assetResult.blockKind, fillType: assetResult.fillType)
+    let assetID = assetResult.url.absoluteString
     try interactor.addAsset(to: sourceID, asset: .init(id: assetID, meta: meta))
 
     let result = try await interactor.findAssets(
@@ -63,23 +77,31 @@ public extension AssetLibraryInteractor {
 }
 
 private extension AssetLibraryInteractor {
-  static func getMeta(url: URL, thumbURL: URL? = nil, blockType: String) async throws -> AssetMeta {
-    switch blockType {
-    case DesignBlockType.image.rawValue, DesignBlockType.video.rawValue, "//ly.img.ubq/fill/video":
-      let (size, thumbURL) = try await getSizeAndThumb(url: url, thumbURL: thumbURL, blockType: blockType)
-      return [
+  static func getMeta(url: URL, thumbURL: URL? = nil, blockKind: BlockKind,
+                      fillType: FillType? = nil) async throws -> AssetMeta {
+    switch blockKind {
+    case .key(.image), .key(.video):
+      guard let fillType else {
+        throw Error(errorDescription: "Could not retrieve `fillType` of uploaded asset.")
+      }
+      let (size, thumbURL) = try await getSizeAndThumb(url: url, thumbURL: thumbURL, fillType: fillType)
+      let meta: AssetMeta = [
         .uri: url.absoluteString,
         .thumbUri: thumbURL.absoluteString,
-        .blockType: blockType,
+        .kind: blockKind.rawValue,
         .width: String(Int(size.width)),
-        .height: String(Int(size.height))
+        .height: String(Int(size.height)),
+        .blockType: DesignBlockType.graphic.rawValue,
+        .fillType: fillType.rawValue
       ]
+      return meta
 
-    case DesignBlockType.audio.rawValue:
+    case .key(.audio):
       let asset = AVURLAsset(url: url)
       var meta: AssetMeta = [
         .uri: url.absoluteString,
-        .blockType: blockType,
+        .blockType: DesignBlockType.audio.rawValue,
+        .kind: blockKind.rawValue,
         .duration: String(asset.duration.seconds)
       ]
 
@@ -111,16 +133,16 @@ private extension AssetLibraryInteractor {
     }
   }
 
-  static func getSizeAndThumb(url: URL, thumbURL: URL?, blockType: String) async throws -> (CGSize, URL) {
-    switch blockType {
-    case DesignBlockType.image.rawValue:
+  static func getSizeAndThumb(url: URL, thumbURL: URL?, fillType: FillType) async throws -> (CGSize, URL) {
+    switch fillType {
+    case .image:
       let (data, _) = try await URLSession.get(url)
       guard let image = UIImage(data: data) else {
         throw Error(errorDescription: "Unsupported image data.")
       }
       return (image.size, thumbURL ?? url)
 
-    case DesignBlockType.video.rawValue, "//ly.img.ubq/fill/video":
+    case .video:
       let asset = AVURLAsset(url: url)
       let imageGenerator = AVAssetImageGenerator(asset: asset)
       imageGenerator.appliesPreferredTrackTransform = true

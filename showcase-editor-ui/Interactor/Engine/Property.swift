@@ -1,4 +1,5 @@
 import Foundation
+import IMGLYCore
 
 public typealias Property = RawRepresentableKey<PropertyKey>
 
@@ -11,6 +12,8 @@ public enum PropertyKey: String {
   case fillGradientLinearStartY = "fill/gradient/linear/startPointY"
   case fillGradientLinearEndX = "fill/gradient/linear/endPointX"
   case fillGradientLinearEndY = "fill/gradient/linear/endPointY"
+
+  case fillImageImageFileURI = "fill/image/imageFileURI"
 
   case strokeEnabled = "stroke/enabled"
   case strokeColor = "stroke/color"
@@ -34,13 +37,9 @@ public enum PropertyKey: String {
   case textLineHeight = "text/lineHeight"
   case textVerticalAlignment = "text/verticalAlignment"
 
-  case imageImageFileURI = "image/imageFileURI"
-
-  case shapesStarPoints = "shapes/star/points"
-  case shapesStarInnerDiameter = "shapes/star/innerDiameter"
-  case shapesPolygonSides = "shapes/polygon/sides"
-
-  case stickerImageFileURI = "sticker/imageFileURI"
+  case shapeStarPoints = "shape/star/points"
+  case shapeStarInnerDiameter = "shape/star/innerDiameter"
+  case shapePolygonSides = "shape/polygon/sides"
 
   case sceneDesignUnit = "scene/designUnit"
   case sceneDPI = "scene/dpi"
