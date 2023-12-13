@@ -18,13 +18,13 @@ func createSceneFromImageBlob(engine: Engine) async throws {
   let scene = try await engine.scene.create(fromImage: url)
   // highlight-initialImageURL
 
-  // highlight-find-image
-  // Find the automatically added image element in the scene.
-  let image = try engine.block.find(byType: .image).first!
-  // highlight-find-image
+  // highlight-findByType
+  // Find the automatically added graphic block in the scene that contains the image fill.
+  let block = try engine.block.find(byType: .graphic).first!
+  // highlight-findByType
 
   // highlight-set-opacity
   // Change its opacity.
-  try engine.block.setOpacity(image, value: 0.5)
+  try engine.block.setOpacity(block, value: 0.5)
   // highlight-set-opacity
 }

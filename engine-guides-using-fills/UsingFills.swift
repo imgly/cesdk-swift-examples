@@ -13,42 +13,37 @@ func usingFills(engine: Engine) async throws {
 
   try await engine.scene.zoom(to: page, paddingLeft: 40, paddingTop: 40, paddingRight: 40, paddingBottom: 40)
 
-  let rect = try engine.block.create(.rectShape)
-  try engine.block.setWidth(rect, value: 100)
-  try engine.block.setHeight(rect, value: 100)
-  try engine.block.appendChild(to: page, child: rect)
-
-  let circle = try engine.block.create(.ellipseShape)
-  try engine.block.setPositionX(circle, value: 100)
-  try engine.block.setPositionY(circle, value: 50)
-  try engine.block.setWidth(circle, value: 300)
-  try engine.block.setHeight(circle, value: 300)
-  try engine.block.appendChild(to: page, child: circle)
+  let block = try engine.block.create(.graphic)
+  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  try engine.block.setWidth(block, value: 100)
+  try engine.block.setHeight(block, value: 100)
+  try engine.block.setFill(block, fill: engine.block.createFill(.color))
+  try engine.block.appendChild(to: page, child: block)
   // highlight-setup
 
   // highlight-hasFill
   try engine.block.hasFill(scene) // Returns false
-  try engine.block.hasFill(rect) // Returns true
+  try engine.block.hasFill(block) // Returns true
   // highlight-hasFill
 
   // highlight-getFill
-  let rectFill = try engine.block.getFill(rect)
-  let defaultRectFillType = try engine.block.getType(rectFill)
+  let colorFill = try engine.block.getFill(block)
+  let defaultRectFillType = try engine.block.getType(colorFill)
   // highlight-getFill
   // highlight-getProperties
-  let allFillProperties = try engine.block.findAllProperties(rectFill)
+  let allFillProperties = try engine.block.findAllProperties(colorFill)
   // highlight-getProperties
   // highlight-modifyProperties
-  try engine.block.setColor(rectFill, property: "fill/color/value", r: 1.0, g: 0.0, b: 0.0, a: 1.0)
+  try engine.block.setColor(colorFill, property: "fill/color/value", color: .rgba(r: 1.0, g: 0.0, b: 0.0, a: 1.0))
   // highlight-modifyProperties
 
   // highlight-disableFill
-  try engine.block.setFillEnabled(rect, enabled: false)
-  try engine.block.setFillEnabled(rect, enabled: !engine.block.isFillEnabled(rect))
+  try engine.block.setFillEnabled(block, enabled: false)
+  try engine.block.setFillEnabled(block, enabled: !engine.block.isFillEnabled(block))
   // highlight-disableFill
 
   // highlight-createFill
-  let imageFill = try engine.block.createFill("image")
+  let imageFill = try engine.block.createFill(.image)
   try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
@@ -57,17 +52,17 @@ func usingFills(engine: Engine) async throws {
   // highlight-createFill
 
   // highlight-replaceFill
-  try engine.block.destroy(engine.block.getFill(circle))
-  try engine.block.setFill(circle, fill: imageFill)
+  try engine.block.destroy(colorFill)
+  try engine.block.setFill(block, fill: imageFill)
 
   /* The following line would also destroy imageFill */
   // try engine.block.destroy(circle)
   // highlight-replaceFill
 
   // highlight-duplicateFill
-  let duplicateCircle = try engine.block.duplicate(circle)
-  try engine.block.setPositionX(duplicateCircle, value: 450)
-  let autoDuplicateFill = try engine.block.getFill(duplicateCircle)
+  let duplicateBlock = try engine.block.duplicate(block)
+  try engine.block.setPositionX(duplicateBlock, value: 450)
+  let autoDuplicateFill = try engine.block.getFill(duplicateBlock)
   try engine.block.setString(
     autoDuplicateFill,
     property: "fill/image/imageFileURI",
@@ -80,13 +75,14 @@ func usingFills(engine: Engine) async throws {
   // highlight-duplicateFill
 
   // highlight-sharedFill
-  let star = try engine.block.create(.starShape)
-  try engine.block.setPositionX(star, value: 350)
-  try engine.block.setPositionY(star, value: 400)
-  try engine.block.setWidth(star, value: 100)
-  try engine.block.setHeight(star, value: 100)
-  try engine.block.appendChild(to: page, child: star)
+  let sharedFillBlock = try engine.block.create(.graphic)
+  try engine.block.setShape(sharedFillBlock, shape: engine.block.createShape(.rect))
+  try engine.block.setPositionX(sharedFillBlock, value: 350)
+  try engine.block.setPositionY(sharedFillBlock, value: 400)
+  try engine.block.setWidth(sharedFillBlock, value: 100)
+  try engine.block.setHeight(sharedFillBlock, value: 100)
+  try engine.block.appendChild(to: page, child: sharedFillBlock)
 
-  try engine.block.setFill(star, fill: engine.block.getFill(circle))
+  try engine.block.setFill(sharedFillBlock, fill: engine.block.getFill(block))
   // highlight-sharedFill
 }

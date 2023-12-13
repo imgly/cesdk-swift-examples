@@ -5,11 +5,11 @@ struct FillColorOptions: View {
   @EnvironmentObject private var interactor: Interactor
   @Environment(\.selection) private var id
 
-  @Binding var fillType: FillType?
+  @Binding var fillType: ColorFillType?
 
   var body: some View {
     if interactor.hasFill(id) {
-      MenuPicker<FillType.AllCases>(title: "Type", data: FillType.allCases, selection: $fillType)
+      MenuPicker<ColorFillType.AllCases>(title: "Type", data: ColorFillType.allCases, selection: $fillType)
         .disabled(interactor.sheet.type == .text)
         .accessibilityLabel("Fill Type")
 

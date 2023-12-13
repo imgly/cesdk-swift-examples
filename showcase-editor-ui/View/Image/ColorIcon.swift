@@ -5,7 +5,7 @@ struct FillColorIcon: View {
   @Environment(\.selection) private var id
 
   var body: some View {
-    if interactor.hasFill(id) {
+    if interactor.hasColorFill(id) {
       let isEnabled: Binding<Bool> = interactor.bind(id, property: .key(.fillEnabled), default: false)
 
       FillColorImage(
@@ -16,7 +16,7 @@ struct FillColorIcon: View {
   }
 
   let backgroundColorGetter: Interactor.PropertyGetter<[CGColor]> = { engine, id, _, _ in
-    let fillType: FillType = try engine.block.get(id, .fill, property: .key(.type))
+    let fillType: ColorFillType = try engine.block.get(id, .fill, property: .key(.type))
     if fillType == .solid {
       let color: CGColor = try engine.block.get(id, property: .key(.fillSolidColor))
       return [color]

@@ -1,3 +1,4 @@
+import IMGLYCore
 import IMGLYEngine
 import SwiftUI
 
@@ -11,22 +12,33 @@ public struct AssetPreview: View {
 
   @ViewBuilder func item(_ assetItem: AssetItem) -> some View {
     if case let .asset(asset) = assetItem {
-      let designBlockType = asset.result.blockType ?? ""
-      switch designBlockType {
-      case DesignBlockType.image.rawValue:
+      // If not set assume the default engine value.
+      let designBlockType = asset.result.blockType ?? DesignBlockType.graphic.rawValue
+      if designBlockType == DesignBlockType.graphic.rawValue {
+        let fillType = asset.result.fillType ?? ""
+        let designBlockKind = asset.result.blockKind ?? ""
+
+        switch fillType {
+        case FillType.video.rawValue:
+          ImageItem(asset: assetItem)
+        case FillType.image.rawValue:
+          if designBlockKind == BlockKind.key(.sticker).rawValue {
+            StickerItem(asset: assetItem)
+          } else {
+            ImageItem(asset: assetItem)
+          }
+        case FillType.color.rawValue, FillType.linearGradient.rawValue,
+             FillType.radialGradient.rawValue, FillType.conicalGradient.rawValue:
+          ShapeItem(asset: assetItem)
+        default:
+          if designBlockKind == BlockKind.key(.shape).rawValue {
+            ShapeItem(asset: assetItem)
+          } else {
+            ImageItem(asset: assetItem)
+          }
+        }
+      } else {
         ImageItem(asset: assetItem)
-      case DesignBlockType.video.rawValue, "//ly.img.ubq/fill/video":
-        ImageItem(asset: assetItem)
-      case DesignBlockType.audio.rawValue:
-        ImageItem(asset: assetItem)
-      case _ where designBlockType.hasPrefix("//ly.img.ubq/shapes/"):
-        ShapeItem(asset: assetItem)
-      case DesignBlockType.vectorPath.rawValue:
-        ShapeItem(asset: assetItem)
-      case DesignBlockType.sticker.rawValue:
-        StickerItem(asset: assetItem)
-      default:
-        ImageItem(asset: assetItem) // Not asigned fallback.
       }
     } else {
       ImageItem(asset: assetItem)

@@ -151,8 +151,17 @@ extension AssetResult {
         "thumbUri": image.urls.thumb.absoluteString,
         // highlight-result-thumbUri
         // highlight-result-blockType
-        "blockType": DesignBlockType.image.rawValue,
+        "blockType": DesignBlockType.graphic.rawValue,
         // highlight-result-blockType
+        // highlight-result-fillType
+        "fillType": FillType.image.rawValue,
+        // highlight-result-fillType
+        // highlight-result-shapeType
+        "shapeType": ShapeType.rect.rawValue,
+        // highlight-result-shapeType
+        // highlight-result-kind
+        "kind": "image",
+        // highlight-result-kind
         // highlight-result-size
         "width": String(image.width),
         "height": String(image.height)

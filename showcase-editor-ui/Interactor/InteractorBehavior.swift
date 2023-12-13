@@ -44,7 +44,6 @@ public protocol InteractorBehavior: Sendable {
 
 public extension InteractorBehavior {
   func loadScene(_ context: InteractorContext, from url: URL, with insets: EdgeInsets?) async throws {
-    try context.engine.editor.setSettingString("license", value: Secrets.licenseKey)
     try context.engine.editor.setSettingBool("touch/singlePointPanning", value: true)
     try context.engine.editor.setSettingBool("touch/dragStartCanSelect", value: false)
     try context.engine.editor.setSettingEnum("touch/pinchAction", value: "Zoom")
@@ -54,17 +53,37 @@ public extension InteractorBehavior {
     try context.engine.editor.setSettingString("basePath", value: Interactor.basePath.absoluteString)
     try context.engine.editor.setSettingEnum("role", value: "Adopter")
     try [ScopeKey]([
-      .designStyle,
-      .designArrange,
-      .designArrangeMove,
-      .designArrangeResize,
-      .designArrangeRotate,
-      .designArrangeFlip,
-      .contentReplace,
+      .appearanceAdjustments,
+      .appearanceFilter,
+      .appearanceEffect,
+      .appearanceBlur,
+      .appearanceShadow,
+
+      // .editorAdd, // Cannot be restricted in web Dektop UI for now.
+      .editorSelect,
+
+      .fillChange,
+      .fillChangeType,
+
+      .layerCrop,
+      .layerMove,
+      .layerResize,
+      .layerRotate,
+      .layerFlip,
+      .layerOpacity,
+      .layerBlendMode,
+      .layerVisibility,
+      .layerClipping,
+
       .lifecycleDestroy,
       .lifecycleDuplicate,
-//      .editorAdd, // Cannot be restricted in web Dektop UI for now.
-      .editorSelect
+
+      .strokeChange,
+
+      .shapeChange,
+
+      .textEdit,
+      .textCharacter
     ]).forEach { scope in
       try context.engine.editor.setGlobalScope(key: scope.rawValue, value: .defer)
     }

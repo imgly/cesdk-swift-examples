@@ -7,9 +7,12 @@
 
   class IntegrateWithAppKit: NSViewController {
     // highlight-setup
-    private lazy var engine = Engine(context: .metalView(view: canvas))
+    private var engine: Engine?
     private lazy var canvas = MTKView(frame: .zero, device: MTLCreateSystemDefaultDevice())
     // highlight-setup
+
+    private lazy var spinner = NSProgressIndicator()
+    private lazy var button = NSButton(title: "Use the engine", target: self, action: #selector(buttonClicked))
 
     override func loadView() {
       view = .init(frame: .init(x: 0, y: 0, width: 1000, height: 1000))
@@ -29,23 +32,35 @@
       ])
       // highlight-view
 
-      let button = NSButton(title: "Use the engine", target: self, action: #selector(buttonClicked))
+      view.addSubview(spinner)
+      spinner.translatesAutoresizingMaskIntoConstraints = false
+      NSLayoutConstraint.activate([
+        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+      ])
+      spinner.startAnimation(self)
+      spinner.isDisplayedWhenStopped = false
+
       view.addSubview(button)
       button.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
       ])
+      button.isHidden = true
     }
 
     @objc func buttonClicked() {
+      guard let engine else {
+        return
+      }
       // highlight-work
       Task {
         let url = URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
-        try? await engine.scene.load(from: url)
+        try await engine.scene.load(from: url)
 
-        try? self.engine.block.find(byType: .text).forEach { id in
-          try? self.engine.block.setOpacity(id, value: 0.5)
+        try engine.block.find(byType: .text).forEach { id in
+          try engine.block.setOpacity(id, value: 0.5)
         }
       }
       // highlight-work
@@ -54,12 +69,19 @@
     // highlight-lifecycle
     override func viewDidAppear() {
       super.viewDidAppear()
-      engine.onAppear()
+      Task {
+        // highlight-license
+        engine = try await Engine(context: .metalView(view: canvas), license: Secrets.licenseKey, userID: "guides-user")
+        // highlight-license
+        engine?.onAppear()
+        spinner.stopAnimation(self)
+        button.isHidden = false
+      }
     }
 
     override func viewWillDisappear() {
       super.viewWillDisappear()
-      engine.onDisappear()
+      engine?.onDisappear()
     }
     // highlight-lifecycle
   }

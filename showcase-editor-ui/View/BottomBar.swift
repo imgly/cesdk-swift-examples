@@ -33,7 +33,7 @@ struct BottomBar: View {
     if type == .image {
       modes += [.crop]
     }
-    if type == .shape, Set([.lineShape, .starShape, .polygonShape]).contains(interactor.blockType(id)) {
+    if type == .shape, Set([.line, .star, .polygon]).contains(interactor.shapeType(id)) {
       modes += [.options]
     }
     if Set([.text, .image, .shape, .page]).contains(type) {

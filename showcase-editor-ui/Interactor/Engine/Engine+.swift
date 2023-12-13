@@ -44,7 +44,10 @@ extension Engine {
 
   private func getSelectionColors(_ id: DesignBlockID, includeUnnamed: Bool, includeDisabled: Bool, setDisabled: Bool,
                                   ignoreScope: Bool, selectionColors: inout SelectionColors) throws {
-    guard try engine.block.isScopeEnabled(id, key: ScopeKey.designStyle.rawValue) || ignoreScope else {
+    let fillChangeEnabled = try engine.block.isScopeEnabled(id, scope: .key(.fillChange))
+    let strokeChangeEnabled = try engine.block.isScopeEnabled(id, scope: .key(.strokeChange))
+
+    guard (fillChangeEnabled && strokeChangeEnabled) || ignoreScope else {
       return
     }
     let name = try engine.block.getName(id)
@@ -57,7 +60,7 @@ extension Engine {
         return nil
       }
       if property == .key(.fillSolidColor),
-         let fillType: FillType = try? engine.block.get(id, .fill, property: .key(.type)),
+         let fillType: ColorFillType = try? engine.block.get(id, .fill, property: .key(.type)),
          fillType == .gradient {
         let colorStops: [GradientColorStop] = try engine.block.get(id, .fill, property: .key(.fillGradientColors))
         if let color = colorStops.first?.color.cgColor {
@@ -82,8 +85,8 @@ extension Engine {
 
       func setAndAddColor(property: Property, color: CGColor) throws {
         if setDisabled, try engine.block.get(id, property: property) != color {
-          try engine.block.overrideAndRestore(id, scope: .key(.designStyle)) {
-            try engine.block.set($0, property: property, value: color)
+          try engine.block.overrideAndRestore([id], scopes: [.key(.fillChange), .key(.strokeChange)]) {
+            _ = try engine.block.set($0, property: property, value: color)
           }
         }
         _ = try addColor(property: property, includeDisabled: includeDisabled)
@@ -163,7 +166,7 @@ extension Engine {
 
     let pages = try getSortedPages()
     for (i, block) in pages.enumerated() {
-      try engine.block.overrideAndRestore(block, scope: .key(.designStyle)) {
+      try engine.block.overrideAndRestore(block, scope: .key(.layerVisibility)) {
         try engine.block.setVisible($0, visible: allPages || i == index)
       }
     }
@@ -222,7 +225,7 @@ extension Engine {
 
       if cursorPosY > visiblePageAreaY ||
         cursorPosY < (overlapTop + paddingTop) {
-        try engine.block.overrideAndRestore(getCamera(), scope: .key(.designArrangeMove)) {
+        try engine.block.overrideAndRestore(getCamera(), scope: .key(.layerMove)) {
           try engine.block.setPositionY($0, value: newCameraPosY)
         }
       }
@@ -279,7 +282,7 @@ extension Engine {
       let positionModeX = try engine.block.getPositionXMode($0)
       let positionModeY = try engine.block.getPositionYMode($0)
 
-      try engine.block.overrideAndRestore($0, scope: .key(.designArrangeMove)) {
+      try engine.block.overrideAndRestore($0, scope: .key(.layerMove)) {
         try engine.block.setPositionXMode($0, mode: .absolute)
         let x = try engine.block.getPositionX($0)
         try engine.block.setPositionYMode($0, mode: .absolute)
@@ -293,6 +296,10 @@ extension Engine {
         // Restore values
         try engine.block.setPositionXMode($0, mode: positionModeX)
         try engine.block.setPositionYMode($0, mode: positionModeY)
+      }
+
+      if try engine.block.getKind(duplicate) == .key(.sticker) {
+        try engine.block.setScopeEnabled(duplicate, scope: .key(.layerCrop), enabled: false)
       }
 
       try engine.block.setSelected(duplicate, selected: true)
@@ -315,7 +322,7 @@ extension Engine {
       // Delay real deletion, e.g., to wait for sheet disappear animations
       // to complete but fake deletion in the meantime.
       try ids.forEach {
-        try engine.block.overrideAndRestore($0, scope: .key(.designStyle)) {
+        try engine.block.overrideAndRestore($0, scope: .key(.layerOpacity)) {
           try engine.block.setOpacity($0, value: 0)
         }
         try engine.block.setSelected($0, selected: false)
@@ -331,10 +338,7 @@ extension Engine {
 
   func resetCropSelectedElement() throws {
     try engine.block.findAllSelected().forEach {
-      try engine.block.overrideAndRestore($0, scope: .key(.designStyle)) {
-        // Reset crop requires "design/style" scope but crop UI should be based on "content/replace".
-        try engine.block.resetCrop($0)
-      }
+      try engine.block.resetCrop($0)
     }
     try engine.editor.addUndoStep()
   }
@@ -398,7 +402,10 @@ extension Engine {
   private func getBackdropImage() throws -> DesignBlockID {
     let childIDs = try engine.block.getChildren(getScene())
     let imageID = try childIDs.first {
-      try engine.block.getType($0) == DesignBlockType.image.rawValue
+      guard try engine.block.getType($0) == DesignBlockType.graphic.rawValue, try engine.block.hasFill($0) else {
+        return false
+      }
+      return try engine.block.getType(try engine.block.getFill($0)) == FillType.image.rawValue
     }
     guard let imageID else {
       throw Error(errorDescription: "No backdrop image found.")

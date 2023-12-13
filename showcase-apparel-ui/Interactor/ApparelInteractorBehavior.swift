@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 final class ApparelInteractorBehavior: InteractorBehavior {
   func exportScene(_ context: InteractorContext) async throws -> (Data, UTType) {
     var data = Data()
-    try await context.engine.block.overrideAndRestore(context.engine.getPage(0), scope: .key(.designStyle)) {
+    try await context.engine.block.overrideAndRestore(context.engine.getPage(0), scope: .key(.fillChange)) {
       let prevPageFill: Bool = try context.engine.block.get(context.engine.getPage(0), property: .key(.fillEnabled))
       try context.engine.block.set($0, property: .key(.fillEnabled), value: true)
       // We always want a background color when exporting
@@ -17,7 +17,10 @@ final class ApparelInteractorBehavior: InteractorBehavior {
   }
 
   private func pageSetup(_ context: InteractorContext) throws {
-    try context.engine.block.overrideAndRestore(context.engine.getPage(0), scope: .key(.designStyle)) {
+    try context.engine.block.overrideAndRestore(
+      context.engine.getPage(0),
+      scopes: [.key(.fillChange), .key(.layerClipping)]
+    ) {
       try context.engine.editor.setSettingBool("page/dimOutOfPageAreas", value: false)
       try context.engine.block.setClipped($0, clipped: true)
       try context.engine.block.set($0, property: .key(.fillEnabled), value: false)

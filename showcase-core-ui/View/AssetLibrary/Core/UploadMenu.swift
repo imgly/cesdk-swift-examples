@@ -27,8 +27,8 @@ public struct UploadMenu<Label: View>: View {
         try await interactor.uploadAsset(to: source.id) {
           let (url, media) = try result.get()
           switch media {
-          case .image: return (url, blockType: DesignBlockType.image.rawValue)
-          case .movie: return (url, blockType: "//ly.img.ubq/fill/video")
+          case .image: return .init(url: url, blockType: .graphic, blockKind: .key(.image), fillType: .image)
+          case .movie: return .init(url: url, blockType: .graphic, blockKind: .key(.video), fillType: .video)
           }
         }
       }

@@ -2,7 +2,7 @@ import Foundation
 import IMGLYEngine
 
 @MainActor
-func URIResolver(engine: Engine) async throws {
+func uriResolver(engine: Engine) async throws {
   // highlight-get-absolute-base-path
   // This will return "https://cdn.img.ly/packages/imgly/cesdk-js/1.10.0-preview.1/assets/banana.jpg"
   try engine.editor.getAbsoluteURI(relativePath: "/banana.jpg")

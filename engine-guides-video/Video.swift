@@ -25,10 +25,10 @@ func editVideo(engine: Engine) async throws {
   // highlight-setPageDuration
 
   // highlight-assignVideoFill
-  let rectShape = try engine.block.create(.rectShape)
-  try engine.block.destroy(try engine.block.getFill(rectShape))
-  let videoFill = try engine.block.createFill("video")
-  try engine.block.setFill(rectShape, fill: videoFill)
+  let block = try engine.block.create(.graphic)
+  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  let videoFill = try engine.block.createFill(.video)
+  try engine.block.setFill(block, fill: videoFill)
 
   try engine.block.setString(
     videoFill,
@@ -37,11 +37,11 @@ func editVideo(engine: Engine) async throws {
     value: "https://cdn.img.ly/assets/demo/v1/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
   )
 
-  try engine.block.appendChild(to: page2, child: rectShape)
-  try engine.block.setPositionX(rectShape, value: 0)
-  try engine.block.setPositionY(rectShape, value: 0)
-  try engine.block.setWidth(rectShape, value: try engine.block.getWidth(page2))
-  try engine.block.setHeight(rectShape, value: try engine.block.getHeight(page2))
+  try engine.block.appendChild(to: page2, child: block)
+  try engine.block.setPositionX(block, value: 0)
+  try engine.block.setPositionY(block, value: 0)
+  try engine.block.setWidth(block, value: try engine.block.getWidth(page2))
+  try engine.block.setHeight(block, value: try engine.block.getHeight(page2))
   // highlight-assignVideoFill
 
   // highlight-trim
