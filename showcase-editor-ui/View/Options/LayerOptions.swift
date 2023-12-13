@@ -24,12 +24,14 @@ struct LayerOptions: View {
 
   var body: some View {
     List {
-      if interactor.isAllowed(id, .fillAndStroke) {
+      if interactor.isAllowed(id, scope: .layerOpacity) {
         if interactor.hasOpacity(id) {
           Section("Opacity") {
             PropertySlider<Float>("Opacity", in: 0 ... 1, property: .key(.opacity))
           }
         }
+      }
+      if interactor.isAllowed(id, scope: .layerBlendMode) {
         if interactor.hasBlendMode(id) {
           Section {
             PropertyNavigationLink<BlendMode>("Blend Mode", property: .key(.blendMode))

@@ -25,6 +25,14 @@ public extension AssetResult {
     meta(.blockType)
   }
 
+  var blockKind: String? {
+    meta(.kind)
+  }
+
+  var fillType: String? {
+    meta(.fillType)
+  }
+
   var duration: TimeInterval? {
     guard let string = meta(.duration) else {
       return nil

@@ -1,20 +1,37 @@
-import Foundation
+import IMGLYCore
 
 public typealias Scope = RawRepresentableKey<ScopeKey>
 
 public enum ScopeKey: String {
-  case designStyle = "design/style"
-  case designArrange = "design/arrange"
-  case designArrangeMove = "design/arrange/move"
-  case designArrangeResize = "design/arrange/resize"
-  case designArrangeRotate = "design/arrange/rotate"
-  case designArrangeFlip = "design/arrange/flip"
+  case appearanceAdjustments = "appearance/adjustments"
+  case appearanceFilter = "appearance/filter"
+  case appearanceEffect = "appearance/effect"
+  case appearanceBlur = "appearance/blur"
+  case appearanceShadow = "appearance/shadow"
 
-  case contentReplace = "content/replace"
+  case editorAdd = "editor/add"
+  case editorSelect = "editor/select"
+
+  case fillChange = "fill/change"
+  case fillChangeType = "fill/changeType"
+
+  case layerCrop = "layer/crop"
+  case layerMove = "layer/move"
+  case layerResize = "layer/resize"
+  case layerRotate = "layer/rotate"
+  case layerFlip = "layer/flip"
+  case layerOpacity = "layer/opacity"
+  case layerBlendMode = "layer/blendMode"
+  case layerVisibility = "layer/visibility"
+  case layerClipping = "layer/clipping"
 
   case lifecycleDestroy = "lifecycle/destroy"
   case lifecycleDuplicate = "lifecycle/duplicate"
 
-  case editorAdd = "editor/add"
-  case editorSelect = "editor/select"
+  case strokeChange = "stroke/change"
+
+  case shapeChange = "shape/change"
+
+  case textEdit = "text/edit"
+  case textCharacter = "text/character"
 }

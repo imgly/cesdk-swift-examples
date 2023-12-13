@@ -17,11 +17,14 @@ func spotColors(engine: Engine) async throws {
   try engine.block.setPositionX(text, value: 350)
   try engine.block.setPositionY(text, value: 100)
 
-  let star = try engine.block.create(.starShape)
-  try engine.block.setPositionX(star, value: 350)
-  try engine.block.setPositionY(star, value: 400)
-  try engine.block.setWidth(star, value: 100)
-  try engine.block.setHeight(star, value: 100)
+  let block = try engine.block.create(.graphic)
+  let fill = try engine.block.createFill(.color)
+  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  try engine.block.setPositionX(block, value: 350)
+  try engine.block.setPositionY(block, value: 400)
+  try engine.block.setWidth(block, value: 100)
+  try engine.block.setHeight(block, value: 100)
+  try engine.block.setFill(block, fill: fill)
   // highlight-setup
 
   // highlight-create
@@ -33,17 +36,16 @@ func spotColors(engine: Engine) async throws {
   // highlight-create
 
   // highlight-apply-star
-  try engine.block.setColor(star, property: "fill/solid/color", color: .spot(name: "Crayola-Pink-Flamingo"))
+  try engine.block.setColor(fill, property: "fill/color/value", color: .spot(name: "Crayola-Pink-Flamingo"))
+  try engine.block.setColor(block, property: "stroke/color", color: .spot(name: "Yellow", tint: 0.8))
+  try engine.block.setStrokeEnabled(block, enabled: true)
 
-  try engine.block.setColor(star, property: "stroke/color", color: .spot(name: "Yellow", tint: 0.8))
-  try engine.block.setStrokeEnabled(star, enabled: true)
-
-  try engine.block.getColor(star, property: "fill/solid/color") as Color // "Crayola-Pink-Flamingo"
+  try engine.block.getColor(fill, property: "fill/color/value") as Color // "Crayola-Pink-Flamingo"
+  try engine.block.getColor(block, property: "stroke/color") as Color // "Yellow"
   // highlight-apply-star
 
   // highlight-apply-text
   try engine.block.setColor(text, property: "fill/solid/color", color: .spot(name: "Yellow"))
-
   try engine.block.setColor(text, property: "stroke/color", color: .spot(name: "Crayola-Pink-Flamingo", tint: 0.5))
   try engine.block.setStrokeEnabled(text, enabled: true)
 
