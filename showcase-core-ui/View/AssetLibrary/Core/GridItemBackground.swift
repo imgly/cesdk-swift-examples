@@ -1,7 +1,9 @@
 import SwiftUI
 
-struct GridItemBackground: View {
+public struct GridItemBackground: View {
   @Environment(\.colorScheme) private var colorScheme
+
+  public init() {}
 
   private var gradientColors: [Color] {
     var colors: [Color] = [.init(uiColor: .quaternarySystemFill),
@@ -12,7 +14,7 @@ struct GridItemBackground: View {
     return colors
   }
 
-  var body: some View {
+  public var body: some View {
     RoundedRectangle(cornerRadius: 8)
       .fill(.linearGradient(.init(colors: gradientColors),
                             startPoint: .top, endPoint: .bottom))

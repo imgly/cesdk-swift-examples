@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct StickerItem: View {
+  @EnvironmentObject private var interactor: AnyAssetLibraryInteractor
+
   let asset: AssetItem
 
   var body: some View {
@@ -12,6 +14,8 @@ struct StickerItem: View {
           .aspectRatio(contentMode: .fit)
           .aspectRatio(1, contentMode: .fit)
           .padding(8)
+      } onTap: {
+        interactor.assetTapped(sourceID: asset.sourceID, asset: asset.result)
       }
     case .placeholder:
       GridItemBackground()

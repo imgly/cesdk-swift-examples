@@ -16,6 +16,7 @@ extension Labelable {
     if let imageName {
       if isSystemImage {
         Label(localizedStringKey(suffix: suffix), systemImage: imageName)
+          .symbolRenderingMode(.monochrome)
       } else {
         Label {
           Text(localizedStringKey(suffix: suffix))

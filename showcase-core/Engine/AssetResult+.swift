@@ -33,6 +33,14 @@ public extension AssetResult {
     meta(.fillType)
   }
 
+  var blurType: String? {
+    meta(.blurType)
+  }
+
+  var effectType: String? {
+    meta(.effectType)
+  }
+
   var duration: TimeInterval? {
     guard let string = meta(.duration) else {
       return nil

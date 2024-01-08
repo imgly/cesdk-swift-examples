@@ -3,10 +3,16 @@ import IMGLYEngine
 import Kingfisher
 import SwiftUI
 
-struct ReloadableAsyncImage<Content: View>: View {
-  @EnvironmentObject private var interactor: AnyAssetLibraryInteractor
+public struct ReloadableAsyncImage<Content: View>: View {
   let asset: AssetLoader.Asset
   @ViewBuilder let content: (KFImage) -> Content
+  let onTap: () -> Void
+
+  public init(asset: AssetLoader.Asset, content: @escaping (KFImage) -> Content, onTap: @escaping () -> Void) {
+    self.asset = asset
+    self.content = content
+    self.onTap = onTap
+  }
 
   @State private var state = LoadingState.loading
 
@@ -19,7 +25,7 @@ struct ReloadableAsyncImage<Content: View>: View {
     case loading, error, loaded
   }
 
-  var body: some View {
+  public var body: some View {
     ZStack {
       switch state {
       case .loading:
@@ -37,19 +43,20 @@ struct ReloadableAsyncImage<Content: View>: View {
       }
 
       if state != .error {
-        content(
-          KFImage(asset.thumbURLorURL)
-            .retry(maxCount: 3)
-            .onSuccess { _ in
-              state = .loaded
-            }
-            .onFailure { _ in
-              state = .error
-            }
-            .fade(duration: 0.15)
-        )
-        .onTapGesture {
-          interactor.assetTapped(sourceID: asset.sourceID, asset: asset.result)
+        Button {
+          onTap()
+        } label: {
+          content(
+            KFImage(asset.thumbURLorURL)
+              .retry(maxCount: 3)
+              .onSuccess { _ in
+                state = .loaded
+              }
+              .onFailure { _ in
+                state = .error
+              }
+              .fade(duration: 0.15)
+          )
         }
         .allowsHitTesting(state == .loaded)
         .accessibilityLabel(asset.result.label ?? "")

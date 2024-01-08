@@ -36,6 +36,22 @@ struct AssetGridPlaceholderCountKey: EnvironmentKey {
   }
 }
 
+struct AssetGridSourcePaddingKey: EnvironmentKey {
+  static var defaultValue: CGFloat = 0
+}
+
+public typealias AssetGridItemIndex = (_ asset: AssetLoader.Asset) -> AnyHashable?
+
+struct AssetGridItemIndexKey: EnvironmentKey {
+  static var defaultValue: AssetGridItemIndex = { _ in nil }
+}
+
+public typealias AssetGridOnAppear = (ScrollViewProxy) -> Void
+
+struct AssetGridOnAppearKey: EnvironmentKey {
+  static var defaultValue: AssetGridOnAppear = { _ in }
+}
+
 extension EnvironmentValues {
   var assetGridAxis: AssetGridAxisKey.Value {
     get { self[AssetGridAxisKey.self] }
@@ -76,6 +92,21 @@ extension EnvironmentValues {
     get { self[AssetGridPlaceholderCountKey.self] }
     set { self[AssetGridPlaceholderCountKey.self] = newValue }
   }
+
+  var assetGridSourcePadding: AssetGridSourcePaddingKey.Value {
+    get { self[AssetGridSourcePaddingKey.self] }
+    set { self[AssetGridSourcePaddingKey.self] = newValue }
+  }
+
+  var assetGridItemIndex: AssetGridItemIndexKey.Value {
+    get { self[AssetGridItemIndexKey.self] }
+    set { self[AssetGridItemIndexKey.self] = newValue }
+  }
+
+  var assetGridOnAppear: AssetGridOnAppearKey.Value {
+    get { self[AssetGridOnAppearKey.self] }
+    set { self[AssetGridOnAppearKey.self] = newValue }
+  }
 }
 
 public struct AssetGrid<Item: View, Empty: View, First: View, More: View>: View {
@@ -89,6 +120,9 @@ public struct AssetGrid<Item: View, Empty: View, First: View, More: View>: View 
   @Environment(\.assetGridMessageTextOnly) private var messageTextOnly
   @Environment(\.assetGridMaxItemCount) private var maxItemCount
   @Environment(\.assetGridPlaceholderCount) private var placeholderCount
+  @Environment(\.assetGridSourcePadding) private var sourcePadding
+  @Environment(\.assetGridItemIndex) private var itemIndex
+  @Environment(\.assetGridOnAppear) private var onAppear
 
   @ViewBuilder private let item: (AssetItem) -> Item
   @ViewBuilder private let empty: (_ search: String) -> Empty
@@ -117,21 +151,31 @@ public struct AssetGrid<Item: View, Empty: View, First: View, More: View>: View 
     }
   }
 
-  @ViewBuilder private func grid(@ViewBuilder content: () -> some View) -> some View {
+  @ViewBuilder private func grid(@ViewBuilder content: @escaping () -> some View) -> some View {
     switch axis {
     case .horizontal:
-      AssetLibraryScrollView(axis: .horizontal, showsIndicators: false) {
-        LazyHGrid(rows: items, spacing: spacing) {
-          content()
+      ScrollViewReader { proxy in
+        AssetLibraryScrollView(axis: .horizontal, showsIndicators: false) {
+          LazyHGrid(rows: items, spacing: spacing) {
+            content()
+          }
+          .padding(edges, padding)
+          .onAppear {
+            onAppear(proxy)
+          }
         }
-        .padding(edges, padding)
       }
     case .vertical:
-      AssetLibraryScrollView(axis: .vertical, showsIndicators: true) {
-        LazyVGrid(columns: items, spacing: spacing) {
-          content()
+      ScrollViewReader { proxy in
+        AssetLibraryScrollView(axis: .vertical, showsIndicators: true) {
+          LazyVGrid(columns: items, spacing: spacing) {
+            content()
+          }
+          .padding(edges, padding)
+          .onAppear {
+            onAppear(proxy)
+          }
         }
-        .padding(edges, padding)
       }
     }
   }
@@ -187,12 +231,21 @@ public struct AssetGrid<Item: View, Empty: View, First: View, More: View>: View 
   @ViewBuilder private var contentView: some View {
     grid {
       first()
-      ForEach(data.model.assets.prefix(maxItemCount)) { asset in
+      ForEach(Array(data.model.assets.prefix(maxItemCount).enumerated()), id: \.element) { index, asset in
+        let padding: CGFloat = {
+          if index > 0 {
+            return asset.sourceID != data.model.assets[index - 1].sourceID ? sourcePadding : 0
+          }
+          return 0
+        }()
+
         item(.asset(asset))
           .modifier(AttributionSheet(asset: asset))
+          .id(itemIndex(asset) ?? index as AnyHashable)
           .onAppear {
             loadMoreContentIfNeeded(currentItem: asset)
           }
+          .padding(EdgeInsets(top: 0, leading: padding, bottom: 0, trailing: 0))
       }
       if case .loading = data.model.state {
         item(.placeholder)

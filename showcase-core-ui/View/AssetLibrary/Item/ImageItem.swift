@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ImageItem: View {
+  @EnvironmentObject private var interactor: AnyAssetLibraryInteractor
+
   let asset: AssetItem
 
   var body: some View {
@@ -14,6 +16,8 @@ struct ImageItem: View {
           .clipped()
           .aspectRatio(1, contentMode: .fit)
           .cornerRadius(8)
+      } onTap: {
+        interactor.assetTapped(sourceID: asset.sourceID, asset: asset.result)
       }
     case .placeholder:
       GridItemBackground()
