@@ -35,8 +35,13 @@ public extension View {
   }
 
   @MainActor
-  func assetLoader(sources: [AssetLoader.SourceData], search: Binding<AssetLoader.QueryData>) -> some View {
-    modifier(AssetLoader(sources: sources, search: search))
+  func assetLoader(
+    sources: [AssetLoader.SourceData],
+    search: Binding<AssetLoader.QueryData> = .constant(.init()),
+    order: AssetLoader.ItemOrder = .alternating,
+    perPage: Int = 30
+  ) -> some View {
+    modifier(AssetLoader(sources: sources, search: search, order: order, perPage: perPage))
   }
 
   func assetGrid(axis: Axis) -> some View { environment(\.assetGridAxis, axis) }
@@ -46,9 +51,13 @@ public extension View {
   func assetGrid(padding: CGFloat?) -> some View { environment(\.assetGridPadding, padding) }
   func assetGrid(messageTextOnly: Bool) -> some View { environment(\.assetGridMessageTextOnly, messageTextOnly) }
   func assetGrid(maxItemCount: Int) -> some View { environment(\.assetGridMaxItemCount, maxItemCount) }
-  func assetGridPlaceholderCount(_ placeholderCount: @escaping AssetGridPlaceholderCount) -> some View {
-    environment(\.assetGridPlaceholderCount, placeholderCount)
-  }
+  func assetGridPlaceholderCount(_ placeholderCount: @escaping AssetGridPlaceholderCount)
+    -> some View { environment(\.assetGridPlaceholderCount, placeholderCount) }
+  func assetGrid(sourcePadding: CGFloat) -> some View { environment(\.assetGridSourcePadding, sourcePadding) }
+  func assetGridItemIndex(_ itemIndex: @escaping AssetGridItemIndex)
+    -> some View { environment(\.assetGridItemIndex, itemIndex) }
+  func assetGridOnAppear(_ onAppear: @escaping AssetGridOnAppear)
+    -> some View { environment(\.assetGridOnAppear, onAppear) }
 
   @ViewBuilder
   func conditionalPresentationDragIndicator(_ visibility: Visibility) -> some View {
@@ -99,5 +108,9 @@ extension View {
     perform action: @escaping (Notification) -> Void
   ) -> some View {
     onReceive(center.publisher(for: name, object: object), perform: action)
+  }
+
+  func delayedGesture(_ gesture: some Gesture, with delay: TimeInterval = 0.2) -> some View {
+    modifier(DelayedGesture(duration: delay, gesture: gesture))
   }
 }

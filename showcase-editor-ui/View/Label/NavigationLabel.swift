@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// Label that looks like the original navigation back button.
-struct NavigationLabel: View {
-  enum Direction: String {
+public struct NavigationLabel: View {
+  public enum Direction: String {
     case backward = "chevron.backward"
     case forward = "chevron.forward"
   }
@@ -10,12 +10,12 @@ struct NavigationLabel: View {
   let title: LocalizedStringKey
   let direction: Direction
 
-  init(_ title: LocalizedStringKey, direction: Direction) {
+  public init(_ title: LocalizedStringKey, direction: Direction) {
     self.title = title
     self.direction = direction
   }
 
-  var body: some View {
+  public var body: some View {
     HStack(spacing: 4.5) {
       switch direction {
       case .backward:

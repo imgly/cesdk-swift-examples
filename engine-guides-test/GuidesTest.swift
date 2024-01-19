@@ -125,4 +125,8 @@ class GuidesTest: XCTestCase {
   func testEditVideo() async throws {
     try await editVideo(engine: engine)
   }
+
+  func testSourceSets() async throws {
+    try await sourceSets(engine: engine)
+  }
 }

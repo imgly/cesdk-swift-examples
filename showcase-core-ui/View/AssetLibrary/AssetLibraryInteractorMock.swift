@@ -18,7 +18,7 @@ class AssetLibraryInteractorMock: ObservableObject {
       let engine = try await Engine(license: Secrets.licenseKey)
       self.engine = engine
       try engine.scene.createVideo()
-      let basePath = "https://cdn.img.ly/packages/imgly/cesdk-engine/1.19.0/assets"
+      let basePath = "https://cdn.img.ly/packages/imgly/cesdk-engine/1.20.0-rc.1/assets"
       try engine.editor.setSettingString("basePath", value: basePath)
       try engine.asset.addSource(UnsplashAssetSource())
       try engine.asset.addSource(TextAssetSource(engine: engine))

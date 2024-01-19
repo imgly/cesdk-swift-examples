@@ -15,11 +15,11 @@ struct AttributionSheet: ViewModifier {
 
   func body(content: Content) -> some View {
     content
-      .onLongPressGesture {
+      .delayedGesture(LongPressGesture().onEnded { _ in
         if assetLicense != nil || sourceLicense != nil {
           showAttribution = true
         }
-      }
+      })
       .sheet(isPresented: $showAttribution) {
         Attribution(asset: asset,
                     assetCredits: assetCredits, assetLicense: assetLicense,

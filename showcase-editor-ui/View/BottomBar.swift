@@ -39,6 +39,9 @@ struct BottomBar: View {
     if Set([.text, .image, .shape, .page]).contains(type) {
       modes += [.fillAndStroke]
     }
+    if type == .image {
+      modes += [.adjustments, .filter, .effect, .blur]
+    }
     if type != .page {
       modes += [.layer]
     }
