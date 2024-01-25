@@ -10,6 +10,10 @@ struct ImageSheet: View {
       case .crop: CropOptions()
       case .fillAndStroke: FillAndStrokeOptions()
       case .layer: LayerOptions()
+      case .adjustments: AdjustmentsOptions()
+      case .filter: FilterOptions()
+      case .blur: BlurOptions()
+      case .effect: FXEffectOptions()
       default: EmptyView()
       }
     }

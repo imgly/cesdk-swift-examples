@@ -8,7 +8,7 @@ import SwiftUI
 public final class Interactor: ObservableObject, KeyboardObserver {
   // MARK: - Properties
 
-  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.19.0/assets")!
+  static let basePath = URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.20.0/assets")!
 
   @ViewBuilder var canvas: some View {
     if let engine {
@@ -36,6 +36,9 @@ public final class Interactor: ObservableObject, KeyboardObserver {
   typealias RGBA = IMGLYEngine.RGBA
   typealias GradientColorStop = IMGLYEngine.GradientColorStop
   typealias Color = IMGLYEngine.Color
+  typealias DefaultAssetSource = Engine.DefaultAssetSource
+  typealias BlurType = IMGLYEngine.BlurType
+  typealias EffectType = IMGLYEngine.EffectType
 
   struct Selection: Equatable {
     let blocks: [BlockID]
@@ -319,7 +322,7 @@ extension Interactor {
 
   // swiftlint:enable cyclomatic_complexity
 
-  /// Create a `property` `Binding` for a block `id`. The`defaultValue` will be used as fallback if the property
+  /// Create a `property` `Binding` for a block `id`. The `defaultValue` will be used as fallback if the property
   /// cannot be resolved.
   func bind<T: MappedType>(_ id: BlockID?, _ propertyBlock: PropertyBlock? = nil,
                            property: Property, default defaultValue: T,
@@ -336,6 +339,25 @@ extension Interactor {
         return
       }
       _ = self.set([id], propertyBlock, property: property, value: value, setter: setter, completion: completion)
+    }
+  }
+
+  /// Create a propertyless `Binding` for a block `id`. The `defaultValue` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ id: BlockID?, default defaultValue: T,
+                           getter: @escaping RawGetter<T>,
+                           setter: @escaping RawSetter<T>,
+                           completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T> {
+    .init {
+      guard let id, let value: T = self.get(id, getter: getter) else {
+        return defaultValue
+      }
+      return value
+    } set: { value, _ in
+      guard let id else {
+        return
+      }
+      _ = self.set([id], value: value, setter: setter, completion: completion)
     }
   }
 
@@ -359,6 +381,25 @@ extension Interactor {
     }
   }
 
+  /// Create a propertyless `Binding` for a block `id`. The value `nil` will be used as fallback if the property
+  /// cannot be resolved.
+  func bind<T: MappedType>(_ id: BlockID?,
+                           getter: @escaping RawGetter<T>,
+                           setter: @escaping RawSetter<T>,
+                           completion: PropertyCompletion? = Completion.addUndoStep) -> Binding<T?> {
+    .init {
+      guard let id else {
+        return nil
+      }
+      return self.get(id, getter: getter)
+    } set: { value, _ in
+      guard let value, let id else {
+        return
+      }
+      _ = self.set([id], value: value, setter: setter, completion: completion)
+    }
+  }
+
   func addUndoStep() {
     do {
       try engine?.editor.addUndoStep()
@@ -374,6 +415,11 @@ extension Interactor {
     _ property: Property
   ) throws -> T
 
+  typealias RawGetter<T: MappedType> = @MainActor (
+    _ engine: Engine,
+    _ block: DesignBlockID
+  ) throws -> T
+
   enum Getter {
     static func get<T: MappedType>() -> Interactor.PropertyGetter<T> {
       { engine, block, propertyBlock, property in
@@ -387,6 +433,13 @@ extension Interactor {
     _ blocks: [DesignBlockID],
     _ propertyBlock: PropertyBlock?,
     _ property: Property,
+    _ value: T,
+    _ completion: PropertyCompletion?
+  ) throws -> Bool
+
+  typealias RawSetter<T: MappedType> = @MainActor (
+    _ engine: Engine,
+    _ blocks: [DesignBlockID],
     _ value: T,
     _ completion: PropertyCompletion?
   ) throws -> Bool
@@ -501,6 +554,14 @@ extension Interactor {
       return isGrouped(id)
     case .selectionColors, .font, .fontSize, .color:
       return true
+    case .filter:
+      return isAllowed(id, scope: .appearanceFilter)
+    case .adjustments:
+      return isAllowed(id, scope: .appearanceAdjustments)
+    case .effect:
+      return isAllowed(id, scope: .appearanceEffect)
+    case .blur:
+      return isAllowed(id, scope: .appearanceBlur)
     }
   }
 
@@ -680,6 +741,24 @@ extension Interactor {
           model.detent = .tiny
           model.detents = [.tiny]
         }
+      case .filter, .effect, .blur:
+        guard let type = sheetTypeForSelection else {
+          return
+        }
+        sheet.commit { model in
+          model = .init(mode, type)
+          model.detent = .tiny
+          model.detents = [.tiny]
+        }
+      case .layer, .adjustments:
+        guard let type = sheetTypeForSelection else {
+          return
+        }
+        sheet.commit { model in
+          model = .init(mode, type)
+          model.detent = .medium
+          model.detents = [.medium]
+        }
       default:
         guard let type = sheetTypeForSelection else {
           return
@@ -854,6 +933,19 @@ private extension Interactor {
     }
   }
 
+  func get<T: MappedType>(_ id: DesignBlockID,
+                          getter: RawGetter<T>) -> T? {
+    guard let engine, engine.block.isValid(id) else {
+      return nil
+    }
+    do {
+      return try getter(engine, id)
+    } catch {
+      handleErrorWithTask(error)
+      return nil
+    }
+  }
+
   func set<T: MappedType>(_ ids: [DesignBlockID], _ propertyBlock: PropertyBlock? = nil,
                           property: Property, value: T,
                           setter: PropertySetter<T> = Setter.set(),
@@ -866,6 +958,24 @@ private extension Interactor {
         engine.block.isValid($0)
       }
       return try setter(engine, valid, propertyBlock, property, value, completion)
+    } catch {
+      handleErrorWithTask(error)
+      return false
+    }
+  }
+
+  func set<T: MappedType>(_ ids: [DesignBlockID],
+                          value: T,
+                          setter: RawSetter<T>,
+                          completion: PropertyCompletion?) -> Bool {
+    guard let engine else {
+      return false
+    }
+    do {
+      let valid = ids.filter {
+        engine.block.isValid($0)
+      }
+      return try setter(engine, valid, value, completion)
     } catch {
       handleErrorWithTask(error)
       return false

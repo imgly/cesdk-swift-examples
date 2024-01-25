@@ -6,10 +6,11 @@ public struct AssetLoader: ViewModifier {
   private let sources: [SourceData]
   @Binding private var search: QueryData
 
-  init(sources: [SourceData], search: Binding<QueryData>) {
+  init(sources: [SourceData], search: Binding<QueryData>, order: ItemOrder, perPage: Int) {
     self.sources = sources
     _search = search
-    _data = .init(wrappedValue: AssetLoader.Data(model: .search(sources, for: search.wrappedValue)))
+    _data = .init(wrappedValue: AssetLoader
+      .Data(model: .search(sources, for: search.wrappedValue, order: order, perPage: perPage)))
   }
 
   @EnvironmentObject private var interactor: AnyAssetLibraryInteractor
@@ -186,18 +187,24 @@ public extension AssetLoader {
 
     fileprivate let id: UUID
 
+    private var order: ItemOrder
+    private var perPage: Int
+
     let sources: [(UUID, SourceData)]
     let models: [UUID: Model]
     public let search: QueryData
     public let state: State
 
     private init(_ id: UUID, _ sources: [(UUID, SourceData)], _ models: [UUID: Model],
-                 _ state: Models.State, _ search: QueryData) {
+                 _ state: Models.State, _ search: QueryData, _ order: ItemOrder,
+                 _ perPage: Int) {
       self.id = id
       self.sources = sources
       self.models = models
       self.state = state
       self.search = search
+      self.order = order
+      self.perPage = perPage
 
       let orderedAssetsBySources = sources.compactMap { uuid, _ in
         if let model = models[uuid] {
@@ -206,20 +213,27 @@ public extension AssetLoader {
           return nil
         }
       }
-      assets = Self.alternatingElements(of: orderedAssetsBySources)
+
+      assets = (order == .alternating ? Self.alternatingElements(of: orderedAssetsBySources) : orderedAssetsBySources
+        .flatMap { $0 })
     }
 
-    fileprivate static func search(_ sources: [AssetLoader.SourceData], for query: AssetLoader.QueryData) -> Self {
+    fileprivate static func search(
+      _ sources: [AssetLoader.SourceData],
+      for query: AssetLoader.QueryData,
+      order: AssetLoader.ItemOrder,
+      perPage: Int
+    ) -> Self {
       let sources = sources.map { (UUID(), $0) }
       var models = [UUID: AssetLoader.Model]()
       for source in sources {
-        models[source.0] = .search(source.1, query)
+        models[source.0] = .search(source.1, query, perPage)
       }
-      return .init(UUID(), sources, models, .loading, query)
+      return .init(UUID(), sources, models, .loading, query, order, perPage)
     }
 
     fileprivate mutating func search(_ sources: [AssetLoader.SourceData], for query: AssetLoader.QueryData) {
-      self = .search(sources, for: query)
+      self = .search(sources, for: query, order: order, perPage: perPage)
     }
 
     fileprivate mutating func fetched(_ results: [UUID: AssetLoader.Model]) {
@@ -232,9 +246,9 @@ public extension AssetLoader {
         }
       }
       if error {
-        self = .init(id, sources, results, .error, search)
+        self = .init(id, sources, results, .error, search, order, perPage)
       } else {
-        self = .init(id, sources, results, .loaded, search)
+        self = .init(id, sources, results, .loaded, search, order, perPage)
       }
     }
 
@@ -245,7 +259,7 @@ public extension AssetLoader {
         willLoadNextPage = willLoadNextPage || models[uuid]?.loadNextPage() ?? false
       }
       if willLoadNextPage {
-        self = .init(UUID(), sources, models, .loading, search)
+        self = .init(UUID(), sources, models, .loading, search, order, perPage)
       }
     }
 
@@ -256,7 +270,7 @@ public extension AssetLoader {
         willRetry = willRetry || models[uuid]?.retry() ?? false
       }
       if willRetry {
-        self = .init(UUID(), sources, models, .loading, search)
+        self = .init(UUID(), sources, models, .loading, search, order, perPage)
       }
     }
 
@@ -297,30 +311,33 @@ public extension AssetLoader {
     public let state: Source
     private let _assets: Assets
     public var assets: [AssetLoader.Asset] { _assets.assets }
+    private var perPage: Int
 
-    private init(_ id: UUID, _ source: Source, _ assets: Assets) {
+    private init(_ id: UUID, _ source: Source, _ assets: Assets, _ perPage: Int) {
       self.id = id
+      self.perPage = perPage
       state = source
       _assets = assets
     }
 
-    fileprivate static func search(_ source: AssetLoader.SourceData, _ data: AssetLoader.QueryData) -> Self {
-      .init(UUID(), .loading(.init(source, data)), AssetLoader.Assets())
+    fileprivate static func search(_ source: AssetLoader.SourceData, _ data: AssetLoader.QueryData,
+                                   _ perPage: Int) -> Self {
+      .init(UUID(), .loading(.init(source, data, perPage: perPage)), AssetLoader.Assets(), perPage)
     }
 
     fileprivate mutating func search(_ source: AssetLoader.SourceData, _ data: AssetLoader.QueryData) {
-      self = .search(source, data)
+      self = .search(source, data, perPage)
     }
 
     fileprivate mutating func loaded(_ result: AssetLoader.Result) {
       var assets = _assets
       assets.append(AssetLoader.Assets(result))
-      self = .init(id, .loaded(result), assets)
+      self = .init(id, .loaded(result), assets, perPage)
     }
 
     public mutating func loadNextPage() -> Bool {
       if case let .loaded(result) = state, result.hasNextPage {
-        self = .init(UUID(), .loading(result.nextPage), _assets)
+        self = .init(UUID(), .loading(result.nextPage), _assets, perPage)
         return true
       } else {
         return false
@@ -329,7 +346,7 @@ public extension AssetLoader {
 
     public mutating func retry() -> Bool {
       if case let .error(error) = state {
-        self = .init(UUID(), .loading(error.query), _assets)
+        self = .init(UUID(), .loading(error.query), _assets, perPage)
         return true
       } else {
         return false
@@ -337,7 +354,7 @@ public extension AssetLoader {
     }
 
     fileprivate mutating func error(_ error: AssetLoader.Error) {
-      self = .init(id, .error(error), _assets)
+      self = .init(id, .error(error), _assets, perPage)
     }
 
     public var isValid: Bool {
@@ -363,7 +380,7 @@ public extension AssetLoader {
     fileprivate let page: Int
     fileprivate let perPage: Int
 
-    fileprivate init(_ source: SourceData, _ data: QueryData, page: Int = 0, perPage: Int = 30) {
+    fileprivate init(_ source: SourceData, _ data: QueryData, page: Int = 0, perPage: Int) {
       self.source = source
       self.data = data
       self.page = page
@@ -404,7 +421,7 @@ public extension AssetLoader {
     case error(Error)
   }
 
-  struct Asset: Identifiable, Sendable {
+  struct Asset: Identifiable, Sendable, Hashable {
     // Don't rely on `result.context.sourceID` as this value depends on the (user) implementation of `findAssets`.
     public let sourceID: String
     public let result: AssetResult
@@ -416,6 +433,11 @@ public extension AssetLoader {
     public var id: String {
       sourceID + result.id // Make sure that id is really unique across sources.
     }
+  }
+
+  enum ItemOrder {
+    case alternating
+    case sorted
   }
 }
 

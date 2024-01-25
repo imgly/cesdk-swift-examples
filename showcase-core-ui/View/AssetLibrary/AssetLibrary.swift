@@ -166,10 +166,15 @@ public struct AssetLibrary: View {
   }
 }
 
-extension AssetLibrary {
+public extension AssetLibrary {
   class SearchState: ObservableObject {
     @Published public var isPresented: Bool = false
     @Published public private(set) var prompt: Text?
+
+    public init(isPresented: Bool = false, prompt: Text? = nil) {
+      self.isPresented = isPresented
+      self.prompt = prompt
+    }
 
     func setPrompt(for title: String) {
       prompt = .init(LocalizedStringKey("Search \(title)" + String.ellipsis))

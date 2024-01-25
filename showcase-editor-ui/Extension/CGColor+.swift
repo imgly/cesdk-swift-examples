@@ -65,4 +65,15 @@ extension CGColor {
       throw Error(errorDescription: "Unsupported cgColor.components.count of \(rgba.count).")
     }
   }
+
+  func hex() throws -> String {
+    let rgba = try rgba()
+    let hexString = String(
+      format: "#%02lX%02lX%02lX",
+      Int(Float(rgba.r * 255)),
+      Int(Float(rgba.g * 255)),
+      Int(Float(rgba.b * 255))
+    )
+    return hexString.lowercased()
+  }
 }

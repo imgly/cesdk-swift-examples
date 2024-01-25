@@ -15,4 +15,6 @@ public enum AssetMetaKey: String {
   case filename
   case kind
   case fillType
+  case blurType
+  case effectType
 }
