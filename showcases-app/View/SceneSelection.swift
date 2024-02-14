@@ -1,15 +1,5 @@
-import IMGLYApparelUI
-import IMGLYEditorUI
-import IMGLYPostcardUI
+import IMGLYEditor
 import SwiftUI
-
-@MainActor
-protocol ShowcaseUI: View {
-  init(scene: URL)
-}
-
-extension ApparelUI: ShowcaseUI {}
-extension PostcardUI: ShowcaseUI {}
 
 extension SceneSelection.Scene {
   init(_ resource: String, title: LocalizedStringKey, colorPalette: [NamedColor]? = nil) {
@@ -20,7 +10,9 @@ extension SceneSelection.Scene {
   }
 }
 
-struct SceneSelection<Content: ShowcaseUI>: View {
+struct SceneSelection<Editor: View>: View {
+  typealias Scenes = [(title: String, colorPalette: [(name: LocalizedStringKey, color: CGColor)]?)]
+
   struct Scene: Identifiable {
     var id: URL { url }
     /// Scene title.
@@ -33,14 +25,19 @@ struct SceneSelection<Content: ShowcaseUI>: View {
     let colorPalette: [NamedColor]?
   }
 
-  private let scenes: [Scene]
+  private let editor: (URL) -> Editor
+  @ViewBuilder private let scenes: [Scene]
 
-  init(scenes: [(title: String, colorPalette: [(name: LocalizedStringKey, color: CGColor)]?)]) {
+  init(
+    scenes: Scenes,
+    @ViewBuilder editor: @escaping (_ sceneURL: URL) -> Editor
+  ) {
     self.scenes = scenes.map {
       let resource = $0.title.replacingOccurrences(of: " ", with: "_").lowercased()
       return .init(resource, title: LocalizedStringKey($0.title),
                    colorPalette: $0.colorPalette?.map { .init($0.name, $0.color) })
     }
+    self.editor = editor
   }
 
   var body: some View {
@@ -48,9 +45,9 @@ struct SceneSelection<Content: ShowcaseUI>: View {
     ScrollView {
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 300, maximum: 300), spacing: 16)], spacing: 16) {
         ForEach(scenes) { scene in
-          NavigationLink {
-            Content(scene: scene.url)
-              .colorPalette(scene.colorPalette)
+          ShowcaseLink {
+            editor(scene.url)
+              .imgly.colorPalette(scene.colorPalette)
           } label: {
             AsyncImage(url: scene.image) { image in
               image

@@ -4,7 +4,7 @@ import IMGLYEngine
 @MainActor
 func customAssetSource(engine: Engine) async throws {
   // highlight-unsplash-definition
-  let source = UnsplashAssetSource()
+  let source = UnsplashAssetSource(host: secrets.unsplashHost)
   try engine.asset.addSource(source)
   // highlight-unsplash-definition
 

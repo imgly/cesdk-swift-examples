@@ -12,9 +12,7 @@ public final class UnsplashAssetSource: NSObject {
   private let host: String
   private let path: String
 
-  public static let defaultHost = Secrets.unsplashHost
-
-  public init(host: String = defaultHost, path: String = "/unsplashProxy") {
+  public init(host: String, path: String = "/unsplashProxy") {
     self.host = host
     self.path = path
   }
