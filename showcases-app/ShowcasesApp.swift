@@ -1,4 +1,4 @@
-import IMGLYCore
+@_spi(Internal) import IMGLYCore
 import SwiftUI
 
 @main

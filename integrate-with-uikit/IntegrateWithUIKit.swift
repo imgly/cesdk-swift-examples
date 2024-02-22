@@ -68,7 +68,7 @@
       super.viewDidAppear(animated)
       Task {
         // highlight-license
-        engine = try await Engine(context: .metalView(view: canvas), license: Secrets.licenseKey, userID: "guides-user")
+        engine = try await Engine(context: .metalView(view: canvas), license: secrets.licenseKey, userID: "guides-user")
         // highlight-license
         engine?.onAppear()
         spinner.stopAnimating()

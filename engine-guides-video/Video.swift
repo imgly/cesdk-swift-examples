@@ -5,44 +5,50 @@ import IMGLYEngine
 func editVideo(engine: Engine) async throws {
   // highlight-setupScene
   let scene = try engine.scene.createVideo()
-  let stack = try engine.block.find(byType: .stack).first!
-
-  let page1 = try engine.block.create(.page)
-  let page2 = try engine.block.create(.page)
-  try engine.block.appendChild(to: stack, child: page1)
-  try engine.block.appendChild(to: stack, child: page2)
-
-  try engine.block.setWidth(page1, value: 1280)
-  try engine.block.setHeight(page1, value: 720)
-  try engine.block.setWidth(page2, value: 1280)
-  try engine.block.setHeight(page2, value: 720)
+  let page = try engine.block.create(.page)
+  try engine.block.appendChild(to: scene, child: page)
+  try engine.block.setWidth(page, value: 1280)
+  try engine.block.setHeight(page, value: 720)
   // highlight-setupScene
 
   // highlight-setPageDuration
-  // Show the first page for 4 seconds and the second page for 20 seconds.
-  try engine.block.setDuration(page1, duration: 4)
-  try engine.block.setDuration(page2, duration: 20)
+  try engine.block.setDuration(page, duration: 20)
   // highlight-setPageDuration
 
   // highlight-assignVideoFill
-  let block = try engine.block.create(.graphic)
-  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  let video1 = try engine.block.create(.graphic)
+  try engine.block.setShape(video1, shape: engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setFill(block, fill: videoFill)
-
   try engine.block.setString(
     videoFill,
     property: "fill/video/fileURI",
     // swiftlint:disable:next line_length
     value: "https://cdn.img.ly/assets/demo/v1/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
   )
+  try engine.block.setFill(video1, fill: videoFill)
 
-  try engine.block.appendChild(to: page2, child: block)
-  try engine.block.setPositionX(block, value: 0)
-  try engine.block.setPositionY(block, value: 0)
-  try engine.block.setWidth(block, value: try engine.block.getWidth(page2))
-  try engine.block.setHeight(block, value: try engine.block.getHeight(page2))
+  let video2 = try engine.block.create(.graphic)
+  try engine.block.setShape(video2, shape: engine.block.createShape(.rect))
+  let videoFill2 = try engine.block.createFill(.video)
+  try engine.block.setString(
+    videoFill2,
+    property: "fill/video/fileURI",
+    value: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-kampus-production-8154913.mp4"
+  )
+  try engine.block.setFill(video2, fill: videoFill2)
   // highlight-assignVideoFill
+
+  // highlight-addToTrack
+  let track = try engine.block.create(.track)
+  try engine.block.appendChild(to: page, child: track)
+  try engine.block.appendChild(to: track, child: video1)
+  try engine.block.appendChild(to: track, child: video2)
+  try engine.block.fillParent(track)
+  // highlight-addToTrack
+
+  // highlight-setDuration
+  try engine.block.setDuration(video1, duration: 15)
+  // highlight-setDuration
 
   // highlight-trim
   // Make sure that the video is loaded before calling the trim APIs.
@@ -59,7 +65,7 @@ func editVideo(engine: Engine) async throws {
 
   // highlight-audio
   let audio = try engine.block.create(.audio)
-  try engine.block.appendChild(to: scene, child: audio)
+  try engine.block.appendChild(to: page, child: audio)
   try engine.block.setString(
     audio,
     property: "audio/fileURI",
@@ -83,10 +89,10 @@ func editVideo(engine: Engine) async throws {
   // highlight-audioDuration
 
   // highlight-exportVideo
-  // Export scene as mp4 video.
+  // Export page as mp4 video.
   let mimeType: MIMEType = .mp4
   let exportTask = Task {
-    for try await export in try await engine.block.exportVideo(scene, mimeType: mimeType) {
+    for try await export in try await engine.block.exportVideo(page, mimeType: mimeType) {
       switch export {
       case let .progress(renderedFrames, encodedFrames, totalFrames):
         print("Rendered", renderedFrames, "frames and encoded", encodedFrames, "frames out of", totalFrames)
