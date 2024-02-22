@@ -1,8 +1,15 @@
 import Foundation
 
-struct Secrets {
-  static let unsplashHost = ""
-  static let ciBuildsHost = ""
-  static let githubRepo = ""
-  static let licenseKey = ""
+struct Secrets: Codable {
+  let unsplashHost: String
+  let ciBuildsHost: String
+  let githubRepo: String
+  let licenseKey: String
 }
+
+let secrets = Secrets(
+  unsplashHost: "",
+  ciBuildsHost: "",
+  githubRepo: "",
+  licenseKey: ""
+)

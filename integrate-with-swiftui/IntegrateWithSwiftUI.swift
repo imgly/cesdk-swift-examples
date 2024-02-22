@@ -17,7 +17,7 @@ struct IntegrateWithSwiftUI: View {
     }
     .onAppear {
       Task {
-        engine = try await Engine(license: Secrets.licenseKey, userID: "guides-user")
+        engine = try await Engine(license: secrets.licenseKey, userID: "guides-user")
       }
     }
     // highlight-setup
