@@ -13,21 +13,27 @@ func boolOps(engine: Engine) async throws {
   // highlight-setup
 
   // highlight-combine-union
-  let circle1 = try engine.block.create("shapes/ellipse")
+  let circle1 = try engine.block.create(.graphic)
+  try engine.block.setShape(circle1, shape: engine.block.createShape(.ellipse))
+  try engine.block.setFill(circle1, fill: engine.block.createFill(.color))
   try engine.block.setPositionX(circle1, value: 30)
   try engine.block.setPositionY(circle1, value: 30)
   try engine.block.setWidth(circle1, value: 40)
   try engine.block.setHeight(circle1, value: 40)
   try engine.block.appendChild(to: page, child: circle1)
 
-  let circle2 = try engine.block.create("shapes/ellipse")
+  let circle2 = try engine.block.create(.graphic)
+  try engine.block.setShape(circle2, shape: engine.block.createShape(.ellipse))
+  try engine.block.setFill(circle2, fill: engine.block.createFill(.color))
   try engine.block.setPositionX(circle2, value: 80)
   try engine.block.setPositionY(circle2, value: 30)
   try engine.block.setWidth(circle2, value: 40)
   try engine.block.setHeight(circle2, value: 40)
   try engine.block.appendChild(to: page, child: circle2)
 
-  let circle3 = try engine.block.create("shapes/ellipse")
+  let circle3 = try engine.block.create(.graphic)
+  try engine.block.setShape(circle3, shape: engine.block.createShape(.ellipse))
+  try engine.block.setFill(circle3, fill: engine.block.createFill(.color))
   try engine.block.setPositionX(circle3, value: 50)
   try engine.block.setPositionY(circle3, value: 50)
   try engine.block.setWidth(circle3, value: 50)
@@ -38,7 +44,7 @@ func boolOps(engine: Engine) async throws {
   // highlight-combine-union
 
   // highlight-combine-difference
-  let text = try engine.block.create("text")
+  let text = try engine.block.create(.text)
   try engine.block.replaceText(text, text: "Removed text")
   try engine.block.setPositionX(text, value: 10)
   try engine.block.setPositionY(text, value: 40)
@@ -46,13 +52,16 @@ func boolOps(engine: Engine) async throws {
   try engine.block.setHeight(text, value: 10)
   try engine.block.appendChild(to: page, child: text)
 
-  let image = try engine.block.create("image")
+  let image = try engine.block.create(.graphic)
+  try engine.block.setShape(image, shape: engine.block.createShape(.rect))
+  let imageFill = try engine.block.createFill(.image)
+  try engine.block.setFill(image, fill: imageFill)
   try engine.block.setPositionX(image, value: 0)
   try engine.block.setPositionY(image, value: 0)
   try engine.block.setWidth(image, value: 100)
   try engine.block.setHeight(image, value: 100)
   try engine.block.setString(
-    engine.block.getFill(image),
+    imageFill,
     property: "fill/image/imageFileURI",
     value: "https://img.ly/static/ubq_samples/sample_1.jpg"
   )

@@ -21,8 +21,16 @@ class GuidesTest: XCTestCase {
     engine = nil
   }
 
+  func testBoolOps() async throws {
+    try await boolOps(engine: engine)
+  }
+
   func testColors() async throws {
     try await colors(engine: engine)
+  }
+
+  func testUnderlayer() async throws {
+    try await underlayer(engine: engine)
   }
 
   func testCreateSceneFromImageBlob() async throws {
