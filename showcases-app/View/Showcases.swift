@@ -1,4 +1,5 @@
 import IMGLYApparelEditor
+import IMGLYDesignEditor
 import IMGLYPostcardEditor
 import SwiftUI
 
@@ -6,6 +7,19 @@ struct Showcases: View {
   @State var mode = ShowcaseMode.navigationLink
 
   @ViewBuilder var showcases: some View {
+    Section(title: "Design Editor",
+            subtitle: "Built to edit various designs.") {
+      Showcase(
+        view: DesignEditor(settings),
+        title: "Default Design Editor",
+        subtitle: "Loads empty design scene."
+      )
+      Showcase(
+        view: CustomDesignEditor(),
+        title: "Custom Design Editor",
+        subtitle: "Loads custom design scene and adds Unsplash asset source and library."
+      )
+    }
     Section(title: "Apparel Editor",
             subtitle: "Customize and export a print-ready design with a mobile apparel editor.") {
       Showcase(
