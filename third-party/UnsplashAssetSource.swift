@@ -124,7 +124,7 @@ extension UnsplashAssetSource: AssetSource {
   // highlight-unsplash-credits-license
 }
 
-extension AssetResult {
+private extension AssetResult {
   // highlight-translateToAssetResult
   convenience init(image: UnsplashImage) {
     self.init(

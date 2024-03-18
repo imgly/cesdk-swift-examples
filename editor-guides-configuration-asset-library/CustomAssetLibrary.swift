@@ -1,10 +1,13 @@
+// highlight-customAssetLibrary
 import IMGLYEditor
 import SwiftUI
 
 @MainActor
 struct CustomAssetLibrary: AssetLibrary {
   @Environment(\.imglyAssetLibrarySceneMode) var sceneMode
+  // highlight-customAssetLibrary
 
+  // highlight-assetLibraryBuilder
   @AssetLibraryBuilder var uploads: AssetLibraryContent {
     AssetLibrarySource.imageUpload(.title("Images"), source: .init(demoSource: .imageUpload))
     if sceneMode == .video {
@@ -12,19 +15,29 @@ struct CustomAssetLibrary: AssetLibrary {
     }
   }
 
+  @AssetLibraryBuilder var videosAndImages: AssetLibraryContent {
+    AssetLibraryGroup.video("Videos") { videos }
+    AssetLibraryGroup.image("Images") { images }
+    AssetLibraryGroup.upload("Photo Roll") {
+      AssetLibrarySource.imageUpload(.title("Images"), source: .init(demoSource: .imageUpload))
+      AssetLibrarySource.videoUpload(.title("Videos"), source: .init(demoSource: .videoUpload))
+    }
+  }
+
   @AssetLibraryBuilder var videos: AssetLibraryContent {
-    AssetLibrarySource.videoUpload(.title("Camera Roll"), source: .init(demoSource: .videoUpload))
     AssetLibrarySource.video(.title("Videos"), source: .init(demoSource: .video))
+    AssetLibrarySource.videoUpload(.title("Photo Roll"), source: .init(demoSource: .videoUpload))
   }
 
   @AssetLibraryBuilder var audio: AssetLibraryContent {
-    AssetLibrarySource.audioUpload(.title("Uploads"), source: .init(demoSource: .audioUpload))
     AssetLibrarySource.audio(.title("Audio"), source: .init(demoSource: .audio))
+    AssetLibrarySource.audioUpload(.title("Uploads"), source: .init(demoSource: .audioUpload))
   }
 
   @AssetLibraryBuilder var images: AssetLibraryContent {
-    AssetLibrarySource.imageUpload(.title("Camera Roll"), source: .init(demoSource: .imageUpload))
+    AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
     AssetLibrarySource.image(.title("Images"), source: .init(demoSource: .image))
+    AssetLibrarySource.imageUpload(.title("Photo Roll"), source: .init(demoSource: .imageUpload))
   }
 
   let text = AssetLibrarySource.text(.title("Text"), source: .init(id: TextAssetSource.id))
@@ -47,7 +60,7 @@ struct CustomAssetLibrary: AssetLibrary {
   }
 
   @AssetLibraryBuilder var elements: AssetLibraryContent {
-    AssetLibraryGroup.upload("Camera Roll") { uploads }
+    AssetLibraryGroup.upload("Photo Roll") { uploads }
     if sceneMode == .video {
       AssetLibraryGroup.video("Videos") { videos }
       AssetLibraryGroup.audio("Audio") { audio }
@@ -58,14 +71,18 @@ struct CustomAssetLibrary: AssetLibrary {
     AssetLibraryGroup.sticker("Stickers") { stickers }
   }
 
+  // highlight-assetLibraryBuilder
+
+  // highlight-assetLibraryView
   @ViewBuilder var elementsTab: some View {
     AssetLibraryTab("Elements") { elements } label: { DefaultAssetLibrary.elementsLabel($0) }
   }
 
   @ViewBuilder var uploadsTab: some View {
-    AssetLibraryTab("Camera Roll") { uploads } label: { DefaultAssetLibrary.uploadsLabel($0) }
+    AssetLibraryTab("Photo Roll") { uploads } label: { DefaultAssetLibrary.uploadsLabel($0) }
   }
 
+  // highlight-assetLibraryTabViews
   @ViewBuilder var videosTab: some View {
     AssetLibraryTab("Videos") { videos } label: { DefaultAssetLibrary.videosLabel($0) }
   }
@@ -90,6 +107,28 @@ struct CustomAssetLibrary: AssetLibrary {
     AssetLibraryTab("Stickers") { stickers } label: { DefaultAssetLibrary.stickersLabel($0) }
   }
 
+  // highlight-assetLibraryTabViews
+
+  // highlight-assetLibraryVideoEditor
+  @ViewBuilder public var clipsTab: some View {
+    AssetLibraryTab("Clips") { videosAndImages } label: { _ in EmptyView() }
+  }
+
+  @ViewBuilder public var overlaysTab: some View {
+    AssetLibraryTab("Overlays") { videosAndImages } label: { _ in EmptyView() }
+  }
+
+  @ViewBuilder public var stickersAndShapesTab: some View {
+    AssetLibraryTab("Stickers") {
+      stickers
+      shapes
+    } label: { _ in EmptyView() }
+  }
+
+  // highlight-assetLibraryVideoEditor
+  // highlight-assetLibraryView
+
+  // highlight-assetLibraryTabView
   var body: some View {
     TabView {
       if sceneMode == .video {
@@ -112,4 +151,5 @@ struct CustomAssetLibrary: AssetLibrary {
       }
     }
   }
+  // highlight-assetLibraryTabView
 }

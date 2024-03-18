@@ -14,7 +14,7 @@
     private lazy var spinner = UIActivityIndicatorView()
     private lazy var button = UIButton(
       type: .system,
-      primaryAction: UIAction(title: "Use the engine", handler: { [unowned self] _ in
+      primaryAction: UIAction(title: "Use the Engine", handler: { [unowned self] _ in
         guard let engine else {
           return
         }

@@ -13,8 +13,8 @@ extension View {
     .imgly.assetLibrary {
       DefaultAssetLibrary()
         .images {
-          DefaultAssetLibrary.images
           AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
+          DefaultAssetLibrary.images
         }
     }
   }

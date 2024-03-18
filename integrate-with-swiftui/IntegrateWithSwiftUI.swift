@@ -35,7 +35,7 @@ struct ContentView: View {
   var body: some View {
     ZStack {
       Canvas(engine: engine)
-      Button("Use the engine") {
+      Button("Use the Engine") {
         // highlight-work
         Task {
           let url = URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
