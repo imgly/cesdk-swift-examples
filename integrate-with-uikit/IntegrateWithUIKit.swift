@@ -14,7 +14,7 @@
     private lazy var spinner = UIActivityIndicatorView()
     private lazy var button = UIButton(
       type: .system,
-      primaryAction: UIAction(title: "Use the engine", handler: { [unowned self] _ in
+      primaryAction: UIAction(title: "Use the Engine", handler: { [unowned self] _ in
         guard let engine else {
           return
         }
@@ -68,7 +68,11 @@
       super.viewDidAppear(animated)
       Task {
         // highlight-license
-        engine = try await Engine(context: .metalView(view: canvas), license: secrets.licenseKey, userID: "guides-user")
+        engine = try await Engine(
+          context: .metalView(view: canvas),
+          license: secrets.licenseKey,
+          userID: "<your unique user id>"
+        )
         // highlight-license
         engine?.onAppear()
         spinner.stopAnimating()

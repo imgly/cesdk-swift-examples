@@ -1,6 +1,7 @@
 import Foundation
 
 struct Secrets: Codable {
+  let remoteAssetSourceHost: String
   let unsplashHost: String
   let ciBuildsHost: String
   let githubRepo: String
@@ -8,6 +9,7 @@ struct Secrets: Codable {
 }
 
 let secrets = Secrets(
+  remoteAssetSourceHost: "",
   unsplashHost: "",
   ciBuildsHost: "",
   githubRepo: "",
