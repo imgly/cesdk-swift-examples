@@ -5,6 +5,7 @@ import SwiftUI
 @MainActor
 struct ContentView: View {
   private let title = "CE.SDK Showcases"
+  @State private var isCameraSheetShown = false
 
   var body: some View {
     NavigationView {
@@ -13,6 +14,14 @@ struct ContentView: View {
       }
       .listStyle(.sidebar)
       .navigationTitle(title)
+      .toolbar {
+        Button {
+          isCameraSheetShown.toggle()
+        } label: {
+          Label("Camera", systemImage: "camera")
+        }
+        .buttonStyle(.borderedProminent)
+      }
       .imgly.buildInfo(ciBuildsHost: secrets.ciBuildsHost, githubRepo: secrets.githubRepo)
     }
     // `StackNavigationViewStyle` forces to deinitialize the view and thus its engine when exiting a showcase.
@@ -21,6 +30,7 @@ struct ContentView: View {
       let message = LicenseError.missing.errorDescription ?? ""
       Text(verbatim: "Please enter a `licenseKey` in `Secrets.swift`!\n\(message)")
     }
+    .modifier(CameraShowcase(isCameraSheetShown: $isCameraSheetShown))
     .accessibilityIdentifier("showcases")
   }
 }
