@@ -12,7 +12,7 @@
     // highlight-setup
 
     private lazy var spinner = NSProgressIndicator()
-    private lazy var button = NSButton(title: "Use the engine", target: self, action: #selector(buttonClicked))
+    private lazy var button = NSButton(title: "Use the Engine", target: self, action: #selector(buttonClicked))
 
     override func loadView() {
       view = .init(frame: .init(x: 0, y: 0, width: 1000, height: 1000))
@@ -71,7 +71,11 @@
       super.viewDidAppear()
       Task {
         // highlight-license
-        engine = try await Engine(context: .metalView(view: canvas), license: secrets.licenseKey, userID: "guides-user")
+        engine = try await Engine(
+          context: .metalView(view: canvas),
+          license: secrets.licenseKey,
+          userID: "<your unique user id>"
+        )
         // highlight-license
         engine?.onAppear()
         spinner.stopAnimation(self)

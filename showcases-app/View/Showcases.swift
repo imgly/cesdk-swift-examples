@@ -1,6 +1,7 @@
 import IMGLYApparelEditor
 import IMGLYDesignEditor
 import IMGLYPostcardEditor
+import IMGLYVideoEditor
 import SwiftUI
 
 struct Showcases: View {
@@ -18,6 +19,19 @@ struct Showcases: View {
         view: CustomDesignEditor(),
         title: "Custom Design Editor",
         subtitle: "Loads custom design scene and adds Unsplash asset source and library."
+      )
+    }
+    Section(title: "Video Editor",
+            subtitle: "Edit video.") {
+      Showcase(
+        view: VideoEditor(settings),
+        title: "Default Video Editor",
+        subtitle: "Loads empty video scene."
+      )
+      Showcase(
+        view: CustomVideoEditor(),
+        title: "Custom Video Editor",
+        subtitle: "Custom video scene and adds Unsplash asset source and library."
       )
     }
     Section(title: "Apparel Editor",
@@ -46,6 +60,38 @@ struct Showcases: View {
         subtitle: "Custom postcard scene selection and adds Unsplash asset source and library."
       ).showcaseMode(.navigationLink)
     }
+    Section(title: "Documentation Editor Examples") {
+      Group {
+        Showcase(view: EditorSwiftUI(), title: "Quickstart: SwiftUI")
+        Showcase(view: EditorUIKitWrapper(), title: "Quickstart: UIKit")
+      }
+      Group {
+        Showcase(view: DesignEditorSolution(), title: "Solutions: Design Editor")
+        Showcase(view: VideoEditorSolution(), title: "Solutions: Video Editor")
+        Showcase(view: ApparelEditorSolution(), title: "Solutions: Apparel Editor")
+        Showcase(view: PostcardEditorSolution(), title: "Solutions: Postcard Editor")
+      }
+      Group {
+        Showcase(view: BasicEditorSolution(), title: "Configuration: Basics")
+        Showcase(view: CallbacksEditorSolution(), title: "Configuration: Callbacks")
+        Showcase(view: ThemingEditorSolution(), title: "Configuration: Theming")
+        Showcase(view: ColorPaletteEditorSolution(), title: "Configuration: Color Palette")
+        Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")
+        Showcase(view: CustomAssetLibraryEditorSolution(), title: "Configuration: Custom Asset Library")
+      }
+    }
+    Section(title: "Documentation Camera Examples") {
+      Group {
+        Showcase(view: CameraSwiftUI(), title: "Quickstart: SwiftUI")
+        Showcase(view: CameraUIKitWrapper(), title: "Quickstart: UIKit")
+      }
+      Group {
+        Showcase(view: RecordingsCameraSolution(), title: "Recordings")
+      }
+      Group {
+        Showcase(view: ConfiguredCameraSolution(), title: "Configuration")
+      }
+    }
   }
 
   var body: some View {
@@ -59,4 +105,20 @@ struct Showcases: View {
     showcases
       .showcaseMode(mode)
   }
+}
+
+private struct EditorUIKitWrapper: UIViewControllerRepresentable {
+  func makeUIViewController(context _: Context) -> EditorUIKit {
+    EditorUIKit()
+  }
+
+  func updateUIViewController(_: EditorUIKit, context _: Context) {}
+}
+
+private struct CameraUIKitWrapper: UIViewControllerRepresentable {
+  func makeUIViewController(context _: Context) -> CameraUIKit {
+    CameraUIKit()
+  }
+
+  func updateUIViewController(_: CameraUIKit, context _: Context) {}
 }
