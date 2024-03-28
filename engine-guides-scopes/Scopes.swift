@@ -9,6 +9,10 @@ func scopes(engine: Engine) async throws {
   let block = try engine.block.find(byType: .graphic).first!
   // highlight-setup
 
+  // highlight-findAllScopes
+  let scopes = try engine.editor.findAllScopes()
+  // highlight-findAllScopes
+
   // highlight-setGlobalScope
   /* Let the global scope defer to the block-level. */
   try engine.editor.setGlobalScope(key: "layer/move", value: .defer)
