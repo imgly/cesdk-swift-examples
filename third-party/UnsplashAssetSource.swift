@@ -65,17 +65,13 @@ extension UnsplashAssetSource: AssetSource {
     Self.id
   }
 
-  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
-  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
-  private static let get: (URL) async throws -> (Data, URLResponse) = URLSession.shared.data
-
   public func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     // highlight-unsplash-query
     let endpoint: Endpoint = queryData.query?
       .isEmpty ?? true ? .list(queryData: queryData) : .search(queryData: queryData)
     // highlight-unsplash-query
 
-    let data = try await Self.get(endpoint.url(with: host, path: path)!).0
+    let data = try await URLSession.shared.get(endpoint.url(with: host, path: path)!).0
 
     // highlight-unsplash-result-mapping
     if queryData.query?.isEmpty ?? true {
@@ -178,4 +174,13 @@ private extension AssetResult {
     )
   }
   // highlight-translateToAssetResult
+}
+
+private extension URLSession {
+  // https://forums.developer.apple.com/forums/thread/727823
+  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
+  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
+  nonisolated func get(_ url: URL) async throws -> (Data, URLResponse) {
+    try await data(from: url)
+  }
 }
