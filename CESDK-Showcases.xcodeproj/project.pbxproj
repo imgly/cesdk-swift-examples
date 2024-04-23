@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00FB0F4F36E8DB8D3F21DD75 /* ColorPaletteEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22A4D5816E285FAD41EEC6F /* ColorPaletteEditorSolution.swift */; };
 		04E7AAED4D339EA7EF6C7AF8 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */; };
 		0509139CF4A185B06A07E0CB /* wish_you_were_here.scene in Resources */ = {isa = PBXBuildFile; fileRef = 4D470450ED9A8ADBE0F20D36 /* wish_you_were_here.scene */; };
 		064AB5D5F547E888C7094BFB /* import.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FD12BFFB9425301EB00E31 /* import.png */; };
@@ -24,7 +23,6 @@
 		169A6C5CBF9B982BC261C086 /* ColorPaletteEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22A4D5816E285FAD41EEC6F /* ColorPaletteEditorSolution.swift */; };
 		17FCB5ED73584D117A21F110 /* CustomApparelEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A6CB534773EFF37234AF46 /* CustomApparelEditor.swift */; };
 		1A6F82A841B68CC4CDC8B5B5 /* instagram_post_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E443AAAB5FF5196457099F2 /* instagram_post_dark.png */; };
-		1C8BB808A446C66B68F8EE1E /* ModalEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A7975E36F43B1BFF31DAF /* ModalEditor.swift */; };
 		1D151A87638414C404BCCE28 /* full_hd.scene in Resources */ = {isa = PBXBuildFile; fileRef = 03CB4C9047D536384A1142CE /* full_hd.scene */; };
 		1D3A74E2969BC68BD8317E74 /* UnsplashAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B0FA3ABED0662A275C5A7 /* UnsplashAssetSource.swift */; };
 		1DB1824BCEDB0938F56C7F98 /* ModalEditorLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BFC53599B9618C1A521532 /* ModalEditorLink.swift */; };
@@ -33,7 +31,6 @@
 		226E9DFEB7F91DA9C278BAEE /* my-plants.png in Resources */ = {isa = PBXBuildFile; fileRef = AC17792CBBAD40ECDD558519 /* my-plants.png */; };
 		23FC9A2D8137EE3B178C2EF4 /* bonjour_paris.png in Resources */ = {isa = PBXBuildFile; fileRef = 93767C62355077E786558D24 /* bonjour_paris.png */; };
 		253AD75F4E9B5B84A72A2E37 /* wish_you_were_here.png in Resources */ = {isa = PBXBuildFile; fileRef = D3634CA054F9A580ECCE0DA5 /* wish_you_were_here.png */; };
-		2739C7B83FCC4A18BEB40ECB /* ApparelEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9AAE597EB066E3B57C0CAC /* ApparelEditorSolution.swift */; };
 		29ADF3D32717C813A7B21775 /* apparel-ui-b-3.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B180D5F50DFED3C8A44081 /* apparel-ui-b-3.png */; };
 		2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD68EDF31A2BAE79066E2107 /* CreateSceneFromImageBlob.swift */; };
 		2CF38E32EAAB39B86AACC3CE /* red-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 678D4CC9D48002C226E5D2A4 /* red-dot.png */; };
@@ -52,7 +49,6 @@
 		4569C16A47B4C380221AB9A9 /* milli-surf-school.scene in Resources */ = {isa = PBXBuildFile; fileRef = 02B5DE7A2AB450E182FDEB89 /* milli-surf-school.scene */; };
 		45C21578BCACB94B90E7A249 /* VideoEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C617646265E318841E0A22 /* VideoEditorSolution.swift */; };
 		47A2180BAB9D6999DFBB83FB /* IntegrateWithUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1027ACAB1FC6EEED2A9A4F9D /* IntegrateWithUIKit.swift */; };
-		4C281E444DAE06E02D7A75E2 /* EditorSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9020339AD878D69196B9E69 /* EditorSwiftUI.swift */; };
 		4EFE8B61E7178C9CBB4D4EBE /* Scopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8384B585A656A9A3F7458E /* Scopes.swift */; };
 		4F728C5640A6F47C9AA9DE7C /* instagram_story.png in Resources */ = {isa = PBXBuildFile; fileRef = 1689F292EB403782A310F7A3 /* instagram_story.png */; };
 		52C42EF976F51CEFF808D7B4 /* apparel-ui-b-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E4B049DE0382F6A1B705AC94 /* apparel-ui-b-1.png */; };
@@ -63,11 +59,8 @@
 		5718C57B9AA61ECD7CBDAFC2 /* CreateSceneFromImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D715E2CEB9F91EB3F72074B1 /* CreateSceneFromImageURL.swift */; };
 		575065109A6D6A3EF975D300 /* milli-surf-school.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D90A7219DA07AE2E4E7116 /* milli-surf-school.png */; };
 		5A6D5788461866EF3F54B622 /* CustomEditorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B32C3B8A3E58E5BF7CA7FDC /* CustomEditorConfiguration.swift */; };
-		5C345647ED4026CBDD61DF74 /* DesignEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E8CC37ABF7FEDFE48C2441 /* DesignEditorSolution.swift */; };
 		5C50D2D2F947B1DB0ED81617 /* ShowcaseMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7BC311B92541004C5CB3D /* ShowcaseMode.swift */; };
-		5DD026491C70694137064AE6 /* CustomAssetLibraryEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBA7CE0F0EFCE5E4D09C30 /* CustomAssetLibraryEditorSolution.swift */; };
 		5F33C35E2730E6BA8254A98E /* merry_christmas.scene in Resources */ = {isa = PBXBuildFile; fileRef = 7326836C8906ECEEF7252595 /* merry_christmas.scene */; };
-		66293006750289E49D54D05B /* VideoEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C617646265E318841E0A22 /* VideoEditorSolution.swift */; };
 		68906141A621ACCB8AC71E83 /* ModifyingScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC927A5D9AEEA8FDFB0EF6CD /* ModifyingScenes.swift */; };
 		6940DE0F80AF50732CBA4781 /* TextProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761ABA140ABBC5E120AC88B2 /* TextProperties.swift */; };
 		6CA2896B462E0037E3DE467E /* apparel-ui-b-1.scene in Resources */ = {isa = PBXBuildFile; fileRef = 8631A338BE108704425D44A4 /* apparel-ui-b-1.scene */; };
@@ -91,7 +84,6 @@
 		87754145B7CC6D734671F680 /* instagram_story.scene in Resources */ = {isa = PBXBuildFile; fileRef = 8E26E9442F2F3631351E8C46 /* instagram_story.scene */; };
 		881ED67C0F493C21E65CA71C /* x_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E40E7D21A194DFF43630803 /* x_header.png */; };
 		8822D1A2BDE0969BA8E29ABE /* wish_you_were_here_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7DF4A545EEBE96EB84EA95 /* wish_you_were_here_grid.png */; };
-		8873A57BE0634F463CE95ADB /* BasicEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE447689B7BB52995BCA840C /* BasicEditorSolution.swift */; };
 		89EB56ED48B8517F7834817A /* CustomAssetLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1CBFABE554E6CAF4D47216 /* CustomAssetLibrary.swift */; };
 		8BB2993B194C46C75C01895B /* LoadSceneFromString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC91BE8AE22A4802EEE13B /* LoadSceneFromString.swift */; };
 		8F8179E5B5D8893A7C288EDE /* full_hd.png in Resources */ = {isa = PBXBuildFile; fileRef = EF2D1F68AA7A4FDE57DAAD0C /* full_hd.png */; };
@@ -105,7 +97,6 @@
 		9F3DA872BA8853FF31311F89 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC9B0910940170812D6EDE0 /* Camera.swift */; };
 		A14FF2A137DE29AEEE3D4730 /* business_card_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BA412CD41814D59CF796D76 /* business_card_dark.png */; };
 		A3B037403C8D1AFB7C201983 /* CameraShowcase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A83F6BF65F1E0B98FA076B /* CameraShowcase.swift */; };
-		A53703E052F8FEF63AD0C4DF /* ThemingEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC9A491EB7507596D259D80 /* ThemingEditorSolution.swift */; };
 		A607D7CD52E40939F82839C5 /* CustomVideoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F8A4E46281F89060751E0F /* CustomVideoEditor.swift */; };
 		A7E112C1029FF7CF3EC32A70 /* SceneSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBF363BE528CED8BA335F /* SceneSelection.swift */; };
 		A987DB04F702CB5030AFB9B1 /* bonjour_paris.scene in Resources */ = {isa = PBXBuildFile; fileRef = EB49ADE1FAC03E5887A4AB6A /* bonjour_paris.scene */; };
@@ -115,12 +106,9 @@
 		B2E7742556D28E8DB88A3A5F /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4E68AC1412CBC0B9861E49 /* Secrets.swift */; };
 		B3516693EC558A338D214901 /* CreateSceneFromScratch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A444D6F3EA290E51BE49CEE7 /* CreateSceneFromScratch.swift */; };
 		B3D602EDBAFC73CFEED6B9C5 /* UnsplashResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E506F9CD963DAF305853BCFB /* UnsplashResponse.swift */; };
-		B77A8757D6EF59346C52B36D /* CameraSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E7114B94C6D3751AD0E9BA /* CameraSwiftUI.swift */; };
 		B9C8183B42E033EB90B8FD6B /* ApparelEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9AAE597EB066E3B57C0CAC /* ApparelEditorSolution.swift */; };
 		B9DD42E0D33A941FCD2787CD /* apparel-ui-b-2.scene in Resources */ = {isa = PBXBuildFile; fileRef = 2E90E7315AB6C620F24E15A9 /* apparel-ui-b-2.scene */; };
-		BCE161D5C86D64A4D58EAA50 /* EditorUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3188D5A46DB8F595E47318 /* EditorUIKit.swift */; };
 		BD9B691F70AF5398106A4DB1 /* UnsplashAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B0FA3ABED0662A275C5A7 /* UnsplashAssetSource.swift */; };
-		BE0312BA81F241B772D4C20C /* CallbacksEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2A50B7E2B10DCEBDE1E01E /* CallbacksEditorSolution.swift */; };
 		C0681C848C01249A86CB7087 /* monthly-review.scene in Resources */ = {isa = PBXBuildFile; fileRef = E0F7EF69D819E13F1665223B /* monthly-review.scene */; };
 		C2747CE6D8180369E06EBAD3 /* TextWithEmojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78201EE5E9AEB5EFF1E8046 /* TextWithEmojis.swift */; };
 		CB9780A7731D9678AFF54E05 /* UsingCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E679522468224F800C29CEC5 /* UsingCamera.swift */; };
@@ -140,20 +128,14 @@
 		E1124C64E873853DC33D23D5 /* Cutouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA36E2D759B25F3873F4D231 /* Cutouts.swift */; };
 		E22D531DD2D6897DB9E278C8 /* x_header.scene in Resources */ = {isa = PBXBuildFile; fileRef = A834A03F6F2CD958F438AF67 /* x_header.scene */; };
 		E48865ED53EEEA5FB273D61D /* BoolOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179E61754D943FAD64E622B4 /* BoolOps.swift */; };
-		E552781DCD3AB0A95FE01A2D /* DefaultAssetLibraryEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0A3D8A40C054015BAA661D /* DefaultAssetLibraryEditorSolution.swift */; };
 		E611EB9B2904EB797C8AE230 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = D0EFB6EEADA4CCA6499400B3 /* video.png */; };
 		E703A81034B897A7FD721893 /* x_header_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 1700C9C025F822A2743460EF /* x_header_dark.png */; };
 		E7AB97EC7C0E60A8548265EA /* postcard-empty_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = E3ADC16915FA511DA63B6FF7 /* postcard-empty_grid.png */; };
 		EA3F93594420918926B4CB89 /* RecordingsCameraSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790EBF6160F29A8CEB64452E /* RecordingsCameraSolution.swift */; };
 		EB1DA29327CAEEEF86D987BA /* LoadSceneFromBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64880165E882FEABEC9A49C0 /* LoadSceneFromBlob.swift */; };
-		EB895BCACF1F8A580F402943 /* RecordingsCameraSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790EBF6160F29A8CEB64452E /* RecordingsCameraSolution.swift */; };
-		EF01086F04060158F6ECE2D8 /* ConfiguredCameraSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81467CDB33CB40216430B33 /* ConfiguredCameraSolution.swift */; };
-		EF8809EE1B560CD98F112743 /* CameraUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870292BF844E3216EC482916 /* CameraUIKit.swift */; };
 		EFE6E4C033D72096EB8194E6 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2FA4A5E4B805E933D81834 /* Section.swift */; };
 		F01D7A479A245C347E269980 /* IMGLYUI in Frameworks */ = {isa = PBXBuildFile; productRef = 75956FF61D63E2581B5C1095 /* IMGLYUI */; };
-		F28893F2E0546F1E2C8FC03C /* PostcardEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A2CD1D9EF0249F89073650 /* PostcardEditorSolution.swift */; };
 		F400A7B7A7784B4A9749D8FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF70B5F8DE6228FC3942C16 /* ContentView.swift */; };
-		F4FBE8B23902FA48F1759242 /* CustomAssetLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1CBFABE554E6CAF4D47216 /* CustomAssetLibrary.swift */; };
 		F5F1DB4AFBBA1A2C614F4D62 /* SaveSceneToBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C74CFA2B3264E4E40580D2D /* SaveSceneToBlob.swift */; };
 		F6085BD6E3686511B0031C53 /* thank_you_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C958E3C1C48CA227E349D4 /* thank_you_grid.png */; };
 		F65D286BE1E8D1EC6B5CE313 /* UsingEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791B7DB3F2DDBB4CEC508D4 /* UsingEffects.swift */; };
@@ -914,7 +896,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_1757DE1F-46B6-4878-98F2-1A323A36BFD2" /* build_github */ = {
+		"TEMP_B1302E4C-8A9E-4AA5-9E6B-E1596E103897" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
@@ -1034,6 +1016,8 @@
 			packageReferences = (
 				10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */,
 				0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */,
+				150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -1140,28 +1124,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2739C7B83FCC4A18BEB40ECB /* ApparelEditorSolution.swift in Sources */,
-				8873A57BE0634F463CE95ADB /* BasicEditorSolution.swift in Sources */,
 				E48865ED53EEEA5FB273D61D /* BoolOps.swift in Sources */,
-				BE0312BA81F241B772D4C20C /* CallbacksEditorSolution.swift in Sources */,
 				9F3DA872BA8853FF31311F89 /* Camera.swift in Sources */,
-				B77A8757D6EF59346C52B36D /* CameraSwiftUI.swift in Sources */,
-				EF8809EE1B560CD98F112743 /* CameraUIKit.swift in Sources */,
-				00FB0F4F36E8DB8D3F21DD75 /* ColorPaletteEditorSolution.swift in Sources */,
 				391A417B9631E8D7F01567FD /* Colors.swift in Sources */,
-				EF01086F04060158F6ECE2D8 /* ConfiguredCameraSolution.swift in Sources */,
 				2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */,
 				5718C57B9AA61ECD7CBDAFC2 /* CreateSceneFromImageURL.swift in Sources */,
 				B3516693EC558A338D214901 /* CreateSceneFromScratch.swift in Sources */,
 				94F7406B182A697C6CA92929 /* CreateSceneFromVideoURL.swift in Sources */,
-				F4FBE8B23902FA48F1759242 /* CustomAssetLibrary.swift in Sources */,
-				5DD026491C70694137064AE6 /* CustomAssetLibraryEditorSolution.swift in Sources */,
 				6ECA1100F3B5B854F54AC18F /* CustomAssetSource.swift in Sources */,
 				E1124C64E873853DC33D23D5 /* Cutouts.swift in Sources */,
-				E552781DCD3AB0A95FE01A2D /* DefaultAssetLibraryEditorSolution.swift in Sources */,
-				5C345647ED4026CBDD61DF74 /* DesignEditorSolution.swift in Sources */,
-				4C281E444DAE06E02D7A75E2 /* EditorSwiftUI.swift in Sources */,
-				BCE161D5C86D64A4D58EAA50 /* EditorUIKit.swift in Sources */,
 				F6B223A77B7BA8E13B5E02AF /* ExportingBlocks.swift in Sources */,
 				86FE388594868CDBA26A4080 /* IntegrateWithAppKit.swift in Sources */,
 				2DD382E84D630937FE106BDE /* IntegrateWithSwiftUI.swift in Sources */,
@@ -1169,10 +1140,7 @@
 				EB1DA29327CAEEEF86D987BA /* LoadSceneFromBlob.swift in Sources */,
 				80F83C98009AA3507A55172C /* LoadSceneFromRemote.swift in Sources */,
 				8BB2993B194C46C75C01895B /* LoadSceneFromString.swift in Sources */,
-				1C8BB808A446C66B68F8EE1E /* ModalEditor.swift in Sources */,
 				68906141A621ACCB8AC71E83 /* ModifyingScenes.swift in Sources */,
-				F28893F2E0546F1E2C8FC03C /* PostcardEditorSolution.swift in Sources */,
-				EB895BCACF1F8A580F402943 /* RecordingsCameraSolution.swift in Sources */,
 				0D4E1D13FD9895C0AFE1D02C /* RemoteAssetSource.swift in Sources */,
 				80E634307153C1FB04136FE1 /* SaveSceneToArchive.swift in Sources */,
 				F5F1DB4AFBBA1A2C614F4D62 /* SaveSceneToBlob.swift in Sources */,
@@ -1184,7 +1152,6 @@
 				2D794C31DE849F9C404073E0 /* StoreMetadata.swift in Sources */,
 				6940DE0F80AF50732CBA4781 /* TextProperties.swift in Sources */,
 				C2747CE6D8180369E06EBAD3 /* TextWithEmojis.swift in Sources */,
-				A53703E052F8FEF63AD0C4DF /* ThemingEditorSolution.swift in Sources */,
 				D207C477145F158A9044E493 /* URIResolver.swift in Sources */,
 				2E6274B3CFB88955F89773E3 /* Underlayer.swift in Sources */,
 				BD9B691F70AF5398106A4DB1 /* UnsplashAssetSource.swift in Sources */,
@@ -1194,7 +1161,6 @@
 				F7739CC80F6FC24DCC8211C4 /* UsingFills.swift in Sources */,
 				3DBC80C1781D2096718F7E7A /* UsingShapes.swift in Sources */,
 				FB2F4D3344C559C86FA6B6E1 /* Video.swift in Sources */,
-				66293006750289E49D54D05B /* VideoEditorSolution.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1339,7 +1305,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.24.0;
+				MARKETING_VERSION = 1.25.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1429,7 +1395,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.24.0;
+				MARKETING_VERSION = 1.25.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1504,7 +1470,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.24.0;
+				version = 1.25.0;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1512,7 +1478,23 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.24.0;
+				version = 1.25.0;
+			};
+		};
+		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = exactVersion;
+				version = 7.11.0;
+			};
+		};
+		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = exactVersion;
+				version = 1.1.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

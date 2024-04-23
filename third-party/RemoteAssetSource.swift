@@ -17,7 +17,7 @@ public final class RemoteAssetSource: NSObject {
 
   fileprivate static func fetchManifest(host: String, path: String) async throws -> RAS.Manifest {
     let url = Endpoint.manifest.url(with: host, path: path)!
-    let data = try await Self.get(url).0 // Should check HTTPURLResponse.statusCode
+    let data = try await URLSession.shared.get(url).0 // Should check HTTPURLResponse.statusCode
     let decoder = JSONDecoder()
     return try decoder.decode(RAS.ManifestData.self, from: data).data
   }
@@ -54,10 +54,6 @@ public final class RemoteAssetSource: NSObject {
       return components.url
     }
   }
-
-  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
-  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
-  private static let get: (URL) async throws -> (Data, URLResponse) = URLSession.shared.data
 }
 
 // MARK: - AssetSource
@@ -67,7 +63,7 @@ extension RemoteAssetSource: AssetSource {
 
   public func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     let url = Endpoint.assets(queryData: queryData).url(with: host, path: path)!
-    let data = try await Self.get(url).0 // Should check HTTPURLResponse.statusCode
+    let data = try await URLSession.shared.get(url).0 // Should check HTTPURLResponse.statusCode
     let result = try decoder.decode(RAS.AssetQueryResultData.self, from: data).data
     return .init(ras: result, sourceID: id)
   }
@@ -358,5 +354,14 @@ private extension BlockAPI {
     try await forceLoadAVResource(videoFill)
     let duration = try getAVResourceTotalDuration(videoFill)
     try setDuration(id, duration: duration)
+  }
+}
+
+private extension URLSession {
+  // https://forums.developer.apple.com/forums/thread/727823
+  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
+  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
+  nonisolated func get(_ url: URL) async throws -> (Data, URLResponse) {
+    try await data(from: url)
   }
 }
