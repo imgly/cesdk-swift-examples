@@ -137,4 +137,8 @@ class GuidesTest: XCTestCase {
   func testSourceSets() async throws {
     try await sourceSets(engine: engine)
   }
+
+  func testBuffers() throws {
+    try buffers(engine: engine)
+  }
 }

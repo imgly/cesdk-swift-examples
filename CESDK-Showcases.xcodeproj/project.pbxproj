@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04626311ADCE3973E18C1BA6 /* Buffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB2A5292B920DACAABC39A /* Buffers.swift */; };
 		04E7AAED4D339EA7EF6C7AF8 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */; };
 		0509139CF4A185B06A07E0CB /* wish_you_were_here.scene in Resources */ = {isa = PBXBuildFile; fileRef = 4D470450ED9A8ADBE0F20D36 /* wish_you_were_here.scene */; };
 		064AB5D5F547E888C7094BFB /* import.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FD12BFFB9425301EB00E31 /* import.png */; };
@@ -180,6 +181,7 @@
 		4D470450ED9A8ADBE0F20D36 /* wish_you_were_here.scene */ = {isa = PBXFileReference; path = wish_you_were_here.scene; sourceTree = "<group>"; };
 		4DF70B5F8DE6228FC3942C16 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4E14B462A868AA0B8A0903B7 /* business_card.scene */ = {isa = PBXFileReference; path = business_card.scene; sourceTree = "<group>"; };
+		4EAB2A5292B920DACAABC39A /* Buffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buffers.swift; sourceTree = "<group>"; };
 		4F5DB03388A1973977B06DD2 /* UsingFills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingFills.swift; sourceTree = "<group>"; };
 		51F8A4E46281F89060751E0F /* CustomVideoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoEditor.swift; sourceTree = "<group>"; };
 		597AF852E7BA252976C95FD9 /* my-plants.scene */ = {isa = PBXFileReference; path = "my-plants.scene"; sourceTree = "<group>"; };
@@ -420,6 +422,14 @@
 			path = "camera-guides-configuration";
 			sourceTree = "<group>";
 		};
+		42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */ = {
+			isa = PBXGroup;
+			children = (
+				4EAB2A5292B920DACAABC39A /* Buffers.swift */,
+			);
+			path = "engine-guides-buffers";
+			sourceTree = "<group>";
+		};
 		49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,6 +538,7 @@
 				84860D148513DB92F458E1E3 /* editor-guides-solutions-postcard-editor */,
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
 				89099302570717EF31A2EFD1 /* engine-guides-bool-ops */,
+				42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */,
 				740609F297ADAEF236FFD009 /* engine-guides-colors */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
 				35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */,
@@ -896,7 +907,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_B1302E4C-8A9E-4AA5-9E6B-E1596E103897" /* build_github */ = {
+		"TEMP_37D08769-F836-4021-BD22-CBFC303DEC27" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
@@ -933,6 +944,7 @@
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
 				2A834EF281CBC9CFA99911C5 /* engine-guides-text-properties */,
 				49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */,
+				42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */,
 				3C69826BBAA43A3BF7E26D5A /* engine-guides-load-scene-from-blob */,
 				5355A98845ED845547F6DFFB /* engine-guides-video */,
 				6CFFDCF44F860519A1D16C7B /* engine-guides-scopes */,
@@ -1125,6 +1137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48865ED53EEEA5FB273D61D /* BoolOps.swift in Sources */,
+				04626311ADCE3973E18C1BA6 /* Buffers.swift in Sources */,
 				9F3DA872BA8853FF31311F89 /* Camera.swift in Sources */,
 				391A417B9631E8D7F01567FD /* Colors.swift in Sources */,
 				2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */,
@@ -1305,7 +1318,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.25.0;
+				MARKETING_VERSION = "1.26.0-rc.0";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1395,7 +1408,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.25.0;
+				MARKETING_VERSION = "1.26.0-rc.0";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1470,7 +1483,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.25.0;
+				version = "1.26.0-rc.0";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1478,7 +1491,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.25.0;
+				version = "1.26.0-rc.0";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
