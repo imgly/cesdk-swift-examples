@@ -28,7 +28,7 @@ struct CallbacksEditorSolution: View {
         try await engine.addDefaultAssetSources(baseURL: Engine.assetBaseURL)
         try await engine.addDemoAssetSources(sceneMode: engine.scene.getMode(),
                                              withUploadAssetSources: true)
-        try engine.asset.addSource(TextAssetSource(engine: engine))
+        try await engine.asset.addSource(TextAssetSource(engine: engine))
       }
       // highlight-onCreate
       // highlight-onExport
