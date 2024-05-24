@@ -907,7 +907,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_AFBA54E6-0953-4CD7-BD0E-731331BD1931" /* build_github */ = {
+		"TEMP_3623A8B9-B62D-44C3-B7D9-F44A0C446E67" /* build_github */ = {
 			isa = PBXGroup;
 			children = (
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
@@ -1318,7 +1318,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.27.1;
+				MARKETING_VERSION = "1.28.0-rc.0";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1408,7 +1408,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.27.1;
+				MARKETING_VERSION = "1.28.0-rc.0";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1483,7 +1483,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.27.1;
+				version = "1.28.0-rc.0";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1491,7 +1491,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.27.1;
+				version = "1.28.0-rc.0";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
