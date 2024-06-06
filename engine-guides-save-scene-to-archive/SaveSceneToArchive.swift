@@ -12,7 +12,7 @@ func saveSceneToArchive(engine: Engine) async throws {
   // highlight-save
 
   // highlight-create-form-data
-  var request = URLRequest(url: .init(string: "https://upload.com")!)
+  var request = URLRequest(url: .init(string: "https://example.com/upload/")!)
   request.httpMethod = "POST"
 
   let (data, response) = try await URLSession.shared.upload(for: request, from: blob)

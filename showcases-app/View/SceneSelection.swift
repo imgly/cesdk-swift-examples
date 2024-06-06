@@ -41,7 +41,6 @@ struct SceneSelection<Editor: View>: View {
   }
 
   var body: some View {
-    let shadowColor = Color(red: 0.09, green: 0.09, blue: 0.09)
     ScrollView {
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 300, maximum: 300), spacing: 16)], spacing: 16) {
         ForEach(scenes) { scene in
@@ -53,10 +52,7 @@ struct SceneSelection<Editor: View>: View {
               image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .shadow(color: shadowColor.opacity(0.12), radius: 3.5, y: 2)
-                .shadow(color: shadowColor.opacity(0.12), radius: 5, y: 4)
-                .shadow(color: shadowColor.opacity(0.12), radius: 12, y: 8)
-                .shadow(color: shadowColor.opacity(0.25), radius: 2)
+                .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 2)
                 .accessibilityLabel(scene.title)
             } placeholder: {
               ProgressView()

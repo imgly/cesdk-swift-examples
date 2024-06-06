@@ -74,15 +74,15 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-assetLibraryBuilder
 
   // highlight-assetLibraryView
-  @ViewBuilder var elementsTab: some View {
-    AssetLibraryTab("Elements") { elements } label: { DefaultAssetLibrary.elementsLabel($0) }
-  }
-
   @ViewBuilder var uploadsTab: some View {
     AssetLibraryTab("Photo Roll") { uploads } label: { DefaultAssetLibrary.uploadsLabel($0) }
   }
 
   // highlight-assetLibraryTabViews
+  @ViewBuilder var elementsTab: some View {
+    AssetLibraryTab("Elements") { elements } label: { DefaultAssetLibrary.elementsLabel($0) }
+  }
+
   @ViewBuilder var videosTab: some View {
     AssetLibraryTab("Videos") { videos } label: { DefaultAssetLibrary.videosLabel($0) }
   }
