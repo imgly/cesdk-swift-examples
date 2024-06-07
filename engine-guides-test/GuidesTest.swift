@@ -141,4 +141,8 @@ class GuidesTest: XCTestCase {
   func testBuffers() throws {
     try buffers(engine: engine)
   }
+
+  func testCustomLutFilters() async throws {
+    try await customLutFilter(engine: engine)
+  }
 }

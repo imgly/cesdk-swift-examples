@@ -1,5 +1,6 @@
 import IMGLYApparelEditor
 import IMGLYDesignEditor
+import IMGLYPhotoEditor
 import IMGLYPostcardEditor
 import IMGLYVideoEditor
 import SwiftUI
@@ -8,6 +9,19 @@ struct Showcases: View {
   @State var mode = ShowcaseMode.navigationLink
 
   @ViewBuilder var showcases: some View {
+    Section(title: "Photo Editor",
+            subtitle: "Edit photo.") {
+      Showcase(
+        view: PhotoEditor(settings),
+        title: "Default Photo Editor",
+        subtitle: "Loads empty image."
+      )
+      Showcase(
+        view: CustomPhotoEditor().showcaseMode(mode),
+        title: "Custom Photo Editor",
+        subtitle: "Custom format and photo selection."
+      ).showcaseMode(.navigationLink)
+    }
     Section(title: "Design Editor",
             subtitle: "Built to edit various designs.") {
       Showcase(
@@ -68,6 +82,7 @@ struct Showcases: View {
       Group {
         Showcase(view: DesignEditorSolution(), title: "Solutions: Design Editor")
         Showcase(view: VideoEditorSolution(), title: "Solutions: Video Editor")
+        Showcase(view: PhotoEditorSolution(), title: "Solutions: Photo Editor")
         Showcase(view: ApparelEditorSolution(), title: "Solutions: Apparel Editor")
         Showcase(view: PostcardEditorSolution(), title: "Solutions: Postcard Editor")
       }
