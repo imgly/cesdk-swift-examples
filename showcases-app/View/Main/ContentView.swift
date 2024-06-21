@@ -1,3 +1,4 @@
+import AVFoundation
 @_spi(Internal) import IMGLYCoreUI
 import enum IMGLYEngine.LicenseError
 import SwiftUI
@@ -32,6 +33,9 @@ struct ContentView: View {
     }
     .modifier(CameraShowcase(isCameraSheetShown: $isCameraSheetShown))
     .accessibilityIdentifier("showcases")
+    .onAppear {
+      try? AVAudioSession.sharedInstance().setCategory(.playback)
+    }
   }
 }
 
