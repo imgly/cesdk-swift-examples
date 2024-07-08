@@ -30,10 +30,10 @@ func usingEffects(engine: Engine) async throws {
   try engine.block.setFill(block, fill: fill)
   // highlight-setup
 
-  // highlight-hasEffects
-  try engine.block.hasEffects(scene) // Returns false
-  try engine.block.hasEffects(block) // Returns true
-  // highlight-hasEffects
+  // highlight-supportsEffects
+  try engine.block.supportsEffects(scene) // Returns false
+  try engine.block.supportsEffects(block) // Returns true
+  // highlight-supportsEffects
 
   // highlight-createEffect
   let pixelize = try engine.block.createEffect(.pixelize)

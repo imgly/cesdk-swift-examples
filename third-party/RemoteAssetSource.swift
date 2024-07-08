@@ -255,6 +255,8 @@ private extension AssetQueryData {
     append(name: "excludedGroups", value: excludedGroups)
     append(name: "locale", value: locale)
     append(name: "perPage", value: String(perPage))
+    append(name: "sortingOrder", value: String(sortingOrder.rawValue))
+    append(name: "sortKey", value: sortKey)
     return items
   }
 }
@@ -341,7 +343,7 @@ private extension BlockAPI {
   }
 
   func ensureAssetDuration(_ id: DesignBlockID, asset: AssetResult) async throws {
-    guard asset.meta?["duration"] == nil, try hasFill(id) else {
+    guard asset.meta?["duration"] == nil, try supportsFill(id) else {
       return
     }
 
