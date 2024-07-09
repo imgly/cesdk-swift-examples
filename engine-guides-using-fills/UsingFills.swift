@@ -21,10 +21,10 @@ func usingFills(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: block)
   // highlight-setup
 
-  // highlight-hasFill
-  try engine.block.hasFill(scene) // Returns false
-  try engine.block.hasFill(block) // Returns true
-  // highlight-hasFill
+  // highlight-supportsFill
+  try engine.block.supportsFill(scene) // Returns false
+  try engine.block.supportsFill(block) // Returns true
+  // highlight-supportsFill
 
   // highlight-getFill
   let colorFill = try engine.block.getFill(block)
