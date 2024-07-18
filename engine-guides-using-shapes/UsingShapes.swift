@@ -22,11 +22,11 @@ func usingShapes(engine: Engine) async throws {
 
   // highlight-setup
 
-  // highlight-hasShape
-  try engine.block.hasShape(graphic) // Returns true
+  // highlight-supportsShape
+  try engine.block.supportsShape(graphic) // Returns true
   let text = try engine.block.create(.text)
-  try engine.block.hasShape(text) // Returns false
-  // highlight-hasShape
+  try engine.block.supportsShape(text) // Returns false
+  // highlight-supportsShape
 
   // highlight-createShape
   let rectShape = try engine.block.createShape(.rect)
