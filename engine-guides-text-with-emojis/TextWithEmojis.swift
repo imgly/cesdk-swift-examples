@@ -13,7 +13,7 @@ func textWithEmojis(engine: Engine) async throws {
   // From a URL
   try engine.editor.setSettingString(
     "ubq://defaultEmojiFontFileUri",
-    value: "https://cdn.img.ly/assets/v3/emoji/NotoColorEmoji.ttf"
+    value: "https://cdn.img.ly/assets/v1/emoji/NotoColorEmoji.ttf"
   )
   // highlight-change-default-emoji-font
 

@@ -1,5 +1,15 @@
-import IMGLYEditor
+import IMGLYApparelUI
+import IMGLYEditorUI
+import IMGLYPostcardUI
 import SwiftUI
+
+@MainActor
+protocol ShowcaseUI: View {
+  init(scene: URL)
+}
+
+extension ApparelUI: ShowcaseUI {}
+extension PostcardUI: ShowcaseUI {}
 
 extension SceneSelection.Scene {
   init(_ resource: String, title: LocalizedStringKey, colorPalette: [NamedColor]? = nil) {
@@ -10,9 +20,7 @@ extension SceneSelection.Scene {
   }
 }
 
-struct SceneSelection<Editor: View>: View {
-  typealias Scenes = [(title: String, colorPalette: [(name: LocalizedStringKey, color: CGColor)]?)]
-
+struct SceneSelection<Content: ShowcaseUI>: View {
   struct Scene: Identifiable {
     var id: URL { url }
     /// Scene title.
@@ -25,34 +33,33 @@ struct SceneSelection<Editor: View>: View {
     let colorPalette: [NamedColor]?
   }
 
-  private let editor: (URL) -> Editor
-  @ViewBuilder private let scenes: [Scene]
+  private let scenes: [Scene]
 
-  init(
-    scenes: Scenes,
-    @ViewBuilder editor: @escaping (_ sceneURL: URL) -> Editor
-  ) {
+  init(scenes: [(title: String, colorPalette: [(name: LocalizedStringKey, color: CGColor)]?)]) {
     self.scenes = scenes.map {
       let resource = $0.title.replacingOccurrences(of: " ", with: "_").lowercased()
       return .init(resource, title: LocalizedStringKey($0.title),
                    colorPalette: $0.colorPalette?.map { .init($0.name, $0.color) })
     }
-    self.editor = editor
   }
 
   var body: some View {
+    let shadowColor = Color(red: 0.09, green: 0.09, blue: 0.09)
     ScrollView {
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 300, maximum: 300), spacing: 16)], spacing: 16) {
         ForEach(scenes) { scene in
-          ShowcaseLink {
-            editor(scene.url)
-              .imgly.colorPalette(scene.colorPalette)
+          NavigationLink {
+            Content(scene: scene.url)
+              .colorPalette(scene.colorPalette)
           } label: {
             AsyncImage(url: scene.image) { image in
               image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 2)
+                .shadow(color: shadowColor.opacity(0.12), radius: 3.5, y: 2)
+                .shadow(color: shadowColor.opacity(0.12), radius: 5, y: 4)
+                .shadow(color: shadowColor.opacity(0.12), radius: 12, y: 8)
+                .shadow(color: shadowColor.opacity(0.25), radius: 2)
                 .accessibilityLabel(scene.title)
             } placeholder: {
               ProgressView()

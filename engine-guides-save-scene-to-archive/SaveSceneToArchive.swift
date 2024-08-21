@@ -4,15 +4,15 @@ import IMGLYEngine
 @MainActor
 func saveSceneToArchive(engine: Engine) async throws {
   let sceneUrl =
-    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
-  try await engine.scene.load(from: sceneUrl)
+    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-js/latest/assets/templates/cesdk_postcard_1.scene")!
+  try await engine.scene.load(fromURL: sceneUrl)
 
   // highlight-save
   let blob = try await engine.scene.saveToArchive()
   // highlight-save
 
   // highlight-create-form-data
-  var request = URLRequest(url: .init(string: "https://example.com/upload/")!)
+  var request = URLRequest(url: .init(string: "https://upload.com")!)
   request.httpMethod = "POST"
 
   let (data, response) = try await URLSession.shared.upload(for: request, from: blob)
