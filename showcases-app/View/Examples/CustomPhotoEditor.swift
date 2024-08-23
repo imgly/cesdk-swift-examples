@@ -10,7 +10,7 @@ struct CustomPhotoEditor: View {
     ("2_3", "Photo · 2:3", .init(width: 1080, height: 1620)),
     ("3_2", "Photo · 3:2", .init(width: 1620, height: 1080)),
     ("3_4", "Photo · 3:4", .init(width: 1080, height: 1440)),
-    ("4_3", "Photo · 4:3", .init(width: 1440, height: 1080))
+    ("4_3", "Photo · 4:3", .init(width: 1440, height: 1080)),
   ]
 
   var body: some View {

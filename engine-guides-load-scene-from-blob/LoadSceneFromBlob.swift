@@ -10,7 +10,7 @@ func loadSceneFromBlob(engine: Engine) async throws {
   // highlight-fetch-blob
 
   // highlight-read-blob
-  let blobString = String(data: sceneBlob, encoding: .utf8)!
+  let blobString = String(decoding: sceneBlob, as: UTF8.self)
   // highlight-read-blob
 
   // highlight-load
