@@ -10,7 +10,7 @@ struct CustomPostcardEditor: View {
       ("Kimberly", .imgly.hex("#7471A3")!),
       ("Gondola", .imgly.hex("#20121F")!),
       ("Dove Gray", .imgly.hex("#696969")!),
-      ("Dusty Gray", .imgly.hex("#999999")!)
+      ("Dusty Gray", .imgly.hex("#999999")!),
     ]),
     ("Merry Christmas", colorPalette: [
       ("Fern Frond", .imgly.hex("#536F1A")!),
@@ -19,7 +19,7 @@ struct CustomPostcardEditor: View {
       ("Fuel Yellow", .imgly.hex("#F3AE2B")!),
       ("Black Bean", .imgly.hex("#051111")!),
       ("Dove Gray", .imgly.hex("#696969")!),
-      ("Dusty Gray", .imgly.hex("#999999")!)
+      ("Dusty Gray", .imgly.hex("#999999")!),
     ]),
     ("Bonjour Paris", colorPalette: [
       ("Black", .imgly.hex("#000000")!),
@@ -28,7 +28,7 @@ struct CustomPostcardEditor: View {
       ("Persimmon", .imgly.hex("#FE6755")!),
       ("Scorpion", .imgly.hex("#606060")!),
       ("Dove Gray", .imgly.hex("#696969")!),
-      ("Dusty Gray", .imgly.hex("#999999")!)
+      ("Dusty Gray", .imgly.hex("#999999")!),
     ]),
     ("Wish you were here", colorPalette: [
       ("Mandy", .imgly.hex("#E75050")!),
@@ -37,8 +37,8 @@ struct CustomPostcardEditor: View {
       ("Shark", .imgly.hex("#282929")!),
       ("Patina", .imgly.hex("#619888")!),
       ("Dove Gray", .imgly.hex("#696969")!),
-      ("Dusty Gray", .imgly.hex("#999999")!)
-    ])
+      ("Dusty Gray", .imgly.hex("#999999")!),
+    ]),
   ]
 
   var body: some View {

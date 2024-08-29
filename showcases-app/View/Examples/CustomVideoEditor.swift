@@ -46,11 +46,11 @@ struct CustomVideoEditor: View {
             AssetLibrarySource.sticker(.titleForGroup { group in
               if let name = group {
                 switch name {
-                case "3dstickers": return "3D Stickers"
-                default: return name.capitalized
+                case "3dstickers": "3D Stickers"
+                default: name.capitalized
                 }
               } else {
-                return "Stickers"
+                "Stickers"
               }
             }, source: .init(id: stickerMiscID))
           }
