@@ -7,7 +7,7 @@ func loadSceneFromString(engine: Engine) async throws {
   let sceneURL =
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   let sceneBlob = try await URLSession.shared.data(from: sceneURL).0
-  let blobString = String(data: sceneBlob, encoding: .utf8)!
+  let blobString = String(decoding: sceneBlob, as: UTF8.self)
   // highlight-fetch-string
 
   // highlight-load

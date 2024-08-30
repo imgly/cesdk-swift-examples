@@ -297,11 +297,11 @@ private extension AssetResult {
     let meta: [String: String]? = ras.meta?.mapValues {
       switch $0 {
       case let .string(value):
-        return value
+        value
       case let .int(value):
-        return String(value)
+        String(value)
       case let .float(value):
-        return String(value)
+        String(value)
       }
     }
 

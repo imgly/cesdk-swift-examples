@@ -1,5 +1,6 @@
 // highlight-import
 import IMGLYCamera
+
 // highlight-import
 import SwiftUI
 
@@ -42,7 +43,7 @@ class CameraUIKit: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+      button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ])
   }
 }

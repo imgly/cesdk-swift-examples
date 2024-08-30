@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1036,7 +1036,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_8149283E-67A4-4B2E-944D-1684B8465881" /* build_github */ = {
+		"TEMP_64A32405-1C86-42BD-BC0A-1872F45E1CAE" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
@@ -1090,7 +1090,7 @@
 				17668B475F84FBE03AEB5DE6 /* integrate-with-swiftui */,
 				566A7FBBF8D9A35991DA1421 /* engine-guides-exporting-blocks */,
 			);
-			path = build_github;
+			path = cesdk_swift_examples;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1142,12 +1142,13 @@
 		AA8555A8977E7AA9B19540FE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 				};
 			};
 			buildConfigurationList = E8E062FB538017B95F1DA23E /* Build configuration list for PBXProject "CESDK-Showcases" */;
-			compatibilityVersion = "Xcode 11.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1461,7 +1462,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.33.0;
+				MARKETING_VERSION = 1.34.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1551,7 +1552,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.33.0;
+				MARKETING_VERSION = 1.34.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1626,7 +1627,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.33.0;
+				version = "1.34.0-rc.2";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1634,7 +1635,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.33.0;
+				version = "1.34.0-rc.2";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -1642,7 +1643,7 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
 				kind = exactVersion;
-				version = 7.11.0;
+				version = 7.12.0;
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -1650,7 +1651,7 @@
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
 			requirement = {
 				kind = exactVersion;
-				version = 1.1.3;
+				version = 1.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
