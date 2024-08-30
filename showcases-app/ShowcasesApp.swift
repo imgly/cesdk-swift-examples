@@ -1,4 +1,3 @@
-@_spi(Internal) import IMGLYCore
 import SwiftUI
 
 @main
@@ -10,7 +9,7 @@ struct ShowcasesApp: App {
       ContentView()
     }
     .onChange(of: scenePhase) { _ in
-      if ProcessInfo.isUITesting,
+      if ProcessInfo.processInfo.arguments.contains("UI-Testing"),
          let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
          let window = scene.windows.first {
         window.layer.speed = 100

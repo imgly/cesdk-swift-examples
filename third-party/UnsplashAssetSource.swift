@@ -2,7 +2,7 @@ import Foundation
 import IMGLYEngine
 
 // highlight-unsplash-api-creation
-public final class UnsplashAssetSource: NSObject {
+final class UnsplashAssetSource: NSObject {
   private lazy var decoder: JSONDecoder = {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -12,7 +12,7 @@ public final class UnsplashAssetSource: NSObject {
   private let host: String
   private let path: String
 
-  public init(host: String, path: String = "/unsplashProxy") {
+  init(host: String = Secrets.unsplashHost, path: String = "/unsplashProxy") {
     self.host = host
     self.path = path
   }
@@ -59,19 +59,23 @@ public final class UnsplashAssetSource: NSObject {
 // highlight-unsplash-api-creation
 
 extension UnsplashAssetSource: AssetSource {
-  public static let id = "ly.img.asset.source.unsplash"
+  static let id = "ly.img.asset.source.unsplash"
 
-  public var id: String {
+  var id: String {
     Self.id
   }
 
-  public func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
+  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
+  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
+  private static let get: (URL) async throws -> (Data, URLResponse) = URLSession.shared.data
+
+  func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     // highlight-unsplash-query
     let endpoint: Endpoint = queryData.query?
       .isEmpty ?? true ? .list(queryData: queryData) : .search(queryData: queryData)
     // highlight-unsplash-query
 
-    let data = try await URLSession.shared.get(endpoint.url(with: host, path: path)!).0
+    let data = try await Self.get(endpoint.url(with: host, path: path)!).0
 
     // highlight-unsplash-result-mapping
     if queryData.query?.isEmpty ?? true {
@@ -82,7 +86,7 @@ extension UnsplashAssetSource: AssetSource {
         assets: response.map(AssetResult.init),
         currentPage: queryData.page,
         nextPage: nextPage,
-        total: -1
+        total: 0
       )
     } else {
       let response = try decoder.decode(UnsplashSearchResponse.self, from: data)
@@ -99,19 +103,19 @@ extension UnsplashAssetSource: AssetSource {
     // highlight-unsplash-result-mapping
   }
 
-  public var supportedMIMETypes: [String]? {
+  var supportedMIMETypes: [String]? {
     [MIMEType.jpeg.rawValue]
   }
 
   // highlight-unsplash-credits-license
-  public var credits: AssetCredits? {
+  var credits: AssetCredits? {
     .init(
       name: "Unsplash",
       url: URL(string: "https://unsplash.com/")!
     )
   }
 
-  public var license: AssetLicense? {
+  var license: AssetLicense? {
     .init(
       name: "Unsplash license (free)",
       url: URL(string: "https://unsplash.com/license")!
@@ -120,7 +124,7 @@ extension UnsplashAssetSource: AssetSource {
   // highlight-unsplash-credits-license
 }
 
-private extension AssetResult {
+extension AssetResult {
   // highlight-translateToAssetResult
   convenience init(image: UnsplashImage) {
     self.init(
@@ -131,7 +135,7 @@ private extension AssetResult {
       locale: "en",
       // highlight-result-locale
       // highlight-result-label
-      label: image.description ?? image.altDescription,
+      label: image.resultDescription ?? image.altDescription,
       // highlight-result-label
       // highlight-result-tags
       tags: image.tags?.compactMap(\.title),
@@ -145,17 +149,8 @@ private extension AssetResult {
         "thumbUri": image.urls.thumb.absoluteString,
         // highlight-result-thumbUri
         // highlight-result-blockType
-        "blockType": DesignBlockType.graphic.rawValue,
+        "blockType": DesignBlockType.image.rawValue,
         // highlight-result-blockType
-        // highlight-result-fillType
-        "fillType": FillType.image.rawValue,
-        // highlight-result-fillType
-        // highlight-result-shapeType
-        "shapeType": ShapeType.rect.rawValue,
-        // highlight-result-shapeType
-        // highlight-result-kind
-        "kind": "image",
-        // highlight-result-kind
         // highlight-result-size
         "width": String(image.width),
         "height": String(image.height)
@@ -174,13 +169,4 @@ private extension AssetResult {
     )
   }
   // highlight-translateToAssetResult
-}
-
-private extension URLSession {
-  // https://forums.developer.apple.com/forums/thread/727823
-  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
-  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
-  nonisolated func get(_ url: URL) async throws -> (Data, URLResponse) {
-    try await data(from: url)
-  }
 }

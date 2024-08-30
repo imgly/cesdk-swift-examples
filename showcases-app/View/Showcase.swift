@@ -2,10 +2,10 @@ import SwiftUI
 
 struct Showcase<Content: View>: View {
   let view: Content
-  let title: LocalizedStringKey
-  var subtitle: LocalizedStringKey?
+  let title: String
+  var subtitle: String?
 
-  @ViewBuilder private var label: some View {
+  @ViewBuilder var label: some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title)
       if let subtitle {
@@ -15,11 +15,7 @@ struct Showcase<Content: View>: View {
   }
 
   var body: some View {
-    ShowcaseLink {
-      view
-    } label: {
-      label
-    }
-    .accessibilityLabel(title)
+    NavigationLink(destination: { view.navigationTitle(title) }, label: { label })
+      .accessibilityLabel(title)
   }
 }
