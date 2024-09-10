@@ -76,7 +76,7 @@ func textProperties(engine: Engine) async throws {
         subFamily: "Regular",
         weight: .normal,
         style: .normal
-      ),
+      )
     ]
   )
   try engine.block.setFont(text, fontFileURL: typeface.fonts[3].uri, typeface: typeface)

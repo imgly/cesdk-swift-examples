@@ -7,8 +7,8 @@ enum ShowcaseMode: CaseIterable, Identifiable, CustomStringConvertible {
 
   var description: String {
     switch self {
-    case .navigationLink: "Navigation"
-    case .fullScreenCover: "Modal"
+    case .navigationLink: return "Navigation"
+    case .fullScreenCover: return "Modal"
     }
   }
 }
