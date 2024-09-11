@@ -3,7 +3,6 @@
 // highlight-import
 import IMGLYDesignEditor
 import IMGLYEngine
-
 // highlight-import
 import SwiftUI
 

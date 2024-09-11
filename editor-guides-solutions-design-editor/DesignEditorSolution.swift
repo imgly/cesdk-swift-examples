@@ -1,6 +1,5 @@
 // highlight-import
 import IMGLYDesignEditor
-
 // highlight-import
 import SwiftUI
 

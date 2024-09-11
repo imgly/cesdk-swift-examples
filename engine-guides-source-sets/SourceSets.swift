@@ -32,7 +32,7 @@ func sourceSets(engine: Engine) async throws {
       uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
       width: 2048,
       height: 1366
-    ),
+    )
   ])
   try engine.block.setFill(block, fill: imageFill)
   try engine.block.appendChild(to: page, child: block)
@@ -43,7 +43,7 @@ func sourceSets(engine: Engine) async throws {
     id: "my-image",
     meta: [
       "kind": "image",
-      "fillType": "//ly.img.ubq/fill/image",
+      "fillType": "//ly.img.ubq/fill/image"
     ],
     payload: .init(sourceSet: [
       .init(
@@ -60,7 +60,7 @@ func sourceSets(engine: Engine) async throws {
         uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
         width: 2048,
         height: 1366
-      ),
+      )
     ])
   )
   // highlight-asset-definition

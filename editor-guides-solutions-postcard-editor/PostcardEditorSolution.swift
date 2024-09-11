@@ -1,6 +1,5 @@
 // highlight-import
 import IMGLYPostcardEditor
-
 // highlight-import
 import SwiftUI
 

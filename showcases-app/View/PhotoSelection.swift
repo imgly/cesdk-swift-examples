@@ -77,9 +77,9 @@ private struct Thumbnail: View {
 
   private var imageURL: URL {
     if colorScheme == .dark, let imageDark = format.imageDark {
-      imageDark
+      return imageDark
     } else {
-      format.image
+      return format.image
     }
   }
 

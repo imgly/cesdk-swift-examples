@@ -28,7 +28,7 @@ public final class UnsplashAssetSource: NSObject {
           .init(name: "query", value: queryData.query),
           .init(name: "page", value: String(queryData.page + 1)),
           .init(name: "per_page", value: String(queryData.perPage)),
-          .init(name: "content_filter", value: "high"),
+          .init(name: "content_filter", value: "high")
         ]
       )
     }
@@ -40,7 +40,7 @@ public final class UnsplashAssetSource: NSObject {
           .init(name: "order_by", value: "popular"),
           .init(name: "page", value: String(queryData.page + 1)),
           .init(name: "per_page", value: String(queryData.perPage)),
-          .init(name: "content_filter", value: "high"),
+          .init(name: "content_filter", value: "high")
         ]
       )
     }
@@ -158,7 +158,7 @@ private extension AssetResult {
         // highlight-result-kind
         // highlight-result-size
         "width": String(image.width),
-        "height": String(image.height),
+        "height": String(image.height)
         // highlight-result-size
       ],
       // highlight-result-meta

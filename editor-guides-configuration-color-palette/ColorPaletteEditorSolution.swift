@@ -22,7 +22,7 @@ struct ColorPaletteEditorSolution: View {
         .init("Red", .imgly.red),
         .init("Black", .imgly.black),
         .init("White", .imgly.white),
-        .init("Gray", .imgly.gray),
+        .init("Gray", .imgly.gray)
       ])
     // highlight-colorPalette
   }

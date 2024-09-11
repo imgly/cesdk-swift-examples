@@ -32,15 +32,15 @@ func customAssetSource(engine: Engine) async throws {
                                 "thumbUri": "https://example.com/thumbnails/ocean-waves-1.jpg",
                                 "mimeType": "video/mp4",
                                 "width": "1920",
-                                "height": "1080",
+                                "height": "1080"
                               ],
                               label: [
                                 "en": "relaxing ocean waves",
-                                "es": "olas del mar relajantes",
+                                "es": "olas del mar relajantes"
                               ],
                               tags: [
                                 "en": ["ocean", "waves", "soothing", "slow"],
-                                "es": ["mar", "olas", "calmante", "lento"],
+                                "es": ["mar", "olas", "calmante", "lento"]
                               ])
   try engine.asset.addAsset(to: "background-videos", asset: asset)
   // highlight-add-asset-to-source

@@ -1,9 +1,7 @@
 #if os(macOS)
   import Cocoa
-
   // highlight-import
   import IMGLYEngine
-
   // highlight-import
   import MetalKit
 
@@ -30,7 +28,7 @@
         canvas.leftAnchor.constraint(equalTo: view.leftAnchor),
         canvas.rightAnchor.constraint(equalTo: view.rightAnchor),
         canvas.topAnchor.constraint(equalTo: view.topAnchor),
-        canvas.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        canvas.bottomAnchor.constraint(equalTo: view.bottomAnchor)
       ])
       // highlight-view
 
@@ -38,7 +36,7 @@
       spinner.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
       ])
       spinner.startAnimation(self)
       spinner.isDisplayedWhenStopped = false
@@ -47,7 +45,7 @@
       button.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
       ])
       button.isHidden = true
     }

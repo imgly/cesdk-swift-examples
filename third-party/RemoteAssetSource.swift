@@ -164,7 +164,6 @@ private enum RAS {
     // IMGLYEngine.AssetResult
     let locale: IMGLYEngine.Locale?
     let label: String?
-    let active: Bool?
     let tags: [String]?
     // let context: IMGLYEngine.AssetContext
     let credits: AssetCredits?
@@ -258,7 +257,6 @@ private extension AssetQueryData {
     append(name: "perPage", value: String(perPage))
     append(name: "sortingOrder", value: String(sortingOrder.rawValue))
     append(name: "sortKey", value: sortKey)
-    append(name: "sortActiveFirst", value: String(sortActiveFirst))
     return items
   }
 }
@@ -297,11 +295,11 @@ private extension AssetResult {
     let meta: [String: String]? = ras.meta?.mapValues {
       switch $0 {
       case let .string(value):
-        value
+        return value
       case let .int(value):
-        String(value)
+        return String(value)
       case let .float(value):
-        String(value)
+        return String(value)
       }
     }
 
@@ -310,7 +308,6 @@ private extension AssetResult {
       locale: ras.locale,
       label: ras.label,
       tags: ras.tags,
-      active: ras.active ?? false,
       meta: meta,
       payload: ras.payload,
       context: .init(sourceID: sourceID),

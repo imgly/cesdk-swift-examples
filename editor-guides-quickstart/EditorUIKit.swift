@@ -1,6 +1,5 @@
 // highlight-import
 import IMGLYDesignEditor
-
 // highlight-import
 import SwiftUI
 
@@ -35,7 +34,7 @@ class EditorUIKit: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
     ])
   }
 }
