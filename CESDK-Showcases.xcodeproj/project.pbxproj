@@ -110,6 +110,7 @@
 		8F8632307F19C9450B417E74 /* DesignEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E8CC37ABF7FEDFE48C2441 /* DesignEditorSolution.swift */; };
 		916AB1E6EA74B780AA220E09 /* 9_16_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 35314E6375DFA482337CA470 /* 9_16_dark.png */; };
 		92ADF7F1DA99D4AC18CD1DDA /* x_profile_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = A5F43ADC1DF9B3F55DA69E92 /* x_profile_picture.png */; };
+		9308866C3298BBBF53678AD7 /* ModalCameraShowcase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A556562136063EF09820B432 /* ModalCameraShowcase.swift */; };
 		93A281249972085593F51AF1 /* SaveSceneToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F28E94E9E5E1FDD880847B /* SaveSceneToString.swift */; };
 		94F7406B182A697C6CA92929 /* CreateSceneFromVideoURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000B20D1152A1EE4183F2118 /* CreateSceneFromVideoURL.swift */; };
 		97B5226CB1A792235BF57C02 /* instagram_story_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D77999E522561716BC615F1 /* instagram_story_dark.png */; };
@@ -282,6 +283,7 @@
 		A2B180D5F50DFED3C8A44081 /* apparel-ui-b-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apparel-ui-b-3.png"; sourceTree = "<group>"; };
 		A3DB715E1405C2F87FA79968 /* LoadSceneFromRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadSceneFromRemote.swift; sourceTree = "<group>"; };
 		A444D6F3EA290E51BE49CEE7 /* CreateSceneFromScratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSceneFromScratch.swift; sourceTree = "<group>"; };
+		A556562136063EF09820B432 /* ModalCameraShowcase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalCameraShowcase.swift; sourceTree = "<group>"; };
 		A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = Assets.bundle; sourceTree = "<group>"; };
 		A5F43ADC1DF9B3F55DA69E92 /* x_profile_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_profile_picture.png; sourceTree = "<group>"; };
 		A606B83A49C463028B8A3147 /* 4_3_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_3_dark.png; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 		732FF6CB9072C468F6E078EA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A556562136063EF09820B432 /* ModalCameraShowcase.swift */,
 				61BFC53599B9618C1A521532 /* ModalEditorLink.swift */,
 				E7EB80DFE06724B15D95EF84 /* PhotoSelection.swift */,
 				DB0BBF363BE528CED8BA335F /* SceneSelection.swift */,
@@ -1036,7 +1039,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_2F0953B5-C036-4DAE-B35B-CC0FA3E7D392" /* cesdk_swift_examples */ = {
+		"TEMP_DC9E0DF1-3713-422F-8D19-D4E2799F91CC" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				582BF90249D09687E7CFACDC /* editor-guides-solutions-video-editor */,
@@ -1343,6 +1346,7 @@
 				8F8632307F19C9450B417E74 /* DesignEditorSolution.swift in Sources */,
 				DD4DB7F359039FB702431E12 /* EditorSwiftUI.swift in Sources */,
 				125753B6088EE43A454047D1 /* EditorUIKit.swift in Sources */,
+				9308866C3298BBBF53678AD7 /* ModalCameraShowcase.swift in Sources */,
 				CE57A59EE2CFA43BE858D495 /* ModalEditor.swift in Sources */,
 				1DB1824BCEDB0938F56C7F98 /* ModalEditorLink.swift in Sources */,
 				D4BB01543B05839D48F77680 /* PhotoEditorSolution.swift in Sources */,
@@ -1462,7 +1466,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.36.1;
+				MARKETING_VERSION = 1.37.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1552,7 +1556,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.36.1;
+				MARKETING_VERSION = 1.37.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1627,7 +1631,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.36.1;
+				version = "1.37.0-rc.0";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1635,7 +1639,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.36.1;
+				version = "1.37.0-rc.0";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {

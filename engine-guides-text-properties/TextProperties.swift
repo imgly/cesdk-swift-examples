@@ -82,6 +82,10 @@ func textProperties(engine: Engine) async throws {
   try engine.block.setFont(text, fontFileURL: typeface.fonts[3].uri, typeface: typeface)
   // highlight-setFont
 
+  // highlight-setTypeface
+  try engine.block.setTypeface(text, fallbackFontFileURL: typeface.fonts[3].uri, typeface: typeface)
+  // highlight-setTypeface
+
   // highlight-getTypeface
   let currentTypeface = try engine.block.getTypeface(text)
   // highlight-getTypeface

@@ -25,7 +25,7 @@ func storeMetadata(engine: Engine) async throws {
   try engine.block.setMetadata(
     block,
     key: "payment",
-    value: String(decoding: JSONEncoder().encode(payment), as: UTF8.self)
+    value: String(data: JSONEncoder().encode(payment), encoding: .utf8)!
   )
   // highlight-setMetadata
 
