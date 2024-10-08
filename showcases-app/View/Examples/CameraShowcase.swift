@@ -11,13 +11,20 @@ struct CameraShowcase: ViewModifier {
       .fullScreenCover(isPresented: $isCameraSheetShown) {
         Camera(settings) { result in
           switch result {
-          case let .success(recordings):
-            let urls = recordings.flatMap { $0.videos.map(\.url) }
-            let recordedVideos = urls
-            shareItem = .url(recordedVideos)
+          case let .failure(error) where error == .cancelled:
+            isCameraSheetShown = false
+
           case let .failure(error):
             print(error.localizedDescription)
             isCameraSheetShown = false
+
+          case let .success(.recording(recordings)):
+            let urls = recordings.flatMap { $0.videos.map(\.url) }
+            let recordedVideos = urls
+            shareItem = .url(recordedVideos)
+
+          case .success(.reaction):
+            print("Reaction case not handled here")
           }
         }
         .imgly.shareSheet(item: $shareItem) {

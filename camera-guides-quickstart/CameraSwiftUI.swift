@@ -23,11 +23,15 @@ struct CameraSwiftUI: View {
         // highlight-initialization
         // highlight-result
         switch result {
-        case let .success(recordings):
+        case let .success(.recording(recordings)):
           let urls = recordings.flatMap { $0.videos.map(\.url) }
           let recordedVideos = urls
           // Do something with the recorded videos
           print(recordedVideos)
+
+        case .success(.reaction):
+          print("Reaction case not handled here")
+
         case let .failure(error):
           print(error.localizedDescription)
           isPresented = false
