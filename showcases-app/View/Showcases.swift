@@ -47,6 +47,23 @@ struct Showcases: View {
         title: "Custom Video Editor",
         subtitle: "Custom video scene and adds Unsplash asset source and library."
       )
+      ModalCameraShowcase(
+        title: "React to Video",
+        // swiftlint:disable:next line_length
+        subtitle: "Loads a video into the camera that plays along while recording, then shows the result in the editor.",
+        mode: .reaction(
+          .vertical,
+          video: URL(
+            // swiftlint:disable:next line_length
+            string: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
+          )!
+        )
+      )
+      ModalCameraShowcase(
+        title: "Dual Camera to Video Editor",
+        subtitle: "Shows the dual camera, then imports all the recorded clips into the editor.",
+        mode: .dualCamera()
+      )
     }
     Section(title: "Apparel Editor",
             subtitle: "Customize and export a print-ready design with a mobile apparel editor.") {

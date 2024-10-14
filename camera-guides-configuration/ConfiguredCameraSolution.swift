@@ -23,14 +23,21 @@ struct ConfiguredCameraSolution: View {
         // highlight-highlightcolor
         highlightColor: .yellow,
         // highlight-maxtotalduration
-        maxTotalDuration: 30
+        maxTotalDuration: 30,
+        // highlight-allowmodeswitching
+        allowModeSwitching: true
       )
       // highlight-config
 
-      Camera(settings, config: config) { result in
+      Camera(
+        settings,
+        config: config,
+        // highlight-mode
+        mode: .standard
+      ) { result in
         switch result {
-        case let .success(recordings):
-          print(recordings)
+        case let .success(cameraResult):
+          print(cameraResult)
         case let .failure(error):
           print(error.localizedDescription)
           isPresented = false
