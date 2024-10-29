@@ -85,4 +85,21 @@ func sourceSets(engine: Engine) async throws {
   )
 
   // highlight-apply-asset
+
+  // highlight-video-source-sets
+  let videoFill = try engine.block.createFill(.video)
+  try engine.block.setSourceSet(videoFill, property: "fill/video/sourceSet", sourceSet: [
+    .init(
+      uri: URL(string: "https://img.ly/static/example-assets/sourceset/1x.mp4")!,
+      width: 1920,
+      height: 1080
+    ),
+  ])
+
+  try await engine.block.addVideoFileURIToSourceSet(
+    videoFill,
+    property: "fill/video/sourceSet",
+    uri: URL(string: "https://img.ly/static/example-assets/sourceset/2x.mp4")!
+  )
+  // highlight-video-source-sets
 }
