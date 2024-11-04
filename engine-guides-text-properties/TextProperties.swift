@@ -83,22 +83,34 @@ func textProperties(engine: Engine) async throws {
   // highlight-setFont
 
   // highlight-setTypeface
-  try engine.block.setTypeface(text, fallbackFontFileURL: typeface.fonts[3].uri, typeface: typeface)
+  try engine.block.setTypeface(text, typeface: typeface, in: "Alex".range(of: "lex")!)
+  try engine.block.setTypeface(text, typeface: typeface)
   // highlight-setTypeface
 
   // highlight-getTypeface
-  let currentTypeface = try engine.block.getTypeface(text)
+  let currentDefaultTypeface = try engine.block.getTypeface(text)
   // highlight-getTypeface
+
+  // highlight-getTypefaces
+  let currentTypefaces = try engine.block.getTypefaces(text)
+  let currentTypefacesOfRange = try engine.block.getTypefaces(text, in: "Alex".range(of: "lex")!)
+  // highlight-getTypefaces
 
   // highlight-toggleBold
   if try engine.block.canToggleBoldFont(text) {
     try engine.block.toggleBoldFont(text)
+  }
+  if try engine.block.canToggleBoldFont(text, in: "Alex".range(of: "lex")!) {
+    try engine.block.toggleBoldFont(text, in: "Alex".range(of: "lex")!)
   }
   // highlight-toggleBold
 
   // highlight-toggleItalic
   if try engine.block.canToggleItalicFont(text) {
     try engine.block.toggleItalicFont(text)
+  }
+  if try engine.block.canToggleItalicFont(text, in: "Alex".range(of: "lex")!) {
+    try engine.block.toggleItalicFont(text, in: "Alex".range(of: "lex")!)
   }
   // highlight-toggleItalic
 
