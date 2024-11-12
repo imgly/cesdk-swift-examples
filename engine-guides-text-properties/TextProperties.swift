@@ -94,11 +94,17 @@ func textProperties(engine: Engine) async throws {
   if try engine.block.canToggleBoldFont(text) {
     try engine.block.toggleBoldFont(text)
   }
+  if try engine.block.canToggleBoldFont(text, in: "Alex".range(of: "lex")!) {
+    try engine.block.toggleBoldFont(text, in: "Alex".range(of: "lex")!)
+  }
   // highlight-toggleBold
 
   // highlight-toggleItalic
   if try engine.block.canToggleItalicFont(text) {
     try engine.block.toggleItalicFont(text)
+  }
+  if try engine.block.canToggleItalicFont(text, in: "Alex".range(of: "lex")!) {
+    try engine.block.toggleItalicFont(text, in: "Alex".range(of: "lex")!)
   }
   // highlight-toggleItalic
 
