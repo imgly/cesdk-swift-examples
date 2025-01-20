@@ -41,6 +41,29 @@ func textProperties(engine: Engine) async throws {
   let colorsInRange = try engine.block.getTextColors(text, in: "Alex".range(of: "lex")!)
   // highlight-getTextColors-range
 
+  // highlight-backgroundColor-enabled
+  try engine.block.setBool(text, property: "backgroundColor/enabled", value: true)
+
+  // highlight-backgroundColor-get-set
+  try engine.block.getColor(text, property: "backgroundColor/color") as Color
+  try engine.block.setColor(text, property: "backgroundColor/color", color: .rgba(r: 0.0, g: 0.0, b: 1.0, a: 1.0))
+
+  // highlight-backgroundColor-padding
+  try engine.block.setFloat(text, property: "backgroundColor/paddingLeft", value: 1)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingTop", value: 2)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingRight", value: 3)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingBottom", value: 4)
+
+  // highlight-backgroundColor-cornerRadius
+  try engine.block.setFloat(text, property: "backgroundColor/cornerRadius", value: 4)
+
+  // highlight-backgroundColor-animation
+  let animation = try engine.block.createAnimation(AnimationType.slide)
+  try engine.block.setEnum(animation, property: "textAnimationWritingStyle", value: "Block")
+
+  try engine.block.setInAnimation(text, animation: animation)
+  try engine.block.setOutAnimation(text, animation: animation)
+
   // highlight-setTextCase
   try engine.block.setTextCase(text, textCase: .titlecase)
   // highlight-setTextCase
