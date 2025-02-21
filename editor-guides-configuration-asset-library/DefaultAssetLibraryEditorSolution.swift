@@ -47,3 +47,7 @@ struct DefaultAssetLibraryEditorSolution: View {
     }
   }
 }
+
+#Preview {
+  DefaultAssetLibraryEditorSolution()
+}

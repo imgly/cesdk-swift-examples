@@ -30,3 +30,7 @@ struct ApparelEditorSolution: View {
   }
   // highlight-modal
 }
+
+#Preview {
+  ApparelEditorSolution()
+}

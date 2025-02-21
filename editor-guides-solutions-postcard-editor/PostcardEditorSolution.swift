@@ -30,3 +30,7 @@ struct PostcardEditorSolution: View {
   }
   // highlight-modal
 }
+
+#Preview {
+  PostcardEditorSolution()
+}

@@ -35,3 +35,7 @@ struct CustomAssetLibraryEditorSolution: View {
     }
   }
 }
+
+#Preview {
+  CustomAssetLibraryEditorSolution()
+}

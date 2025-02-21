@@ -56,7 +56,7 @@ struct CallbacksEditorSolution: View {
           guard let page = try mainEngine.scene.getCurrentPage() else {
             throw CallbackError.noPage
           }
-          eventHandler.send(.exportProgress(.relative(0)))
+          eventHandler.send(.exportProgress(.relative(.zero)))
           let mimeType: MIMEType = .mp4
           let stream = try await mainEngine.block.exportVideo(page, mimeType: mimeType) { backgroundEngine in
             // Modify state of the background engine for export without affecting
@@ -130,4 +130,8 @@ struct CallbacksEditorSolution: View {
       }
     }
   }
+}
+
+#Preview {
+  CallbacksEditorSolution()
 }

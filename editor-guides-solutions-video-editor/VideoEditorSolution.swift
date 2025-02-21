@@ -30,3 +30,7 @@ struct VideoEditorSolution: View {
   }
   // highlight-modal
 }
+
+#Preview {
+  VideoEditorSolution()
+}

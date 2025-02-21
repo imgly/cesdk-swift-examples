@@ -65,3 +65,7 @@ struct PhotoEditorSolution: View {
   }
   // highlight-modal
 }
+
+#Preview {
+  PhotoEditorSolution()
+}

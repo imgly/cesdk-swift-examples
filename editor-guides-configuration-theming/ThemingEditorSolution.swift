@@ -1,10 +1,6 @@
 import IMGLYDesignEditor
 import SwiftUI
 
-private enum CallbackError: Error {
-  case noScene
-}
-
 struct ThemingEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey,
                                 userID: "<your unique user id>")
@@ -30,4 +26,8 @@ struct ThemingEditorSolution: View {
       }
     }
   }
+}
+
+#Preview {
+  ThemingEditorSolution()
 }
