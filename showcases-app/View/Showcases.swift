@@ -110,6 +110,11 @@ struct Showcases: View {
         Showcase(view: ColorPaletteEditorSolution(), title: "Configuration: Color Palette")
         Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")
         Showcase(view: CustomAssetLibraryEditorSolution(), title: "Configuration: Custom Asset Library")
+        Showcase(view: DockEditorSolution(), title: "Configuration: Dock")
+        Showcase(view: DefaultDockItemsEditorSolution(), title: "Configuration: Default Dock Items")
+        Showcase(view: DockItemEditorSolution(), title: "Configuration: Dock Item")
+        Showcase(view: InspectorBarEditorSolution(), title: "Configuration: Inspector Bar")
+        Showcase(view: InspectorBarItemEditorSolution(), title: "Configuration: Inspector Bar Item")
       }
     }
     Section(title: "Documentation Camera Examples") {

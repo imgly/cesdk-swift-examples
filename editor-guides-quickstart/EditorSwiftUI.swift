@@ -25,3 +25,7 @@ struct EditorSwiftUI: View {
     // highlight-modal
   }
 }
+
+#Preview {
+  EditorSwiftUI()
+}

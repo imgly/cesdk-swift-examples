@@ -30,3 +30,7 @@ struct DesignEditorSolution: View {
   }
   // highlight-modal
 }
+
+#Preview {
+  DesignEditorSolution()
+}

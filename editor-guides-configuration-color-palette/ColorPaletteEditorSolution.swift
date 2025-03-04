@@ -1,15 +1,9 @@
 import IMGLYDesignEditor
 import SwiftUI
 
-private enum CallbackError: Error {
-  case noScene
-}
-
 struct ColorPaletteEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey,
                                 userID: "<your unique user id>")
-
-  @Environment(\.colorScheme) private var colorScheme
 
   var editor: some View {
     // highlight-editor
@@ -39,4 +33,8 @@ struct ColorPaletteEditorSolution: View {
       }
     }
   }
+}
+
+#Preview {
+  ColorPaletteEditorSolution()
 }
