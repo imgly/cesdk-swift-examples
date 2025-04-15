@@ -7,6 +7,7 @@ public final class RemoteAssetSource: NSObject {
     case imageUnsplash = "/api/assets/v1/image-unsplash"
     case videoPexels = "/api/assets/v1/video-pexels"
     case videoGiphy = "/api/assets/v1/video-giphy"
+    case videoGiphySticker = "/api/assets/v1/video-giphy-sticker"
   }
 
   private weak var engine: Engine?
@@ -142,6 +143,7 @@ private enum RAS {
       case string(String)
       case int(Int)
       case float(Float)
+      case bool(Bool)
 
       init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -152,6 +154,8 @@ private enum RAS {
           self = .int(value)
         } else if let value = try? container.decode(Float.self) {
           self = .float(value)
+        } else if let value = try? container.decode(Bool.self) {
+          self = .bool(value)
         } else {
           throw DecodingError.typeMismatch(
             Self.self,
@@ -301,6 +305,8 @@ private extension AssetResult {
       case let .int(value):
         String(value)
       case let .float(value):
+        String(value)
+      case let .bool(value):
         String(value)
       }
     }

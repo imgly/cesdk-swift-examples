@@ -41,6 +41,9 @@ struct CustomVideoEditor: View {
             DefaultAssetLibrary.images
           }
           .stickers {
+            if let id = remoteAssetSources[.videoGiphySticker] {
+              AssetLibrarySource.sticker(.title("Giphy Stickers"), source: .init(id: id))
+            }
             AssetLibrarySource.sticker(.title("Hand"), source: .init(
               defaultSource: .sticker, config: .init(groups: ["//ly.img.cesdk.stickers.hand/category/hand"])))
             AssetLibrarySource.sticker(.titleForGroup { group in
