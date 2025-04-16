@@ -16,6 +16,7 @@ struct InspectorBarEditorSolution: View {
         InspectorBar.Buttons.editText() // Text
         InspectorBar.Buttons.formatText() // Text
         InspectorBar.Buttons.fillStroke() // Page, Video, Image, Shape, Text
+        InspectorBar.Buttons.textBackground() // Text
         InspectorBar.Buttons.editVoiceover() // Voiceover
         InspectorBar.Buttons.volume() // Video, Audio, Voiceover
         InspectorBar.Buttons.crop() // Video, Image

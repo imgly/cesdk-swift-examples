@@ -160,6 +160,9 @@ private extension AssetResult {
         "width": String(image.width),
         "height": String(image.height),
         // highlight-result-size
+        // highlight-result-looping
+        "looping": "false",
+        // highlight-result-looping
       ],
       // highlight-result-meta
       // highlight-result-context
