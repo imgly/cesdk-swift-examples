@@ -13,9 +13,9 @@ func loadSceneFromBlob(engine: Engine) async throws {
   let blobString = String(data: sceneBlob, encoding: .utf8)!
   // highlight-read-blob
 
-  // highlight-load
+  // highlight-load-blob
   let scene = try await engine.scene.load(from: blobString)
-  // highlight-load
+  // highlight-load-blob
 
   // highlight-set-text-dropshadow
   let text = try engine.block.find(byType: .text).first!

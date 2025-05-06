@@ -1,3 +1,4 @@
+import IMGLYEditor
 import SwiftUI
 
 struct ModalEditorLink<Editor: View, Label: View>: View {
@@ -14,6 +15,13 @@ struct ModalEditorLink<Editor: View, Label: View>: View {
     }
     .fullScreenCover(isPresented: $isPresented) {
       ModalEditor(editor: editor)
+        .imgly.modifyNavigationBarItems { _, items in
+          items.replace(id: NavigationBar.Buttons.ID.closeEditor) {
+            NavigationBar.Buttons.closeEditor(
+              label: { _ in SwiftUI.Label("Home", systemImage: "house") }
+            )
+          }
+        }
     }
   }
 }
