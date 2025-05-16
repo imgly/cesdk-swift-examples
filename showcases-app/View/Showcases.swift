@@ -110,13 +110,16 @@ struct Showcases: View {
         Showcase(view: ColorPaletteEditorSolution(), title: "Configuration: Color Palette")
         Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")
         Showcase(view: CustomAssetLibraryEditorSolution(), title: "Configuration: Custom Asset Library")
+        Showcase(view: NavigationBarEditorSolution(), title: "Configuration: Navigation Bar")
+        Showcase(view: DefaultNavigationBarItemsEditorSolution(), title: "Configuration: Default Navigation Bar Items")
+        Showcase(view: NavigationBarItemEditorSolution(), title: "Configuration: Navigation Bar Item")
         Showcase(view: DockEditorSolution(), title: "Configuration: Dock")
         Showcase(view: DefaultDockItemsEditorSolution(), title: "Configuration: Default Dock Items")
         Showcase(view: DockItemEditorSolution(), title: "Configuration: Dock Item")
         Showcase(view: InspectorBarEditorSolution(), title: "Configuration: Inspector Bar")
         Showcase(view: InspectorBarItemEditorSolution(), title: "Configuration: Inspector Bar Item")
       }
-    }
+    }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
       Group {
         Showcase(view: CameraSwiftUI(), title: "Quickstart: SwiftUI")
@@ -128,7 +131,7 @@ struct Showcases: View {
       Group {
         Showcase(view: ConfiguredCameraSolution(), title: "Configuration")
       }
-    }
+    }.showcaseMode(.navigationLink)
   }
 
   var body: some View {

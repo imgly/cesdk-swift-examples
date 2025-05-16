@@ -1,14 +1,14 @@
 // highlight-customAssetLibrary
 import IMGLYEditor
+import IMGLYEngine
 import SwiftUI
 
 @MainActor
 struct CustomAssetLibrary: AssetLibrary {
-  @Environment(\.imglyAssetLibrarySceneMode) var sceneMode
   // highlight-customAssetLibrary
 
   // highlight-assetLibraryBuilder
-  @AssetLibraryBuilder var uploads: AssetLibraryContent {
+  @AssetLibraryBuilder func uploads(_ sceneMode: SceneMode?) -> AssetLibraryContent {
     AssetLibrarySource.imageUpload(.title("Images"), source: .init(demoSource: .imageUpload))
     if sceneMode == .video {
       AssetLibrarySource.videoUpload(.title("Videos"), source: .init(demoSource: .videoUpload))
@@ -42,6 +42,11 @@ struct CustomAssetLibrary: AssetLibrary {
 
   let text = AssetLibrarySource.text(.title("Text"), source: .init(id: TextAssetSource.id))
 
+  @AssetLibraryBuilder public var textAndTextComponents: AssetLibraryContent {
+    AssetLibrarySource.text(.title("Plain Text"), source: .init(id: TextAssetSource.id))
+    AssetLibrarySource.textComponent(.title("Font Combinations"), source: .init(demoSource: .textComponents))
+  }
+
   @AssetLibraryBuilder var shapes: AssetLibraryContent {
     AssetLibrarySource.shape(.title("Basic"), source: .init(
       defaultSource: .vectorPath, config: .init(groups: ["//ly.img.cesdk.vectorpaths/category/vectorpaths"])))
@@ -59,14 +64,20 @@ struct CustomAssetLibrary: AssetLibrary {
     }, source: .init(defaultSource: .sticker))
   }
 
-  @AssetLibraryBuilder var elements: AssetLibraryContent {
-    AssetLibraryGroup.upload("Photo Roll") { uploads }
+  @AssetLibraryBuilder func elements(_ sceneMode: SceneMode?) -> AssetLibraryContent {
+    AssetLibraryGroup.upload("Photo Roll") { uploads(sceneMode) }
     if sceneMode == .video {
       AssetLibraryGroup.video("Videos") { videos }
       AssetLibraryGroup.audio("Audio") { audio }
     }
     AssetLibraryGroup.image("Images") { images }
-    text
+    if sceneMode == .video {
+      text
+    } else {
+      AssetLibraryGroup.text("Text", excludedPreviewSources: [Engine.DemoAssetSource.textComponents.rawValue]) {
+        textAndTextComponents
+      }
+    }
     AssetLibraryGroup.shape("Shapes") { shapes }
     AssetLibraryGroup.sticker("Stickers") { stickers }
   }
@@ -75,12 +86,16 @@ struct CustomAssetLibrary: AssetLibrary {
 
   // highlight-assetLibraryView
   @ViewBuilder var uploadsTab: some View {
-    AssetLibraryTab("Photo Roll") { uploads } label: { DefaultAssetLibrary.uploadsLabel($0) }
+    AssetLibrarySceneModeReader { sceneMode in
+      AssetLibraryTab("Photo Roll") { uploads(sceneMode) } label: { DefaultAssetLibrary.uploadsLabel($0) }
+    }
   }
 
   // highlight-assetLibraryTabViews
   @ViewBuilder var elementsTab: some View {
-    AssetLibraryTab("Elements") { elements } label: { DefaultAssetLibrary.elementsLabel($0) }
+    AssetLibrarySceneModeReader { sceneMode in
+      AssetLibraryTab("Elements") { elements(sceneMode) } label: { DefaultAssetLibrary.elementsLabel($0) }
+    }
   }
 
   @ViewBuilder var videosTab: some View {
@@ -96,7 +111,13 @@ struct CustomAssetLibrary: AssetLibrary {
   }
 
   @ViewBuilder var textTab: some View {
-    AssetLibraryTabView("Text") { text.content } label: { DefaultAssetLibrary.textLabel($0) }
+    AssetLibrarySceneModeReader { sceneMode in
+      if sceneMode == .video {
+        AssetLibraryTabView("Text") { text.content } label: { DefaultAssetLibrary.textLabel($0) }
+      } else {
+        AssetLibraryTab("Text") { textAndTextComponents } label: { DefaultAssetLibrary.textLabel($0) }
+      }
+    }
   }
 
   @ViewBuilder var shapesTab: some View {
@@ -131,23 +152,25 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-assetLibraryTabView
   var body: some View {
     TabView {
-      if sceneMode == .video {
-        elementsTab
-        uploadsTab
-        videosTab
-        audioTab
-        AssetLibraryMoreTab {
+      AssetLibrarySceneModeReader { sceneMode in
+        if sceneMode == .video {
+          elementsTab
+          uploadsTab
+          videosTab
+          audioTab
+          AssetLibraryMoreTab {
+            imagesTab
+            textTab
+            shapesTab
+            stickersTab
+          }
+        } else {
+          elementsTab
           imagesTab
           textTab
           shapesTab
           stickersTab
         }
-      } else {
-        elementsTab
-        imagesTab
-        textTab
-        shapesTab
-        stickersTab
       }
     }
   }
