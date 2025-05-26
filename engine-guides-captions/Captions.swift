@@ -9,6 +9,7 @@ func editVideoCaptions(engine: Engine) async throws {
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 1280)
   try engine.block.setHeight(page, value: 720)
+  try engine.editor.setSettingBool("features/videoCaptionsEnabled", value: true)
   // highlight-setupScene
 
   // highlight-setPageDuration
