@@ -118,6 +118,8 @@ struct Showcases: View {
         Showcase(view: DockItemEditorSolution(), title: "Configuration: Dock Item")
         Showcase(view: InspectorBarEditorSolution(), title: "Configuration: Inspector Bar")
         Showcase(view: InspectorBarItemEditorSolution(), title: "Configuration: Inspector Bar Item")
+        Showcase(view: CanvasMenuEditorSolution(), title: "Configuration: Canvas Menu")
+        Showcase(view: CanvasMenuItemEditorSolution(), title: "Configuration: Canvas Menu Item")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
