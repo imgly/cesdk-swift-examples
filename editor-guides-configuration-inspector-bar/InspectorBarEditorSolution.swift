@@ -76,7 +76,7 @@ struct InspectorBarEditorSolution: View {
         // highlight-addBefore
         // highlight-replace
         items.replace(id: InspectorBar.Buttons.ID.formatText) {
-          InspectorBar.Button(id: "my.package.inspectorBar.button.replacedTextLibrary") { context in
+          InspectorBar.Button(id: "my.package.inspectorBar.button.replacedFormatText") { context in
             print("Replaced Format action")
           } label: { context in
             Label("Replaced Format", systemImage: "arrow.uturn.down.square")
