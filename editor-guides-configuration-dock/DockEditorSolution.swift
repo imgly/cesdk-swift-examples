@@ -19,6 +19,7 @@ struct DockEditorSolution: View {
         Dock.Buttons.textLibrary()
         Dock.Buttons.shapesLibrary()
         Dock.Buttons.stickersLibrary()
+        Dock.Buttons.resize()
       }
       // highlight-dockItems
       // highlight-modifyDockItems

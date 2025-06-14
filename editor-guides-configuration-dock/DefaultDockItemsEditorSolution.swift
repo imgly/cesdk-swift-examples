@@ -18,6 +18,7 @@ struct DefaultDockItemsEditorSolution: View {
         Dock.Buttons.textLibrary()
         Dock.Buttons.shapesLibrary()
         Dock.Buttons.stickersLibrary()
+        Dock.Buttons.resize()
       }
     // highlight-designEditor-dockItems
   }
