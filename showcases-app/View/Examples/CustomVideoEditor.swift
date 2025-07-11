@@ -50,7 +50,7 @@ struct CustomVideoEditor: View {
               if let name = group {
                 switch name {
                 case "3dstickers": "3D Stickers"
-                default: name.capitalized
+                default: "\(name.capitalized)"
                 }
               } else {
                 "Stickers"

@@ -115,7 +115,23 @@ struct CallbacksEditorSolution: View {
         }
         return .init(id: asset.id, groups: asset.groups, meta: newMeta, label: asset.label, tags: asset.tags)
       }
-    // highlight-onUpload
+      // highlight-onUpload
+      // highlight-onClose
+      .imgly.onClose { engine, eventHandler in
+        let hasUnsavedChanges = (try? engine.editor.canUndo()) ?? false
+
+        if hasUnsavedChanges {
+          eventHandler.send(.showCloseConfirmationAlert)
+        } else {
+          eventHandler.send(.closeEditor)
+        }
+      }
+      // highlight-onClose
+      // highlight-onError
+      .imgly.onError { error, eventHandler in
+        eventHandler.send(.showErrorAlert(error))
+      }
+    // highlight-onError
   }
 
   @State private var isPresented = false
