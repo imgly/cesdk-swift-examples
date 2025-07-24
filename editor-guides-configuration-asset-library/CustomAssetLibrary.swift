@@ -57,7 +57,7 @@ struct CustomAssetLibrary: AssetLibrary {
   @AssetLibraryBuilder var stickers: AssetLibraryContent {
     AssetLibrarySource.sticker(.titleForGroup { group in
       if let name = group?.split(separator: "/").last {
-        name.capitalized
+        "\(name.capitalized)"
       } else {
         "Stickers"
       }
