@@ -131,7 +131,20 @@ struct CallbacksEditorSolution: View {
       .imgly.onError { error, eventHandler in
         eventHandler.send(.showErrorAlert(error))
       }
-    // highlight-onError
+      // highlight-onError
+      // highlight-onLoaded
+      .imgly.onLoaded { context in
+        context.eventHandler.send(.openSheet(type: .libraryAdd { context.assetLibrary }))
+
+        await withTaskGroup { group in
+          group.addTask {
+            for await _ in await context.engine.editor.onStateChanged {
+              print("Editor state has changed.")
+            }
+          }
+        }
+      }
+    // highlight-onLoaded
   }
 
   @State private var isPresented = false
