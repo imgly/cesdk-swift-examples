@@ -22,13 +22,6 @@ extension View {
   }
 }
 
-private struct ShowcaseModeKey: EnvironmentKey {
-  static let defaultValue = ShowcaseMode.navigationLink
-}
-
 private extension EnvironmentValues {
-  var showcaseMode: ShowcaseMode {
-    get { self[ShowcaseModeKey.self] }
-    set { self[ShowcaseModeKey.self] = newValue }
-  }
+  @Entry var showcaseMode = ShowcaseMode.navigationLink
 }
