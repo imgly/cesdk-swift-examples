@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		01B5386DFD274E7CD761416F /* PhotoSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7EB80DFE06724B15D95EF84 /* PhotoSelection.swift */; };
 		04626311ADCE3973E18C1BA6 /* Buffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB2A5292B920DACAABC39A /* Buffers.swift */; };
-		04E7AAED4D339EA7EF6C7AF8 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */; };
 		0509139CF4A185B06A07E0CB /* wish_you_were_here.scene in Resources */ = {isa = PBXBuildFile; fileRef = 4D470450ED9A8ADBE0F20D36 /* wish_you_were_here.scene */; };
 		05B4E711065A9C68D62A7CF4 /* sample_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AAA97BA25BA3114CC821091C /* sample_image.jpg */; };
 		064AB5D5F547E888C7094BFB /* import.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FD12BFFB9425301EB00E31 /* import.png */; };
@@ -303,7 +302,6 @@
 		A3DB715E1405C2F87FA79968 /* LoadSceneFromRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadSceneFromRemote.swift; sourceTree = "<group>"; };
 		A444D6F3EA290E51BE49CEE7 /* CreateSceneFromScratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSceneFromScratch.swift; sourceTree = "<group>"; };
 		A556562136063EF09820B432 /* ModalCameraShowcase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalCameraShowcase.swift; sourceTree = "<group>"; };
-		A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = Assets.bundle; sourceTree = "<group>"; };
 		A5F43ADC1DF9B3F55DA69E92 /* x_profile_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_profile_picture.png; sourceTree = "<group>"; };
 		A606B83A49C463028B8A3147 /* 4_3_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_3_dark.png; sourceTree = "<group>"; };
 		A834A03F6F2CD958F438AF67 /* x_header.scene */ = {isa = PBXFileReference; path = x_header.scene; sourceTree = "<group>"; };
@@ -746,7 +744,6 @@
 		79B7688ADF75CD1D8944C12E /* video */ = {
 			isa = PBXGroup;
 			children = (
-				A5C88D0A9F71C0ED16DC15F8 /* Assets.bundle */,
 				D3D90A7219DA07AE2E4E7116 /* milli-surf-school.png */,
 				02B5DE7A2AB450E182FDEB89 /* milli-surf-school.scene */,
 				91B77EE65A3996A2E52AF3B2 /* monthly-review.png */,
@@ -1112,7 +1109,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_5018D9DD-332D-4D38-8AF0-940467276B42" /* cesdk_swift_examples */ = {
+		"TEMP_C591EC87-B07C-4015-9EB0-BF4809E96431" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				08A9EA956529EFCD7B5C6079 /* editor-guides-configuration-inspector-bar */,
@@ -1273,7 +1270,6 @@
 				8D146CBC6F47F404F7428638 /* 4_3_dark.png in Resources */,
 				89ECF469AF532F9E9F6E33D3 /* 9_16.png in Resources */,
 				916AB1E6EA74B780AA220E09 /* 9_16_dark.png in Resources */,
-				04E7AAED4D339EA7EF6C7AF8 /* Assets.bundle in Resources */,
 				1FDB50FAEABB8E0D7B64B286 /* Assets.xcassets in Resources */,
 				52C42EF976F51CEFF808D7B4 /* apparel-ui-b-1.png in Resources */,
 				6CA2896B462E0037E3DE467E /* apparel-ui-b-1.scene in Resources */,
@@ -1557,7 +1553,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.56.0;
+				MARKETING_VERSION = 1.57.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1647,7 +1643,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.56.0;
+				MARKETING_VERSION = 1.57.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1722,7 +1718,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.56.0;
+				version = 1.57.0;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1730,7 +1726,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.56.0;
+				version = 1.57.0;
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -1738,7 +1734,7 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
 				kind = exactVersion;
-				version = 7.12.0;
+				version = 8.5.0;
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

@@ -3,7 +3,6 @@ import SwiftUI
 
 struct CustomVideoEditor: View {
   @State private var remoteAssetSources = [RemoteAssetSource.Path: String]()
-  private let stickerMiscID = "ly.img.sticker.misc"
 
   var body: some View {
     let url = Bundle.main.url(forResource: "monthly-review", withExtension: "scene")!
@@ -14,11 +13,6 @@ struct CustomVideoEditor: View {
         if !secrets.remoteAssetSourceHost.isEmpty {
           remoteAssetSources = try await engine.addRemoteAssetSources(host: secrets.remoteAssetSourceHost)
         }
-
-        let bundleURL = Bundle.main.url(forResource: "Assets", withExtension: "bundle")!
-        let baseURL = bundleURL.appendingPathComponent(stickerMiscID)
-        let jsonURL = baseURL.appendingPathComponent("content", conformingTo: .json)
-        try await engine.populateAssetSource(id: stickerMiscID, jsonURL: jsonURL, replaceBaseURL: baseURL)
       }
       .imgly.assetLibrary {
         DefaultAssetLibrary()
@@ -44,18 +38,7 @@ struct CustomVideoEditor: View {
             if let id = remoteAssetSources[.videoGiphySticker] {
               AssetLibrarySource.sticker(.title("Giphy Stickers"), source: .init(id: id))
             }
-            AssetLibrarySource.sticker(.title("Hand"), source: .init(
-              defaultSource: .sticker, config: .init(groups: ["//ly.img.cesdk.stickers.hand/category/hand"])))
-            AssetLibrarySource.sticker(.titleForGroup { group in
-              if let name = group {
-                switch name {
-                case "3dstickers": "3D Stickers"
-                default: "\(name.capitalized)"
-                }
-              } else {
-                "Stickers"
-              }
-            }, source: .init(id: stickerMiscID))
+            DefaultAssetLibrary.stickers
           }
       }
   }
