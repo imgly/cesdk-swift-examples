@@ -47,7 +47,7 @@ func usingFills(engine: Engine) async throws {
   try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg"
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   // highlight-createFill
 
@@ -66,7 +66,7 @@ func usingFills(engine: Engine) async throws {
   try engine.block.setString(
     autoDuplicateFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_2.jpg"
+    value: "https://img.ly/static/ubq_samples/sample_2.jpg",
   )
 
   // let manualDuplicateFill = try engine.block.duplicate(autoDuplicateFill)

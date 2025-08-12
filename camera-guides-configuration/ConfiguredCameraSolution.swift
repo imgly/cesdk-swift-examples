@@ -25,7 +25,7 @@ struct ConfiguredCameraSolution: View {
         // highlight-maxtotalduration
         maxTotalDuration: 30,
         // highlight-allowmodeswitching
-        allowModeSwitching: true
+        allowModeSwitching: true,
       )
       // highlight-config
 
@@ -33,7 +33,7 @@ struct ConfiguredCameraSolution: View {
         settings,
         config: config,
         // highlight-mode
-        mode: .standard
+        mode: .standard,
       ) { result in
         switch result {
         case let .success(cameraResult):

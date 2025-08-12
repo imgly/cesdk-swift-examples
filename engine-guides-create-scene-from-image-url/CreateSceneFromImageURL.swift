@@ -8,12 +8,12 @@ func createSceneFromImageURL(engine: Engine) async throws {
   // highlight-createFromImage
 
   // highlight-findByType
-  // Find the automatically added graphic block in the scene that contains the image fill.
-  let block = try engine.block.find(byType: .graphic).first!
+  // Get the fill from the page and verify it's an image fill
+  let page = try engine.block.find(byType: .page).first!
   // highlight-findByType
 
-  // highlight-setOpacity
-  // Change its opacity.
-  try engine.block.setOpacity(block, value: 0.5)
-  // highlight-setOpacity
+  // highlight-check-fill
+  let pageFill = try engine.block.getFill(page)
+  let imageFillType = try engine.block.getType(pageFill)
+  // highlight-check-fill
 }

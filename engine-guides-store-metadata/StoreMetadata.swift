@@ -6,7 +6,7 @@ func storeMetadata(engine: Engine) async throws {
   // highlight-setup
   var scene = try await engine.scene.create(fromImage:
     .init(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!)
-  let block = try engine.block.find(byType: .graphic).first!
+  let block = try engine.block.find(byType: .page).first!
   // highlight-setup
 
   // highlight-setMetadata
@@ -25,7 +25,7 @@ func storeMetadata(engine: Engine) async throws {
   try engine.block.setMetadata(
     block,
     key: "payment",
-    value: String(data: JSONEncoder().encode(payment), encoding: .utf8)!
+    value: String(data: JSONEncoder().encode(payment), encoding: .utf8)!,
   )
   // highlight-setMetadata
 

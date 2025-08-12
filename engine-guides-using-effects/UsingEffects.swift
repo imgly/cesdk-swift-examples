@@ -25,7 +25,7 @@ func usingEffects(engine: Engine) async throws {
   try engine.block.setString(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg"
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(block, fill: fill)
   // highlight-setup

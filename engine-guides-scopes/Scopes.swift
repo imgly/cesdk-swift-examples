@@ -4,9 +4,18 @@ import IMGLYEngine
 @MainActor
 func scopes(engine: Engine) async throws {
   // highlight-setup
-  let scene = try await engine.scene.create(fromImage:
-    .init(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!)
-  let block = try engine.block.find(byType: .graphic).first!
+  let scene = try engine.scene.create()
+  let page = try engine.block.create(.page)
+  try engine.block.setWidth(page, value: 800)
+  try engine.block.setHeight(page, value: 600)
+  try engine.block.appendChild(to: scene, child: page)
+
+  let block = try engine.block.create(.graphic)
+  try engine.block.setShape(block, shape: engine.block.createShape(.rect))
+  try engine.block.setWidth(block, value: 100)
+  try engine.block.setHeight(block, value: 100)
+  try engine.block.setFill(block, fill: engine.block.createFill(.color))
+  try engine.block.appendChild(to: page, child: block)
   // highlight-setup
 
   // highlight-findAllScopes

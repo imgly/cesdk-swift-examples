@@ -34,7 +34,7 @@ struct ModalCameraShowcase: View {
       Camera(
         settings,
         config: CameraConfiguration(allowModeSwitching: false),
-        mode: mode
+        mode: mode,
       ) { result in
         switch result {
         case let .failure(error) where error == .cancelled:

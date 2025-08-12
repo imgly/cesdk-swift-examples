@@ -83,7 +83,7 @@ struct DefaultNavigationBarItemsEditorSolution: View {
         NavigationBar.ItemGroup(placement: .topBarLeading) {
           NavigationBar.Buttons.closeEditor()
           NavigationBar.Buttons.previousPage(
-            label: { _ in NavigationLabel("Design", direction: .backward) }
+            label: { _ in NavigationLabel("Design", direction: .backward) },
           )
         }
         NavigationBar.ItemGroup(placement: .principal) {
@@ -93,7 +93,7 @@ struct DefaultNavigationBarItemsEditorSolution: View {
         }
         NavigationBar.ItemGroup(placement: .topBarTrailing) {
           NavigationBar.Buttons.nextPage(
-            label: { _ in NavigationLabel("Write", direction: .forward) }
+            label: { _ in NavigationLabel("Write", direction: .forward) },
           )
           NavigationBar.Buttons.export()
         }

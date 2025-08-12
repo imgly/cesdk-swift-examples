@@ -33,7 +33,7 @@ func modifyingScenes(engine: Engine) async throws {
   try engine.block.setString(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/imgly_logo.jpg"
+    value: "https://img.ly/static/ubq_samples/imgly_logo.jpg",
   )
 
   /* The content fill mode 'Contain' ensures the entire image is visible. */

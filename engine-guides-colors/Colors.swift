@@ -45,7 +45,7 @@ func colors(engine: Engine) async throws {
   let cmykBlueConverted = try engine.editor.convertColorToColorSpace(color: rgbaBlue, colorSpace: .cmyk)
   let rgbaPinkFlamingoConverted = try engine.editor.convertColorToColorSpace(
     color: spotPinkFlamingo,
-    colorSpace: .sRGB
+    colorSpace: .sRGB,
   )
   // highlight-convert-color
 

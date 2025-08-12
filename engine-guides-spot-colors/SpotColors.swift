@@ -52,7 +52,7 @@ func spotColors(engine: Engine) async throws {
   try engine.block.setColor(
     text,
     property: "backgroundColor/color",
-    color: .spot(name: "Pantone-ColorOfTheYear-2022", tint: 0.9)
+    color: .spot(name: "Pantone-ColorOfTheYear-2022", tint: 0.9),
   )
   try engine.block.setBackgroundColorEnabled(text, enabled: true)
   // highlight-apply-text
