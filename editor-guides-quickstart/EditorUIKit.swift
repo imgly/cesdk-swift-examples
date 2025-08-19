@@ -13,7 +13,7 @@ class EditorUIKit: UIViewController {
       DesignEditor(.init(license: secrets.licenseKey,
                          userID: "<your unique user id>"))
       // highlight-editor
-    }
+    },
     // highlight-environment
   )
   // highlight-ui-hosting-controller
@@ -24,7 +24,7 @@ class EditorUIKit: UIViewController {
     primaryAction: UIAction(title: "Use the Editor") { [unowned self] _ in
       editor.modalPresentationStyle = .fullScreen
       present(editor, animated: true)
-    }
+    },
   )
   // highlight-modal
 

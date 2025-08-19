@@ -42,7 +42,7 @@ struct PhotoEditorSolution: View {
         // Write and share file
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(
           "Export",
-          conformingTo: mimeType.uniformType
+          conformingTo: mimeType.uniformType,
         )
         try data.write(to: url, options: [.atomic])
         eventHandler.send(.shareFile(url))

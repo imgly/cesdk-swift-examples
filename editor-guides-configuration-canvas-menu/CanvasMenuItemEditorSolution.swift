@@ -31,7 +31,7 @@ struct CanvasMenuItemEditorSolution: View {
           // highlight-customizePredefinedButton-isVisible
           isVisible: { context in
             try context.engine.block.isAllowedByScope(context.selection.block, key: "lifecycle/destroy")
-          }
+          },
           // highlight-customizePredefinedButton-isVisible
         )
         // highlight-customizePredefinedButton
@@ -39,7 +39,7 @@ struct CanvasMenuItemEditorSolution: View {
         // highlight-newButton
         CanvasMenu.Button(
           // highlight-newButton-id
-          id: "my.package.canvasMenu.button.newButton"
+          id: "my.package.canvasMenu.button.newButton",
           // highlight-newButton-action
         ) { context in
           print("New Button action")

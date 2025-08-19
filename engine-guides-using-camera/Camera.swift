@@ -1,13 +1,12 @@
 import AVFoundation
 import Foundation
 
-@frozen
-enum VideoCapture {
+enum VideoCapture: @unchecked Sendable {
   case frame(CVImageBuffer)
   case videoCaptured(URL)
 }
 
-final class Camera: NSObject {
+final class Camera: NSObject, @unchecked Sendable {
   private lazy var queue = DispatchQueue(label: "ly.img.camera", qos: .userInteractive)
 
   private var videoContinuation: AsyncThrowingStream<VideoCapture, Error>.Continuation?
@@ -70,7 +69,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(
     _: AVCaptureOutput,
     didOutput sampleBuffer: CMSampleBuffer,
-    from _: AVCaptureConnection
+    from _: AVCaptureConnection,
   ) {
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
     videoContinuation?.yield(.frame(pixelBuffer))
@@ -81,13 +80,13 @@ extension Camera: AVCaptureFileOutputRecordingDelegate {
   func fileOutput(
     _: AVCaptureFileOutput,
     didStartRecordingTo _: URL,
-    from _: [AVCaptureConnection]
+    from _: [AVCaptureConnection],
   ) {}
   func fileOutput(
     _: AVCaptureFileOutput,
     didFinishRecordingTo url: URL,
     from _: [AVCaptureConnection],
-    error: Error?
+    error: Error?,
   ) {
     if let error {
       videoContinuation?.finish(throwing: error)

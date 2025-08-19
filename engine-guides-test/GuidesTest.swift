@@ -11,7 +11,7 @@ class GuidesTest: XCTestCase {
     engine = try await Engine(
       context: .offscreen(size: .init(width: 100, height: 100)),
       audioContext: .none,
-      license: Secrets.offlineLicenseKey
+      license: Secrets.offlineLicenseKey,
     )
   }
 

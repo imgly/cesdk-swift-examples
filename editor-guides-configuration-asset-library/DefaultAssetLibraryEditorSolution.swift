@@ -21,7 +21,7 @@ struct DefaultAssetLibraryEditorSolution: View {
         DefaultAssetLibrary(
           tabs: DefaultAssetLibrary.Tab.allCases.reversed().filter { tab in
             tab != .elements && tab != .uploads
-          }
+          },
         )
         // highlight-defaultAssetLibrary
         // highlight-defaultAssetLibraryImages

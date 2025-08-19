@@ -21,17 +21,17 @@ func sourceSets(engine: Engine) async throws {
     .init(
       uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_512x341.jpg")!,
       width: 512,
-      height: 341
+      height: 341,
     ),
     .init(
       uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_1024x683.jpg")!,
       width: 1024,
-      height: 683
+      height: 683,
     ),
     .init(
       uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
       width: 2048,
-      height: 1366
+      height: 1366,
     ),
   ])
   try engine.block.setFill(block, fill: imageFill)
@@ -49,19 +49,19 @@ func sourceSets(engine: Engine) async throws {
       .init(
         uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_512x341.jpg")!,
         width: 512,
-        height: 341
+        height: 341,
       ),
       .init(
         uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_1024x683.jpg")!,
         width: 1024,
-        height: 683
+        height: 683,
       ),
       .init(
         uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
         width: 2048,
-        height: 1366
+        height: 1366,
       ),
-    ])
+    ]),
   )
   // highlight-asset-definition
 
@@ -75,13 +75,13 @@ func sourceSets(engine: Engine) async throws {
   let assetResult = AssetResult(
     id: assetWithSourceSet.id,
     meta: assetWithSourceSet.meta,
-    context: AssetContext(sourceID: "my-dynamic-images")
+    context: AssetContext(sourceID: "my-dynamic-images"),
   )
   let result = try await engine.asset.defaultApplyAsset(assetResult: assetResult)
   // Lists the entries from above again.
   _ = try engine.block.getSourceSet(
     try engine.block.getFill(result!),
-    property: "fill/image/sourceSet"
+    property: "fill/image/sourceSet",
   )
 
   // highlight-apply-asset
@@ -92,14 +92,14 @@ func sourceSets(engine: Engine) async throws {
     .init(
       uri: URL(string: "https://img.ly/static/example-assets/sourceset/1x.mp4")!,
       width: 1920,
-      height: 1080
+      height: 1080,
     ),
   ])
 
   try await engine.block.addVideoFileURIToSourceSet(
     videoFill,
     property: "fill/video/sourceSet",
-    uri: URL(string: "https://img.ly/static/example-assets/sourceset/2x.mp4")!
+    uri: URL(string: "https://img.ly/static/example-assets/sourceset/2x.mp4")!,
   )
   // highlight-video-source-sets
 }

@@ -14,12 +14,12 @@ struct Showcases: View {
       Showcase(
         view: PhotoEditor(settings),
         title: "Default Photo Editor",
-        subtitle: "Loads empty image."
+        subtitle: "Loads empty image.",
       )
       Showcase(
         view: CustomPhotoEditor().showcaseMode(mode),
         title: "Custom Photo Editor",
-        subtitle: "Custom format and photo selection."
+        subtitle: "Custom format and photo selection.",
       ).showcaseMode(.navigationLink)
     }
     Section(title: "Design Editor",
@@ -27,12 +27,12 @@ struct Showcases: View {
       Showcase(
         view: DesignEditor(settings),
         title: "Default Design Editor",
-        subtitle: "Loads empty design scene."
+        subtitle: "Loads empty design scene.",
       )
       Showcase(
         view: CustomDesignEditor(),
         title: "Custom Design Editor",
-        subtitle: "Loads custom design scene and adds Unsplash asset source and library."
+        subtitle: "Loads custom design scene and adds Unsplash asset source and library.",
       )
     }
     Section(title: "Video Editor",
@@ -40,12 +40,12 @@ struct Showcases: View {
       Showcase(
         view: VideoEditor(settings),
         title: "Default Video Editor",
-        subtitle: "Loads empty video scene."
+        subtitle: "Loads empty video scene.",
       )
       Showcase(
         view: CustomVideoEditor(),
         title: "Custom Video Editor",
-        subtitle: "Custom video scene and adds Unsplash asset source and library."
+        subtitle: "Custom video scene and adds Unsplash asset source and library.",
       )
       ModalCameraShowcase(
         title: "React to Video",
@@ -55,14 +55,14 @@ struct Showcases: View {
           .vertical,
           video: URL(
             // swiftlint:disable:next line_length
-            string: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
-          )!
-        )
+            string: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+          )!,
+        ),
       )
       ModalCameraShowcase(
         title: "Dual Camera to Video Editor",
         subtitle: "Shows the dual camera, then imports all the recorded clips into the editor.",
-        mode: .dualCamera()
+        mode: .dualCamera(),
       )
     }
     Section(title: "Apparel Editor",
@@ -70,12 +70,12 @@ struct Showcases: View {
       Showcase(
         view: ApparelEditor(settings),
         title: "Default Apparel Editor",
-        subtitle: "Loads empty apparel scene."
+        subtitle: "Loads empty apparel scene.",
       )
       Showcase(
         view: CustomApparelEditor(),
         title: "Custom Apparel Editor",
-        subtitle: "Loads custom apparel scene and adds Unsplash asset source and library."
+        subtitle: "Loads custom apparel scene and adds Unsplash asset source and library.",
       )
     }
     Section(title: "Post- & Greeting-Card Editor",
@@ -83,12 +83,12 @@ struct Showcases: View {
       Showcase(
         view: PostcardEditor(settings),
         title: "Default Postcard Editor",
-        subtitle: "Loads empty postcard scene."
+        subtitle: "Loads empty postcard scene.",
       )
       Showcase(
         view: CustomPostcardEditor().showcaseMode(mode),
         title: "Custom Postcard Editor",
-        subtitle: "Custom postcard scene selection and adds Unsplash asset source and library."
+        subtitle: "Custom postcard scene selection and adds Unsplash asset source and library.",
       ).showcaseMode(.navigationLink)
     }
     Section(title: "Documentation Editor Examples") {

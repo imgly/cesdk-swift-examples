@@ -76,7 +76,7 @@
         engine = try await Engine(
           context: .metalView(view: canvas),
           license: secrets.licenseKey,
-          userID: "<your unique user id>"
+          userID: "<your unique user id>",
         )
         // highlight-license
         engine?.onAppear()

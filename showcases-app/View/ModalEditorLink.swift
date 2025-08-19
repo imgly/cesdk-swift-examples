@@ -18,7 +18,7 @@ struct ModalEditorLink<Editor: View, Label: View>: View {
         .imgly.modifyNavigationBarItems { _, items in
           items.replace(id: NavigationBar.Buttons.ID.closeEditor) {
             NavigationBar.Buttons.closeEditor(
-              label: { _ in SwiftUI.Label("Home", systemImage: "house") }
+              label: { _ in SwiftUI.Label("Home", systemImage: "house") },
             )
           }
         }

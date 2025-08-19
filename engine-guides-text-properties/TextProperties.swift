@@ -80,27 +80,27 @@ func textProperties(engine: Engine) async throws {
         uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Bold.ttf")!,
         subFamily: "Bold",
         weight: .bold,
-        style: .normal
+        style: .normal,
       ),
       Font(
         uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-BoldItalic.ttf")!,
         subFamily: "Bold Italic",
         weight: .bold,
-        style: .italic
+        style: .italic,
       ),
       Font(
         uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Italic.ttf")!,
         subFamily: "Italic",
         weight: .normal,
-        style: .italic
+        style: .italic,
       ),
       Font(
         uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Regular.ttf")!,
         subFamily: "Regular",
         weight: .normal,
-        style: .normal
+        style: .normal,
       ),
-    ]
+    ],
   )
   try engine.block.setFont(text, fontFileURL: typeface.fonts[3].uri, typeface: typeface)
   // highlight-setFont

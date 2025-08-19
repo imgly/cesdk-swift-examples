@@ -11,7 +11,7 @@ func usingShapes(engine: Engine) async throws {
   try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg"
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(graphic, fill: imageFill)
   try engine.block.setWidth(graphic, value: 100)
