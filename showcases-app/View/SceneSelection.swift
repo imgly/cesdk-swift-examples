@@ -11,7 +11,7 @@ extension SceneSelection.Scene {
 }
 
 struct SceneSelection<Editor: View>: View {
-  typealias Scenes = [(title: String, colorPalette: [(name: LocalizedStringKey, color: CGColor)]?)]
+  typealias Scenes = [(title: String, colorPalette: [(name: LocalizedStringResource, color: CGColor)]?)]
 
   struct Scene: Identifiable {
     var id: URL { url }

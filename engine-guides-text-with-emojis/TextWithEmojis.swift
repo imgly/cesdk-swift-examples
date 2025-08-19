@@ -8,12 +8,12 @@ func textWithEmojis(engine: Engine) async throws {
   // From a bundle
   try engine.editor.setSettingString(
     "ubq://defaultEmojiFontFileUri",
-    value: "bundle://ly.img.cesdk/fonts/NotoColorEmoji.ttf"
+    value: "bundle://ly.img.cesdk/fonts/NotoColorEmoji.ttf",
   )
   // From a URL
   try engine.editor.setSettingString(
     "ubq://defaultEmojiFontFileUri",
-    value: "https://cdn.img.ly/assets/v4/emoji/NotoColorEmoji.ttf"
+    value: "https://cdn.img.ly/assets/v4/emoji/NotoColorEmoji.ttf",
   )
   // highlight-change-default-emoji-font
 

@@ -64,12 +64,12 @@ struct NavigationBarEditorSolution: View {
         // highlight-replace
         items.replace(id: NavigationBar.Buttons.ID.closeEditor) {
           NavigationBar.Buttons.closeEditor(
-            label: { _ in Label("Cancel", systemImage: "xmark") }
+            label: { _ in Label("Cancel", systemImage: "xmark") },
           )
         }
         items.replace(id: NavigationBar.Buttons.ID.export) {
           NavigationBar.Buttons.export(
-            label: { _ in Label("Done", systemImage: "checkmark") }
+            label: { _ in Label("Done", systemImage: "checkmark") },
           )
         }
         // highlight-replace

@@ -19,7 +19,7 @@ func usingCamera(engine: Engine) async throws {
   try engine.block.setEnum(
     pixelStreamFill,
     property: "fill/pixelStream/orientation",
-    value: "UpMirrored"
+    value: "UpMirrored",
   )
   // highlight-orientation
 
@@ -42,7 +42,7 @@ func usingCamera(engine: Engine) async throws {
         try engine.block.setString(
           videoFill,
           property: "fill/video/fileURI",
-          value: url.absoluteString
+          value: url.absoluteString,
         )
       }
     }

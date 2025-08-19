@@ -39,14 +39,14 @@ struct NavigationBarItemEditorSolution: View {
             },
             // highlight-customizePredefinedButton-isEnabled
             // highlight-customizePredefinedButton-isVisible
-            isVisible: { context in true }
+            isVisible: { context in true },
           )
           // highlight-customizePredefinedButton
 
           // highlight-newButton
           NavigationBar.Button(
             // highlight-newButton-id
-            id: "my.package.navigationBar.button.newButton"
+            id: "my.package.navigationBar.button.newButton",
             // highlight-newButton-action
           ) { context in
             print("New Button action")

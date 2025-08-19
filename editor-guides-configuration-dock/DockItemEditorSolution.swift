@@ -28,14 +28,14 @@ struct DockItemEditorSolution: View {
           // highlight-customizePredefinedButton-isEnabled
           isEnabled: { context in true },
           // highlight-customizePredefinedButton-isVisible
-          isVisible: { context in true }
+          isVisible: { context in true },
         )
         // highlight-customizePredefinedButton
 
         // highlight-newButton
         Dock.Button(
           // highlight-newButton-id
-          id: "my.package.dock.button.newButton"
+          id: "my.package.dock.button.newButton",
           // highlight-newButton-action
         ) { context in
           print("New Button action")

@@ -23,7 +23,7 @@ func editVideo(engine: Engine) async throws {
     videoFill,
     property: "fill/video/fileURI",
     // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/assets/demo/v1/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
+    value: "https://cdn.img.ly/assets/demo/v1/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
   )
   try engine.block.setFill(video1, fill: videoFill)
 
@@ -33,7 +33,7 @@ func editVideo(engine: Engine) async throws {
   try engine.block.setString(
     videoFill2,
     property: "fill/video/fileURI",
-    value: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-kampus-production-8154913.mp4"
+    value: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-kampus-production-8154913.mp4",
   )
   try engine.block.setFill(video2, fill: videoFill2)
   // highlight-assignVideoFill
@@ -69,7 +69,7 @@ func editVideo(engine: Engine) async throws {
   try engine.block.setString(
     audio,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/assets/demo/v1/ly.img.audio/audios/far_from_home.m4a"
+    value: "https://cdn.img.ly/assets/demo/v1/ly.img.audio/audios/far_from_home.m4a",
   )
   // highlight-audio
 

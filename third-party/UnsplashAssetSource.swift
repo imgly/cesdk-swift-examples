@@ -29,7 +29,7 @@ public final class UnsplashAssetSource: NSObject {
           .init(name: "page", value: String(queryData.page + 1)),
           .init(name: "per_page", value: String(queryData.perPage)),
           .init(name: "content_filter", value: "high"),
-        ]
+        ],
       )
     }
 
@@ -41,7 +41,7 @@ public final class UnsplashAssetSource: NSObject {
           .init(name: "page", value: String(queryData.page + 1)),
           .init(name: "per_page", value: String(queryData.perPage)),
           .init(name: "content_filter", value: "high"),
-        ]
+        ],
       )
     }
 
@@ -71,7 +71,7 @@ extension UnsplashAssetSource: AssetSource {
       .isEmpty ?? true ? .list(queryData: queryData) : .search(queryData: queryData)
     // highlight-unsplash-query
 
-    let data = try await URLSession.shared.get(endpoint.url(with: host, path: path)!).0
+    let data = try await URLSession.shared.data(from: endpoint.url(with: host, path: path)!).0
 
     // highlight-unsplash-result-mapping
     if queryData.query?.isEmpty ?? true {
@@ -82,7 +82,7 @@ extension UnsplashAssetSource: AssetSource {
         assets: response.map(AssetResult.init),
         currentPage: queryData.page,
         nextPage: nextPage,
-        total: -1
+        total: -1,
       )
     } else {
       let response = try decoder.decode(UnsplashSearchResponse.self, from: data)
@@ -93,7 +93,7 @@ extension UnsplashAssetSource: AssetSource {
         assets: results.map(AssetResult.init),
         currentPage: queryData.page,
         nextPage: nextPage,
-        total: total
+        total: total,
       )
     }
     // highlight-unsplash-result-mapping
@@ -107,14 +107,14 @@ extension UnsplashAssetSource: AssetSource {
   public var credits: AssetCredits? {
     .init(
       name: "Unsplash",
-      url: URL(string: "https://unsplash.com/")!
+      url: URL(string: "https://unsplash.com/")!,
     )
   }
 
   public var license: AssetLicense? {
     .init(
       name: "Unsplash license (free)",
-      url: URL(string: "https://unsplash.com/license")!
+      url: URL(string: "https://unsplash.com/license")!,
     )
   }
   // highlight-unsplash-credits-license
@@ -172,18 +172,9 @@ private extension AssetResult {
       credits: .init(name: image.user.name!, url: image.user.links?.html),
       // highlight-result-credits
       // highlight-result-utm
-      utm: .init(source: "CE.SDK Demo", medium: "referral")
+      utm: .init(source: "CE.SDK Demo", medium: "referral"),
       // highlight-result-utm
     )
   }
   // highlight-translateToAssetResult
-}
-
-private extension URLSession {
-  // https://forums.developer.apple.com/forums/thread/727823
-  // Silences warning: "Non-sendable type '(any URLSessionTaskDelegate)?' exiting main actor-isolated context in call to
-  // non-isolated instance method 'data(from:delegate:)' cannot cross actor boundary"
-  nonisolated func get(_ url: URL) async throws -> (Data, URLResponse) {
-    try await data(from: url)
-  }
 }

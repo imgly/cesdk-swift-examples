@@ -13,5 +13,5 @@ let secrets = Secrets(
   unsplashHost: "",
   ciBuildsHost: "",
   githubRepo: "",
-  licenseKey: ""
+  licenseKey: "",
 )

@@ -11,13 +11,13 @@ func customAssetSource(engine: Engine) async throws {
   // highlight-unsplash-findAssets
   let list = try await engine.asset.findAssets(
     sourceID: "ly.img.asset.source.unsplash",
-    query: .init(query: "", page: 1, perPage: 10)
+    query: .init(query: "", page: 1, perPage: 10),
   )
   // highlight-unsplash-findAssets
   // highlight-unsplash-list
   let search = try await engine.asset.findAssets(
     sourceID: "ly.img.asset.source.unsplash",
-    query: .init(query: "banana", page: 1, perPage: 10)
+    query: .init(query: "banana", page: 1, perPage: 10),
   )
   // highlight-unsplash-list
 

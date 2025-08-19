@@ -36,7 +36,7 @@ class CameraUIKit: UIViewController {
     primaryAction: UIAction(title: "Use the Camera") { [unowned self] _ in
       camera.modalPresentationStyle = .fullScreen
       present(camera, animated: true)
-    }
+    },
   )
   // highlight-modal
 

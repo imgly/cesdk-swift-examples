@@ -63,7 +63,7 @@ func boolOps(engine: Engine) async throws {
   try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg"
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.appendChild(to: page, child: image)
 

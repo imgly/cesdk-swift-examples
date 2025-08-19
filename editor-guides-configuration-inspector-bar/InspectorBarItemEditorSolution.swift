@@ -31,7 +31,7 @@ struct InspectorBarItemEditorSolution: View {
           isVisible: { context in
             try context.selection.type == .text &&
               context.engine.block.isAllowedByScope(context.selection.block, key: "text/character")
-          }
+          },
           // highlight-customizePredefinedButton-isVisible
         )
         // highlight-customizePredefinedButton
@@ -39,7 +39,7 @@ struct InspectorBarItemEditorSolution: View {
         // highlight-newButton
         InspectorBar.Button(
           // highlight-newButton-id
-          id: "my.package.inspectorBar.button.newButton"
+          id: "my.package.inspectorBar.button.newButton",
           // highlight-newButton-action
         ) { context in
           print("New Button action")
