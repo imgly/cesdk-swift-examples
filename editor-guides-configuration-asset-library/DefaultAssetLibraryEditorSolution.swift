@@ -20,7 +20,7 @@ struct DefaultAssetLibraryEditorSolution: View {
         // highlight-defaultAssetLibrary
         DefaultAssetLibrary(
           tabs: DefaultAssetLibrary.Tab.allCases.reversed().filter { tab in
-            tab != .elements && tab != .uploads
+            tab != .elements && tab != .photoRoll
           },
         )
         // highlight-defaultAssetLibrary

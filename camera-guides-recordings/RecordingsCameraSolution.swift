@@ -26,6 +26,7 @@ struct RecordingsCameraSolution: View {
           }
           // highlight-standard
 
+        // highlight-camera
         // highlight-reaction
         case let .success(.reaction(video, reactionRecordings)):
           print(video.duration)
@@ -37,6 +38,7 @@ struct RecordingsCameraSolution: View {
             }
           }
           // highlight-reaction
+          // highlight-camera
           // highlight-success
 
         // highlight-failure
