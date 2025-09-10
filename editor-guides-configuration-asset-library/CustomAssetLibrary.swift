@@ -8,25 +8,28 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-customAssetLibrary
 
   // highlight-assetLibraryBuilder
-  @AssetLibraryBuilder func uploads(_ sceneMode: SceneMode?) -> AssetLibraryContent {
-    AssetLibrarySource.imageUpload(.title("Images"), source: .init(demoSource: .imageUpload))
-    if sceneMode == .video {
-      AssetLibrarySource.videoUpload(.title("Videos"), source: .init(demoSource: .videoUpload))
-    }
+  @AssetLibraryBuilder func photoRoll(_ sceneMode: SceneMode?) -> AssetLibraryContent {
+    AssetLibrarySource.photoRoll(
+      .title("Photo Roll"),
+      source: .init(
+        id: PhotoRollAssetSource.id,
+        config: .init(groups: sceneMode == .video ? nil : [PhotoRollMediaType.image.rawValue]),
+      ),
+    )
   }
 
   @AssetLibraryBuilder var videosAndImages: AssetLibraryContent {
     AssetLibraryGroup.video("Videos") { videos }
     AssetLibraryGroup.image("Images") { images }
-    AssetLibraryGroup.upload("Photo Roll") {
-      AssetLibrarySource.imageUpload(.title("Images"), source: .init(demoSource: .imageUpload))
-      AssetLibrarySource.videoUpload(.title("Videos"), source: .init(demoSource: .videoUpload))
-    }
+    AssetLibrarySource.photoRoll(.title("Photo Roll"), source: .init(id: PhotoRollAssetSource.id))
   }
 
   @AssetLibraryBuilder var videos: AssetLibraryContent {
     AssetLibrarySource.video(.title("Videos"), source: .init(demoSource: .video))
-    AssetLibrarySource.videoUpload(.title("Photo Roll"), source: .init(demoSource: .videoUpload))
+    AssetLibrarySource.photoRoll(
+      .title("Photo Roll"),
+      source: .init(id: PhotoRollAssetSource.id, config: .init(groups: [PhotoRollMediaType.video.rawValue])),
+    )
   }
 
   @AssetLibraryBuilder var audio: AssetLibraryContent {
@@ -37,7 +40,10 @@ struct CustomAssetLibrary: AssetLibrary {
   @AssetLibraryBuilder var images: AssetLibraryContent {
     AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
     AssetLibrarySource.image(.title("Images"), source: .init(demoSource: .image))
-    AssetLibrarySource.imageUpload(.title("Photo Roll"), source: .init(demoSource: .imageUpload))
+    AssetLibrarySource.photoRoll(
+      .title("Photo Roll"),
+      source: .init(id: PhotoRollAssetSource.id, config: .init(groups: [PhotoRollMediaType.image.rawValue])),
+    )
   }
 
   let text = AssetLibrarySource.text(.title("Text"), source: .init(id: TextAssetSource.id))
@@ -65,7 +71,7 @@ struct CustomAssetLibrary: AssetLibrary {
   }
 
   @AssetLibraryBuilder func elements(_ sceneMode: SceneMode?) -> AssetLibraryContent {
-    AssetLibraryGroup.upload("Photo Roll") { uploads(sceneMode) }
+    photoRoll(sceneMode)
     if sceneMode == .video {
       AssetLibraryGroup.video("Videos") { videos }
       AssetLibraryGroup.audio("Audio") { audio }
@@ -85,9 +91,9 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-assetLibraryBuilder
 
   // highlight-assetLibraryView
-  @ViewBuilder var uploadsTab: some View {
+  @ViewBuilder var photoRollTab: some View {
     AssetLibrarySceneModeReader { sceneMode in
-      AssetLibraryTab("Photo Roll") { uploads(sceneMode) } label: { DefaultAssetLibrary.uploadsLabel($0) }
+      AssetLibraryTab("Photo Roll") { photoRoll(sceneMode) } label: { DefaultAssetLibrary.photoRollLabel($0) }
     }
   }
 
@@ -155,7 +161,7 @@ struct CustomAssetLibrary: AssetLibrary {
       AssetLibrarySceneModeReader { sceneMode in
         if sceneMode == .video {
           elementsTab
-          uploadsTab
+          photoRollTab
           videosTab
           audioTab
           AssetLibraryMoreTab {
