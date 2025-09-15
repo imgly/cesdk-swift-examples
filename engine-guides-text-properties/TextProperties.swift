@@ -137,6 +137,10 @@ func textProperties(engine: Engine) async throws {
   }
   // highlight-toggleItalic
 
+  // highlight-setTextFontWeight
+  try engine.block.setTextFontWeight(text, fontWeight: .bold)
+  // highlight-setTextFontWeight
+
   // highlight-getTextFontWeights
   let fontWeights = try engine.block.getTextFontWeights(text)
   // highlight-getTextFontWeights

@@ -30,6 +30,7 @@ struct CallbacksEditorSolution: View {
         try await engine.addDemoAssetSources(sceneMode: engine.scene.getMode(),
                                              withUploadAssetSources: true)
         try await engine.asset.addSource(TextAssetSource(engine: engine))
+        try engine.asset.addSource(PhotoRollAssetSource(engine: engine))
       }
       // highlight-onCreate
       // highlight-onExport
