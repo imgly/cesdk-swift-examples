@@ -1109,7 +1109,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_4E2EE946-EF70-4732-8224-E357371FE4CF" /* cesdk_swift_examples */ = {
+		"TEMP_1119EB0C-DAC9-48B6-B067-ECC7F876B86E" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				08A9EA956529EFCD7B5C6079 /* editor-guides-configuration-inspector-bar */,
@@ -1492,6 +1492,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "We use camera to capture custom images and videos for the edited scene.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use microphone to capture custom videos for the edited scene.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We use photo library to save exported files.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We use photo library to access images and videos for editing.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1553,7 +1554,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.59.2;
+				MARKETING_VERSION = 1.60.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1576,6 +1577,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "We use camera to capture custom images and videos for the edited scene.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use microphone to capture custom videos for the edited scene.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We use photo library to save exported files.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We use photo library to access images and videos for editing.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1643,7 +1645,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.59.2;
+				MARKETING_VERSION = 1.60.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1718,7 +1720,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.59.2;
+				version = "1.60.0-rc.3";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1726,7 +1728,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.59.2;
+				version = "1.60.0-rc.3";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
