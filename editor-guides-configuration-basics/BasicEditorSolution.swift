@@ -8,7 +8,7 @@ struct BasicEditorSolution: View {
     // highlight-userID
     userID: "<your unique user id>",
     // highlight-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.59.2/assets")!,
+    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.60.0/assets")!,
   )
 
   var editor: some View {

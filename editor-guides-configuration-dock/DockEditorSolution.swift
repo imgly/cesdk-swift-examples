@@ -13,7 +13,7 @@ struct DockEditorSolution: View {
       // highlight-dockItems
       .imgly.dockItems { context in
         Dock.Buttons.elementsLibrary()
-        Dock.Buttons.photoRoll()
+        Dock.Buttons.imglyPhotoRoll()
         Dock.Buttons.systemCamera()
         Dock.Buttons.imagesLibrary()
         Dock.Buttons.textLibrary()
@@ -43,11 +43,11 @@ struct DockEditorSolution: View {
         }
         // highlight-addLast
         // highlight-addAfter
-        items.addAfter(id: Dock.Buttons.ID.photoRoll) {
-          Dock.Button(id: "my.package.dock.button.afterPhotoRoll") { context in
-            print("After Photo Roll action")
+        items.addAfter(id: Dock.Buttons.ID.imglyPhotoRoll) {
+          Dock.Button(id: "my.package.dock.button.afterIMGLYPhotoRoll") { context in
+            print("After IMGLY Photo Roll action")
           } label: { context in
-            Label("After Photo Roll", systemImage: "arrow.forward.square")
+            Label("After IMGLY Photo Roll", systemImage: "arrow.forward.square")
           }
         }
         // highlight-addAfter
