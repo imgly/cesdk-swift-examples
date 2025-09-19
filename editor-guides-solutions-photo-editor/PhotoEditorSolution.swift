@@ -22,6 +22,7 @@ struct PhotoEditorSolution: View {
         try await engine.addDemoAssetSources(sceneMode: engine.scene.getMode(),
                                              withUploadAssetSources: true)
         try await engine.asset.addSource(TextAssetSource(engine: engine))
+        try engine.asset.addSource(PhotoRollAssetSource(engine: engine))
 
         let page = try engine.scene.getPages().first!
         // Define custom page (photo) size if needed

@@ -12,7 +12,7 @@ struct DefaultDockItemsEditorSolution: View {
       // highlight-designEditor-dockItems
       .imgly.dockItems { _ in
         Dock.Buttons.elementsLibrary()
-        Dock.Buttons.photoRoll()
+        Dock.Buttons.imglyPhotoRoll()
         Dock.Buttons.systemCamera()
         Dock.Buttons.imagesLibrary()
         Dock.Buttons.textLibrary()
@@ -43,7 +43,7 @@ struct DefaultDockItemsEditorSolution: View {
     VideoEditor(settings)
       // highlight-videoEditor-dockItems
       .imgly.dockItems { _ in
-        Dock.Buttons.photoRoll()
+        Dock.Buttons.imglyPhotoRoll()
         Dock.Buttons.imglyCamera()
         Dock.Buttons.overlaysLibrary()
         Dock.Buttons.textLibrary()
