@@ -9,7 +9,6 @@ struct InspectorBarItemEditorSolution: View {
 
   var editor: some View {
     DesignEditor(settings)
-      // highlight-inspectorBarItems
       .imgly.inspectorBarItems { context in
         // highlight-predefinedButton
         InspectorBar.Buttons.layer()
@@ -62,7 +61,6 @@ struct InspectorBarItemEditorSolution: View {
         // highlight-newCustomItem
         CustomInspectorBarItem()
       }
-    // highlight-inspectorBarItems
   }
 
   @State private var isPresented = false

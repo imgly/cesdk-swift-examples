@@ -24,7 +24,9 @@ struct NavigationBarEditorSolution: View {
       }
       // highlight-navigationBarItems
       // highlight-modifyNavigationBarItems
+      // highlight-modifyNavigationBarItemsSignature
       .imgly.modifyNavigationBarItems { context, items in
+        // highlight-modifyNavigationBarItemsSignature
         // highlight-addFirst
         items.addFirst(placement: .topBarTrailing) {
           NavigationBar.Button(id: "my.package.inspectorBar.button.first") { context in

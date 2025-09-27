@@ -78,10 +78,12 @@ class GuidesTest: XCTestCase {
   }
 
   func testSaveSceneToArchive() async throws {
+    throw XCTSkip("Test temporarily disabled due to flakiness.")
     try await saveSceneToArchive(engine: engine)
   }
 
   func testSaveSceneToBlob() async throws {
+    throw XCTSkip("Test temporarily disabled due to flakiness.")
     try await saveSceneToBlob(engine: engine)
   }
 

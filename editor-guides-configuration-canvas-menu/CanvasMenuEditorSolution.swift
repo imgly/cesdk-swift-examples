@@ -22,7 +22,9 @@ struct CanvasMenuEditorSolution: View {
       }
       // highlight-canvasMenuItems
       // highlight-modifyCanvasMenuItems
+      // highlight-modifyCanvasMenuItemsSignature
       .imgly.modifyCanvasMenuItems { context, items in
+        // highlight-modifyCanvasMenuItemsSignature
         // highlight-addFirst
         items.addFirst {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.first") { context in

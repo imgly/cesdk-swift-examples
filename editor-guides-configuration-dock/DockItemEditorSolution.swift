@@ -9,7 +9,6 @@ struct DockItemEditorSolution: View {
 
   var editor: some View {
     DesignEditor(settings)
-      // highlight-dockItems
       .imgly.dockItems { context in
         // highlight-predefinedButton
         Dock.Buttons.elementsLibrary()
@@ -58,7 +57,6 @@ struct DockItemEditorSolution: View {
         // highlight-newCustomItem
         CustomDockItem()
       }
-    // highlight-dockItems
   }
 
   @State private var isPresented = false
