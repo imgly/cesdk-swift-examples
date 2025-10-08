@@ -21,6 +21,12 @@ struct Showcases: View {
         title: "Custom Photo Editor",
         subtitle: "Custom format and photo selection.",
       ).showcaseMode(.navigationLink)
+      ModalPhotoPicker(
+        title: "Background Removal Photo Editor",
+        subtitle: "AI-powered background removal using Apple Vision framework.",
+      ) { url in
+        BackgroundRemovalEditorSolution(url: url)
+      }
     }
     Section(title: "Design Editor",
             subtitle: "Built to edit various designs.") {

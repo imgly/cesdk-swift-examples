@@ -23,7 +23,9 @@ struct DockEditorSolution: View {
       }
       // highlight-dockItems
       // highlight-modifyDockItems
+      // highlight-modifyDockItemsSignature
       .imgly.modifyDockItems { context, items in
+        // highlight-modifyDockItemsSignature
         // highlight-addFirst
         items.addFirst {
           Dock.Button(id: "my.package.dock.button.first") { context in

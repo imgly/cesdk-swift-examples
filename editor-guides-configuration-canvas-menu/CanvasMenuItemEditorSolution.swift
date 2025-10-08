@@ -9,7 +9,6 @@ struct CanvasMenuItemEditorSolution: View {
 
   var editor: some View {
     DesignEditor(settings)
-      // highlight-canvasMenuItems
       .imgly.canvasMenuItems { context in
         // highlight-predefinedButton
         CanvasMenu.Buttons.duplicate()
@@ -62,7 +61,6 @@ struct CanvasMenuItemEditorSolution: View {
         // highlight-newCustomItem
         CustomCanvasMenuItem()
       }
-    // highlight-canvasMenuItems
   }
 
   @State private var isPresented = false

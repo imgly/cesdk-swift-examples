@@ -9,7 +9,6 @@ struct NavigationBarItemEditorSolution: View {
 
   var editor: some View {
     DesignEditor(settings)
-      // highlight-navigationBarItems
       .imgly.navigationBarItems { context in
         NavigationBar.ItemGroup(placement: .topBarLeading) {
           // highlight-predefinedButton
@@ -72,7 +71,6 @@ struct NavigationBarItemEditorSolution: View {
           CustomNavigationBarItem()
         }
       }
-    // highlight-navigationBarItems
   }
 
   @State private var isPresented = false

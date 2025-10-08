@@ -37,7 +37,9 @@ struct InspectorBarEditorSolution: View {
       }
       // highlight-inspectorBarItems
       // highlight-modifyInspectorBarItems
+      // highlight-modifyInspectorBarItemsSignature
       .imgly.modifyInspectorBarItems { context, items in
+        // highlight-modifyInspectorBarItemsSignature
         // highlight-addFirst
         items.addFirst {
           InspectorBar.Button(id: "my.package.inspectorBar.button.first") { context in
