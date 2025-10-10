@@ -7,15 +7,15 @@ struct DefaultAssetLibraryEditorSolution: View {
 
   @MainActor
   var editor: some View {
-    // highlight-editor
+    // highlight-editor-default
     DesignEditor(settings)
-      // highlight-assetSource
+      // highlight-assetSource-default
       .imgly.onCreate { engine in
         try await OnCreate.loadScene(from: DesignEditor.defaultScene)(engine)
         try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
       }
-      // highlight-assetSource
-      // highlight-assetLibrary
+      // highlight-assetSource-default
+      // highlight-assetLibrary-default
       .imgly.assetLibrary {
         // highlight-defaultAssetLibrary
         DefaultAssetLibrary(
@@ -31,7 +31,7 @@ struct DefaultAssetLibraryEditorSolution: View {
         }
         // highlight-defaultAssetLibraryImages
       }
-    // highlight-assetLibrary
+    // highlight-assetLibrary-default
   }
 
   @State private var isPresented = false

@@ -7,14 +7,14 @@ func saveSceneToArchive(engine: Engine) async throws {
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: sceneUrl)
 
-  // highlight-save
+  // highlight-saveToArchive
   let blob = try await engine.scene.saveToArchive()
-  // highlight-save
+  // highlight-saveToArchive
 
-  // highlight-create-form-data
+  // highlight-create-form-data-archive
   var request = URLRequest(url: .init(string: "https://example.com/upload/")!)
   request.httpMethod = "POST"
 
   let (data, response) = try await URLSession.shared.upload(for: request, from: blob)
-  // highlight-create-form-data
+  // highlight-create-form-data-archive
 }
