@@ -135,6 +135,7 @@
 		A607D7CD52E40939F82839C5 /* CustomVideoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F8A4E46281F89060751E0F /* CustomVideoEditor.swift */; };
 		A7E112C1029FF7CF3EC32A70 /* SceneSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBF363BE528CED8BA335F /* SceneSelection.swift */; };
 		A987DB04F702CB5030AFB9B1 /* bonjour_paris.scene in Resources */ = {isa = PBXBuildFile; fileRef = EB49ADE1FAC03E5887A4AB6A /* bonjour_paris.scene */; };
+		A9D7F449911ABD998B2016DF /* SaveSceneToStringWithPersistenceCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D20C109AC3771330A19668 /* SaveSceneToStringWithPersistenceCallback.swift */; };
 		AEDFFDD62AF3D7A93CCE75CB /* instagram_post.png in Resources */ = {isa = PBXBuildFile; fileRef = DF52D152645595023302F1F1 /* instagram_post.png */; };
 		B0575B8CFA162B68D69E51ED /* business_card.scene in Resources */ = {isa = PBXBuildFile; fileRef = 4E14B462A868AA0B8A0903B7 /* business_card.scene */; };
 		B065040736C6A6384C909275 /* instagram_post.scene in Resources */ = {isa = PBXBuildFile; fileRef = A06B98B0CFD80A8574FF29E7 /* instagram_post.scene */; };
@@ -221,6 +222,7 @@
 		1D11022620E1D80771DB7294 /* template_07_business_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_07_business_card.png; sourceTree = "<group>"; };
 		1E3E050337C2C296EDD80057 /* DefaultNavigationBarItemsEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationBarItemsEditorSolution.swift; sourceTree = "<group>"; };
 		205A9FC4829797611675B237 /* template_06_booklet.scene */ = {isa = PBXFileReference; path = template_06_booklet.scene; sourceTree = "<group>"; };
+		21D20C109AC3771330A19668 /* SaveSceneToStringWithPersistenceCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSceneToStringWithPersistenceCallback.swift; sourceTree = "<group>"; };
 		221ED8525D2160DA189E8C4B /* template_04_x_profile_picture_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_04_x_profile_picture_1_1.png; sourceTree = "<group>"; };
 		25B99DB4DB90FE0AF73305CF /* bonjour_paris_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bonjour_paris_grid.png; sourceTree = "<group>"; };
 		25F7662CE0EF6411093A03CE /* apparel-ui-b-empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apparel-ui-b-empty.png"; sourceTree = "<group>"; };
@@ -501,6 +503,14 @@
 			path = "editor-guides-configuration-theming";
 			sourceTree = "<group>";
 		};
+		313CEBADB00BB934CDCC0E1B /* engine-guides-save-scene-to-string-with-persistence-callback */ = {
+			isa = PBXGroup;
+			children = (
+				21D20C109AC3771330A19668 /* SaveSceneToStringWithPersistenceCallback.swift */,
+			);
+			path = "engine-guides-save-scene-to-string-with-persistence-callback";
+			sourceTree = "<group>";
+		};
 		315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */ = {
 			isa = PBXGroup;
 			children = (
@@ -692,6 +702,7 @@
 				9280B544468AEE47D6AA05CC /* engine-guides-save-scene-to-archive */,
 				F419E08B896C5BECF27A7AB5 /* engine-guides-save-scene-to-blob */,
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
+				313CEBADB00BB934CDCC0E1B /* engine-guides-save-scene-to-string-with-persistence-callback */,
 				6CFFDCF44F860519A1D16C7B /* engine-guides-scopes */,
 				4AE936A81A20FC503F7ADB7E /* engine-guides-source-sets */,
 				9C85370DE7F0B283E00BDF80 /* engine-guides-spot-colors */,
@@ -1140,7 +1151,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_92BAB668-B869-4515-BB16-1D4AAD321258" /* cesdk_swift_examples */ = {
+		"TEMP_1FB4F2F3-0641-49CE-AC06-CA0C3AC1D58B" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				08A9EA956529EFCD7B5C6079 /* editor-guides-configuration-inspector-bar */,
@@ -1183,6 +1194,7 @@
 				7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */,
 				BFD8A14F30509AA48AEA2E5D /* engine-guides-load-scene-from-remote */,
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
+				313CEBADB00BB934CDCC0E1B /* engine-guides-save-scene-to-string-with-persistence-callback */,
 				2A834EF281CBC9CFA99911C5 /* engine-guides-text-properties */,
 				49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */,
 				42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */,
@@ -1412,6 +1424,7 @@
 				80E634307153C1FB04136FE1 /* SaveSceneToArchive.swift in Sources */,
 				F5F1DB4AFBBA1A2C614F4D62 /* SaveSceneToBlob.swift in Sources */,
 				93A281249972085593F51AF1 /* SaveSceneToString.swift in Sources */,
+				A9D7F449911ABD998B2016DF /* SaveSceneToStringWithPersistenceCallback.swift in Sources */,
 				4EFE8B61E7178C9CBB4D4EBE /* Scopes.swift in Sources */,
 				0EB2ADA6053426040B00FCEE /* Secrets.swift in Sources */,
 				D9B2566F60CB7CEDB6D748DD /* SourceSets.swift in Sources */,
@@ -1592,7 +1605,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.61.0;
+				MARKETING_VERSION = 1.62.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1683,7 +1696,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.61.0;
+				MARKETING_VERSION = 1.62.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1758,7 +1771,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.61.0;
+				version = "1.62.0-rc.1";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1766,7 +1779,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.61.0;
+				version = "1.62.0-rc.1";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
