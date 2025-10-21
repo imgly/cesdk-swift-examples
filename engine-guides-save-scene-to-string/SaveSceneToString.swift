@@ -7,11 +7,11 @@ func saveSceneToString(engine: Engine) async throws {
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: sceneUrl)
 
-  // highlight-save
+  // highlight-saveToString
   let sceneAsString = try await engine.scene.saveToString()
-  // highlight-save
+  // highlight-saveToString
 
-  // highlight-result
+  // highlight-result-string
   print(sceneAsString)
-  // highlight-result
+  // highlight-result-string
 }

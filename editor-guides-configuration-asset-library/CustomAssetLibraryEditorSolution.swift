@@ -7,19 +7,19 @@ struct CustomAssetLibraryEditorSolution: View {
 
   @MainActor
   var editor: some View {
-    // highlight-editor
+    // highlight-editor-custom
     DesignEditor(settings)
-      // highlight-assetSource
+      // highlight-assetSource-custom
       .imgly.onCreate { engine in
         try await OnCreate.loadScene(from: DesignEditor.defaultScene)(engine)
         try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
       }
-      // highlight-assetSource
-      // highlight-assetLibrary
+      // highlight-assetSource-custom
+      // highlight-assetLibrary-custom
       .imgly.assetLibrary {
         CustomAssetLibrary()
       }
-    // highlight-assetLibrary
+    // highlight-assetLibrary-custom
   }
 
   @State private var isPresented = false

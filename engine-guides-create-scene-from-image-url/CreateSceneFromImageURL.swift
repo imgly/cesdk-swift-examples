@@ -3,17 +3,17 @@ import IMGLYEngine
 
 @MainActor
 func createSceneFromImageURL(engine: Engine) async throws {
-  // highlight-createFromImage
+  // highlight-createFromImage-url
   let scene = try await engine.scene.create(fromImage: URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!)
-  // highlight-createFromImage
+  // highlight-createFromImage-url
 
-  // highlight-findByType
+  // highlight-findByType-url
   // Get the fill from the page and verify it's an image fill
   let page = try engine.block.find(byType: .page).first!
-  // highlight-findByType
+  // highlight-findByType-url
 
-  // highlight-check-fill
+  // highlight-check-fill-url
   let pageFill = try engine.block.getFill(page)
   let imageFillType = try engine.block.getType(pageFill)
-  // highlight-check-fill
+  // highlight-check-fill-url
 }
