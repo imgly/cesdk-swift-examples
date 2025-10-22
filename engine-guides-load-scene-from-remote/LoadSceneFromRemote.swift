@@ -8,12 +8,12 @@ func loadSceneFromRemote(engine: Engine) async throws {
     URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
   // highlight-url
 
-  // highlight-load
+  // highlight-load-remote
   let scene = try await engine.scene.load(from: sceneUrl)
-  // highlight-load
+  // highlight-load-remote
 
-  // highlight-set-text-dropshadow
+  // highlight-modify-text-remote
   let text = try engine.block.find(byType: .text).first!
   try engine.block.setDropShadowEnabled(text, enabled: true)
-  // highlight-set-text-dropshadow
+  // highlight-modify-text-remote
 }

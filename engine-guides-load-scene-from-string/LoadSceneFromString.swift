@@ -14,8 +14,8 @@ func loadSceneFromString(engine: Engine) async throws {
   let scene = try await engine.scene.load(from: blobString)
   // highlight-load-string
 
-  // highlight-set-text-dropshadow
+  // highlight-modify-text-string
   let text = try engine.block.find(byType: .text).first!
   try engine.block.setDropShadowEnabled(text, enabled: true)
-  // highlight-set-text-dropshadow
+  // highlight-modify-text-string
 }
