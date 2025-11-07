@@ -105,6 +105,7 @@
 		8129DFD88D3F03585F117953 /* CustomLUTFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391332CA0ABE4EC3E9163A54 /* CustomLUTFilter.swift */; };
 		8310993C21BACC09255EEE19 /* merry_christmas.png in Resources */ = {isa = PBXBuildFile; fileRef = D81EA76227F9AD0775A31F88 /* merry_christmas.png */; };
 		83C771567FCB6AED2861C896 /* template_06_booklet.scene in Resources */ = {isa = PBXBuildFile; fileRef = 205A9FC4829797611675B237 /* template_06_booklet.scene */; };
+		84EAFAC9877664C55A4F3E6B /* ControlAudioVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A904A479AC926A3B47633D2 /* ControlAudioVideo.swift */; };
 		8510B5A1DA09568CA020C2A8 /* apparel-ui-b-4.scene in Resources */ = {isa = PBXBuildFile; fileRef = CA8AA3D69152DB977C63774C /* apparel-ui-b-4.scene */; };
 		8602CC61119E54AE5BEEE995 /* template_06_booklet.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C4084D26FA2485186FC677 /* template_06_booklet.png */; };
 		86D641364C579BF95F8362F2 /* 3_2_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E99ACD3AE657A585DB3D05 /* 3_2_dark.png */; };
@@ -217,6 +218,7 @@
 		1700C9C025F822A2743460EF /* x_header_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_header_dark.png; sourceTree = "<group>"; };
 		179E61754D943FAD64E622B4 /* BoolOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolOps.swift; sourceTree = "<group>"; };
 		19841440FC61147F6BB774A7 /* original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = original.png; sourceTree = "<group>"; };
+		1A904A479AC926A3B47633D2 /* ControlAudioVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAudioVideo.swift; sourceTree = "<group>"; };
 		1CE4F79C92924A19EAE62A40 /* template_01_ig_post_1_1.scene */ = {isa = PBXFileReference; path = template_01_ig_post_1_1.scene; sourceTree = "<group>"; };
 		1D0A3D8A40C054015BAA661D /* DefaultAssetLibraryEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAssetLibraryEditorSolution.swift; sourceTree = "<group>"; };
 		1D11022620E1D80771DB7294 /* template_07_business_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_07_business_card.png; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 				42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */,
 				2E31FB02D55348D4480BEF78 /* engine-guides-captions */,
 				740609F297ADAEF236FFD009 /* engine-guides-colors */,
+				C281AAC0A61C97BADB1FE21B /* engine-guides-control-av */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
 				35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */,
 				BF0890538DFBAAAB3FBA7AE4 /* engine-guides-create-scene-from-scratch */,
@@ -999,6 +1002,14 @@
 			path = "showcases-app";
 			sourceTree = "<group>";
 		};
+		C281AAC0A61C97BADB1FE21B /* engine-guides-control-av */ = {
+			isa = PBXGroup;
+			children = (
+				1A904A479AC926A3B47633D2 /* ControlAudioVideo.swift */,
+			);
+			path = "engine-guides-control-av";
+			sourceTree = "<group>";
+		};
 		C898050CE0BDFBFA540C9858 /* editor-guides-background-removal */ = {
 			isa = PBXGroup;
 			children = (
@@ -1151,7 +1162,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_CDFF9254-3F20-4D8E-AC56-20D6F403CC8D" /* cesdk_swift_examples */ = {
+		"TEMP_862FB4DA-9891-4BA4-8F7B-39D5A0260D5D" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				08A9EA956529EFCD7B5C6079 /* editor-guides-configuration-inspector-bar */,
@@ -1177,6 +1188,7 @@
 				89BF54267B7EF64C5045D439 /* camera-guides-quickstart */,
 				A0C4043ABE1CF27525EDEF03 /* editor-guides-solutions-apparel-editor */,
 				9DFA8FADF930A0DC0A907B11 /* engine-guides-save-scene-to-string */,
+				C281AAC0A61C97BADB1FE21B /* engine-guides-control-av */,
 				89099302570717EF31A2EFD1 /* engine-guides-bool-ops */,
 				2E31FB02D55348D4480BEF78 /* engine-guides-captions */,
 				C9BA78F599FEFE105B667FDD /* integrate-with-uikit */,
@@ -1405,6 +1417,7 @@
 				9F3DA872BA8853FF31311F89 /* Camera.swift in Sources */,
 				FAC54767E98A84300FA5462A /* Captions.swift in Sources */,
 				391A417B9631E8D7F01567FD /* Colors.swift in Sources */,
+				84EAFAC9877664C55A4F3E6B /* ControlAudioVideo.swift in Sources */,
 				2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */,
 				5718C57B9AA61ECD7CBDAFC2 /* CreateSceneFromImageURL.swift in Sources */,
 				B3516693EC558A338D214901 /* CreateSceneFromScratch.swift in Sources */,
@@ -1605,7 +1618,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.62.0;
+				MARKETING_VERSION = 1.63.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1696,7 +1709,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.62.0;
+				MARKETING_VERSION = 1.63.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1771,7 +1784,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.62.0;
+				version = 1.63.0;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1779,7 +1792,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.62.0;
+				version = 1.63.0;
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
