@@ -8,7 +8,7 @@ class CameraUIKit: UIViewController {
   // highlight-ui-hosting-controller
   private lazy var camera = UIHostingController(rootView:
     // highlight-initialization
-    Camera(.init(license: secrets.licenseKey,
+    Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                  userID: "<your unique user id>")) { result in
       // highlight-initialization
       // highlight-result

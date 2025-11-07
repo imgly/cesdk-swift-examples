@@ -112,6 +112,7 @@ struct Showcases: View {
       Group {
         Showcase(view: BasicEditorSolution(), title: "Configuration: Basics")
         Showcase(view: CallbacksEditorSolution(), title: "Configuration: Callbacks")
+        Showcase(view: ForceCropSolution(), title: "Configuration: Force Crop")
         Showcase(view: ThemingEditorSolution(), title: "Configuration: Theming")
         Showcase(view: ColorPaletteEditorSolution(), title: "Configuration: Color Palette")
         Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")

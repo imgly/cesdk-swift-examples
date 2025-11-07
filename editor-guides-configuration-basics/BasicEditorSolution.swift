@@ -4,11 +4,11 @@ import SwiftUI
 struct BasicEditorSolution: View {
   let settings = EngineSettings(
     // highlight-license
-    license: secrets.licenseKey,
+    license: secrets.licenseKey, // pass nil for evaluation mode with watermark
     // highlight-userID
     userID: "<your unique user id>",
     // highlight-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.62.1/assets")!,
+    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.64.0-rc.0/assets")!,
   )
 
   var editor: some View {

@@ -15,7 +15,7 @@ private enum CallbackError: Error {
 }
 
 struct CallbacksEditorSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   var editor: some View {
@@ -132,7 +132,13 @@ struct CallbacksEditorSolution: View {
       .imgly.onError { error, eventHandler in
         eventHandler.send(.showErrorAlert(error))
       }
-    // highlight-onError
+      // highlight-onError
+      // highlight-onLoaded
+      .imgly.onLoaded { context in
+        // Example: Open the elements library sheet after the editor loaded as `Dock.Buttons.elementsLibrary()` would do.
+        context.eventHandler.send(.openSheet(type: .libraryAdd { context.assetLibrary.elementsTab }))
+      }
+    // highlight-onLoaded
   }
 
   @State private var isPresented = false

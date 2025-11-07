@@ -7,7 +7,7 @@ import SwiftUI
 
 struct PhotoEditorSolution: View {
   // highlight-editor
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   var editor: some View {
