@@ -37,7 +37,9 @@ struct CustomAssetLibrary: AssetLibrary {
     AssetLibrarySource.photoRoll(.title("Photo Roll"), media: [.image])
   }
 
-  @AssetLibraryBuilder var text: AssetLibraryContent {
+  let text = AssetLibrarySource.text(.title("Text"), source: .init(id: TextAssetSource.id))
+
+  @AssetLibraryBuilder public var textAndTextComponents: AssetLibraryContent {
     AssetLibrarySource.text(.title("Plain Text"), source: .init(id: TextAssetSource.id))
     AssetLibrarySource.textComponent(.title("Font Combinations"), source: .init(demoSource: .textComponents))
   }
@@ -66,8 +68,12 @@ struct CustomAssetLibrary: AssetLibrary {
       AssetLibraryGroup.audio("Audio") { audio }
     }
     AssetLibraryGroup.image("Images") { images }
-    AssetLibraryGroup.text("Text", excludedPreviewSources: [Engine.DemoAssetSource.textComponents.rawValue]) {
+    if sceneMode == .video {
       text
+    } else {
+      AssetLibraryGroup.text("Text", excludedPreviewSources: [Engine.DemoAssetSource.textComponents.rawValue]) {
+        textAndTextComponents
+      }
     }
     AssetLibraryGroup.shape("Shapes") { shapes }
     AssetLibraryGroup.sticker("Stickers") { stickers }
@@ -102,7 +108,13 @@ struct CustomAssetLibrary: AssetLibrary {
   }
 
   @ViewBuilder var textTab: some View {
-    AssetLibraryTab("Text") { text } label: { DefaultAssetLibrary.textLabel($0) }
+    AssetLibrarySceneModeReader { sceneMode in
+      if sceneMode == .video {
+        AssetLibraryTabView("Text") { text.content } label: { DefaultAssetLibrary.textLabel($0) }
+      } else {
+        AssetLibraryTab("Text") { textAndTextComponents } label: { DefaultAssetLibrary.textLabel($0) }
+      }
+    }
   }
 
   @ViewBuilder var shapesTab: some View {
