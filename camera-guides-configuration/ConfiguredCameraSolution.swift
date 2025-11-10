@@ -4,7 +4,7 @@ import SwiftUI
 struct ConfiguredCameraSolution: View {
   // highlight-editor
   // highlight-license
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 // highlight-userID
                                 userID: "<your unique user id>")
   // highlight-editor

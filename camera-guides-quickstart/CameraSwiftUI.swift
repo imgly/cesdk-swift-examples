@@ -18,7 +18,7 @@ struct CameraSwiftUI: View {
     .fullScreenCover(isPresented: $isPresented) {
       // highlight-fullscreencover
       // highlight-initialization
-      Camera(.init(license: secrets.licenseKey,
+      Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                    userID: "<your unique user id>")) { result in
         // highlight-initialization
         // highlight-result

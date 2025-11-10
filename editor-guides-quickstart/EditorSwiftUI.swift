@@ -16,7 +16,7 @@ struct EditorSwiftUI: View {
       // highlight-environment
       ModalEditor {
         // highlight-editor
-        DesignEditor(.init(license: secrets.licenseKey,
+        DesignEditor(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                            userID: "<your unique user id>"))
         // highlight-editor
       }

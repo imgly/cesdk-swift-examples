@@ -18,7 +18,8 @@ struct IntegrateWithSwiftUI: View {
     }
     .onAppear {
       Task {
-        engine = try await Engine(license: secrets.licenseKey, userID: "<your unique user id>")
+        engine = try await Engine(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+                                  userID: "<your unique user id>")
       }
     }
     // highlight-setup

@@ -2,7 +2,7 @@ import IMGLYCamera
 import SwiftUI
 
 struct RecordingsCameraSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   @State private var isPresented = false

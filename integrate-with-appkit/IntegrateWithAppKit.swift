@@ -75,7 +75,7 @@
         // highlight-license
         engine = try await Engine(
           context: .metalView(view: canvas),
-          license: secrets.licenseKey,
+          license: secrets.licenseKey, // pass nil for evaluation mode with watermark
           userID: "<your unique user id>",
         )
         // highlight-license
