@@ -38,7 +38,7 @@ func customLutFilter(engine: Engine) async throws {
     lutFilter,
     property: "effect/lut_filter/lutFileURI",
     // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/packages/imgly/cesdk-js/1.62.1/assets/extensions/ly.img.cesdk.filters.lut/LUTs/imgly_lut_ad1920_5_5_128.png",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-js/1.63.1/assets/extensions/ly.img.cesdk.filters.lut/LUTs/imgly_lut_ad1920_5_5_128.png",
   )
   try engine.block.setInt(lutFilter, property: "effect/lut_filter/verticalTileCount", value: 5)
   try engine.block.setInt(lutFilter, property: "effect/lut_filter/horizontalTileCount", value: 5)
