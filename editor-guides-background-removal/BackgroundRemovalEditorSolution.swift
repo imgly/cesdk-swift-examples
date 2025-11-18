@@ -9,7 +9,7 @@ import SwiftUI
 /// - Add custom functionality (background removal) to the editor toolbar
 /// - Handle background removal processing and apply the result back to the PhotoEditor
 struct BackgroundRemovalEditorSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   // MARK: - Properties

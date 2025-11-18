@@ -1,7 +1,8 @@
 import IMGLYEditor
 import SwiftUI
 
-let settings = EngineSettings(license: secrets.licenseKey, userID: "showcases-app-user")
+let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+                              userID: "showcases-app-user")
 
 extension View {
   @MainActor
