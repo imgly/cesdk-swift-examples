@@ -6,7 +6,7 @@ import IMGLYVideoEditor
 import SwiftUI
 
 struct DefaultNavigationBarItemsEditorSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey,
+  let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   var designEditor: some View {
