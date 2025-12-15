@@ -11,35 +11,36 @@ struct ForceCropSolution: View {
       // highlight-onLoaded
       .imgly.onLoaded { context in
         let pages = try context.engine.scene.getPages()
-        guard let page = pages.first else { return }
+        if let page = pages.first {
+          // highlight-preset
+          // Create a custom 1:1 aspect ratio preset
+          let preset = AssetDefinition(
+            id: "custom-preset-1-1",
+            payload: .init(
+              transformPreset: .fixedAspectRatio(width: 1, height: 1),
+            ),
+            label: ["en": "Square"],
+          )
+          // highlight-preset
 
-        // highlight-preset
-        // Create a custom 1:1 aspect ratio preset
-        let preset = AssetDefinition(
-          id: "custom-preset-1-1",
-          payload: .init(
-            transformPreset: .fixedAspectRatio(width: 1, height: 1),
-          ),
-          label: ["en": "Square"],
-        )
-        // highlight-preset
+          // highlight-source
+          // Isolate the forced preset in the source
+          let sourceID = Engine.DefaultAssetSource.pagePresets.rawValue
+          try context.engine.asset.removeSource(sourceID: sourceID)
+          try context.engine.asset.addLocalSource(sourceID: sourceID)
+          try context.engine.asset.addAsset(to: sourceID, asset: preset)
+          // highlight-source
 
-        // highlight-source
-        // Isolate the forced preset in the source
-        let sourceID = Engine.DefaultAssetSource.pagePresets.rawValue
-        try context.engine.asset.removeSource(sourceID: sourceID)
-        try context.engine.asset.addLocalSource(sourceID: sourceID)
-        try context.engine.asset.addAsset(to: sourceID, asset: preset)
-        // highlight-source
-
-        // highlight-apply
-        // Apply force crop
-        context.eventHandler.send(.applyForceCrop(
-          to: page,
-          with: [ForceCropPreset(sourceID: sourceID, presetID: preset.id)],
-          mode: .always,
-        ))
-        // highlight-apply
+          // highlight-apply
+          // Apply force crop
+          context.eventHandler.send(.applyForceCrop(
+            to: page,
+            with: [ForceCropPreset(sourceID: sourceID, presetID: preset.id)],
+            mode: .always,
+          ))
+          // highlight-apply
+        }
+        try await OnLoaded.photoEditorDefault(context)
       }
     // highlight-onLoaded
   }
