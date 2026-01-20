@@ -65,7 +65,7 @@ struct BackgroundRemovalEditorSolution: View {
         }
       },
       label: { _ in
-        Label("Remove BG", systemImage: "person.crop.circle.fill.badge.minus")
+        Label("BG Removal", systemImage: "person.crop.circle.fill.badge.minus")
       },
     )
   }
@@ -114,7 +114,7 @@ struct BackgroundRemovalEditorSolution: View {
       // highlight-process-image
       // Step 3: Apply background removal
       // In this case we are using apple vision
-      guard let processedImage = await BackgroundRemover.removeBackground(from: originalImage) else {
+      guard let processedImage = await BackgroundRemover.removeBackground(from: originalImage.fixOrientation()) else {
         try engine.block.setState(imageFill, state: .ready)
         throw BackgroundRemovalError.backgroundRemovalFailed
       }
@@ -130,6 +130,9 @@ struct BackgroundRemovalEditorSolution: View {
         property: "fill/image/sourceSet",
         uri: processedImageURL,
       )
+
+      // Step 6: Add undo step so users can revert to the original image
+      try engine.editor.addUndoStep()
 
       // Set block into ready state again
       try engine.block.setState(imageFill, state: .ready)

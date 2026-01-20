@@ -1,18 +1,18 @@
+import IMGLYEditor
 import IMGLYEngine
 import IMGLYPhotoEditor
 import SwiftUI
-@_spi(Internal) import IMGLYEditor
 
 struct ForceCropSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey)
 
   var editor: some View {
     PhotoEditor(settings)
-      // highlight-onLoaded
+      // highlight-forceCrop-onLoaded
       .imgly.onLoaded { context in
         let pages = try context.engine.scene.getPages()
         if let page = pages.first {
-          // highlight-preset
+          // highlight-forceCrop-preset
           // Create a custom 1:1 aspect ratio preset
           let preset = AssetDefinition(
             id: "custom-preset-1-1",
@@ -21,28 +21,28 @@ struct ForceCropSolution: View {
             ),
             label: ["en": "Square"],
           )
-          // highlight-preset
+          // highlight-forceCrop-preset
 
-          // highlight-source
+          // highlight-forceCrop-source
           // Isolate the forced preset in the source
           let sourceID = Engine.DefaultAssetSource.pagePresets.rawValue
           try context.engine.asset.removeSource(sourceID: sourceID)
           try context.engine.asset.addLocalSource(sourceID: sourceID)
           try context.engine.asset.addAsset(to: sourceID, asset: preset)
-          // highlight-source
+          // highlight-forceCrop-source
 
-          // highlight-apply
+          // highlight-forceCrop-apply
           // Apply force crop
           context.eventHandler.send(.applyForceCrop(
             to: page,
             with: [ForceCropPreset(sourceID: sourceID, presetID: preset.id)],
             mode: .always,
           ))
-          // highlight-apply
+          // highlight-forceCrop-apply
         }
         try await OnLoaded.photoEditorDefault(context)
       }
-    // highlight-onLoaded
+    // highlight-forceCrop-onLoaded
   }
 
   @State private var isPresented = false

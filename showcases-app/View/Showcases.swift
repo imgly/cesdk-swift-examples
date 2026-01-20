@@ -61,7 +61,7 @@ struct Showcases: View {
           .vertical,
           video: URL(
             // swiftlint:disable:next line_length
-            string: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+            string: "https://cdn.img.ly/assets/demo/v3/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
           )!,
         ),
       )
@@ -122,11 +122,15 @@ struct Showcases: View {
         Showcase(view: NavigationBarItemEditorSolution(), title: "Configuration: Navigation Bar Item")
         Showcase(view: DockEditorSolution(), title: "Configuration: Dock")
         Showcase(view: DefaultDockItemsEditorSolution(), title: "Configuration: Default Dock Items")
+        Showcase(view: CustomPanelSolution(), title: "Configuration: Custom Panel")
         Showcase(view: DockItemEditorSolution(), title: "Configuration: Dock Item")
         Showcase(view: InspectorBarEditorSolution(), title: "Configuration: Inspector Bar")
         Showcase(view: InspectorBarItemEditorSolution(), title: "Configuration: Inspector Bar Item")
         Showcase(view: CanvasMenuEditorSolution(), title: "Configuration: Canvas Menu")
         Showcase(view: CanvasMenuItemEditorSolution(), title: "Configuration: Canvas Menu Item")
+        Showcase(view: AddButtonEditorSolution(), title: "UI Extensions: Add a New Button")
+        Showcase(view: HideElementsEditorSolution(), title: "Customization: Hide Elements")
+        Showcase(view: RearrangeButtonsEditorSolution(), title: "Customization: Rearrange Buttons")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
