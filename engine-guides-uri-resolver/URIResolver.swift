@@ -4,7 +4,7 @@ import IMGLYEngine
 @MainActor
 func uriResolver(engine: Engine) async throws {
   // highlight-get-absolute-base-path
-  // This will return "https://cdn.img.ly/packages/imgly/cesdk-js/1.66.1/assets/banana.jpg"
+  // This will return "https://cdn.img.ly/packages/imgly/cesdk-js/1.67.0/assets/banana.jpg"
   try engine.editor.getAbsoluteURI(relativePath: "/banana.jpg")
   // highlight-get-absolute-base-path
 
@@ -36,7 +36,7 @@ func uriResolver(engine: Engine) async throws {
   try engine.editor.setURIResolver(nil)
 
   // Since we"ve removed the custom resolver, this will return
-  // "https://cdn.img.ly/packages/imgly/cesdk-js/1.66.1/assets/banana.jpg" like before.
+  // "https://cdn.img.ly/packages/imgly/cesdk-js/1.67.0/assets/banana.jpg" like before.
   try engine.editor.getAbsoluteURI(relativePath: "/banana.jpg")
   // highlight-remove-resolver
 }

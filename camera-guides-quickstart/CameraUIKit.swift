@@ -5,35 +5,38 @@ import IMGLYCamera
 import SwiftUI
 
 class CameraUIKit: UIViewController {
-  // highlight-ui-hosting-controller
-  private lazy var camera = UIHostingController(rootView:
-    // highlight-initialization
-    Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
-                 userID: "<your unique user id>")) { result in
+  private var camera: UIViewController {
+    // highlight-ui-hosting-controller
+    UIHostingController(rootView:
       // highlight-initialization
-      // highlight-result
-      switch result {
-      case let .success(.recording(recordings)):
-        let urls = recordings.flatMap { $0.videos.map(\.url) }
-        let recordedVideos = urls
-        // Do something with the recorded videos
-        print(recordedVideos)
+      Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+                   userID: "<your unique user id>")) { result in
+        // highlight-initialization
+        // highlight-result
+        switch result {
+        case let .success(.recording(recordings)):
+          let urls = recordings.flatMap { $0.videos.map(\.url) }
+          let recordedVideos = urls
+          // Do something with the recorded videos
+          print(recordedVideos)
 
-      case .success(.reaction):
-        print("Reaction case not handled here")
+        case .success(.reaction):
+          print("Reaction case not handled here")
 
-      case let .failure(error):
-        print(error.localizedDescription)
-        self.presentedViewController?.dismiss(animated: true)
-      }
-      // highlight-result
-    })
-  // highlight-ui-hosting-controller
+        case let .failure(error):
+          print(error.localizedDescription)
+          self.presentedViewController?.dismiss(animated: true)
+        }
+        // highlight-result
+      })
+    // highlight-ui-hosting-controller
+  }
 
   // highlight-modal
   private lazy var button = UIButton(
     type: .system,
     primaryAction: UIAction(title: "Use the Camera") { [unowned self] _ in
+      let camera = camera
       camera.modalPresentationStyle = .fullScreen
       present(camera, animated: true)
     },

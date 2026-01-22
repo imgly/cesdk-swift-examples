@@ -10,7 +10,7 @@ struct CanvasMenuEditorSolution: View {
   var editor: some View {
     // highlight-editor
     DesignEditor(settings)
-      // highlight-canvasMenuItems
+      // highlight-canvasMenu-canvasMenuItems
       .imgly.canvasMenuItems { context in
         CanvasMenu.Buttons.selectGroup()
         CanvasMenu.Divider()
@@ -20,12 +20,12 @@ struct CanvasMenuEditorSolution: View {
         CanvasMenu.Buttons.duplicate()
         CanvasMenu.Buttons.delete()
       }
-      // highlight-canvasMenuItems
-      // highlight-modifyCanvasMenuItems
-      // highlight-modifyCanvasMenuItemsSignature
+      // highlight-canvasMenu-canvasMenuItems
+      // highlight-canvasMenu-modifyCanvasMenuItems
+      // highlight-canvasMenu-modifyCanvasMenuItemsSignature
       .imgly.modifyCanvasMenuItems { context, items in
-        // highlight-modifyCanvasMenuItemsSignature
-        // highlight-addFirst
+        // highlight-canvasMenu-modifyCanvasMenuItemsSignature
+        // highlight-canvasMenu-addFirst
         items.addFirst {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.first") { context in
             print("First Button action")
@@ -33,8 +33,8 @@ struct CanvasMenuEditorSolution: View {
             Label("First Button", systemImage: "arrow.backward.circle")
           }
         }
-        // highlight-addFirst
-        // highlight-addLast
+        // highlight-canvasMenu-addFirst
+        // highlight-canvasMenu-addLast
         items.addLast {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.last") { context in
             print("Last Button action")
@@ -42,8 +42,8 @@ struct CanvasMenuEditorSolution: View {
             Label("Last Button", systemImage: "arrow.forward.circle")
           }
         }
-        // highlight-addLast
-        // highlight-addAfter
+        // highlight-canvasMenu-addLast
+        // highlight-canvasMenu-addAfter
         items.addAfter(id: CanvasMenu.Buttons.ID.bringForward) {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.afterBringForward") { context in
             print("After Bring Forward action")
@@ -51,8 +51,8 @@ struct CanvasMenuEditorSolution: View {
             Label("After Bring Forward", systemImage: "arrow.forward.square")
           }
         }
-        // highlight-addAfter
-        // highlight-addBefore
+        // highlight-canvasMenu-addAfter
+        // highlight-canvasMenu-addBefore
         items.addBefore(id: CanvasMenu.Buttons.ID.sendBackward) {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.beforeSendBackward") { context in
             print("Before Send Backward action")
@@ -60,8 +60,8 @@ struct CanvasMenuEditorSolution: View {
             Label("Before Send Backward", systemImage: "arrow.backward.square")
           }
         }
-        // highlight-addBefore
-        // highlight-replace
+        // highlight-canvasMenu-addBefore
+        // highlight-canvasMenu-replace
         items.replace(id: CanvasMenu.Buttons.ID.duplicate) {
           CanvasMenu.Button(id: "my.package.canvasMenu.button.replacedDuplicate") { context in
             print("Replaced Duplicate action")
@@ -69,11 +69,11 @@ struct CanvasMenuEditorSolution: View {
             Label("Replaced Duplicate", systemImage: "arrow.uturn.down.square")
           }
         }
-        // highlight-replace
-        // highlight-remove
+        // highlight-canvasMenu-replace
+        // highlight-canvasMenu-remove
         items.remove(id: CanvasMenu.Buttons.ID.delete)
       }
-    // highlight-modifyCanvasMenuItems
+    // highlight-canvasMenu-modifyCanvasMenuItems
   }
 
   @State private var isPresented = false
