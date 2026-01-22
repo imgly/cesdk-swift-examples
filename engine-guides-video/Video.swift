@@ -33,7 +33,7 @@ func editVideo(engine: Engine) async throws {
   try engine.block.setString(
     videoFill2,
     property: "fill/video/fileURI",
-    value: "https://cdn.img.ly/assets/demo/v2/ly.img.video/videos/pexels-kampus-production-8154913.mp4",
+    value: "https://cdn.img.ly/assets/demo/v3/ly.img.video/videos/pexels-kampus-production-8154913.mp4",
   )
   try engine.block.setFill(video2, fill: videoFill2)
   // highlight-assignVideoFill

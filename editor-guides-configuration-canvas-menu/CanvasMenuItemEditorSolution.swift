@@ -10,55 +10,55 @@ struct CanvasMenuItemEditorSolution: View {
   var editor: some View {
     DesignEditor(settings)
       .imgly.canvasMenuItems { context in
-        // highlight-predefinedButton
+        // highlight-canvasMenu-predefinedButton
         CanvasMenu.Buttons.duplicate()
 
-        // highlight-customizePredefinedButton
+        // highlight-canvasMenu-customizePredefinedButton
         CanvasMenu.Buttons.delete(
-          // highlight-customizePredefinedButton-action
+          // highlight-canvasMenu-customizePredefinedButton-action
           action: { context in
             context.eventHandler.send(.deleteSelection)
           },
-          // highlight-customizePredefinedButton-action
-          // highlight-customizePredefinedButton-label
+          // highlight-canvasMenu-customizePredefinedButton-action
+          // highlight-canvasMenu-customizePredefinedButton-label
           label: { context in
             Label { Text("Delete") } icon: { Image.imgly.delete }
           },
-          // highlight-customizePredefinedButton-label
-          // highlight-customizePredefinedButton-isEnabled
+          // highlight-canvasMenu-customizePredefinedButton-label
+          // highlight-canvasMenu-customizePredefinedButton-isEnabled
           isEnabled: { context in true },
-          // highlight-customizePredefinedButton-isVisible
+          // highlight-canvasMenu-customizePredefinedButton-isVisible
           isVisible: { context in
             try context.engine.block.isAllowedByScope(context.selection.block, key: "lifecycle/destroy")
           },
-          // highlight-customizePredefinedButton-isVisible
+          // highlight-canvasMenu-customizePredefinedButton-isVisible
         )
-        // highlight-customizePredefinedButton
+        // highlight-canvasMenu-customizePredefinedButton
 
-        // highlight-newButton
+        // highlight-canvasMenu-newButton
         CanvasMenu.Button(
-          // highlight-newButton-id
+          // highlight-canvasMenu-newButton-id
           id: "my.package.canvasMenu.button.newButton",
-          // highlight-newButton-action
+          // highlight-canvasMenu-newButton-action
         ) { context in
           print("New Button action")
-          // highlight-newButton-action
-          // highlight-newButton-label
+          // highlight-canvasMenu-newButton-action
+          // highlight-canvasMenu-newButton-label
         } label: { context in
           Label("New Button", systemImage: "star.circle")
-          // highlight-newButton-label
-          // highlight-newButton-isEnabled
+          // highlight-canvasMenu-newButton-label
+          // highlight-canvasMenu-newButton-isEnabled
         } isEnabled: { context in
           true
-          // highlight-newButton-isEnabled
-          // highlight-newButton-isVisible
+          // highlight-canvasMenu-newButton-isEnabled
+          // highlight-canvasMenu-newButton-isVisible
         } isVisible: { context in
           true
         }
-        // highlight-newButton-isVisible
-        // highlight-newButton
+        // highlight-canvasMenu-newButton-isVisible
+        // highlight-canvasMenu-newButton
 
-        // highlight-newCustomItem
+        // highlight-canvasMenu-newCustomItem
         CustomCanvasMenuItem()
       }
   }
@@ -77,12 +77,12 @@ struct CanvasMenuItemEditorSolution: View {
   }
 }
 
-// highlight-newCustomItem-conformance
+// highlight-canvasMenu-newCustomItemConformance
 private struct CustomCanvasMenuItem: CanvasMenu.Item {
-  // highlight-newCustomItem-id
+  // highlight-canvasMenu-newCustomItem-id
   var id: EditorComponentID { "my.package.canvasMenu.newCustomItem" }
 
-  // highlight-newCustomItem-body
+  // highlight-canvasMenu-newCustomItem-body
   func body(_ context: CanvasMenu.Context) throws -> some View {
     ZStack {
       RoundedRectangle(cornerRadius: 10)
@@ -95,15 +95,15 @@ private struct CustomCanvasMenuItem: CanvasMenu.Item {
     }
   }
 
-  // highlight-newCustomItem-body
-  // highlight-newCustomItem-isVisible
+  // highlight-canvasMenu-newCustomItem-body
+  // highlight-canvasMenu-newCustomItem-isVisible
   func isVisible(_ context: CanvasMenu.Context) throws -> Bool {
     true
   }
-  // highlight-newCustomItem-isVisible
+  // highlight-canvasMenu-newCustomItem-isVisible
 }
 
-// highlight-newCustomItem-conformance
+// highlight-canvasMenu-newCustomItemConformance
 
 #Preview {
   CanvasMenuItemEditorSolution()
