@@ -1242,7 +1242,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_00E3DE45-C4D5-4782-B899-5BA0390E1AC3" /* cesdk_swift_examples */ = {
+		"TEMP_45214D96-EF4B-4FB9-8A45-02ACBFEB5420" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
