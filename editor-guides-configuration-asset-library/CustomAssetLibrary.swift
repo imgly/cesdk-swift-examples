@@ -39,7 +39,7 @@ struct CustomAssetLibrary: AssetLibrary {
 
   @AssetLibraryBuilder var text: AssetLibraryContent {
     AssetLibrarySource.text(.title("Plain Text"), source: .init(id: TextAssetSource.id))
-    AssetLibrarySource.textComponent(.title("Font Combinations"), source: .init(demoSource: .textComponents))
+    AssetLibrarySource.textComponent(.title("Text Designs"), source: .init(demoSource: .textComponents))
   }
 
   @AssetLibraryBuilder var shapes: AssetLibraryContent {
