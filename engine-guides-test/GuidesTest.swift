@@ -1,13 +1,13 @@
 @testable import Guides
 @testable import IMGLYEngine
-import XCTest
+import Testing
 
 @MainActor
-class GuidesTest: XCTestCase {
+final class GuidesTest {
   var engine: Engine!
 
   @MainActor
-  override func setUp() async throws {
+  init() async throws {
     engine = try await Engine(
       context: .offscreen(size: .init(width: 100, height: 100)),
       audioContext: .none,
@@ -16,144 +16,147 @@ class GuidesTest: XCTestCase {
   }
 
   @MainActor
-  override func tearDown() async throws {
+  deinit {
     engine.notLeaked()
     engine = nil
   }
 
-  func testBoolOps() async throws {
+  @Test func testBoolOps() async throws {
     try await boolOps(engine: engine)
   }
 
-  func testColors() async throws {
+  @Test func testColors() async throws {
     try await colors(engine: engine)
   }
 
-  func testUnderlayer() async throws {
+  @Test func testUnderlayer() async throws {
     try await underlayer(engine: engine)
   }
 
-  func testCreateSceneFromImageBlob() async throws {
+  @Test func testCreateSceneFromImageBlob() async throws {
     try await createSceneFromImageBlob(engine: engine)
   }
 
-  func testCreateSceneFromImageURL() async throws {
+  @Test func testCreateSceneFromImageURL() async throws {
     try await createSceneFromImageURL(engine: engine)
   }
 
-  func testCreateSceneFromScratch() async throws {
+  @Test func testCreateSceneFromScratch() async throws {
     try await createSceneFromScratch(engine: engine)
   }
 
-  func testCreateSceneFromVideoURL() async throws {
+  @Test func testCreateSceneFromVideoURL() async throws {
     try await createSceneFromVideoURL(engine: engine)
   }
 
-  func testCustomAssetSource() async throws {
+  @Test func testCustomAssetSource() async throws {
     try await customAssetSource(engine: engine)
   }
 
-  func testCutouts() async throws {
+  @Test func testCutouts() async throws {
     try await cutouts(engine: engine)
   }
 
-  func testExportingBlocks() async throws {
+  @Test func testExportingBlocks() async throws {
     try await exportingBlocks(engine: engine)
   }
 
-  func testLoadSceneFromBlob() async throws {
+  @Test func testLoadSceneFromBlob() async throws {
     try await loadSceneFromBlob(engine: engine)
   }
 
-  func testLoadSceneFromRemote() async throws {
+  @Test func testLoadSceneFromRemote() async throws {
     try await loadSceneFromRemote(engine: engine)
   }
 
-  func testLoadSceneFromString() async throws {
+  @Test func testLoadSceneFromString() async throws {
     try await loadSceneFromString(engine: engine)
   }
 
-  func testModifyingScenes() async throws {
+  @Test func testModifyingScenes() async throws {
     try await modifyingScenes(engine: engine)
   }
 
-  func testSaveSceneToArchive() async throws {
-    throw XCTSkip("Test temporarily disabled due to flakiness when uploading to https://example.com.")
-    try await saveSceneToArchive(engine: engine)
+  @Test func testSaveSceneToArchive() async throws {
+    await withKnownIssue("Flakiness when uploading to https://example.com.", isIntermittent: true) {
+      try await saveSceneToArchive(engine: engine)
+    }
   }
 
-  func testSaveSceneToBlob() async throws {
-    throw XCTSkip("Test temporarily disabled due to flakiness when uploading to https://example.com.")
-    try await saveSceneToBlob(engine: engine)
+  @Test func testSaveSceneToBlob() async throws {
+    await withKnownIssue("Flakiness when uploading to https://example.com.", isIntermittent: true) {
+      try await saveSceneToBlob(engine: engine)
+    }
   }
 
-  func testSaveSceneToString() async throws {
+  @Test func testSaveSceneToString() async throws {
     try await saveSceneToString(engine: engine)
   }
 
-  func testSaveSceneToStringWithPersistenceCallback() async throws {
-    throw XCTSkip("Test temporarily disabled due to flakiness when uploading to https://example.com.")
-    try await saveSceneToStringWithPersistenceCallback(engine: engine)
+  @Test func testSaveSceneToStringWithPersistenceCallback() async throws {
+    await withKnownIssue("Flakiness when uploading to https://example.com.", isIntermittent: true) {
+      try await saveSceneToStringWithPersistenceCallback(engine: engine)
+    }
   }
 
-  func testScopes() async throws {
+  @Test func testScopes() async throws {
     try await scopes(engine: engine)
   }
 
-  func testSpotColors() async throws {
+  @Test func testSpotColors() async throws {
     try await spotColors(engine: engine)
   }
 
-  func testStoreMetadata() async throws {
+  @Test func testStoreMetadata() async throws {
     try await storeMetadata(engine: engine)
   }
 
-  func testTextProperties() async throws {
+  @Test func testTextProperties() async throws {
     try await textProperties(engine: engine)
   }
 
-  func testTextWithEmojis() async throws {
+  @Test func testTextWithEmojis() async throws {
     try await textWithEmojis(engine: engine)
   }
 
-  func testURIResolver() async throws {
+  @Test func testUriResolver() async throws {
     try await uriResolver(engine: engine)
   }
 
   // Camera requires a device for testing.
-//  func testUsingCamera() async throws {
+//  @Test func testUsingCamera() async throws {
 //    try await usingCamera(engine: engine)
 //  }
 
-  func testUsingEffects() async throws {
+  @Test func testUsingEffects() async throws {
     try await usingEffects(engine: engine)
   }
 
-  func testUsingFills() async throws {
+  @Test func testUsingFills() async throws {
     try await usingFills(engine: engine)
   }
 
-  func testUsingShapes() async throws {
+  @Test func testUsingShapes() async throws {
     try await usingShapes(engine: engine)
   }
 
-  func testEditVideo() async throws {
+  @Test func testEditVideo() async throws {
     try await editVideo(engine: engine)
   }
 
-  func testEditVideoCaptions() async throws {
+  @Test func testEditVideoCaptions() async throws {
     try await editVideoCaptions(engine: engine)
   }
 
-  func testSourceSets() async throws {
+  @Test func testSourceSets() async throws {
     try await sourceSets(engine: engine)
   }
 
-  func testBuffers() throws {
+  @Test func testBuffers() throws {
     try buffers(engine: engine)
   }
 
-  func testCustomLutFilters() async throws {
+  @Test func customLutFilters() async throws {
     try await customLutFilter(engine: engine)
   }
 }
