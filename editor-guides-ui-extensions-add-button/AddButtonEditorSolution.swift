@@ -47,9 +47,13 @@ struct AddButtonEditorSolution: View {
               Label("Favorite", systemImage: "star.fill")
             },
             // highlight-addNewButton-conditional
+            // Disable for stickers (shows grayed out)
+            isEnabled: { context in
+              context.selection.kind != "sticker"
+            },
+            // Only show for graphic blocks (hidden otherwise)
             isVisible: { context in
-              // Only show for text blocks
-              context.selection.type?.rawValue == "//ly.img.ubq/text"
+              context.selection.type == .graphic
             },
             // highlight-addNewButton-conditional
           )
@@ -67,8 +71,12 @@ struct AddButtonEditorSolution: View {
             label: { context in
               Label("Process", systemImage: "gearshape")
             },
+            // Disable for text blocks (shows grayed out)
             isEnabled: { context in
-              // Only enabled if selection has fill
+              context.selection.type != .text
+            },
+            // Only show for blocks with fill (hidden otherwise)
+            isVisible: { context in
               context.selection.fillType != nil
             },
           )
@@ -83,7 +91,7 @@ struct AddButtonEditorSolution: View {
       // highlight-addNewButton-navbar
       // highlight-addNewButton-navbarPlacement
       .imgly.modifyNavigationBarItems { context, items in
-        // Add to right side (trailing)
+        // Add to trailing side
         items.addFirst(placement: .topBarTrailing) {
           NavigationBar.Button(
             id: "my.app.navbar.button.help",
@@ -94,7 +102,7 @@ struct AddButtonEditorSolution: View {
           }
         }
 
-        // Add to left side (leading)
+        // Add to leading side
         items.addLast(placement: .topBarLeading) {
           NavigationBar.Button(
             id: "my.app.navbar.button.settings",
