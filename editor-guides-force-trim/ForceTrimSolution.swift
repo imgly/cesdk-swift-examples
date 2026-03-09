@@ -1,19 +1,24 @@
-import IMGLYDesignEditor
+import IMGLYVideoEditor
 import SwiftUI
 
-struct BasicEditorSolution: View {
+struct ForceTrimSolution: View {
   let settings = EngineSettings(
-    // highlight-license
     license: secrets.licenseKey, // pass nil for evaluation mode with watermark
-    // highlight-userID
     userID: "<your unique user id>",
-    // highlight-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.70.0/assets")!,
   )
 
   var editor: some View {
-    // highlight-editor
-    DesignEditor(settings)
+    VideoEditor(settings)
+      // highlight-forceTrim-onLoaded
+      .imgly.onLoaded { context in
+        // highlight-forceTrim-constraints
+        context.setVideoDurationConstraints(
+          minimumVideoDuration: 5,
+          maximumVideoDuration: 15,
+        )
+        // highlight-forceTrim-constraints
+      }
+    // highlight-forceTrim-onLoaded
   }
 
   @State private var isPresented = false
@@ -31,5 +36,5 @@ struct BasicEditorSolution: View {
 }
 
 #Preview {
-  BasicEditorSolution()
+  ForceTrimSolution()
 }
