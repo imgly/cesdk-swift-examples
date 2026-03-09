@@ -131,6 +131,7 @@ struct Showcases: View {
         Showcase(view: AddButtonEditorSolution(), title: "UI Extensions: Add a New Button")
         Showcase(view: HideElementsEditorSolution(), title: "Customization: Hide Elements")
         Showcase(view: RearrangeButtonsEditorSolution(), title: "Customization: Rearrange Buttons")
+        Showcase(view: PhotoRollSolution(), title: "Import Media: Photo Roll")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
