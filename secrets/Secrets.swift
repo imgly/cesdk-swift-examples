@@ -6,6 +6,8 @@ struct Secrets: Codable {
   let ciBuildsHost: String
   let githubRepo: String
   let licenseKey: String
+
+  @MainActor var baseURL: URL? { nil }
 }
 
 let secrets = Secrets(

@@ -65,7 +65,13 @@ struct BackgroundRemovalEditorSolution: View {
         }
       },
       label: { _ in
-        Label("BG Removal", systemImage: "person.crop.circle.fill.badge.minus")
+        Label {
+          Text("BG Removal")
+        } icon: {
+          Image("custom.person.and.background.dotted.badge.minus")
+            .resizable()
+            .scaledToFit()
+        }
       },
     )
   }
