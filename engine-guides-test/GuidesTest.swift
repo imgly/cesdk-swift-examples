@@ -128,6 +128,26 @@ final class GuidesTest {
 //    try await usingCamera(engine: engine)
 //  }
 
+  @Test func testUsingAnimations() async throws {
+    try await usingAnimations(engine: engine)
+  }
+
+  @Test func testTextAnimations() async throws {
+    try await textAnimations(engine: engine)
+  }
+
+  @Test func testEditAnimations() async throws {
+    try await editAnimations(engine: engine)
+  }
+
+  @Test func testAnimationTypes() async throws {
+    try await animationTypes(engine: engine)
+  }
+
+  @Test func testCreateAnimations() async throws {
+    try await createAnimations(engine: engine)
+  }
+
   @Test func testUsingEffects() async throws {
     try await usingEffects(engine: engine)
   }
