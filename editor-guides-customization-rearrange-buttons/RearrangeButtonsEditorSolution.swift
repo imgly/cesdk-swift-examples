@@ -9,7 +9,7 @@ struct RearrangeButtonsEditorSolution: View {
 
   var editor: some View {
     DesignEditor(settings)
-      // highlight-rearrange-navbar
+      // highlight-rearrangeButtons-navbar
       .imgly.modifyNavigationBarItems { context, items in
         // Move undo/redo to the leading position
         items.remove(id: NavigationBar.Buttons.ID.undo)
@@ -19,16 +19,16 @@ struct RearrangeButtonsEditorSolution: View {
           NavigationBar.Buttons.redo()
         }
       }
-      // highlight-rearrange-navbar
-      // highlight-rearrange-canvas-menu
+      // highlight-rearrangeButtons-navbar
+      // highlight-rearrangeButtons-canvasMenu
       .imgly.modifyCanvasMenuItems { context, items in
         // Keep only duplicate and delete, removing layer ordering options
         items.remove(id: CanvasMenu.Buttons.ID.bringForward)
         items.remove(id: CanvasMenu.Buttons.ID.sendBackward)
         items.remove(id: CanvasMenu.Buttons.ID.selectGroup)
       }
-      // highlight-rearrange-canvas-menu
-      // highlight-rearrange-dock
+      // highlight-rearrangeButtons-canvasMenu
+      // highlight-rearrangeButtons-dock
       .imgly.modifyDockItems { context, items in
         // Move text library to the beginning for text-focused workflows
         items.remove(id: Dock.Buttons.ID.textLibrary)
@@ -36,8 +36,8 @@ struct RearrangeButtonsEditorSolution: View {
           Dock.Buttons.textLibrary()
         }
       }
-      // highlight-rearrange-dock
-      // highlight-rearrange-inspector-bar
+      // highlight-rearrangeButtons-dock
+      // highlight-rearrangeButtons-inspectorBar
       .imgly.modifyInspectorBarItems { context, items in
         // Move duplicate button to appear before layer options
         items.remove(id: InspectorBar.Buttons.ID.duplicate)
@@ -45,7 +45,7 @@ struct RearrangeButtonsEditorSolution: View {
           InspectorBar.Buttons.duplicate()
         }
       }
-    // highlight-rearrange-inspector-bar
+    // highlight-rearrangeButtons-inspectorBar
   }
 
   @State private var isPresented = false

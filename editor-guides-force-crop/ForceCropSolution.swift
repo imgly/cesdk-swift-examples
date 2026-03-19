@@ -1,48 +1,71 @@
-import IMGLYEditor
 import IMGLYEngine
 import IMGLYPhotoEditor
 import SwiftUI
 
 struct ForceCropSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey)
+  let settings = EngineSettings(
+    license: secrets.licenseKey,
+    userID: "<your unique user id>",
+  )
+
+  // highlight-forceCrop-customPresets
+  let squarePreset = AssetDefinition(
+    id: "square",
+    payload: AssetPayload(
+      transformPreset: .fixedAspectRatio(width: 1, height: 1),
+    ),
+    label: ["en": "Square (1:1)"],
+  )
+
+  let portraitPreset = AssetDefinition(
+    id: "portrait",
+    payload: AssetPayload(
+      transformPreset: .fixedAspectRatio(width: 4, height: 5),
+    ),
+    label: ["en": "Portrait (4:5)"],
+  )
+
+  // highlight-forceCrop-customPresets
+
+  // highlight-forceCrop-fixedSize
+  let profilePhotoPreset = AssetDefinition(
+    id: "profile-photo",
+    payload: AssetPayload(
+      transformPreset: .fixedSize(width: 400, height: 400, designUnit: .px),
+    ),
+    label: ["en": "Profile Photo (400x400)"],
+  )
+
+  // highlight-forceCrop-fixedSize
 
   var editor: some View {
     PhotoEditor(settings)
-      // highlight-forceCrop-onLoaded
+      // highlight-forceCrop-setup
       .imgly.onLoaded { context in
-        let pages = try context.engine.scene.getPages()
-        if let page = pages.first {
-          // highlight-forceCrop-preset
-          // Create a custom 1:1 aspect ratio preset
-          let preset = AssetDefinition(
-            id: "custom-preset-1-1",
-            payload: .init(
-              transformPreset: .fixedAspectRatio(width: 1, height: 1),
-            ),
-            label: ["en": "Square"],
-          )
-          // highlight-forceCrop-preset
+        guard let page = try context.engine.scene.getCurrentPage() else { return }
 
-          // highlight-forceCrop-source
-          // Isolate the forced preset in the source
-          let sourceID = Engine.DefaultAssetSource.pagePresets.rawValue
-          try context.engine.asset.removeSource(sourceID: sourceID)
-          try context.engine.asset.addLocalSource(sourceID: sourceID)
+        let sourceID = Engine.DefaultAssetSource.cropPresets.rawValue
+
+        // Replace the default crop presets source with custom presets
+        try context.engine.asset.removeSource(sourceID: sourceID)
+        try context.engine.asset.addLocalSource(sourceID: sourceID)
+
+        let presets = [squarePreset, portraitPreset]
+        var presetCandidates: [ForceCropPreset] = []
+        for preset in presets {
           try context.engine.asset.addAsset(to: sourceID, asset: preset)
-          // highlight-forceCrop-source
-
-          // highlight-forceCrop-apply
-          // Apply force crop
-          context.eventHandler.send(.applyForceCrop(
-            to: page,
-            with: [ForceCropPreset(sourceID: sourceID, presetID: preset.id)],
-            mode: .always,
-          ))
-          // highlight-forceCrop-apply
+          presetCandidates.append(ForceCropPreset(sourceID: sourceID, presetID: preset.id))
         }
-        try await OnLoaded.photoEditorDefault(context)
+        // highlight-forceCrop-setup
+
+        // highlight-forceCrop-apply
+        context.eventHandler.send(.applyForceCrop(
+          to: page,
+          with: presetCandidates,
+          mode: .always,
+        ))
+        // highlight-forceCrop-apply
       }
-    // highlight-forceCrop-onLoaded
   }
 
   @State private var isPresented = false
