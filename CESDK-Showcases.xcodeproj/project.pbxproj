@@ -27,6 +27,7 @@
 		141E65909F2ADEA8488D2CB2 /* bonjour_paris_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B99DB4DB90FE0AF73305CF /* bonjour_paris_grid.png */; };
 		1431F827993DFDFC940B0E43 /* DefaultNavigationBarItemsEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E050337C2C296EDD80057 /* DefaultNavigationBarItemsEditorSolution.swift */; };
 		15B36636B2F0305B9CAD7A2C /* RotationDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A76DA2EFF094E66D698ACE /* RotationDemoView.swift */; };
+		166E447BF9CECA2FFB4C89FB /* TextDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA36D49B6A551C4F053C50 /* TextDecorations.swift */; };
 		169A6C5CBF9B982BC261C086 /* ColorPaletteEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22A4D5816E285FAD41EEC6F /* ColorPaletteEditorSolution.swift */; };
 		17FCB5ED73584D117A21F110 /* CustomApparelEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A6CB534773EFF37234AF46 /* CustomApparelEditor.swift */; };
 		1A4DBB595643531A9DF949B6 /* 4_3.png in Resources */ = {isa = PBXBuildFile; fileRef = FCF8110CD832614D8D44324A /* 4_3.png */; };
@@ -105,6 +106,7 @@
 		7623D3AB0CC1F635E6C05009 /* TextAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7732084BACC1A1F106F47 /* TextAnimations.swift */; };
 		77DC0C4244149775B36B8EAE /* 1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D915444F86B38E0C98D71FA /* 1_1.png */; };
 		78083A278BBF4779900A1439 /* template_02_ig_story_9_16.scene in Resources */ = {isa = PBXBuildFile; fileRef = 364263A8AAD2952E17FC60B3 /* template_02_ig_story_9_16.scene */; };
+		7ABB94C1541BD716B4CDF6E9 /* Templating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211641760E2045BEB1372C4D /* Templating.swift */; };
 		7F292B86F56D80D7E07CAE4E /* RemoteAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */; };
 		7F37873498D0E3CE57ECD760 /* IMGLYEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 50118933CCA23FF85773CFEA /* IMGLYEngine */; };
 		80A1B078F50CF0AF294920E5 /* apparel-ui-b-4.png in Resources */ = {isa = PBXBuildFile; fileRef = B3C997D8A75FF23F07F27BD1 /* apparel-ui-b-4.png */; };
@@ -165,6 +167,7 @@
 		C2747CE6D8180369E06EBAD3 /* TextWithEmojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78201EE5E9AEB5EFF1E8046 /* TextWithEmojis.swift */; };
 		C489F4E8E347B8F91CD822F4 /* template_04_x_profile_picture_1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 221ED8525D2160DA189E8C4B /* template_04_x_profile_picture_1_1.png */; };
 		C815FCDB1F89D5902E22FB0D /* template_05_x_header.png in Resources */ = {isa = PBXBuildFile; fileRef = E6178173760706F8633C43AC /* template_05_x_header.png */; };
+		CA9E00DED9FFF0855C1D80B0 /* UndoAndHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357F5EB2CC4B85289DE33 /* UndoAndHistory.swift */; };
 		CB9780A7731D9678AFF54E05 /* UsingCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E679522468224F800C29CEC5 /* UsingCamera.swift */; };
 		CC84B813920A3611C25BF37F /* BasicEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE447689B7BB52995BCA840C /* BasicEditorSolution.swift */; };
 		CE57A59EE2CFA43BE858D495 /* ModalEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A7975E36F43B1BFF31DAF /* ModalEditor.swift */; };
@@ -228,6 +231,7 @@
 		0A00FD0DD2BDC1EA4F51FB4A /* template_05_x_header.scene */ = {isa = PBXFileReference; path = template_05_x_header.scene; sourceTree = "<group>"; };
 		0A792A212B8D5B7254C08D36 /* CanvasMenuEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasMenuEditorSolution.swift; sourceTree = "<group>"; };
 		0AB6351ECFA423D9FCBF5445 /* template_03_full_hd_slides_16_9.scene */ = {isa = PBXFileReference; path = template_03_full_hd_slides_16_9.scene; sourceTree = "<group>"; };
+		0CEA36D49B6A551C4F053C50 /* TextDecorations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDecorations.swift; sourceTree = "<group>"; };
 		0E46FB7CEB411B5F37AA132B /* CESDK-Showcases.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "CESDK-Showcases.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF986170C7CBF7ACB629183 /* merry_christmas_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = merry_christmas_grid.png; sourceTree = "<group>"; };
 		1027ACAB1FC6EEED2A9A4F9D /* IntegrateWithUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrateWithUIKit.swift; sourceTree = "<group>"; };
@@ -237,11 +241,13 @@
 		179E61754D943FAD64E622B4 /* BoolOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolOps.swift; sourceTree = "<group>"; };
 		19841440FC61147F6BB774A7 /* original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = original.png; sourceTree = "<group>"; };
 		1A904A479AC926A3B47633D2 /* ControlAudioVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAudioVideo.swift; sourceTree = "<group>"; };
+		1B4357F5EB2CC4B85289DE33 /* UndoAndHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoAndHistory.swift; sourceTree = "<group>"; };
 		1CE4F79C92924A19EAE62A40 /* template_01_ig_post_1_1.scene */ = {isa = PBXFileReference; path = template_01_ig_post_1_1.scene; sourceTree = "<group>"; };
 		1D0A3D8A40C054015BAA661D /* DefaultAssetLibraryEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAssetLibraryEditorSolution.swift; sourceTree = "<group>"; };
 		1D11022620E1D80771DB7294 /* template_07_business_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_07_business_card.png; sourceTree = "<group>"; };
 		1E3E050337C2C296EDD80057 /* DefaultNavigationBarItemsEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNavigationBarItemsEditorSolution.swift; sourceTree = "<group>"; };
 		205A9FC4829797611675B237 /* template_06_booklet.scene */ = {isa = PBXFileReference; path = template_06_booklet.scene; sourceTree = "<group>"; };
+		211641760E2045BEB1372C4D /* Templating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Templating.swift; sourceTree = "<group>"; };
 		21D20C109AC3771330A19668 /* SaveSceneToStringWithPersistenceCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSceneToStringWithPersistenceCallback.swift; sourceTree = "<group>"; };
 		221ED8525D2160DA189E8C4B /* template_04_x_profile_picture_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_04_x_profile_picture_1_1.png; sourceTree = "<group>"; };
 		25B99DB4DB90FE0AF73305CF /* bonjour_paris_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bonjour_paris_grid.png; sourceTree = "<group>"; };
@@ -809,6 +815,7 @@
 				42D4AE5D04A737DC9403AFE7 /* engine-guides-buffers */,
 				2E31FB02D55348D4480BEF78 /* engine-guides-captions */,
 				740609F297ADAEF236FFD009 /* engine-guides-colors */,
+				7EA4161605934813A12AD4D8 /* engine-guides-concepts-templating */,
 				C281AAC0A61C97BADB1FE21B /* engine-guides-control-av */,
 				D1A7EEAA71F556F4FF0E8C95 /* engine-guides-create-animations */,
 				CA4B59C49B2229DE35FC8EB7 /* engine-guides-create-scene-from-image-blob */,
@@ -835,9 +842,11 @@
 				9C85370DE7F0B283E00BDF80 /* engine-guides-spot-colors */,
 				49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */,
 				260A60945B6962C14B9C2618 /* engine-guides-text-animations */,
+				A4E93C52C7ECC7E037523514 /* engine-guides-text-decorations */,
 				2A834EF281CBC9CFA99911C5 /* engine-guides-text-properties */,
 				8104AA52AF0D607674847378 /* engine-guides-text-with-emojis */,
 				6984108EA5E580BB2B58DD26 /* engine-guides-underlayer */,
+				96DBF26ADC80B0F929FDA12F /* engine-guides-undo-and-history */,
 				FBB6BB3B2512F5D725B820D4 /* engine-guides-uri-resolver */,
 				A4EB6C1BF0FB3658EB79A1B8 /* engine-guides-using-animations */,
 				8B2B38B452C1B636BE1C2C74 /* engine-guides-using-camera */,
@@ -929,6 +938,14 @@
 			path = "engine-guides-using-effects";
 			sourceTree = "<group>";
 		};
+		7EA4161605934813A12AD4D8 /* engine-guides-concepts-templating */ = {
+			isa = PBXGroup;
+			children = (
+				211641760E2045BEB1372C4D /* Templating.swift */,
+			);
+			path = "engine-guides-concepts-templating";
+			sourceTree = "<group>";
+		};
 		7F3F54D7CDE400B1A98FF808 /* engine-guides-cutouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1012,6 +1029,14 @@
 			path = "engine-guides-save-scene-to-archive";
 			sourceTree = "<group>";
 		};
+		96DBF26ADC80B0F929FDA12F /* engine-guides-undo-and-history */ = {
+			isa = PBXGroup;
+			children = (
+				1B4357F5EB2CC4B85289DE33 /* UndoAndHistory.swift */,
+			);
+			path = "engine-guides-undo-and-history";
+			sourceTree = "<group>";
+		};
 		9C85370DE7F0B283E00BDF80 /* engine-guides-spot-colors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1067,6 +1092,14 @@
 				5A9AAE597EB066E3B57C0CAC /* ApparelEditorSolution.swift */,
 			);
 			path = "editor-guides-solutions-apparel-editor";
+			sourceTree = "<group>";
+		};
+		A4E93C52C7ECC7E037523514 /* engine-guides-text-decorations */ = {
+			isa = PBXGroup;
+			children = (
+				0CEA36D49B6A551C4F053C50 /* TextDecorations.swift */,
+			);
+			path = "engine-guides-text-decorations";
 			sourceTree = "<group>";
 		};
 		A4EB6C1BF0FB3658EB79A1B8 /* engine-guides-using-animations */ = {
@@ -1322,7 +1355,7 @@
 			path = "engine-guides-uri-resolver";
 			sourceTree = "<group>";
 		};
-		"TEMP_D85F6F6C-BE53-45C1-86F5-B2F7F5439A0B" /* cesdk_swift_examples */ = {
+		"TEMP_36C1B159-C2AD-41DA-9890-7EE048E20B67" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -1371,12 +1404,15 @@
 				1417016EB02556C9720EE4D4 /* engine-guides-custom-asset-source */,
 				9C85370DE7F0B283E00BDF80 /* engine-guides-spot-colors */,
 				7F3F54D7CDE400B1A98FF808 /* engine-guides-cutouts */,
+				96DBF26ADC80B0F929FDA12F /* engine-guides-undo-and-history */,
+				7EA4161605934813A12AD4D8 /* engine-guides-concepts-templating */,
 				D1A7EEAA71F556F4FF0E8C95 /* engine-guides-create-animations */,
 				F419E08B896C5BECF27A7AB5 /* engine-guides-save-scene-to-blob */,
 				8104AA52AF0D607674847378 /* engine-guides-text-with-emojis */,
 				7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */,
 				BFD8A14F30509AA48AEA2E5D /* engine-guides-load-scene-from-remote */,
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
+				A4E93C52C7ECC7E037523514 /* engine-guides-text-decorations */,
 				313CEBADB00BB934CDCC0E1B /* engine-guides-save-scene-to-string-with-persistence-callback */,
 				2A834EF281CBC9CFA99911C5 /* engine-guides-text-properties */,
 				49A42C29A048D05EAC6DBD74 /* engine-guides-store-metadata */,
@@ -1467,6 +1503,7 @@
 			mainGroup = 70626161758B70813AF43B5F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				D94555BA963A13AFB21D8CCC /* XCRemoteSwiftPackageReference "fal-swift" */,
 				10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */,
 				0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */,
 				150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */,
@@ -1624,11 +1661,14 @@
 				D9B2566F60CB7CEDB6D748DD /* SourceSets.swift in Sources */,
 				20BF29AA915C43C501EB1935 /* SpotColors.swift in Sources */,
 				2D794C31DE849F9C404073E0 /* StoreMetadata.swift in Sources */,
+				7ABB94C1541BD716B4CDF6E9 /* Templating.swift in Sources */,
 				7623D3AB0CC1F635E6C05009 /* TextAnimations.swift in Sources */,
+				166E447BF9CECA2FFB4C89FB /* TextDecorations.swift in Sources */,
 				6940DE0F80AF50732CBA4781 /* TextProperties.swift in Sources */,
 				C2747CE6D8180369E06EBAD3 /* TextWithEmojis.swift in Sources */,
 				D207C477145F158A9044E493 /* URIResolver.swift in Sources */,
 				2E6274B3CFB88955F89773E3 /* Underlayer.swift in Sources */,
+				CA9E00DED9FFF0855C1D80B0 /* UndoAndHistory.swift in Sources */,
 				BD9B691F70AF5398106A4DB1 /* UnsplashAssetSource.swift in Sources */,
 				B3D602EDBAFC73CFEED6B9C5 /* UnsplashResponse.swift in Sources */,
 				EBB4C92AC68D9EB279FDAD59 /* UsingAnimations.swift in Sources */,
@@ -1808,7 +1848,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.71.0;
+				MARKETING_VERSION = 1.72.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1899,7 +1939,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.71.0;
+				MARKETING_VERSION = 1.72.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1974,7 +2014,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.71.0;
+				version = "1.72.0-rc.0";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -1982,7 +2022,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.71.0;
+				version = "1.72.0-rc.0";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -1999,6 +2039,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 26.0.0;
+			};
+		};
+		D94555BA963A13AFB21D8CCC /* XCRemoteSwiftPackageReference "fal-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fal-ai/fal-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 0.5.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
