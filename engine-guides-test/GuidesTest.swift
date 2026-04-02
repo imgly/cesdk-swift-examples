@@ -111,12 +111,26 @@ final class GuidesTest {
     try await storeMetadata(engine: engine)
   }
 
+  @Test func testTemplating() async throws {
+    await withKnownIssue("Flakiness when loading from remote URL.", isIntermittent: true) {
+      try await templating(engine: engine)
+    }
+  }
+
+  @Test func testTextEnumerations() async throws {
+    try await textEnumerations(engine: engine)
+  }
+
   @Test func testTextProperties() async throws {
     try await textProperties(engine: engine)
   }
 
   @Test func testTextWithEmojis() async throws {
     try await textWithEmojis(engine: engine)
+  }
+
+  @Test func testUndoAndHistory() async throws {
+    try await undoAndHistory(engine: engine)
   }
 
   @Test func testUriResolver() async throws {
