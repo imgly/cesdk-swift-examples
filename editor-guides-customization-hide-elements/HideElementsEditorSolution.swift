@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 /// Design Editor demonstrating how to hide UI elements.
@@ -14,12 +14,18 @@ struct HideElementsEditorSolution: View {
   )
 
   // highlight-hideElements-dock
-  // To hide the dock completely, provide an empty closure to .imgly.dockItems
+  // To hide the dock completely, provide an empty items closure
   // The dock is the only UI component that fully hides when given no items
   var editorWithHiddenDock: some View {
-    DesignEditor(settings)
-      .imgly.dockItems { _ in
-        // Empty - dock will be completely hidden
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.dock { dock in
+            dock.items { _ in
+              // Empty - dock will be completely hidden
+            }
+          }
+        }
       }
   }
 
@@ -29,19 +35,27 @@ struct HideElementsEditorSolution: View {
   // To remove specific items from any component, use the modify variants
   // The component container remains visible, only the specified items are removed
   var editorWithRemovedItems: some View {
-    DesignEditor(settings)
-      // highlight-hideElements-dockRemove
-      .imgly.modifyDockItems { _, items in
-        items.remove(id: Dock.Buttons.ID.elementsLibrary)
-        items.remove(id: Dock.Buttons.ID.shapesLibrary)
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          // highlight-hideElements-dockRemove
+          builder.dock { dock in
+            dock.modify { _, items in
+              items.remove(id: Dock.Buttons.ID.elementsLibrary)
+              items.remove(id: Dock.Buttons.ID.shapesLibrary)
+            }
+          }
+          // highlight-hideElements-dockRemove
+          // highlight-hideElements-navbarRemove
+          builder.navigationBar { navigationBar in
+            navigationBar.modify { _, items in
+              items.remove(id: NavigationBar.Buttons.ID.undo)
+              items.remove(id: NavigationBar.Buttons.ID.redo)
+            }
+          }
+          // highlight-hideElements-navbarRemove
+        }
       }
-      // highlight-hideElements-dockRemove
-      // highlight-hideElements-navbarRemove
-      .imgly.modifyNavigationBarItems { _, items in
-        items.remove(id: NavigationBar.Buttons.ID.undo)
-        items.remove(id: NavigationBar.Buttons.ID.redo)
-      }
-    // highlight-hideElements-navbarRemove
   }
 
   // highlight-hideElements-remove

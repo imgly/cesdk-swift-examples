@@ -25,12 +25,12 @@ struct SceneSelection<Editor: View>: View {
     let colorPalette: [NamedColor]?
   }
 
-  private let editor: (URL) -> Editor
+  private let editor: (URL, [NamedColor]?) -> Editor
   @ViewBuilder private let scenes: [Scene]
 
   init(
     scenes: Scenes,
-    @ViewBuilder editor: @escaping (_ sceneURL: URL) -> Editor
+    @ViewBuilder editor: @escaping (_ sceneURL: URL, _ colorPalette: [NamedColor]?) -> Editor
   ) {
     self.scenes = scenes.map {
       let resource = $0.title.replacingOccurrences(of: " ", with: "_").lowercased()
@@ -45,8 +45,7 @@ struct SceneSelection<Editor: View>: View {
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 300, maximum: 300), spacing: 16)], spacing: 16) {
         ForEach(scenes) { scene in
           ShowcaseLink {
-            editor(scene.url)
-              .imgly.colorPalette(scene.colorPalette)
+            editor(scene.url, scene.colorPalette)
           } label: {
             AsyncImage(url: scene.image) { image in
               image

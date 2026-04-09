@@ -1,6 +1,5 @@
-// swiftlint:disable unused_closure_parameter
 // swiftformat:disable unusedArguments
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct NavigationBarItemEditorSolution: View {
@@ -8,67 +7,73 @@ struct NavigationBarItemEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var editor: some View {
-    DesignEditor(settings)
-      .imgly.navigationBarItems { context in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          // highlight-predefinedButton
-          NavigationBar.Buttons.closeEditor()
-        }
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                // highlight-predefinedButton
+                NavigationBar.Buttons.closeEditor()
+              }
 
-        NavigationBar.ItemGroup(placement: .principal) {
-          // highlight-customizePredefinedButton
-          NavigationBar.Buttons.undo(
-            // highlight-customizePredefinedButton-action
-            action: { context in
-              try context.engine?.editor.undo()
-            },
-            // highlight-customizePredefinedButton-action
-            // highlight-customizePredefinedButton-label
-            label: { context in
-              Label { Text("Undo") } icon: { Image.imgly.undo }
-                .opacity(context.state.viewMode == .preview ? 0 : 1)
-                .labelStyle(.imgly.adaptiveIconOnly)
-            },
-            // highlight-customizePredefinedButton-label
-            // highlight-customizePredefinedButton-isEnabled
-            isEnabled: { context in
-              try !context.state.isCreating &&
-                context.state.viewMode != .preview &&
-                context.engine?.editor.canUndo() == true
-            },
-            // highlight-customizePredefinedButton-isEnabled
-            // highlight-customizePredefinedButton-isVisible
-            isVisible: { context in true },
-          )
-          // highlight-customizePredefinedButton
+              NavigationBar.ItemGroup(placement: .principal) {
+                // highlight-customizePredefinedButton
+                NavigationBar.Buttons.undo(
+                  // highlight-customizePredefinedButton-action
+                  action: { context in
+                    try context.engine?.editor.undo()
+                  },
+                  // highlight-customizePredefinedButton-action
+                  // highlight-customizePredefinedButton-label
+                  label: { context in
+                    Label { Text("Undo") } icon: { Image.imgly.undo }
+                      .opacity(context.state.viewMode == .preview ? 0 : 1)
+                      .labelStyle(.imgly.adaptiveIconOnly)
+                  },
+                  // highlight-customizePredefinedButton-label
+                  // highlight-customizePredefinedButton-isEnabled
+                  isEnabled: { context in
+                    try !context.state.isCreating &&
+                      context.state.viewMode != .preview &&
+                      context.engine?.editor.canUndo() == true
+                  },
+                  // highlight-customizePredefinedButton-isEnabled
+                  // highlight-customizePredefinedButton-isVisible
+                  isVisible: { _ in true },
+                )
+                // highlight-customizePredefinedButton
 
-          // highlight-newButton
-          NavigationBar.Button(
-            // highlight-newButton-id
-            id: "my.package.navigationBar.button.newButton",
-            // highlight-newButton-action
-          ) { context in
-            print("New Button action")
-            // highlight-newButton-action
-            // highlight-newButton-label
-          } label: { context in
-            Label("New Button", systemImage: "star.circle")
-            // highlight-newButton-label
-            // highlight-newButton-isEnabled
-          } isEnabled: { context in
-            true
-            // highlight-newButton-isEnabled
-            // highlight-newButton-isVisible
-          } isVisible: { context in
-            true
+                // highlight-newButton
+                NavigationBar.Button(
+                  // highlight-newButton-id
+                  id: "my.package.navigationBar.button.newButton",
+                  // highlight-newButton-action
+                ) { _ in
+                  print("New Button action")
+                  // highlight-newButton-action
+                  // highlight-newButton-label
+                } label: { _ in
+                  Label("New Button", systemImage: "star.circle")
+                  // highlight-newButton-label
+                  // highlight-newButton-isEnabled
+                } isEnabled: { _ in
+                  true
+                  // highlight-newButton-isEnabled
+                  // highlight-newButton-isVisible
+                } isVisible: { _ in
+                  true
+                }
+                // highlight-newButton-isVisible
+                // highlight-newButton
+              }
+
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                // highlight-newCustomItem
+                CustomNavigationBarItem()
+              }
+            }
           }
-          // highlight-newButton-isVisible
-          // highlight-newButton
-        }
-
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          // highlight-newCustomItem
-          CustomNavigationBarItem()
         }
       }
   }

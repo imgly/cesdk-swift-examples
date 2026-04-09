@@ -1,6 +1,5 @@
-// swiftlint:disable unused_closure_parameter
 // swiftformat:disable unusedArguments
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct CanvasMenuItemEditorSolution: View {
@@ -8,58 +7,64 @@ struct CanvasMenuItemEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var editor: some View {
-    DesignEditor(settings)
-      .imgly.canvasMenuItems { context in
-        // highlight-canvasMenu-predefinedButton
-        CanvasMenu.Buttons.duplicate()
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.canvasMenu { canvasMenu in
+            canvasMenu.items { _ in
+              // highlight-canvasMenu-predefinedButton
+              CanvasMenu.Buttons.duplicate()
 
-        // highlight-canvasMenu-customizePredefinedButton
-        CanvasMenu.Buttons.delete(
-          // highlight-canvasMenu-customizePredefinedButton-action
-          action: { context in
-            context.eventHandler.send(.deleteSelection)
-          },
-          // highlight-canvasMenu-customizePredefinedButton-action
-          // highlight-canvasMenu-customizePredefinedButton-label
-          label: { context in
-            Label { Text("Delete") } icon: { Image.imgly.delete }
-          },
-          // highlight-canvasMenu-customizePredefinedButton-label
-          // highlight-canvasMenu-customizePredefinedButton-isEnabled
-          isEnabled: { context in true },
-          // highlight-canvasMenu-customizePredefinedButton-isVisible
-          isVisible: { context in
-            try context.engine.block.isAllowedByScope(context.selection.block, key: "lifecycle/destroy")
-          },
-          // highlight-canvasMenu-customizePredefinedButton-isVisible
-        )
-        // highlight-canvasMenu-customizePredefinedButton
+              // highlight-canvasMenu-customizePredefinedButton
+              CanvasMenu.Buttons.delete(
+                // highlight-canvasMenu-customizePredefinedButton-action
+                action: { context in
+                  context.eventHandler.send(.deleteSelection)
+                },
+                // highlight-canvasMenu-customizePredefinedButton-action
+                // highlight-canvasMenu-customizePredefinedButton-label
+                label: { _ in
+                  Label { Text("Delete") } icon: { Image.imgly.delete }
+                },
+                // highlight-canvasMenu-customizePredefinedButton-label
+                // highlight-canvasMenu-customizePredefinedButton-isEnabled
+                isEnabled: { _ in true },
+                // highlight-canvasMenu-customizePredefinedButton-isVisible
+                isVisible: { context in
+                  try context.engine.block.isAllowedByScope(context.selection.block, key: "lifecycle/destroy")
+                },
+                // highlight-canvasMenu-customizePredefinedButton-isVisible
+              )
+              // highlight-canvasMenu-customizePredefinedButton
 
-        // highlight-canvasMenu-newButton
-        CanvasMenu.Button(
-          // highlight-canvasMenu-newButton-id
-          id: "my.package.canvasMenu.button.newButton",
-          // highlight-canvasMenu-newButton-action
-        ) { context in
-          print("New Button action")
-          // highlight-canvasMenu-newButton-action
-          // highlight-canvasMenu-newButton-label
-        } label: { context in
-          Label("New Button", systemImage: "star.circle")
-          // highlight-canvasMenu-newButton-label
-          // highlight-canvasMenu-newButton-isEnabled
-        } isEnabled: { context in
-          true
-          // highlight-canvasMenu-newButton-isEnabled
-          // highlight-canvasMenu-newButton-isVisible
-        } isVisible: { context in
-          true
+              // highlight-canvasMenu-newButton
+              CanvasMenu.Button(
+                // highlight-canvasMenu-newButton-id
+                id: "my.package.canvasMenu.button.newButton",
+                // highlight-canvasMenu-newButton-action
+              ) { _ in
+                print("New Button action")
+                // highlight-canvasMenu-newButton-action
+                // highlight-canvasMenu-newButton-label
+              } label: { _ in
+                Label("New Button", systemImage: "star.circle")
+                // highlight-canvasMenu-newButton-label
+                // highlight-canvasMenu-newButton-isEnabled
+              } isEnabled: { _ in
+                true
+                // highlight-canvasMenu-newButton-isEnabled
+                // highlight-canvasMenu-newButton-isVisible
+              } isVisible: { _ in
+                true
+              }
+              // highlight-canvasMenu-newButton-isVisible
+              // highlight-canvasMenu-newButton
+
+              // highlight-canvasMenu-newCustomItem
+              CustomCanvasMenuItem()
+            }
+          }
         }
-        // highlight-canvasMenu-newButton-isVisible
-        // highlight-canvasMenu-newButton
-
-        // highlight-canvasMenu-newCustomItem
-        CustomCanvasMenuItem()
       }
   }
 

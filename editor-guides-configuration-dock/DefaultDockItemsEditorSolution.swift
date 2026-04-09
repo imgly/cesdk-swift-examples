@@ -1,6 +1,4 @@
-import IMGLYDesignEditor
-import IMGLYPhotoEditor
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct DefaultDockItemsEditorSolution: View {
@@ -8,52 +6,70 @@ struct DefaultDockItemsEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var designEditor: some View {
-    DesignEditor(settings)
-      // highlight-designEditor-dockItems
-      .imgly.dockItems { _ in
-        Dock.Buttons.elementsLibrary()
-        Dock.Buttons.photoRoll()
-        Dock.Buttons.systemCamera()
-        Dock.Buttons.imagesLibrary()
-        Dock.Buttons.textLibrary()
-        Dock.Buttons.shapesLibrary()
-        Dock.Buttons.stickersLibrary()
-        Dock.Buttons.resize()
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.dock { dock in
+            // highlight-designEditor-dockItems
+            dock.items { _ in
+              Dock.Buttons.elementsLibrary()
+              Dock.Buttons.photoRoll()
+              Dock.Buttons.systemCamera()
+              Dock.Buttons.imagesLibrary()
+              Dock.Buttons.textLibrary()
+              Dock.Buttons.shapesLibrary()
+              Dock.Buttons.stickersLibrary()
+              Dock.Buttons.resize()
+            }
+            // highlight-designEditor-dockItems
+          }
+        }
       }
-    // highlight-designEditor-dockItems
   }
 
   var photoEditor: some View {
-    PhotoEditor(settings)
-      // highlight-photoEditor-dockItems
-      .imgly.dockItems { _ in
-        Dock.Buttons.adjustments()
-        Dock.Buttons.filter()
-        Dock.Buttons.effect()
-        Dock.Buttons.blur()
-        Dock.Buttons.crop()
-        Dock.Buttons.textLibrary()
-        Dock.Buttons.shapesLibrary()
-        Dock.Buttons.stickersLibrary()
+    Editor(settings)
+      .imgly.configuration {
+        PhotoEditorConfiguration { builder in
+          builder.dock { dock in
+            // highlight-photoEditor-dockItems
+            dock.items { _ in
+              Dock.Buttons.adjustments()
+              Dock.Buttons.filter()
+              Dock.Buttons.effect()
+              Dock.Buttons.blur()
+              Dock.Buttons.crop()
+              Dock.Buttons.textLibrary()
+              Dock.Buttons.shapesLibrary()
+              Dock.Buttons.stickersLibrary()
+            }
+            // highlight-photoEditor-dockItems
+          }
+        }
       }
-    // highlight-photoEditor-dockItems
   }
 
   var videoEditor: some View {
-    VideoEditor(settings)
-      // highlight-videoEditor-dockItems
-      .imgly.dockItems { _ in
-        Dock.Buttons.photoRoll()
-        Dock.Buttons.imglyCamera()
-        Dock.Buttons.overlaysLibrary()
-        Dock.Buttons.textLibrary()
-        Dock.Buttons.stickersAndShapesLibrary()
-        Dock.Buttons.audioLibrary()
-        Dock.Buttons.voiceover()
-        Dock.Buttons.reorder()
-        Dock.Buttons.resize()
+    Editor(settings)
+      .imgly.configuration {
+        VideoEditorConfiguration { builder in
+          builder.dock { dock in
+            // highlight-videoEditor-dockItems
+            dock.items { _ in
+              Dock.Buttons.photoRoll()
+              Dock.Buttons.imglyCamera()
+              Dock.Buttons.overlaysLibrary()
+              Dock.Buttons.textLibrary()
+              Dock.Buttons.stickersAndShapesLibrary()
+              Dock.Buttons.audioLibrary()
+              Dock.Buttons.voiceover()
+              Dock.Buttons.reorder()
+              Dock.Buttons.resize()
+            }
+            // highlight-videoEditor-dockItems
+          }
+        }
       }
-    // highlight-videoEditor-dockItems
   }
 
   private enum Solution: String, Identifiable, CaseIterable {

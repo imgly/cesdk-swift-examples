@@ -1,4 +1,3 @@
-import IMGLYDesignEditor
 import IMGLYEditor
 import IMGLYEngine
 import SwiftUI
@@ -35,15 +34,23 @@ struct AITextToImageEditorSolution: View {
   // MARK: - Body
 
   var body: some View {
-    DesignEditor(settings)
-      .imgly.modifyDockItems { context, items in
-        items.addFirst {
-          aiGeneratorButton(context: context)
-        }
-      }
-      .imgly.modifyInspectorBarItems { context, items in
-        items.addFirst {
-          imageInspectorButton(context: context)
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.dock { dock in
+            dock.modify { context, items in
+              items.addFirst {
+                aiGeneratorButton(context: context)
+              }
+            }
+          }
+          builder.inspectorBar { inspectorBar in
+            inspectorBar.modify { context, items in
+              items.addFirst {
+                imageInspectorButton(context: context)
+              }
+            }
+          }
         }
       }
   }

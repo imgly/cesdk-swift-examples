@@ -21,6 +21,10 @@ final class GuidesTest {
     engine = nil
   }
 
+  @Test func testArchitecture() async throws {
+    try await architecture(engine: engine)
+  }
+
   @Test func testBoolOps() async throws {
     try await boolOps(engine: engine)
   }
@@ -117,10 +121,6 @@ final class GuidesTest {
     }
   }
 
-  @Test func testTextEnumerations() async throws {
-    try await textEnumerations(engine: engine)
-  }
-
   @Test func testTextProperties() async throws {
     try await textProperties(engine: engine)
   }
@@ -192,5 +192,9 @@ final class GuidesTest {
 
   @Test func customLutFilters() async throws {
     try await customLutFilter(engine: engine)
+  }
+
+  @Test func testProductVariations() async throws {
+    try await productVariations(engine: engine)
   }
 }
