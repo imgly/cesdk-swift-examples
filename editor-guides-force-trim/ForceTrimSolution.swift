@@ -1,4 +1,4 @@
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct ForceTrimSolution: View {
@@ -8,17 +8,21 @@ struct ForceTrimSolution: View {
   )
 
   var editor: some View {
-    VideoEditor(settings)
-      // highlight-forceTrim-onLoaded
-      .imgly.onLoaded { context in
-        // highlight-forceTrim-constraints
-        context.setVideoDurationConstraints(
-          minimumVideoDuration: 5,
-          maximumVideoDuration: 15,
-        )
-        // highlight-forceTrim-constraints
+    Editor(settings)
+      .imgly.configuration {
+        VideoEditorConfiguration { builder in
+          // highlight-forceTrim-onLoaded
+          builder.onLoaded { context, _ in
+            // highlight-forceTrim-constraints
+            context.setVideoDurationConstraints(
+              minimumVideoDuration: 5,
+              maximumVideoDuration: 15,
+            )
+            // highlight-forceTrim-constraints
+          }
+          // highlight-forceTrim-onLoaded
+        }
       }
-    // highlight-forceTrim-onLoaded
   }
 
   @State private var isPresented = false

@@ -9,7 +9,7 @@ func getResolvedUriFromServer(uri: String) async throws -> URL {
 @MainActor
 func uriResolver(engine: Engine) async throws {
   // highlight-get-absolute-base-path
-  // This will return "https://cdn.img.ly/packages/imgly/cesdk-js/1.72.2/assets/banana.jpg"
+  // This will return "https://cdn.img.ly/packages/imgly/cesdk-js/1.73.0-rc.2/assets/banana.jpg"
   try await engine.editor.getAbsoluteURI(relativePath: "/banana.jpg")
   // highlight-get-absolute-base-path
 
@@ -37,7 +37,7 @@ func uriResolver(engine: Engine) async throws {
   try engine.editor.setURIResolverAsync(nil)
 
   // Since we've removed the custom resolver, this will return
-  // "https://cdn.img.ly/packages/imgly/cesdk-js/1.72.2/assets/banana.jpg" like before.
+  // "https://cdn.img.ly/packages/imgly/cesdk-js/1.73.0-rc.2/assets/banana.jpg" like before.
   try await engine.editor.getAbsoluteURI(relativePath: "/banana.jpg")
   // highlight-remove-resolver
 }

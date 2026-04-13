@@ -1,4 +1,5 @@
-import IMGLYPhotoEditor
+import IMGLYEditor
+import IMGLYEngine
 import SwiftUI
 
 struct CustomPhotoEditor: View {
@@ -15,9 +16,24 @@ struct CustomPhotoEditor: View {
 
   var body: some View {
     PhotoSelection(formats: formats) { url, size in
-      PhotoEditor(settings)
-        .imgly.onCreate { engine in
-          try await OnCreate.loadImage(from: url, size: size)(engine)
+      Editor(settings)
+        .imgly.configuration {
+          PhotoEditorConfiguration { builder in
+            builder.onCreate { engine, _ in
+              try await PhotoEditorConfiguration.defaultOnCreate(createScene: { engine in
+                try await engine.scene.create(fromImage: url)
+                let pages = try engine.scene.getPages()
+                guard let page = pages.first, pages.count == 1 else {
+                  throw EditorError("No page was found.")
+                }
+                if let size {
+                  try engine.block.setWidth(page, value: Float(size.width))
+                  try engine.block.setHeight(page, value: Float(size.height))
+                }
+              })(engine)
+            }
+          }
+          ShowcasesEditorConfiguration()
         }
     }
   }

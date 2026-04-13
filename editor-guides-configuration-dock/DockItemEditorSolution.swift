@@ -1,6 +1,5 @@
-// swiftlint:disable unused_closure_parameter
 // swiftformat:disable unusedArguments
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct DockItemEditorSolution: View {
@@ -8,54 +7,60 @@ struct DockItemEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var editor: some View {
-    DesignEditor(settings)
-      .imgly.dockItems { context in
-        // highlight-predefinedButton
-        Dock.Buttons.elementsLibrary()
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.dock { dock in
+            dock.items { _ in
+              // highlight-predefinedButton
+              Dock.Buttons.elementsLibrary()
 
-        // highlight-customizePredefinedButton
-        Dock.Buttons.imagesLibrary(
-          // highlight-customizePredefinedButton-action
-          action: { context in
-            context.eventHandler.send(.openSheet(type: .libraryAdd { context.assetLibrary.imagesTab }))
-          },
-          // highlight-customizePredefinedButton-action
-          // highlight-customizePredefinedButton-title
-          title: { context in Text("Image") },
-          // highlight-customizePredefinedButton-icon
-          icon: { context in Image.imgly.addImage },
-          // highlight-customizePredefinedButton-isEnabled
-          isEnabled: { context in true },
-          // highlight-customizePredefinedButton-isVisible
-          isVisible: { context in true },
-        )
-        // highlight-customizePredefinedButton
+              // highlight-customizePredefinedButton
+              Dock.Buttons.imagesLibrary(
+                // highlight-customizePredefinedButton-action
+                action: { context in
+                  context.eventHandler.send(.openSheet(type: .libraryAdd { context.assetLibrary.imagesTab }))
+                },
+                // highlight-customizePredefinedButton-action
+                // highlight-customizePredefinedButton-title
+                title: { _ in Text("Image") },
+                // highlight-customizePredefinedButton-icon
+                icon: { _ in Image.imgly.addImage },
+                // highlight-customizePredefinedButton-isEnabled
+                isEnabled: { _ in true },
+                // highlight-customizePredefinedButton-isVisible
+                isVisible: { _ in true },
+              )
+              // highlight-customizePredefinedButton
 
-        // highlight-newButton
-        Dock.Button(
-          // highlight-newButton-id
-          id: "my.package.dock.button.newButton",
-          // highlight-newButton-action
-        ) { context in
-          print("New Button action")
-          // highlight-newButton-action
-          // highlight-newButton-label
-        } label: { context in
-          Label("New Button", systemImage: "star.circle")
-          // highlight-newButton-label
-          // highlight-newButton-isEnabled
-        } isEnabled: { context in
-          true
-          // highlight-newButton-isEnabled
-          // highlight-newButton-isVisible
-        } isVisible: { context in
-          true
+              // highlight-newButton
+              Dock.Button(
+                // highlight-newButton-id
+                id: "my.package.dock.button.newButton",
+                // highlight-newButton-action
+              ) { _ in
+                print("New Button action")
+                // highlight-newButton-action
+                // highlight-newButton-label
+              } label: { _ in
+                Label("New Button", systemImage: "star.circle")
+                // highlight-newButton-label
+                // highlight-newButton-isEnabled
+              } isEnabled: { _ in
+                true
+                // highlight-newButton-isEnabled
+                // highlight-newButton-isVisible
+              } isVisible: { _ in
+                true
+              }
+              // highlight-newButton-isVisible
+              // highlight-newButton
+
+              // highlight-newCustomItem
+              CustomDockItem()
+            }
+          }
         }
-        // highlight-newButton-isVisible
-        // highlight-newButton
-
-        // highlight-newCustomItem
-        CustomDockItem()
       }
   }
 

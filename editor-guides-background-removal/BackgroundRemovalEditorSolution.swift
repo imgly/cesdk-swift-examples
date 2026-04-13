@@ -1,5 +1,5 @@
+import IMGLYEditor
 import IMGLYEngine
-import IMGLYPhotoEditor
 import SwiftUI
 
 /// Photo Editor with AI-powered background removal capabilities.
@@ -28,22 +28,32 @@ struct BackgroundRemovalEditorSolution: View {
   // MARK: - Body
 
   var body: some View {
-    PhotoEditor(settings)
-      // Here we initialize the editor with the provided image
-      .imgly.onCreate { engine in
-        // Load the selected image into the editor
-        try await OnCreate.loadImage(from: url)(engine)
-      }
-      // highlight-modify-dock-items
-      // 'modifyDockItems' allows you to change the dock buttons, in this case I am just adding an extra button to the
-      // default ones
-      .imgly.modifyDockItems { context, items in
-        // Add custom background removal button to the editor dock at the last position of the default ones
-        items.addFirst {
-          backgroundRemovalButton(context: context)
+    Editor(settings)
+      .imgly.configuration {
+        PhotoEditorConfiguration { builder in
+          // Here we initialize the editor with the provided image
+          builder.onCreate { engine, _ in
+            // Load the selected image into the editor
+            try await PhotoEditorConfiguration.defaultOnCreate(
+              createScene: { engine in
+                try await engine.scene.create(fromImage: url)
+              },
+            )(engine)
+          }
+          // highlight-modify-dock-items
+          // 'dock.modify' allows you to change the dock buttons, in this case I am just adding an extra button to the
+          // default ones
+          builder.dock { dock in
+            dock.modify { context, items in
+              // Add custom background removal button to the editor dock at the last position of the default ones
+              items.addFirst {
+                backgroundRemovalButton(context: context)
+              }
+            }
+          }
+          // highlight-modify-dock-items
         }
       }
-      // highlight-modify-dock-items
       .alert("Background Removal Error", isPresented: .constant(processingError != nil)) {
         Button("OK") {
           processingError = nil

@@ -1,5 +1,5 @@
 import Foundation
-import IMGLYDesignEditor
+import IMGLYEditor
 import IMGLYEngine
 
 /// Delegate for enhancing selected images from the inspector context.
