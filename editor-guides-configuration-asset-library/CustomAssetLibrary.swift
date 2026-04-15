@@ -8,10 +8,16 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-customAssetLibrary
 
   // highlight-assetLibraryBuilder
-  @AssetLibraryBuilder func photoRoll(_ sceneMode: SceneMode?) -> AssetLibraryContent {
+  let includeAVResources: Bool
+
+  init(includeAVResources: Bool = false) {
+    self.includeAVResources = includeAVResources
+  }
+
+  @AssetLibraryBuilder var photoRoll: AssetLibraryContent {
     AssetLibrarySource.photoRoll(
       .title("Photo Roll"),
-      media: sceneMode == .video ? [.image, .video] : [.image],
+      media: includeAVResources ? [.image, .video] : [.image],
     )
   }
 
@@ -59,9 +65,9 @@ struct CustomAssetLibrary: AssetLibrary {
     }, source: .init(defaultSource: .sticker))
   }
 
-  @AssetLibraryBuilder func elements(_ sceneMode: SceneMode?) -> AssetLibraryContent {
-    photoRoll(sceneMode)
-    if sceneMode == .video {
+  @AssetLibraryBuilder var elements: AssetLibraryContent {
+    photoRoll
+    if includeAVResources {
       AssetLibraryGroup.video("Videos") { videos }
       AssetLibraryGroup.audio("Audio") { audio }
     }
@@ -77,16 +83,12 @@ struct CustomAssetLibrary: AssetLibrary {
 
   // highlight-assetLibraryView
   @ViewBuilder var photoRollTab: some View {
-    AssetLibrarySceneModeReader { sceneMode in
-      AssetLibraryTab("Photo Roll") { photoRoll(sceneMode) } label: { DefaultAssetLibrary.photoRollLabel($0) }
-    }
+    AssetLibraryTab("Photo Roll") { photoRoll } label: { DefaultAssetLibrary.photoRollLabel($0) }
   }
 
   // highlight-assetLibraryTabViews
   @ViewBuilder var elementsTab: some View {
-    AssetLibrarySceneModeReader { sceneMode in
-      AssetLibraryTab("Elements") { elements(sceneMode) } label: { DefaultAssetLibrary.elementsLabel($0) }
-    }
+    AssetLibraryTab("Elements") { elements } label: { DefaultAssetLibrary.elementsLabel($0) }
   }
 
   @ViewBuilder var videosTab: some View {
@@ -137,25 +139,23 @@ struct CustomAssetLibrary: AssetLibrary {
   // highlight-assetLibraryTabView
   var body: some View {
     TabView {
-      AssetLibrarySceneModeReader { sceneMode in
-        if sceneMode == .video {
-          elementsTab
-          photoRollTab
-          videosTab
-          audioTab
-          AssetLibraryMoreTab {
-            imagesTab
-            textTab
-            shapesTab
-            stickersTab
-          }
-        } else {
-          elementsTab
+      if includeAVResources {
+        elementsTab
+        photoRollTab
+        videosTab
+        audioTab
+        AssetLibraryMoreTab {
           imagesTab
           textTab
           shapesTab
           stickersTab
         }
+      } else {
+        elementsTab
+        imagesTab
+        textTab
+        shapesTab
+        stickersTab
       }
     }
   }

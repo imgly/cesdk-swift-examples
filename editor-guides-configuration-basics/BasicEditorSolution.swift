@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct BasicEditorSolution: View {
@@ -8,12 +8,13 @@ struct BasicEditorSolution: View {
     // highlight-userID
     userID: "<your unique user id>",
     // highlight-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.72.3/assets")!,
+    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.73.0-rc.3/assets")!,
   )
 
   var editor: some View {
     // highlight-editor
-    DesignEditor(settings)
+    Editor(settings)
+      .imgly.configuration { DesignEditorConfiguration() }
   }
 
   @State private var isPresented = false

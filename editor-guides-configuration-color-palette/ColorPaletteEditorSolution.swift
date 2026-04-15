@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct ColorPaletteEditorSolution: View {
@@ -7,18 +7,22 @@ struct ColorPaletteEditorSolution: View {
 
   var editor: some View {
     // highlight-editor
-    DesignEditor(settings)
-      // highlight-colorPalette
-      .imgly.colorPalette([
-        .init("Blue", .imgly.blue),
-        .init("Green", .imgly.green),
-        .init("Yellow", .imgly.yellow),
-        .init("Red", .imgly.red),
-        .init("Black", .imgly.black),
-        .init("White", .imgly.white),
-        .init("Gray", .imgly.gray),
-      ])
-    // highlight-colorPalette
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          // highlight-colorPalette
+          builder.colorPalette([
+            .init("Blue", .imgly.blue),
+            .init("Green", .imgly.green),
+            .init("Yellow", .imgly.yellow),
+            .init("Red", .imgly.red),
+            .init("Black", .imgly.black),
+            .init("White", .imgly.white),
+            .init("Gray", .imgly.gray),
+          ])
+          // highlight-colorPalette
+        }
+      }
   }
 
   @State private var isPresented = false

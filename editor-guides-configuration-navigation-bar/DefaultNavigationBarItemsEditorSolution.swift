@@ -1,8 +1,4 @@
-import IMGLYApparelEditor
-import IMGLYDesignEditor
-import IMGLYPhotoEditor
-import IMGLYPostcardEditor
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct DefaultNavigationBarItemsEditorSolution: View {
@@ -10,97 +6,127 @@ struct DefaultNavigationBarItemsEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var designEditor: some View {
-    DesignEditor(settings)
-      // highlight-designEditor-navigationBarItems
-      .imgly.navigationBarItems { _ in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          NavigationBar.Buttons.closeEditor()
-        }
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          NavigationBar.Buttons.undo()
-          NavigationBar.Buttons.redo()
-          NavigationBar.Buttons.togglePagesMode()
-          NavigationBar.Buttons.export()
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          // highlight-designEditor-navigationBarItems
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+              }
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                NavigationBar.Buttons.undo()
+                NavigationBar.Buttons.redo()
+                NavigationBar.Buttons.togglePagesMode()
+                NavigationBar.Buttons.export()
+              }
+            }
+          }
+          // highlight-designEditor-navigationBarItems
         }
       }
-    // highlight-designEditor-navigationBarItems
   }
 
   var photoEditor: some View {
-    PhotoEditor(settings)
-      // highlight-photoEditor-navigationBarItems
-      .imgly.navigationBarItems { _ in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          NavigationBar.Buttons.closeEditor()
-        }
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          NavigationBar.Buttons.undo()
-          NavigationBar.Buttons.redo()
-          NavigationBar.Buttons.togglePreviewMode()
-          NavigationBar.Buttons.export()
+    Editor(settings)
+      .imgly.configuration {
+        PhotoEditorConfiguration { builder in
+          // highlight-photoEditor-navigationBarItems
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+              }
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                NavigationBar.Buttons.undo()
+                NavigationBar.Buttons.redo()
+                NavigationBar.Buttons.togglePreviewMode()
+                NavigationBar.Buttons.export()
+              }
+            }
+          }
+          // highlight-photoEditor-navigationBarItems
         }
       }
-    // highlight-photoEditor-navigationBarItems
   }
 
   var videoEditor: some View {
-    VideoEditor(settings)
-      // highlight-videoEditor-navigationBarItems
-      .imgly.navigationBarItems { _ in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          NavigationBar.Buttons.closeEditor()
-        }
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          NavigationBar.Buttons.undo()
-          NavigationBar.Buttons.redo()
-          NavigationBar.Buttons.export()
+    Editor(settings)
+      .imgly.configuration {
+        VideoEditorConfiguration { builder in
+          // highlight-videoEditor-navigationBarItems
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+              }
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                NavigationBar.Buttons.undo()
+                NavigationBar.Buttons.redo()
+                NavigationBar.Buttons.export()
+              }
+            }
+          }
+          // highlight-videoEditor-navigationBarItems
         }
       }
-    // highlight-videoEditor-navigationBarItems
   }
 
   var apparelEditor: some View {
-    ApparelEditor(settings)
-      // highlight-apparelEditor-navigationBarItems
-      .imgly.navigationBarItems { _ in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          NavigationBar.Buttons.closeEditor()
-        }
-        NavigationBar.ItemGroup(placement: .principal) {
-          NavigationBar.Buttons.undo()
-          NavigationBar.Buttons.redo()
-          NavigationBar.Buttons.togglePreviewMode()
-        }
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          NavigationBar.Buttons.export()
+    Editor(settings)
+      .imgly.configuration {
+        ApparelEditorConfiguration { builder in
+          // highlight-apparelEditor-navigationBarItems
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+              }
+              NavigationBar.ItemGroup(placement: .principal) {
+                NavigationBar.Buttons.undo()
+                NavigationBar.Buttons.redo()
+                NavigationBar.Buttons.togglePreviewMode()
+              }
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                NavigationBar.Buttons.export()
+              }
+            }
+          }
+          // highlight-apparelEditor-navigationBarItems
         }
       }
-    // highlight-apparelEditor-navigationBarItems
   }
 
   var postcardEditor: some View {
-    PostcardEditor(settings)
-      // highlight-postcardEditor-navigationBarItems
-      .imgly.navigationBarItems { _ in
-        NavigationBar.ItemGroup(placement: .topBarLeading) {
-          NavigationBar.Buttons.closeEditor()
-          NavigationBar.Buttons.previousPage(
-            label: { _ in NavigationLabel("Design", direction: .backward) },
-          )
-        }
-        NavigationBar.ItemGroup(placement: .principal) {
-          NavigationBar.Buttons.undo()
-          NavigationBar.Buttons.redo()
-          NavigationBar.Buttons.togglePreviewMode()
-        }
-        NavigationBar.ItemGroup(placement: .topBarTrailing) {
-          NavigationBar.Buttons.nextPage(
-            label: { _ in NavigationLabel("Write", direction: .forward) },
-          )
-          NavigationBar.Buttons.export()
+    Editor(settings)
+      .imgly.configuration {
+        PostcardEditorConfiguration { builder in
+          // highlight-postcardEditor-navigationBarItems
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+                NavigationBar.Buttons.previousPage(
+                  label: { _ in NavigationLabel("Design", direction: .backward) },
+                )
+              }
+              NavigationBar.ItemGroup(placement: .principal) {
+                NavigationBar.Buttons.undo()
+                NavigationBar.Buttons.redo()
+                NavigationBar.Buttons.togglePreviewMode()
+              }
+              NavigationBar.ItemGroup(placement: .topBarTrailing) {
+                NavigationBar.Buttons.nextPage(
+                  label: { _ in NavigationLabel("Write", direction: .forward) },
+                )
+                NavigationBar.Buttons.export()
+              }
+            }
+          }
+          // highlight-postcardEditor-navigationBarItems
         }
       }
-    // highlight-postcardEditor-navigationBarItems
   }
 
   private enum Solution: String, Identifiable, CaseIterable {

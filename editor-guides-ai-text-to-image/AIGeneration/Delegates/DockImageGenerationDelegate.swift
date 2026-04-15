@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import IMGLYEngine
 
 /// Delegate for generating new images from the dock context.

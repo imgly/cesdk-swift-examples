@@ -1,6 +1,5 @@
-// swiftlint:disable unused_closure_parameter
 // swiftformat:disable unusedArguments
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct InspectorBarItemEditorSolution: View {
@@ -8,58 +7,64 @@ struct InspectorBarItemEditorSolution: View {
                                 userID: "<your unique user id>")
 
   var editor: some View {
-    DesignEditor(settings)
-      .imgly.inspectorBarItems { context in
-        // highlight-predefinedButton
-        InspectorBar.Buttons.layer()
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          builder.inspectorBar { inspectorBar in
+            inspectorBar.items { _ in
+              // highlight-predefinedButton
+              InspectorBar.Buttons.layer()
 
-        // highlight-customizePredefinedButton
-        InspectorBar.Buttons.formatText(
-          // highlight-customizePredefinedButton-action
-          action: { context in
-            context.eventHandler.send(.openSheet(type: .formatText()))
-          },
-          // highlight-customizePredefinedButton-action
-          // highlight-customizePredefinedButton-title
-          title: { context in Text("Format") },
-          // highlight-customizePredefinedButton-icon
-          icon: { context in Image.imgly.formatText },
-          // highlight-customizePredefinedButton-isEnabled
-          isEnabled: { context in true },
-          // highlight-customizePredefinedButton-isVisible
-          isVisible: { context in
-            try context.selection.type == .text &&
-              context.engine.block.isAllowedByScope(context.selection.block, key: "text/character")
-          },
-          // highlight-customizePredefinedButton-isVisible
-        )
-        // highlight-customizePredefinedButton
+              // highlight-customizePredefinedButton
+              InspectorBar.Buttons.formatText(
+                // highlight-customizePredefinedButton-action
+                action: { context in
+                  context.eventHandler.send(.openSheet(type: .formatText()))
+                },
+                // highlight-customizePredefinedButton-action
+                // highlight-customizePredefinedButton-title
+                title: { _ in Text("Format") },
+                // highlight-customizePredefinedButton-icon
+                icon: { _ in Image.imgly.formatText },
+                // highlight-customizePredefinedButton-isEnabled
+                isEnabled: { _ in true },
+                // highlight-customizePredefinedButton-isVisible
+                isVisible: { context in
+                  try context.selection.type == .text &&
+                    context.engine.block.isAllowedByScope(context.selection.block, key: "text/character")
+                },
+                // highlight-customizePredefinedButton-isVisible
+              )
+              // highlight-customizePredefinedButton
 
-        // highlight-newButton
-        InspectorBar.Button(
-          // highlight-newButton-id
-          id: "my.package.inspectorBar.button.newButton",
-          // highlight-newButton-action
-        ) { context in
-          print("New Button action")
-          // highlight-newButton-action
-          // highlight-newButton-label
-        } label: { context in
-          Label("New Button", systemImage: "star.circle")
-          // highlight-newButton-label
-          // highlight-newButton-isEnabled
-        } isEnabled: { context in
-          true
-          // highlight-newButton-isEnabled
-          // highlight-newButton-isVisible
-        } isVisible: { context in
-          true
+              // highlight-newButton
+              InspectorBar.Button(
+                // highlight-newButton-id
+                id: "my.package.inspectorBar.button.newButton",
+                // highlight-newButton-action
+              ) { _ in
+                print("New Button action")
+                // highlight-newButton-action
+                // highlight-newButton-label
+              } label: { _ in
+                Label("New Button", systemImage: "star.circle")
+                // highlight-newButton-label
+                // highlight-newButton-isEnabled
+              } isEnabled: { _ in
+                true
+                // highlight-newButton-isEnabled
+                // highlight-newButton-isVisible
+              } isVisible: { _ in
+                true
+              }
+              // highlight-newButton-isVisible
+              // highlight-newButton
+
+              // highlight-newCustomItem
+              CustomInspectorBarItem()
+            }
+          }
         }
-        // highlight-newButton-isVisible
-        // highlight-newButton
-
-        // highlight-newCustomItem
-        CustomInspectorBarItem()
       }
   }
 
