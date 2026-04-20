@@ -1,8 +1,4 @@
-import IMGLYApparelEditor
-import IMGLYDesignEditor
-import IMGLYPhotoEditor
-import IMGLYPostcardEditor
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct Showcases: View {
@@ -12,7 +8,8 @@ struct Showcases: View {
     Section(title: "Photo Editor",
             subtitle: "Edit photo.") {
       Showcase(
-        view: PhotoEditor(settings),
+        view: Editor(settings)
+          .imgly.configuration { PhotoEditorConfiguration() },
         title: "Default Photo Editor",
         subtitle: "Loads empty image.",
       )
@@ -31,7 +28,8 @@ struct Showcases: View {
     Section(title: "Design Editor",
             subtitle: "Built to edit various designs.") {
       Showcase(
-        view: DesignEditor(settings),
+        view: Editor(settings)
+          .imgly.configuration { DesignEditorConfiguration() },
         title: "Default Design Editor",
         subtitle: "Loads empty design scene.",
       )
@@ -44,7 +42,8 @@ struct Showcases: View {
     Section(title: "Video Editor",
             subtitle: "Edit video.") {
       Showcase(
-        view: VideoEditor(settings),
+        view: Editor(settings)
+          .imgly.configuration { VideoEditorConfiguration() },
         title: "Default Video Editor",
         subtitle: "Loads empty video scene.",
       )
@@ -74,7 +73,8 @@ struct Showcases: View {
     Section(title: "Apparel Editor",
             subtitle: "Customize and export a print-ready design with a mobile apparel editor.") {
       Showcase(
-        view: ApparelEditor(settings),
+        view: Editor(settings)
+          .imgly.configuration { ApparelEditorConfiguration() },
         title: "Default Apparel Editor",
         subtitle: "Loads empty apparel scene.",
       )
@@ -87,7 +87,8 @@ struct Showcases: View {
     Section(title: "Post- & Greeting-Card Editor",
             subtitle: "Built to facilitate optimal card design, from changing accent colors to selecting fonts.") {
       Showcase(
-        view: PostcardEditor(settings),
+        view: Editor(settings)
+          .imgly.configuration { PostcardEditorConfiguration() },
         title: "Default Postcard Editor",
         subtitle: "Loads empty postcard scene.",
       )
@@ -97,17 +98,39 @@ struct Showcases: View {
         subtitle: "Custom postcard scene selection and adds Unsplash asset source and library.",
       ).showcaseMode(.navigationLink)
     }
+    Section(title: "Starter Kits") {
+      Group {
+        Showcase(
+          view: DesignEditorStarterKit(),
+          title: "Design Editor",
+          subtitle: "Complete design editor inline implementation showing all setup code.",
+        )
+        Showcase(
+          view: VideoEditorStarterKit(),
+          title: "Video Editor",
+          subtitle: "Complete video editor inline implementation showing all setup code.",
+        )
+        Showcase(
+          view: PhotoEditorStarterKit(),
+          title: "Photo Editor",
+          subtitle: "Complete photo editor inline implementation showing all setup code.",
+        )
+        Showcase(
+          view: ApparelEditorStarterKit(),
+          title: "Apparel Editor",
+          subtitle: "Complete apparel editor inline implementation showing all setup code.",
+        )
+        Showcase(
+          view: PostcardEditorStarterKit(),
+          title: "Postcard Editor",
+          subtitle: "Complete postcard editor inline implementation showing all setup code.",
+        )
+      }
+    }.showcaseMode(.navigationLink)
     Section(title: "Documentation Editor Examples") {
       Group {
         Showcase(view: EditorSwiftUI(), title: "Quickstart: SwiftUI")
         Showcase(view: EditorUIKitWrapper(), title: "Quickstart: UIKit")
-      }
-      Group {
-        Showcase(view: DesignEditorSolution(), title: "Solutions: Design Editor")
-        Showcase(view: VideoEditorSolution(), title: "Solutions: Video Editor")
-        Showcase(view: PhotoEditorSolution(), title: "Solutions: Photo Editor")
-        Showcase(view: ApparelEditorSolution(), title: "Solutions: Apparel Editor")
-        Showcase(view: PostcardEditorSolution(), title: "Solutions: Postcard Editor")
       }
       Group {
         Showcase(view: BasicEditorSolution(), title: "Configuration: Basics")

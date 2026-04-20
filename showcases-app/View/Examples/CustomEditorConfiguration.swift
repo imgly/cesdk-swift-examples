@@ -9,19 +9,29 @@ import SwiftUI
   }
 }
 
-extension View {
-  @MainActor
-  func customEditorConfiguration(scene url: URL) -> some View {
-    imgly.onCreate { engine in
-      try await OnCreate.loadScene(from: url)(engine)
-      try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
-    }
-    .imgly.assetLibrary {
-      DefaultAssetLibrary()
-        .images {
-          AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
-          DefaultAssetLibrary.images
+class ShowcasesEditorConfiguration: EditorConfiguration {
+  override var navigationBar: NavigationBar.Configuration? {
+    NavigationBar.Configuration { navigationBar in
+      navigationBar.modify { _, items in
+        items.replace(id: NavigationBar.Buttons.ID.closeEditor) {
+          NavigationBar.Buttons.closeEditor(
+            label: { _ in SwiftUI.Label("Home", systemImage: "house") },
+          )
         }
+      }
+    }
+  }
+}
+
+final class CustomEditorConfiguration: ShowcasesEditorConfiguration {
+  override var assetLibrary: AssetLibraryConfiguration? {
+    AssetLibraryConfiguration { builder in
+      builder.modify { categories in
+        categories.modifySections(of: AssetLibraryCategory.ID.images) { sections in
+          let id = UnsplashAssetSource.id
+          sections.addFirst(.image(id: id, title: "Unsplash", source: .init(id: id)))
+        }
+      }
     }
   }
 }

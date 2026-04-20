@@ -1,5 +1,6 @@
 @preconcurrency import CoreImage
 import Foundation
+import ImageIO
 import UIKit
 @preconcurrency import Vision
 
@@ -18,6 +19,18 @@ import UIKit
 /// - Automatic mask generation and application
 /// - Performance optimized for real-time use
 enum BackgroundRemover {
+  // MARK: - Configuration
+
+  /// Maximum pixel dimension for Vision processing.
+  /// Only the segmentation step is downsampled; the final output preserves the original resolution.
+  private static let maxVisionDimension: CGFloat = 3072
+
+  /// Shared CIContext for rendering, avoids repeated allocation.
+  private static let ciContext = CIContext(options: [
+    .useSoftwareRenderer: false,
+    .highQualityDownsample: true,
+  ])
+
   // MARK: - Vision Requests Configuration
 
   /// Vision request for detecting faces in images
@@ -37,10 +50,10 @@ enum BackgroundRemover {
   }()
 
   /// Vision request for generating person segmentation masks
-  /// Configured for highest quality output
+  /// Configured for balanced quality and memory usage
   private static let personSegmentationRequest: VNGeneratePersonSegmentationRequest = {
     let request = VNGeneratePersonSegmentationRequest()
-    request.qualityLevel = .accurate // Use highest quality setting
+    request.qualityLevel = .balanced
     request.outputPixelFormat = kCVPixelFormatType_OneComponent8
     request.revision = VNGeneratePersonSegmentationRequestRevision1
     return request
@@ -49,36 +62,36 @@ enum BackgroundRemover {
   // MARK: - Public Interface
 
   // swiftlint:disable:next orphaned_doc_comment
-  /// Removes the background from an image using AI-powered person segmentation.
+  /// Removes the background from an image and writes the result directly to a file.
   ///
-  /// This method performs the following steps:
-  /// 1. Validates that a person is present in the image
-  /// 2. Generates a high-quality segmentation mask
-  /// 3. Applies the mask to create a transparent background
-  /// 4. Returns the processed image with background removed
+  /// This method works entirely with lazy `CIImage` operations and writes the final
+  /// PNG to disk via `CIContext.writePNGRepresentation`, so only **one** full-resolution
+  /// pixel buffer is ever materialised. Vision processing is performed on a downsampled
+  /// copy to stay within device memory limits, but the mask is scaled back up and applied
+  /// to the original image — the output preserves the full input resolution.
   ///
-  /// - Parameter image: The input UIImage containing a person
-  /// - Returns: A UIImage with transparent background, or nil if processing fails
-  ///
-  /// **Performance Note:** This operation is CPU/GPU intensive and should be called
-  /// from a background queue to avoid blocking the main thread.
-  ///
-  /// **Example Usage:**
-  /// ```swift
-  /// let processedImage = await BackgroundRemover.removeBackground(from: originalImage)
-  /// ```
+  /// - Parameter imageData: The compressed image file data (JPEG, PNG, HEIC, …).
+  /// - Returns: A file `URL` to the resulting PNG with a transparent background,
+  ///   or `nil` if processing fails.
   // highlight-remove-background
-  static func removeBackground(from image: UIImage) async -> UIImage? {
-    // Convert UIImage to CIImage for processing
-    guard let ciImage = CIImage(image: image) else {
-      debugPrint("❌ Failed to convert UIImage to CIImage")
+  static func removeBackground(from imageData: Data) async -> URL? {
+    // CIImage(data:) is lazy — the full pixel buffer is NOT decompressed here.
+    guard let ciImage = CIImage(data: imageData) else {
+      debugPrint("❌ Failed to create CIImage from data")
       return nil
     }
 
+    // Apply EXIF orientation so the image is upright for Vision.
+    let orientation = ciImage.properties[kCGImagePropertyOrientation as String] as? UInt32 ?? 1
+    let orientedImage = ciImage.oriented(.init(rawValue: orientation) ?? .up)
+
+    // Downsample for Vision only — the final output stays at original resolution.
+    let visionImage = downsampleIfNeeded(orientedImage)
+
     return await withCheckedContinuation { continuation in
       Task {
-        // Step 1: Generate person segmentation mask
-        guard let maskImage = await generatePersonMask(from: ciImage) else {
+        // Step 1: Generate person segmentation mask at reduced resolution
+        guard let maskImage = await generatePersonMask(from: visionImage) else {
           debugPrint("❌ Failed to generate person mask")
           continuation.resume(returning: nil)
           return
@@ -86,8 +99,14 @@ enum BackgroundRemover {
 
         debugPrint("✅ Successfully generated person mask")
 
-        // Step 2: Apply mask to remove background
-        guard let resultCIImage = applyTransparencyMask(maskImage, to: ciImage) else {
+        // Step 2: Scale mask to original image size (lazy — no memory allocated)
+        let fullResMask = maskImage.transformed(by: calculateScaleTransform(
+          from: maskImage.extent.size,
+          to: orientedImage.extent.size,
+        ))
+
+        // Step 3: Apply mask to original full-resolution image (lazy — no memory allocated)
+        guard let resultCIImage = applyTransparencyMask(fullResMask, to: orientedImage) else {
           debugPrint("❌ Failed to apply transparency mask")
           continuation.resume(returning: nil)
           return
@@ -95,15 +114,15 @@ enum BackgroundRemover {
 
         debugPrint("✅ Successfully applied transparency mask")
 
-        // Step 3: Convert result back to UIImage
-        guard let resultUIImage = convertToUIImage(resultCIImage) else {
-          debugPrint("❌ Failed to convert result to UIImage")
+        // Step 4: Write result directly to a file — only ONE full-res buffer is rendered.
+        guard let outputURL = writeToCache(resultCIImage) else {
+          debugPrint("❌ Failed to write result to cache")
           continuation.resume(returning: nil)
           return
         }
 
         debugPrint("✅ Background removal completed successfully")
-        continuation.resume(returning: resultUIImage)
+        continuation.resume(returning: outputURL)
       }
     }
   }
@@ -186,17 +205,10 @@ enum BackgroundRemover {
             return
           }
 
-          // Convert pixel buffer to CIImage
-          var maskImage = CIImage(cvPixelBuffer: maskPixelBuffer)
+          // Convert pixel buffer to CIImage (raw mask size, scaling is handled by the caller)
+          let maskImage = CIImage(cvPixelBuffer: maskPixelBuffer)
 
-          // Scale mask to match input image dimensions
-          let scaleTransform = calculateScaleTransform(
-            from: maskImage.extent.size,
-            to: image.extent.size,
-          )
-          maskImage = maskImage.transformed(by: scaleTransform)
-
-          debugPrint("✅ Mask generated and scaled successfully")
+          debugPrint("✅ Mask generated successfully")
           continuation.resume(returning: maskImage)
 
         } catch {
@@ -279,23 +291,33 @@ enum BackgroundRemover {
 
   // highlight-apply-mask
 
-  /// Converts a CIImage to UIImage with proper handling of color spaces and orientation.
+  /// Writes a CIImage directly to a PNG file in the caches directory.
   ///
-  /// - Parameter ciImage: The CIImage to convert
-  /// - Returns: The converted UIImage, or nil if conversion fails
-  private static func convertToUIImage(_ ciImage: CIImage) -> UIImage? {
-    // Use a high-performance CIContext for rendering
-    let context = CIContext(options: [
-      .useSoftwareRenderer: false, // Prefer GPU rendering
-      .highQualityDownsample: true,
-    ])
+  /// Using `writePNGRepresentation` instead of `createCGImage` + `pngData()` avoids
+  /// keeping an extra full-resolution CGImage / UIImage in memory.
+  private static func writeToCache(_ ciImage: CIImage) -> URL? {
+    do {
+      let cacheURL = try FileManager.default
+        .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        .appendingPathComponent(UUID().uuidString, conformingTo: .png)
 
-    guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
-      debugPrint("❌ Failed to create CGImage from CIImage")
+      let colorSpace = ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+      try ciContext.writePNGRepresentation(of: ciImage, to: cacheURL, format: .RGBA8, colorSpace: colorSpace)
+      return cacheURL
+    } catch {
+      debugPrint("❌ Failed to write PNG: \(error.localizedDescription)")
       return nil
     }
+  }
 
-    return UIImage(cgImage: cgImage)
+  /// Downsamples a CIImage if its largest dimension exceeds ``maxVisionDimension``.
+  private static func downsampleIfNeeded(_ image: CIImage) -> CIImage {
+    let maxDim = max(image.extent.width, image.extent.height)
+    guard maxDim > maxVisionDimension else { return image }
+
+    let scale = maxVisionDimension / maxDim
+    debugPrint("📐 Downsampling from \(image.extent.size) by factor \(scale)")
+    return image.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
   }
 
   /// Calculates the transform needed to scale one size to match another.

@@ -2,6 +2,15 @@
 import Foundation
 import UIKit
 
+/// fal.ai image-to-image limits (from API docs):
+/// - File size: < 5 MB
+/// - Resolution: < 16 MP
+/// - Max dimension: < 4096 px
+/// Reserve ~100KB for non-image request params (prompt, style, format, etc.).
+private let falMaxRequestBytes = 5 * 1024 * 1024
+private let falParamReserve = 100 * 1024
+private let maxDataURIBytes = falMaxRequestBytes - falParamReserve
+
 /// FalAIService with built-in configuration
 @MainActor
 public final class FalAIService: AIImageService {
@@ -146,51 +155,58 @@ public final class FalAIService: AIImageService {
 
   // MARK: - Private Helpers
 
-  /// Determine MIME type from image data
+  /// Determine MIME type from image data magic bytes.
+  /// Detects PNG, JPEG, and HEIC; defaults to JPEG for unknown formats.
   private nonisolated func determineMimeType(from data: Data) -> String {
-    // Check for PNG signature
-    let pngSignature: [UInt8] = [0x89, 0x50, 0x4E, 0x47]
-    if data.count >= 4 {
-      let first4 = data.prefix(4)
-      if first4.elementsEqual(pngSignature) {
-        return "image/png"
+    guard data.count >= 4 else { return "image/jpeg" }
+
+    let header = [UInt8](data.prefix(12))
+
+    // PNG: 89 50 4E 47
+    if header[0] == 0x89, header[1] == 0x50, header[2] == 0x4E, header[3] == 0x47 {
+      return "image/png"
+    }
+
+    // JPEG: FF D8 FF
+    if header[0] == 0xFF, header[1] == 0xD8, header[2] == 0xFF {
+      return "image/jpeg"
+    }
+
+    // HEIC/HEIF: ISO BMFF files have "ftyp" at offset 4; check the major brand at offset 8
+    // to distinguish HEIC from other ISOBMFF formats (MP4, MOV, 3GP, etc.).
+    if data.count >= 12, header[4] == 0x66, header[5] == 0x74, header[6] == 0x79, header[7] == 0x70 {
+      let brand = String(bytes: header[8 ... 11], encoding: .ascii) ?? ""
+      let heicBrands: Set<String> = ["heic", "heix", "mif1", "msf1", "hevc", "hevx"]
+      if heicBrands.contains(brand) {
+        return "image/heic"
       }
     }
 
-    // Check for JPEG signature
-    let jpegSignature: [UInt8] = [0xFF, 0xD8, 0xFF]
-    if data.count >= 3 {
-      let first3 = data.prefix(3)
-      if first3[0] == jpegSignature[0], first3[1] == jpegSignature[1], first3[2] == jpegSignature[2] {
-        return "image/jpeg"
-      }
-    }
-
-    // Default to JPEG if unknown
     return "image/jpeg"
   }
 
   private nonisolated func compressImageData(
     _ originalData: Data,
-    maxSizeBytes: Int = 3 * 1024 * 1024,
-    maxDimension: CGFloat = 4096,
-    maxMegapixels: CGFloat = 16,
+    maxSizeBytes: Int = 1 * 1024 * 1024,
+    maxDimension: CGFloat = 1024,
+    maxMegapixels: CGFloat = 1,
   ) -> (data: Data, mimeType: String)? {
     let originalMimeType = determineMimeType(from: originalData)
     guard let image = UIImage(data: originalData) else {
-      return (originalData, originalMimeType)
+      return nil
     }
 
     let pixelWidth = image.size.width * image.scale
     let pixelHeight = image.size.height * image.scale
     let megapixels = (pixelWidth * pixelHeight) / 1_000_000
 
-    // Already within limits
+    let needsReEncode = originalMimeType != "image/jpeg" && originalMimeType != "image/png"
+
     let withinLimits = originalData.count <= maxSizeBytes
       && pixelWidth <= maxDimension
       && pixelHeight <= maxDimension
       && megapixels <= maxMegapixels
-    if withinLimits {
+    if withinLimits, !needsReEncode {
       return (originalData, originalMimeType)
     }
 
@@ -199,8 +215,10 @@ public final class FalAIService: AIImageService {
       image, maxDimension: maxDimension, maxMegapixels: maxMegapixels,
     )
 
-    // Step 2: Encode to fit within byte size limit
-    return encodeToFitSize(resized, originalMimeType: originalMimeType, maxSizeBytes: maxSizeBytes)
+    // Step 2: Encode to fit within byte size limit.
+    // For HEIC input, treat as JPEG since we're re-encoding anyway.
+    let targetMimeType = needsReEncode ? "image/jpeg" : originalMimeType
+    return encodeToFitSize(resized, originalMimeType: targetMimeType, maxSizeBytes: maxSizeBytes)
   }
 
   /// Resizes an image if it exceeds dimension or megapixel limits.
@@ -231,35 +249,53 @@ public final class FalAIService: AIImageService {
     }
   }
 
-  /// Encodes an image as PNG or JPEG, progressively reducing quality to fit within maxSizeBytes.
+  /// Encodes an image to fit within maxSizeBytes.
+  /// Strategy: keep full resolution with quality reduction → reduce dimensions only if needed.
   private nonisolated func encodeToFitSize(
     _ image: UIImage,
     originalMimeType: String,
     maxSizeBytes: Int,
   ) -> (data: Data, mimeType: String)? {
-    // Try PNG first if original was PNG
-    if originalMimeType == "image/png", let pngData = image.pngData(), pngData.count <= maxSizeBytes {
+    func fitsLimits(_ data: Data) -> Bool {
+      data.count <= maxSizeBytes && (data.count * 4 / 3) + 24 < maxDataURIBytes
+    }
+
+    let pixelWidth = image.size.width * image.scale
+    let pixelHeight = image.size.height * image.scale
+    let isPNG = originalMimeType == "image/png"
+
+    func scaled(by factor: CGFloat) -> UIImage {
+      let newSize = CGSize(width: pixelWidth * factor, height: pixelHeight * factor)
+      let format = UIGraphicsImageRendererFormat()
+      format.scale = 1.0
+      return UIGraphicsImageRenderer(size: newSize, format: format).image { _ in
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+      }
+    }
+
+    // 1. Try original format at full size
+    if isPNG, let pngData = image.pngData(), fitsLimits(pngData) {
       return (pngData, "image/png")
     }
 
-    // Try JPEG at full quality
-    if let jpegData = image.jpegData(compressionQuality: 1.0), jpegData.count <= maxSizeBytes {
-      return (jpegData, "image/jpeg")
-    }
-
-    // Progressive JPEG compression — target 75% of max for base64 overhead safety
-    let targetSize = Int(Double(maxSizeBytes) * 0.75)
-    let base64Limit = 1536 * 1024 // 1.5MB base64 data URI limit
-    for quality: CGFloat in [0.7, 0.5, 0.3, 0.2, 0.1, 0.05] {
-      if let data = image.jpegData(compressionQuality: quality),
-         data.count <= targetSize,
-         data.base64EncodedString().count + 24 < base64Limit { // +24 for "data:image/jpeg;base64,"
+    for quality: CGFloat in [0.4, 0.3, 0.2] {
+      if let data = image.jpegData(compressionQuality: quality), fitsLimits(data) {
         return (data, "image/jpeg")
       }
     }
 
-    // Last resort: lowest quality
-    if let data = image.jpegData(compressionQuality: 0.05) {
+    var lastResized: UIImage?
+    for scaleFactor: CGFloat in [0.75, 0.5, 0.35, 0.25] {
+      let resized = scaled(by: scaleFactor)
+      lastResized = resized
+
+      if let jpegData = resized.jpegData(compressionQuality: 0.4), fitsLimits(jpegData) {
+        return (jpegData, "image/jpeg")
+      }
+    }
+
+    // 4. Absolute fallback: smallest size + low quality JPEG
+    if let smallest = lastResized, let data = smallest.jpegData(compressionQuality: 0.1) {
       return (data, "image/jpeg")
     }
 
@@ -305,54 +341,18 @@ public final class FalAIService: AIImageService {
     return arguments
   }
 
-  /// Compresses and encodes image data as a base64 data URI for the fal.ai API
   private nonisolated func encodeImageAsDataURI(_ sourceImageData: Data) throws -> String {
-    let maxSize = 1 * 1024 * 1024 // 1MB
-    let maxDimension: CGFloat = 1536
-    let maxMegapixels: CGFloat = 16
-
-    guard let compressionResult = compressImageData(
+    guard let (compressedData, mimeType) = compressImageData(
       sourceImageData,
-      maxSizeBytes: maxSize,
-      maxDimension: maxDimension,
-      maxMegapixels: maxMegapixels,
+      maxSizeBytes: 1 * 1024 * 1024,
+      maxDimension: 1024,
+      maxMegapixels: 1,
     ) else {
       throw AIServiceError.invalidRequest("Failed to process image data.")
     }
 
-    let (compressedData, mimeType) = compressionResult
-
-    if compressedData.count > maxSize {
-      let currentKB = compressedData.count / 1024
-      let maxKB = maxSize / 1024
-      throw AIServiceError
-        .invalidRequest("Image is too large even after compression (\(currentKB)KB). Maximum allowed: \(maxKB)KB")
-    }
-
-    // Validate final dimensions
-    if let finalImage = UIImage(data: compressedData) {
-      let pixelW = finalImage.size.width * finalImage.scale
-      let pixelH = finalImage.size.height * finalImage.scale
-
-      if pixelW > maxDimension || pixelH > maxDimension {
-        throw AIServiceError
-          .invalidRequest("Image dimensions too large: \(Int(pixelW))x\(Int(pixelH))px. Max: \(Int(maxDimension))px")
-      }
-      if (pixelW * pixelH) / 1_000_000 > maxMegapixels {
-        throw AIServiceError
-          .invalidRequest("Image resolution too high. Max: \(Int(maxMegapixels))MP")
-      }
-    }
-
     let base64String = compressedData.base64EncodedString()
-    let dataURI = "data:\(mimeType);base64,\(base64String)"
-
-    let falAILimit = 5 * 1024 * 1024
-    if dataURI.utf8.count > falAILimit {
-      throw AIServiceError.invalidRequest("Base64 data URI too large. Fal.AI limit: 5MB")
-    }
-
-    return dataURI
+    return "data:\(mimeType);base64,\(base64String)"
   }
 
   private nonisolated func extractImageUrl(from result: Payload) throws -> URL {

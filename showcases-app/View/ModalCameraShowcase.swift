@@ -1,5 +1,5 @@
 import IMGLYCamera
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct ModalCameraShowcase: View {
@@ -52,9 +52,15 @@ struct ModalCameraShowcase: View {
     }
     .fullScreenCover(item: $result) { result in
       ModalEditor {
-        VideoEditor(settings)
-          .imgly.onCreate { engine in
-            try await OnCreate.loadVideos(from: result.result)(engine)
+        Editor(settings)
+          .imgly.configuration {
+            VideoEditorConfiguration { builder in
+              builder.onCreate { engine, _ in
+                try await engine.createScene(from: result.result)
+                try await VideoEditorConfiguration.defaultLoadAssetSources(engine)
+              }
+            }
+            ShowcasesEditorConfiguration()
           }
       }
     }

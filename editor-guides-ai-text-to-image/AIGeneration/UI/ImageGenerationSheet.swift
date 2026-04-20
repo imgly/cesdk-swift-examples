@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 /// A simple wrapper view for image generation

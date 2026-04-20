@@ -1,4 +1,4 @@
-import IMGLYVideoEditor
+import IMGLYEditor
 import SwiftUI
 
 struct CustomVideoEditor: View {
@@ -6,40 +6,45 @@ struct CustomVideoEditor: View {
 
   var body: some View {
     let url = Bundle.main.url(forResource: "monthly-review", withExtension: "scene")!
-    VideoEditor(settings)
-      .imgly.onCreate { engine in
-        try await OnCreate.loadScene(from: url)(engine)
+    Editor(settings)
+      .imgly.configuration {
+        VideoEditorConfiguration { builder in
+          builder.onCreate { engine, _ in
+            try await VideoEditorConfiguration.defaultOnCreate(createScene: { engine in
+              try await OnCreate.loadScene(from: url)(engine)
 
-        if !secrets.remoteAssetSourceHost.isEmpty {
-          remoteAssetSources = try await engine.addRemoteAssetSources(host: secrets.remoteAssetSourceHost)
+              if !secrets.remoteAssetSourceHost.isEmpty {
+                remoteAssetSources = try await engine.addRemoteAssetSources(host: secrets.remoteAssetSourceHost)
+              }
+            })(engine)
+          }
+          builder.assetLibrary { al in
+            al.modify { categories in
+              categories.modifySections(of: AssetLibraryCategory.ID.videos) { sections in
+                if let id = remoteAssetSources[.videoGiphy] {
+                  sections.addFirst(.video(id: id, title: "Giphy", source: .init(id: id)))
+                }
+                if let id = remoteAssetSources[.videoPexels] {
+                  sections.addFirst(.video(id: id, title: "Pexels", source: .init(id: id)))
+                }
+              }
+              categories.modifySections(of: AssetLibraryCategory.ID.images) { sections in
+                if let id = remoteAssetSources[.imageUnsplash] {
+                  sections.addFirst(.image(id: id, title: "Unsplash", source: .init(id: id)))
+                }
+                if let id = remoteAssetSources[.imagePexels] {
+                  sections.addFirst(.image(id: id, title: "Pexels", source: .init(id: id)))
+                }
+              }
+              categories.modifySections(of: AssetLibraryCategory.ID.stickers) { sections in
+                if let id = remoteAssetSources[.videoGiphySticker] {
+                  sections.addFirst(.sticker(id: id, title: "Giphy Stickers", source: .init(id: id)))
+                }
+              }
+            }
+          }
         }
-      }
-      .imgly.assetLibrary {
-        DefaultAssetLibrary()
-          .videos {
-            if let id = remoteAssetSources[.videoPexels] {
-              AssetLibrarySource.image(.title("Pexels"), source: .init(id: id))
-            }
-            if let id = remoteAssetSources[.videoGiphy] {
-              AssetLibrarySource.image(.title("Giphy"), source: .init(id: id))
-            }
-            DefaultAssetLibrary.videos
-          }
-          .images {
-            if let id = remoteAssetSources[.imagePexels] {
-              AssetLibrarySource.image(.title("Pexels"), source: .init(id: id))
-            }
-            if let id = remoteAssetSources[.imageUnsplash] {
-              AssetLibrarySource.image(.title("Unsplash"), source: .init(id: id))
-            }
-            DefaultAssetLibrary.images
-          }
-          .stickers {
-            if let id = remoteAssetSources[.videoGiphySticker] {
-              AssetLibrarySource.sticker(.title("Giphy Stickers"), source: .init(id: id))
-            }
-            DefaultAssetLibrary.stickers
-          }
+        ShowcasesEditorConfiguration()
       }
   }
 }

@@ -1,5 +1,5 @@
 // highlight-import
-import IMGLYDesignEditor
+import IMGLYEditor
 
 // highlight-import
 import SwiftUI
@@ -16,8 +16,9 @@ struct EditorSwiftUI: View {
       // highlight-environment
       ModalEditor {
         // highlight-editor
-        DesignEditor(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
-                           userID: "<your unique user id>"))
+        Editor(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+                     userID: "<your unique user id>"))
+          .imgly.configuration { DesignEditorConfiguration() }
         // highlight-editor
       }
       // highlight-environment

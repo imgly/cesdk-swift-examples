@@ -1,5 +1,5 @@
 import Foundation
-import IMGLYDesignEditor
+import IMGLYEditor
 import IMGLYEngine
 
 /// Delegate for enhancing selected images from the inspector context.
@@ -63,10 +63,8 @@ public final class InspectorImageGenerationDelegate: ImageGenerationDelegate {
     if let scheme = imageURL.scheme?.lowercased(), ["http", "https"].contains(scheme) {
       return (nil, imageURI)
     } else {
+      // Compression to fal.ai limits happens in FalAIService.encodeImageAsDataURI.
       let imageData = try Data(contentsOf: imageURL)
-      if imageData.count > 5 * 1024 * 1024 {
-        throw AIServiceError.invalidRequest("Image is too large. Please use an image under 5 MB.")
-      }
       return (imageData, nil)
     }
   }

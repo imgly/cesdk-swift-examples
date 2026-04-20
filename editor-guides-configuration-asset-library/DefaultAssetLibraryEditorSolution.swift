@@ -1,37 +1,46 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct DefaultAssetLibraryEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
-  @MainActor
   var editor: some View {
     // highlight-editor-default
-    DesignEditor(settings)
-      // highlight-assetSource-default
-      .imgly.onCreate { engine in
-        try await OnCreate.loadScene(from: DesignEditor.defaultScene)(engine)
-        try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
-      }
-      // highlight-assetSource-default
-      // highlight-assetLibrary-default
-      .imgly.assetLibrary {
-        // highlight-defaultAssetLibrary
-        DefaultAssetLibrary(
-          tabs: DefaultAssetLibrary.Tab.allCases.reversed().filter { tab in
-            tab != .elements && tab != .photoRoll
-          },
-        )
-        // highlight-defaultAssetLibrary
-        // highlight-defaultAssetLibraryImages
-        .images {
-          AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
-          DefaultAssetLibrary.images
+    Editor(settings)
+      .imgly.configuration {
+        DesignEditorConfiguration { builder in
+          // highlight-assetSource-default
+          builder.onCreate { engine, _ in
+            try await DesignEditorConfiguration.defaultOnCreate(createScene: { engine in
+              let sceneURL = Bundle.main.url(forResource: "design-ui-empty", withExtension: "scene")!
+              try await engine.scene.load(from: sceneURL)
+              try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
+            })(engine)
+          }
+          // highlight-assetSource-default
+          // highlight-assetLibrary-default
+          builder.assetLibrary { assetLibrary in
+            assetLibrary.view { _ in
+              // highlight-defaultAssetLibrary
+              DefaultAssetLibrary(
+                tabs: DefaultAssetLibrary.Tab.allCases.reversed().filter { tab in
+                  tab != .elements && tab != .photoRoll
+                },
+              )
+              // highlight-defaultAssetLibrary
+              // highlight-defaultAssetLibraryImages
+              .images {
+                AssetLibrarySource.image(.title("Unsplash"), source: .init(id: UnsplashAssetSource.id))
+                DefaultAssetLibrary.images
+              }
+              // highlight-defaultAssetLibraryImages
+            }
+          }
+          // highlight-assetLibrary-default
         }
-        // highlight-defaultAssetLibraryImages
       }
-    // highlight-assetLibrary-default
+    // highlight-editor-default
   }
 
   @State private var isPresented = false

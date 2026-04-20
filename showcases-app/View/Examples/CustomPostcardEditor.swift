@@ -1,4 +1,4 @@
-import IMGLYPostcardEditor
+import IMGLYEditor
 import SwiftUI
 
 struct CustomPostcardEditor: View {
@@ -42,9 +42,22 @@ struct CustomPostcardEditor: View {
   ]
 
   var body: some View {
-    SceneSelection(scenes: scenes) { url in
-      PostcardEditor(settings)
-        .customEditorConfiguration(scene: url)
+    SceneSelection(scenes: scenes) { url, colorPalette in
+      Editor(settings)
+        .imgly.configuration {
+          PostcardEditorConfiguration { builder in
+            builder.onCreate { engine, _ in
+              try await PostcardEditorConfiguration.defaultOnCreate(createScene: { engine in
+                try await OnCreate.loadScene(from: url)(engine)
+                try engine.asset.addSource(UnsplashAssetSource(host: secrets.unsplashHost))
+              })(engine)
+            }
+            if let colorPalette {
+              builder.colorPalette(colorPalette)
+            }
+          }
+          CustomEditorConfiguration()
+        }
     }
   }
 }

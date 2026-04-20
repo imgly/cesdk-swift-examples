@@ -1,4 +1,4 @@
-import IMGLYDesignEditor
+import IMGLYEditor
 import SwiftUI
 
 struct ThemingEditorSolution: View {
@@ -9,7 +9,8 @@ struct ThemingEditorSolution: View {
 
   var editor: some View {
     // highlight-editor
-    DesignEditor(settings)
+    Editor(settings)
+      .imgly.configuration { DesignEditorConfiguration() }
       // highlight-theme
       .preferredColorScheme(colorScheme == .dark ? .light : .dark)
   }
