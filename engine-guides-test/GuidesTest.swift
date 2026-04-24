@@ -33,8 +33,36 @@ final class GuidesTest {
     try await colors(engine: engine)
   }
 
+  @Test func testColorsAdjust() async throws {
+    try await colorsAdjust(engine: engine)
+  }
+
+  @Test func testColorsBasics() async throws {
+    try await colorsBasics(engine: engine)
+  }
+
+  @Test func testCmykColors() async throws {
+    try await cmykColors(engine: engine)
+  }
+
+  @Test func testConceptsAssets() async throws {
+    try await conceptsAssets(engine: engine)
+  }
+
+  @Test func testConceptsBlocks() async throws {
+    try await conceptsBlocks(engine: engine)
+  }
+
+  @Test func testConversionToPng() async throws {
+    try await conversionToPng(engine: engine)
+  }
+
   @Test func testUnderlayer() async throws {
     try await underlayer(engine: engine)
+  }
+
+  @Test func testCreateCompositionProgrammatic() async throws {
+    try await createCompositionProgrammatic(engine: engine)
   }
 
   @Test func testCreateSceneFromImageBlob() async throws {
@@ -61,12 +89,20 @@ final class GuidesTest {
     try await cutouts(engine: engine)
   }
 
+  @Test func conversionToBase64() async throws {
+    try await toBase64(engine: engine)
+  }
+
   @Test func testExportingBlocks() async throws {
     try await exportingBlocks(engine: engine)
   }
 
   @Test func testLoadSceneFromBlob() async throws {
     try await loadSceneFromBlob(engine: engine)
+  }
+
+  @Test func testLockDesign() async throws {
+    try await lockDesign(engine: engine)
   }
 
   @Test func testLoadSceneFromRemote() async throws {
@@ -79,6 +115,18 @@ final class GuidesTest {
 
   @Test func testModifyingScenes() async throws {
     try await modifyingScenes(engine: engine)
+  }
+
+  @Test func testMultiPage() async throws {
+    try await multiPage(engine: engine)
+  }
+
+  @Test func testPages() async throws {
+    try await pages(engine: engine)
+  }
+
+  @Test func testPositionAndAlign() async throws {
+    try await positionAndAlign(engine: engine)
   }
 
   @Test func testSaveSceneToArchive() async throws {
@@ -121,6 +169,14 @@ final class GuidesTest {
     }
   }
 
+  @Test func testTextEnumerations() async throws {
+    try await textEnumerations(engine: engine)
+  }
+
+  @Test func testToBlob() async throws {
+    try await toBlob(engine: engine)
+  }
+
   @Test func testTextProperties() async throws {
     try await textProperties(engine: engine)
   }
@@ -150,8 +206,16 @@ final class GuidesTest {
     try await textAnimations(engine: engine)
   }
 
+  @Test func testEditorState() async throws {
+    try await editorState(engine: engine)
+  }
+
   @Test func testEditAnimations() async throws {
     try await editAnimations(engine: engine)
+  }
+
+  @Test func testEditingWorkflow() async throws {
+    try await editingWorkflow(engine: engine)
   }
 
   @Test func testAnimationTypes() async throws {
@@ -178,6 +242,10 @@ final class GuidesTest {
     try await editVideo(engine: engine)
   }
 
+  @Test func testEvents() async throws {
+    try await events(engine: engine)
+  }
+
   @Test func testEditVideoCaptions() async throws {
     try await editVideoCaptions(engine: engine)
   }
@@ -196,5 +264,13 @@ final class GuidesTest {
 
   @Test func testProductVariations() async throws {
     try await productVariations(engine: engine)
+  }
+
+  @Test func testDesignUnits() async throws {
+    try await designUnits(engine: engine)
+  }
+
+  @Test func testResources() async throws {
+    try await resources(engine: engine)
   }
 }
