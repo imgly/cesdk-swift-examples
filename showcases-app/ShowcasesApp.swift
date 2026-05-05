@@ -7,7 +7,7 @@ struct ShowcasesApp: App {
 
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView(appetizeGuideID: UserDefaults.standard.string(forKey: "guideID"))
     }
     .onChange(of: scenePhase) { _ in
       if ProcessInfo.isUITesting,

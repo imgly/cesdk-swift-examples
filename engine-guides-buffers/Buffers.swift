@@ -3,25 +3,20 @@ import IMGLYEngine
 
 @MainActor
 func buffers(engine: Engine) throws {
-  // highlight-setup
+  // highlight-buffers-setup
   let scene = try engine.scene.create()
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
-  // highlight-setup
+  // highlight-buffers-setup
 
-  // Create an audio block and append it to the page
-  let audioBlock = try engine.block.create(.audio)
-  try engine.block.appendChild(to: page, child: audioBlock)
-
-  // Create a buffer
-  // highlight-EditorAPI.createBuffer
+  // highlight-buffers-createBuffer
   let audioBuffer = engine.editor.createBuffer()
+  // highlight-buffers-createBuffer
 
-  // Reference the audio buffer resource from the audio block
-  try engine.block.setURL(audioBlock, property: "audio/fileURI", value: audioBuffer)
-
+  // highlight-buffers-writeData
   // Generate 10 seconds of stereo 48 kHz audio data
-  let samples = ContiguousArray<Float>(unsafeUninitializedCapacity: 10 * 2 * 48000) { buffer, initializedCount in
+  let sampleCount = 10 * 2 * 48000
+  let samples = ContiguousArray<Float>(unsafeUninitializedCapacity: sampleCount) { buffer, initializedCount in
     for i in stride(from: 0, to: buffer.count, by: 2) {
       let sample = sin((440.0 * Float(i) * Float.pi) / 48000.0)
       buffer[i + 0] = sample
@@ -30,25 +25,60 @@ func buffers(engine: Engine) throws {
     initializedCount = buffer.count
   }
 
-  // Assign the audio data to the buffer
+  // Write the audio samples to the buffer
   try samples.withUnsafeBufferPointer { buffer in
-    // highlight-EditorAPI.setBufferData
     try engine.editor.setBufferData(url: audioBuffer, offset: 0, data: Data(buffer: buffer))
   }
+  // highlight-buffers-writeData
 
-  // We can get subranges of the buffer data
-  // highlight-EditorAPI.getBufferData
+  // highlight-buffers-readData
+  // Read a subrange of the buffer data
   let chunk = try engine.editor.getBufferData(url: audioBuffer, offset: 0, length: 4096)
+  // highlight-buffers-readData
 
-  // Get current length of the buffer in bytes
-  // highlight-EditorAPI.getBufferLength
+  // highlight-buffers-getLength
+  // Query the current buffer length in bytes
   let length = try engine.editor.getBufferLength(url: audioBuffer)
+  // highlight-buffers-getLength
 
-  // Reduce the buffer to half its length, leading to 5 seconds worth of audio
-  // highlight-EditorAPI.setBufferLength
+  // highlight-buffers-resize
+  // Reduce the buffer to half its length, truncating from 10 to 5 seconds
   try engine.editor.setBufferLength(url: audioBuffer, length: UInt(truncating: length) / 2)
+  // highlight-buffers-resize
 
-  // Free data
-  // highlight-EditorAPI.destroyBuffer
+  // highlight-buffers-assignBlock
+  // Create an audio block and assign the buffer as its source
+  let audioBlock = try engine.block.create(.audio)
+  try engine.block.appendChild(to: page, child: audioBlock)
+  try engine.block.setURL(audioBlock, property: "audio/fileURI", value: audioBuffer)
+  // highlight-buffers-assignBlock
+
+  // highlight-buffers-transientResources
+  // Find all transient resources in the scene, including buffers
+  let transientResources = try engine.editor.findAllTransientResources()
+  for resource in transientResources {
+    print("Transient resource: \(resource.url), size: \(resource.size) bytes")
+  }
+  // highlight-buffers-transientResources
+
+  // highlight-buffers-persistData
+  // To persist buffer data, read it, upload to storage, then relocate
+  let bufferData = try engine.editor.getBufferData(
+    url: audioBuffer,
+    offset: 0,
+    length: UInt(truncating: try engine.editor.getBufferLength(url: audioBuffer)),
+  )
+
+  // In production, upload `bufferData` to a CDN or cloud storage
+  let persistentURL = URL(string: "https://example.com/audio/generated.raw")!
+
+  // Update all references to the old buffer URI throughout the scene
+  try engine.editor.relocateResource(currentURL: audioBuffer, relocatedURL: persistentURL)
+  // highlight-buffers-persistData
+
+  // Free buffer resources when no longer needed
   try engine.editor.destroyBuffer(url: audioBuffer)
+
+  _ = chunk
+  _ = bufferData
 }
