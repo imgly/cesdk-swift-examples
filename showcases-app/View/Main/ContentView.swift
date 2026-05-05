@@ -8,6 +8,19 @@ struct ContentView: View {
   private let title = "CE.SDK Showcases"
   @State private var isCameraSheetShown = false
 
+  // MARK: - Appetize Deep Linking
+
+  var appetizeGuideID: String?
+  @State private var isShowingAppetizeGuide = false
+
+  @ViewBuilder
+  private func appetizeGuideDestination(for guideID: String) -> some View {
+    switch guideID {
+    case "forceCrop": ForceCropSolution()
+    default: EmptyView()
+    }
+  }
+
   var body: some View {
     NavigationView {
       List {
@@ -24,6 +37,15 @@ struct ContentView: View {
         .buttonStyle(.borderedProminent)
       }
       .imgly.buildInfo(ciBuildsHost: secrets.ciBuildsHost, githubRepo: secrets.githubRepo)
+      .background {
+        if let guideID = appetizeGuideID {
+          NavigationLink(isActive: $isShowingAppetizeGuide) {
+            appetizeGuideDestination(for: guideID)
+          } label: {
+            EmptyView()
+          }
+        }
+      }
     }
     // `StackNavigationViewStyle` forces to deinitialize the view and thus its engine when exiting a showcase.
     .navigationViewStyle(.stack)
@@ -35,6 +57,9 @@ struct ContentView: View {
     .accessibilityIdentifier("showcases")
     .onAppear {
       try? AVAudioSession.sharedInstance().setCategory(.playback)
+      if appetizeGuideID != nil {
+        isShowingAppetizeGuide = true
+      }
     }
   }
 }
