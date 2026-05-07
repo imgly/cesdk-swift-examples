@@ -19,7 +19,6 @@
 		08A37001259253C65294C58B /* DockItemEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBD9612DBEB35619397FDFD /* DockItemEditorSolution.swift */; };
 		09A7BC3BBD19E12DBCACCDC5 /* template_05_x_header.scene in Resources */ = {isa = PBXBuildFile; fileRef = 0A00FD0DD2BDC1EA4F51FB4A /* template_05_x_header.scene */; };
 		0B7185D4AC89981F71B45C99 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101750DC1BC245477FAAB802 /* Resources.swift */; };
-		0C1D7B49BA7DD086418ECA11 /* BlankEditorStarterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA3CC2AA9949D5B1D4745BD /* BlankEditorStarterKit.swift */; };
 		0C4A40E6829FF2C186A195B2 /* DefaultAssetLibraryEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0A3D8A40C054015BAA661D /* DefaultAssetLibraryEditorSolution.swift */; };
 		0D4E1D13FD9895C0AFE1D02C /* RemoteAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */; };
 		0D860064896F75195E6DE10E /* CameraUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870292BF844E3216EC482916 /* CameraUIKit.swift */; };
@@ -141,7 +140,6 @@
 		7ABB94C1541BD716B4CDF6E9 /* Templating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211641760E2045BEB1372C4D /* Templating.swift */; };
 		7F292B86F56D80D7E07CAE4E /* RemoteAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */; };
 		7F37873498D0E3CE57ECD760 /* IMGLYEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 50118933CCA23FF85773CFEA /* IMGLYEngine */; };
-		7F52961F681BE1982B89FE38 /* BlankEditorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9424E54B64132065D67F4EA /* BlankEditorConfiguration.swift */; };
 		80A1B078F50CF0AF294920E5 /* apparel-ui-b-4.png in Resources */ = {isa = PBXBuildFile; fileRef = B3C997D8A75FF23F07F27BD1 /* apparel-ui-b-4.png */; };
 		80E634307153C1FB04136FE1 /* SaveSceneToArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE0EB9286163546FB380703 /* SaveSceneToArchive.swift */; };
 		80F83C98009AA3507A55172C /* LoadSceneFromRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3DB715E1405C2F87FA79968 /* LoadSceneFromRemote.swift */; };
@@ -522,7 +520,6 @@
 		D7C958E3C1C48CA227E349D4 /* thank_you_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thank_you_grid.png; sourceTree = "<group>"; };
 		D81EA76227F9AD0775A31F88 /* merry_christmas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = merry_christmas.png; sourceTree = "<group>"; };
 		DA20E2745E46BB550502CE08 /* PhotoRollSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRollSolution.swift; sourceTree = "<group>"; };
-		DAA3CC2AA9949D5B1D4745BD /* BlankEditorStarterKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankEditorStarterKit.swift; sourceTree = "<group>"; };
 		DABB79823B8919935559FD8A /* Dock+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dock+Video.swift"; sourceTree = "<group>"; };
 		DB0BBF363BE528CED8BA335F /* SceneSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSelection.swift; sourceTree = "<group>"; };
 		DB3188D5A46DB8F595E47318 /* EditorUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorUIKit.swift; sourceTree = "<group>"; };
@@ -556,7 +553,6 @@
 		F696CCE82E0CCC8EF93BE424 /* CanvasMenu+Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasMenu+Design.swift"; sourceTree = "<group>"; };
 		F81147A1D8268032F622227B /* full_hd_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = full_hd_dark.png; sourceTree = "<group>"; };
 		F81467CDB33CB40216430B33 /* ConfiguredCameraSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredCameraSolution.swift; sourceTree = "<group>"; };
-		F9424E54B64132065D67F4EA /* BlankEditorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankEditorConfiguration.swift; sourceTree = "<group>"; };
 		FAAC4C9F4CB8CC08F9ACAB39 /* OnExport+Postcard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnExport+Postcard.swift"; sourceTree = "<group>"; };
 		FC0EC5EA8855A04BA6E1648D /* template_01_ig_post_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_01_ig_post_1_1.png; sourceTree = "<group>"; };
 		FCF8110CD832614D8D44324A /* 4_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_3.png; sourceTree = "<group>"; };
@@ -829,14 +825,6 @@
 				567C8E067E1B8937F63EE8C1 /* EditAnimations.swift */,
 			);
 			path = "engine-guides-edit-animations";
-			sourceTree = "<group>";
-		};
-		350F8A1A9C7F14C7E7E3A514 /* starter-kit-blank */ = {
-			isa = PBXGroup;
-			children = (
-				7BC7D39DF6006C9FFD2129C9 /* StarterKit */,
-			);
-			path = "starter-kit-blank";
 			sourceTree = "<group>";
 		};
 		35BFC39C45FC975EB3BFF0F8 /* engine-guides-create-scene-from-image-url */ = {
@@ -1255,15 +1243,6 @@
 				7EBD9612DBEB35619397FDFD /* DockItemEditorSolution.swift */,
 			);
 			path = "editor-guides-configuration-dock";
-			sourceTree = "<group>";
-		};
-		7BC7D39DF6006C9FFD2129C9 /* StarterKit */ = {
-			isa = PBXGroup;
-			children = (
-				F9424E54B64132065D67F4EA /* BlankEditorConfiguration.swift */,
-				DAA3CC2AA9949D5B1D4745BD /* BlankEditorStarterKit.swift */,
-			);
-			path = StarterKit;
 			sourceTree = "<group>";
 		};
 		7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */ = {
@@ -1871,7 +1850,6 @@
 			isa = PBXGroup;
 			children = (
 				1D79392AFECB1DFDDCE5829C /* starter-kit-apparel */,
-				350F8A1A9C7F14C7E7E3A514 /* starter-kit-blank */,
 				4F2DFCB4AF47E4B20E86EDC5 /* starter-kit-design */,
 				1A7DF91A23C972624EEB8474 /* starter-kit-photo */,
 				121B61A32AAC56ECA38F2E88 /* starter-kit-postcard */,
@@ -1896,7 +1874,7 @@
 			path = "engine-guides-conversion-to-png";
 			sourceTree = "<group>";
 		};
-		"TEMP_01A5E01B-AED2-4F60-A7CC-63188F169131" /* cesdk_swift_examples */ = {
+		"TEMP_E7FAFA94-476F-45E4-8720-1D8784D9EF9E" /* cesdk_swift_examples */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -2274,8 +2252,6 @@
 				5A1BEC2C0692BC0209548D2B /* BackgroundRemovalEditorSolution.swift in Sources */,
 				3B5878C0DAEDF49B88B7D9FE /* BackgroundRemover.swift in Sources */,
 				CC84B813920A3611C25BF37F /* BasicEditorSolution.swift in Sources */,
-				7F52961F681BE1982B89FE38 /* BlankEditorConfiguration.swift in Sources */,
-				0C1D7B49BA7DD086418ECA11 /* BlankEditorStarterKit.swift in Sources */,
 				C5A365876D79368A72F0E082 /* BottomPanel+Video.swift in Sources */,
 				53DDE3A7CB2DD1389F4E4E3D /* CallbacksEditorSolution.swift in Sources */,
 				A3B037403C8D1AFB7C201983 /* CameraShowcase.swift in Sources */,
@@ -2477,7 +2453,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.74.0;
+				MARKETING_VERSION = 1.74.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2568,7 +2544,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.74.0;
+				MARKETING_VERSION = 1.74.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2643,7 +2619,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.74.0;
+				version = 1.74.1;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -2651,7 +2627,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.74.0;
+				version = 1.74.1;
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
