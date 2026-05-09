@@ -21,8 +21,16 @@ final class GuidesTest {
     engine = nil
   }
 
+  @Test func testAddBackground() async throws {
+    try await addBackground(engine: engine)
+  }
+
   @Test func testArchitecture() async throws {
     try await architecture(engine: engine)
+  }
+
+  @Test func testBlendModes() async throws {
+    try await blendModes(engine: engine)
   }
 
   @Test func testBoolOps() async throws {
@@ -39,6 +47,10 @@ final class GuidesTest {
 
   @Test func testColorsBasics() async throws {
     try await colorsBasics(engine: engine)
+  }
+
+  @Test func testColorsReplace() async throws {
+    try await colorsReplace(engine: engine)
   }
 
   @Test func testCmykColors() async throws {
@@ -61,6 +73,10 @@ final class GuidesTest {
     try await underlayer(engine: engine)
   }
 
+  @Test func testCreateAudioAdjustSpeed() async throws {
+    try await createAudioAdjustSpeed(engine: engine)
+  }
+
   @Test func testCreateCompositionProgrammatic() async throws {
     try await createCompositionProgrammatic(engine: engine)
   }
@@ -81,6 +97,10 @@ final class GuidesTest {
     try await createSceneFromVideoURL(engine: engine)
   }
 
+  @Test func testDataMerge() async throws {
+    try await dataMerge(engine: engine)
+  }
+
   @Test func testCustomAssetSource() async throws {
     try await customAssetSource(engine: engine)
   }
@@ -93,8 +113,16 @@ final class GuidesTest {
     try await toBase64(engine: engine)
   }
 
+  @Test func testCreateAudioLoop() async throws {
+    try await createAudioLoop(engine: engine)
+  }
+
   @Test func testExportingBlocks() async throws {
     try await exportingBlocks(engine: engine)
+  }
+
+  @Test func testLayout() async throws {
+    try await layout(engine: engine)
   }
 
   @Test func testLoadSceneFromBlob() async throws {
@@ -109,12 +137,24 @@ final class GuidesTest {
     try await loadSceneFromRemote(engine: engine)
   }
 
+  @Test func testGrouping() async throws {
+    try await grouping(engine: engine)
+  }
+
+  @Test func testLayerManagement() async throws {
+    try await layerManagement(engine: engine)
+  }
+
   @Test func testLoadSceneFromString() async throws {
     try await loadSceneFromString(engine: engine)
   }
 
   @Test func testModifyingScenes() async throws {
     try await modifyingScenes(engine: engine)
+  }
+
+  @Test func testMovementConstraints() async throws {
+    try await movementConstraints(engine: engine)
   }
 
   @Test func testMultiPage() async throws {
@@ -125,8 +165,16 @@ final class GuidesTest {
     try await pages(engine: engine)
   }
 
+  @Test func testPartialExport() async throws {
+    try await partialExport(engine: engine)
+  }
+
   @Test func testPositionAndAlign() async throws {
     try await positionAndAlign(engine: engine)
+  }
+
+  @Test func testPreExportValidation() async throws {
+    try await preExportValidation(engine: engine)
   }
 
   @Test func testSaveSceneToArchive() async throws {
@@ -175,6 +223,10 @@ final class GuidesTest {
 
   @Test func testToBlob() async throws {
     try await toBlob(engine: engine)
+  }
+
+  @Test func testToJpeg() async throws {
+    try await toJpeg(engine: engine)
   }
 
   @Test func testTextProperties() async throws {
@@ -272,5 +324,9 @@ final class GuidesTest {
 
   @Test func testResources() async throws {
     try await resources(engine: engine)
+  }
+
+  @Test func testSizeLimits() async throws {
+    try await sizeLimits(engine: engine)
   }
 }
