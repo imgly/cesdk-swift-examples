@@ -76,6 +76,15 @@ func resources(engine: Engine) async throws {
   }
   // highlight-resources-findMediaURIs
 
+  // highlight-resources-findUnusedBlocks
+  // List blocks that are not attached to any scene and free their memory before saving.
+  let unusedBlocks = engine.block.findAllUnused()
+  for blockID in unusedBlocks {
+    try engine.block.destroy(blockID)
+  }
+  print("Destroyed \(unusedBlocks.count) unused blocks")
+  // highlight-resources-findUnusedBlocks
+
   // highlight-resources-detectMIMEType
   // Detect the MIME type of a resource.
   let imageURL = URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!
