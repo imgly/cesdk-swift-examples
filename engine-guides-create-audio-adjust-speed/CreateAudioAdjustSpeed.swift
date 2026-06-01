@@ -16,7 +16,7 @@ func createAudioAdjustSpeed(engine: Engine) async throws {
   try engine.block.setString(
     audioBlock,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.75.1/assets/ly.img.audio/audios/far_from_home.m4a",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0-rc.2/assets/ly.img.audio/audios/far_from_home.m4a",
   )
   // Wait for the audio resource to load so duration and speed APIs work correctly.
   try await engine.block.forceLoadAVResource(audioBlock)
