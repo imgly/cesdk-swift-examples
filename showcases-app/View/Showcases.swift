@@ -22,7 +22,7 @@ struct Showcases: View {
         title: "Background Removal Photo Editor",
         subtitle: "AI-powered background removal using Apple Vision framework.",
       ) { url in
-        BackgroundRemovalEditorSolution(url: url)
+        BackgroundRemovalShowcase(url: url)
       }
     }
     Section(title: "Design Editor",
@@ -155,6 +155,7 @@ struct Showcases: View {
         Showcase(view: HideElementsEditorSolution(), title: "Customization: Hide Elements")
         Showcase(view: RearrangeButtonsEditorSolution(), title: "Customization: Rearrange Buttons")
         Showcase(view: PhotoRollSolution(), title: "Import Media: Photo Roll")
+        Showcase(view: RecordVoiceoverSolution(), title: "Create Audio: Record Voiceover")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
