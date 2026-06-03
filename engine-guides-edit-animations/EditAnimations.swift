@@ -84,7 +84,7 @@ func editAnimations(engine: Engine) async throws {
   // highlight-editAnimations-removeAnimation
   let currentLoop = try engine.block.getLoopAnimation(block)
   try engine.block.destroy(currentLoop)
-  // Destroying a design block also destroys all its attached animations
-  // try engine.block.destroy(block)
   // highlight-editAnimations-removeAnimation
+
+  _ = (outType, inType, currentDuration, currentEasing, allProperties, easingOptions, direction, outAnimation)
 }

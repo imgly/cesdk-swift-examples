@@ -1,72 +1,139 @@
 import IMGLYEditor
 import SwiftUI
 
-/// Design Editor demonstrating how to hide UI elements.
+/// Editor demonstrating how to hide UI elements.
 ///
 /// This example shows how to:
-/// - Hide the dock completely (the only UI component that fully hides)
-/// - Remove specific items from any UI component
-/// - Understand the distinction between hiding and removing
+/// - Hide the dock completely
+/// - Remove specific items from each UI component
+/// - Combine approaches to create a minimal UI
 struct HideElementsEditorSolution: View {
   let settings = EngineSettings(
     license: secrets.licenseKey,
     userID: "<your unique user id>",
   )
 
-  // highlight-hideElements-dock
-  // To hide the dock completely, provide an empty items closure
-  // The dock is the only UI component that fully hides when given no items
+  enum Demo: String, CaseIterable, Identifiable {
+    case hideDock = "Hide Dock"
+    case removeItems = "Remove Items"
+    case minimalUI = "Minimal UI"
+    var id: Self { self }
+  }
+
+  @State private var selectedDemo: Demo = .hideDock
+  @State private var isPresented = false
+
+  // highlight-hideElements-hideDock
   var editorWithHiddenDock: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        GuideEditorConfiguration { builder in
           builder.dock { dock in
             dock.items { _ in
-              // Empty - dock will be completely hidden
+              // Empty — hides the dock completely
             }
           }
         }
       }
   }
 
-  // highlight-hideElements-dock
+  // highlight-hideElements-hideDock
 
-  // highlight-hideElements-remove
-  // To remove specific items from any component, use the modify variants
-  // The component container remains visible, only the specified items are removed
-  var editorWithRemovedItems: some View {
+  // highlight-hideElements-removeItems
+  var editorWithItemsRemoved: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
-          // highlight-hideElements-dockRemove
+        GuideEditorConfiguration { builder in
+          // highlight-hideElements-removeDock
           builder.dock { dock in
+            dock.items { _ in
+              Dock.Button(id: "my.app.dock.elements") { _ in } label: { _ in
+                Label("Elements", systemImage: "square.on.circle")
+              }
+              Dock.Button(id: "my.app.dock.images") { _ in } label: { _ in
+                Label("Images", systemImage: "photo")
+              }
+              Dock.Button(id: "my.app.dock.text") { _ in } label: { _ in
+                Label("Text", systemImage: "textformat")
+              }
+              Dock.Button(id: "my.app.dock.shapes") { _ in } label: { _ in
+                Label("Shapes", systemImage: "square.on.circle.dashed")
+              }
+            }
             dock.modify { _, items in
-              items.remove(id: Dock.Buttons.ID.elementsLibrary)
-              items.remove(id: Dock.Buttons.ID.shapesLibrary)
+              items.remove(id: "my.app.dock.elements")
+              items.remove(id: "my.app.dock.shapes")
             }
           }
-          // highlight-hideElements-dockRemove
-          // highlight-hideElements-navbarRemove
+          // highlight-hideElements-removeDock
+          // highlight-hideElements-removeNavbar
           builder.navigationBar { navigationBar in
             navigationBar.modify { _, items in
               items.remove(id: NavigationBar.Buttons.ID.undo)
               items.remove(id: NavigationBar.Buttons.ID.redo)
             }
           }
-          // highlight-hideElements-navbarRemove
+          // highlight-hideElements-removeNavbar
+          // highlight-hideElements-removeCanvasMenu
+          builder.canvasMenu { canvasMenu in
+            canvasMenu.items { _ in
+              CanvasMenu.Buttons.bringForward()
+              CanvasMenu.Buttons.sendBackward()
+              CanvasMenu.Buttons.delete()
+            }
+            canvasMenu.modify { _, items in
+              items.remove(id: CanvasMenu.Buttons.ID.bringForward)
+            }
+          }
+          // highlight-hideElements-removeCanvasMenu
+          // highlight-hideElements-removeInspectorBar
+          builder.inspectorBar { inspectorBar in
+            inspectorBar.items { _ in
+              InspectorBar.Buttons.crop()
+              InspectorBar.Buttons.adjustments()
+              InspectorBar.Buttons.filter()
+            }
+            inspectorBar.modify { _, items in
+              items.remove(id: InspectorBar.Buttons.ID.crop)
+            }
+          }
+          // highlight-hideElements-removeInspectorBar
         }
       }
   }
 
-  // highlight-hideElements-remove
+  // highlight-hideElements-removeItems
 
-  @State private var isPresented = false
-  @State private var showHiddenDock = true
+  // highlight-hideElements-minimalUI
+  var editorWithMinimalUI: some View {
+    Editor(settings)
+      .imgly.configuration {
+        GuideEditorConfiguration { builder in
+          builder.dock { dock in
+            dock.items { _ in }
+          }
+          builder.navigationBar { navigationBar in
+            navigationBar.items { _ in
+              NavigationBar.ItemGroup(placement: .topBarLeading) {
+                NavigationBar.Buttons.closeEditor()
+              }
+            }
+          }
+        }
+      }
+  }
+
+  // highlight-hideElements-minimalUI
 
   var body: some View {
-    VStack {
-      Toggle("Hide Dock Completely", isOn: $showHiddenDock)
-        .padding()
+    VStack(spacing: 16) {
+      Picker("Demo", selection: $selectedDemo) {
+        ForEach(Demo.allCases) { demo in
+          Text(demo.rawValue).tag(demo)
+        }
+      }
+      .pickerStyle(.segmented)
+      .padding(.horizontal)
 
       Button("Use the Editor") {
         isPresented = true
@@ -74,10 +141,13 @@ struct HideElementsEditorSolution: View {
     }
     .fullScreenCover(isPresented: $isPresented) {
       ModalEditor {
-        if showHiddenDock {
+        switch selectedDemo {
+        case .hideDock:
           editorWithHiddenDock
-        } else {
-          editorWithRemovedItems
+        case .removeItems:
+          editorWithItemsRemoved
+        case .minimalUI:
+          editorWithMinimalUI
         }
       }
     }
