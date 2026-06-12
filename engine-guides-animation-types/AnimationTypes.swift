@@ -14,13 +14,14 @@ func animationTypes(engine: Engine) async throws {
   try engine.block.setColor(pageFill, property: "fill/color/value", r: 1, g: 1, b: 1, a: 1)
   try engine.block.setFill(page, fill: pageFill)
 
+  let baseURL = try engine.guidesBaseURL
   let imageURLs = [
-    "https://img.ly/static/ubq_samples/sample_1.jpg",
-    "https://img.ly/static/ubq_samples/sample_2.jpg",
-    "https://img.ly/static/ubq_samples/sample_3.jpg",
-    "https://img.ly/static/ubq_samples/sample_4.jpg",
-    "https://img.ly/static/ubq_samples/sample_5.jpg",
-    "https://img.ly/static/ubq_samples/sample_6.jpg",
+    baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
+    baseURL.appendingPathComponent("ly.img.image/images/sample_2.jpg"),
+    baseURL.appendingPathComponent("ly.img.image/images/sample_3.jpg"),
+    baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg"),
+    baseURL.appendingPathComponent("ly.img.image/images/sample_5.jpg"),
+    baseURL.appendingPathComponent("ly.img.image/images/sample_6.jpg"),
   ]
 
   // 2 columns × 3 rows grid layout for 6 demonstration blocks.
@@ -33,7 +34,7 @@ func animationTypes(engine: Engine) async throws {
     let graphic = try engine.block.create(.graphic)
     try engine.block.setShape(graphic, shape: engine.block.createShape(.rect))
     let imageFill = try engine.block.createFill(.image)
-    try engine.block.setString(imageFill, property: "fill/image/imageFileURI", value: imageURLs[index])
+    try engine.block.setURL(imageFill, property: "fill/image/imageFileURI", value: imageURLs[index])
     try engine.block.setFill(graphic, fill: imageFill)
     try engine.block.setWidth(graphic, value: blockWidth)
     try engine.block.setHeight(graphic, value: blockHeight)

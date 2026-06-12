@@ -1,3 +1,4 @@
+import IMGLYCamera
 import IMGLYEditor
 import SwiftUI
 
@@ -52,6 +53,9 @@ struct Showcases: View {
         title: "Custom Video Editor",
         subtitle: "Custom video scene and adds Unsplash asset source and library.",
       )
+    }
+    Section(title: "Camera",
+            subtitle: "Capture photos and videos with the IMG.LY camera.") {
       ModalCameraShowcase(
         title: "React to Video",
         // swiftlint:disable:next line_length
@@ -68,6 +72,57 @@ struct Showcases: View {
         title: "Dual Camera to Video Editor",
         subtitle: "Shows the dual camera, then imports all the recorded clips into the editor.",
         mode: .dualCamera(),
+      )
+      ModalCameraShowcase(
+        title: "Photo (Single-Take)",
+        subtitle: "Captures a single photo and opens it in the photo editor.",
+        mode: .standard,
+        config: CameraConfiguration(
+          allowModeSwitching: false,
+          captureType: .photo,
+          captureCount: .single,
+        ),
+      )
+      ModalCameraShowcase(
+        title: "Photo (Multi-Take)",
+        subtitle: "Stacks multiple photos in the capture ring and opens them in the video editor.",
+        mode: .standard,
+        config: CameraConfiguration(
+          allowModeSwitching: false,
+          captureType: .photo,
+          captureCount: .multi,
+          showsPhotoPreview: false,
+        ),
+      )
+      ModalCameraShowcase(
+        title: "Video (Single-Take)",
+        subtitle: "Records a single video clip (tap to start, tap to stop) and opens it in the video editor.",
+        mode: .standard,
+        config: CameraConfiguration(
+          allowModeSwitching: false,
+          captureType: .video,
+          captureCount: .single,
+        ),
+      )
+      ModalCameraShowcase(
+        title: "Video (Multi-Take)",
+        subtitle: "Records multiple video clips back-to-back and opens them in the video editor.",
+        mode: .standard,
+        config: CameraConfiguration(
+          allowModeSwitching: false,
+          captureType: .video,
+          captureCount: .multi,
+        ),
+      )
+      ModalCameraShowcase(
+        title: "Mixed (Photo + Video)",
+        subtitle: "Toggle photo/video, stack both in the ring, and open them in the video editor.",
+        mode: .standard,
+        config: CameraConfiguration(
+          allowModeSwitching: false,
+          captureType: .mixed,
+          captureCount: .multi,
+        ),
       )
     }
     Section(title: "Apparel Editor",
@@ -141,10 +196,9 @@ struct Showcases: View {
         Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")
         Showcase(view: CustomAssetLibraryEditorSolution(), title: "Configuration: Custom Asset Library")
         Showcase(view: NavigationBarEditorSolution(), title: "Configuration: Navigation Bar")
-        Showcase(view: DefaultNavigationBarItemsEditorSolution(), title: "Configuration: Default Navigation Bar Items")
         Showcase(view: NavigationBarItemEditorSolution(), title: "Configuration: Navigation Bar Item")
         Showcase(view: DockEditorSolution(), title: "Configuration: Dock")
-        Showcase(view: DefaultDockItemsEditorSolution(), title: "Configuration: Default Dock Items")
+        Showcase(view: DefaultPanelSolution(), title: "Configuration: Default Panel")
         Showcase(view: CustomPanelSolution(), title: "Configuration: Custom Panel")
         Showcase(view: DockItemEditorSolution(), title: "Configuration: Dock Item")
         Showcase(view: InspectorBarEditorSolution(), title: "Configuration: Inspector Bar")
@@ -152,10 +206,22 @@ struct Showcases: View {
         Showcase(view: CanvasMenuEditorSolution(), title: "Configuration: Canvas Menu")
         Showcase(view: CanvasMenuItemEditorSolution(), title: "Configuration: Canvas Menu Item")
         Showcase(view: AddButtonEditorSolution(), title: "UI Extensions: Add a New Button")
+        Showcase(view: CustomLabelsEditorSolution(), title: "Customization: Custom Labels")
         Showcase(view: HideElementsEditorSolution(), title: "Customization: Hide Elements")
+        Showcase(
+          view: DisableOrEnableFeaturesEditorSolution(),
+          title: "Customization: Disable or Enable Features",
+        )
+        Showcase(view: IconsEditorSolution(), title: "Customization: Icons")
         Showcase(view: RearrangeButtonsEditorSolution(), title: "Customization: Rearrange Buttons")
+        if #available(iOS 16.1, *) {
+          Showcase(view: ChangeUIFontSolution(), title: "Appearance: Change UI Font")
+        }
         Showcase(view: PhotoRollSolution(), title: "Import Media: Photo Roll")
+        Showcase(view: RecordReactionSolution(), title: "Create Video: Record Reaction")
         Showcase(view: RecordVoiceoverSolution(), title: "Create Audio: Record Voiceover")
+        Showcase(view: AIImageGenerationSolution(), title: "Plugin: AI Image Generation")
+        Showcase(view: BackgroundRemovalPluginSolution(), title: "Plugin: Background Removal")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {

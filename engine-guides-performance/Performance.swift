@@ -3,12 +3,13 @@ import IMGLYEngine
 
 @MainActor
 func performance(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-performance-initialization
   try engine.editor.setSettingString(
     "basePath",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.76.0/assets",
+    value: baseURL.absoluteString,
   )
-  try await engine.addDefaultAssetSources()
   // highlight-performance-initialization
 
   let scene = try engine.scene.create()
@@ -24,19 +25,19 @@ func performance(engine: Engine) async throws {
   let imageFill = try engine.block.createFill(.image)
   try engine.block.setSourceSet(imageFill, property: "fill/image/sourceSet", sourceSet: [
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_512x341.jpg")!,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-512x341.jpg"),
       width: 512,
       height: 341,
     ),
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_1024x683.jpg")!,
-      width: 1024,
-      height: 683,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-883x589.jpg"),
+      width: 883,
+      height: 589,
     ),
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
-      width: 2048,
-      height: 1366,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-1767x1178.jpg"),
+      width: 1767,
+      height: 1178,
     ),
   ])
   try engine.block.setFill(block, fill: imageFill)

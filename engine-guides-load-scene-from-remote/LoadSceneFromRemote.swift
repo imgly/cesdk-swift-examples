@@ -3,9 +3,11 @@ import IMGLYEngine
 
 @MainActor
 func loadSceneFromRemote(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-url
   let sceneUrl =
-    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
+    baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   // highlight-url
 
   // highlight-load-remote
