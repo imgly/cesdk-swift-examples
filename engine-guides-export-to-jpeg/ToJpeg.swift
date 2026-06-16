@@ -3,7 +3,7 @@ import IMGLYEngine
 
 @MainActor
 func toJpeg(engine: Engine) async throws {
-  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets"
+  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1-rc.0/assets"
   try engine.editor.setSettingString("basePath", value: assetsBase)
   let sceneURL = URL(string: "\(assetsBase)/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: sceneURL)

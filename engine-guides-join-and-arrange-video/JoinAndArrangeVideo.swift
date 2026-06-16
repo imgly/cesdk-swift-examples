@@ -4,7 +4,7 @@ import IMGLYEngine
 @MainActor
 func joinAndArrangeVideo(engine: Engine) async throws {
   let videoURL = URL(
-    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.video/videos/" +
+    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1-rc.0/assets/ly.img.video/videos/" +
       "pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
   )!
 

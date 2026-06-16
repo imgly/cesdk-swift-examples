@@ -5,7 +5,7 @@ import IMGLYEngine
 func createCompositionProgrammatic(engine: Engine) async throws {
   // highlight-setup
   // Roboto typeface with all variants for mixed styling
-  let robotoBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.typeface/fonts/Roboto"
+  let robotoBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1-rc.0/assets/ly.img.typeface/fonts/Roboto"
   let robotoTypeface = Typeface(
     name: "Roboto",
     fonts: [

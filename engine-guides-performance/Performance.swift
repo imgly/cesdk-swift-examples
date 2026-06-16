@@ -6,7 +6,7 @@ func performance(engine: Engine) async throws {
   // highlight-performance-initialization
   try engine.editor.setSettingString(
     "basePath",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.76.0/assets",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.76.1-rc.0/assets",
   )
   try await engine.addDefaultAssetSources()
   // highlight-performance-initialization
