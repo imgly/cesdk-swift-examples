@@ -10,12 +10,15 @@ func controlAVPlayback(engine: Engine) async throws {
   try engine.block.setWidth(page, value: 1920)
   try engine.block.setHeight(page, value: 1080)
 
+  let baseURL = try engine.guidesBaseURL
+
   let videoBlock = try engine.block.create(.graphic)
   try engine.block.setShape(videoBlock, shape: engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  let videoURL = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.75.0" +
-    "/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
-  try engine.block.setString(videoFill, property: "fill/video/fileURI", value: videoURL)
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
+  try engine.block.setURL(videoFill, property: "fill/video/fileURI", value: videoURL)
   try engine.block.setFill(videoBlock, fill: videoFill)
 
   let track = try engine.block.create(.track)

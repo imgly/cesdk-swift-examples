@@ -10,14 +10,13 @@ func adjustVolume(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 720)
   try engine.block.setDuration(page, duration: 20)
 
-  let audioURI = URL(
-    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.audio/audios/dance_harder.m4a",
-  )!
+  let baseURL = try engine.guidesBaseURL
+  let audioURL = baseURL.appendingPathComponent("ly.img.audio/audios/dance_harder.m4a")
 
   // highlight-adjustVolume-create-audio
   // Create an audio block and load the audio file.
   let audioBlock = try engine.block.create(.audio)
-  try engine.block.setString(audioBlock, property: "audio/fileURI", value: audioURI.absoluteString)
+  try engine.block.setURL(audioBlock, property: "audio/fileURI", value: audioURL)
 
   // Wait for the audio resource to load before adjusting volume or querying state.
   try await engine.block.forceLoadAVResource(audioBlock)

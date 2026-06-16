@@ -1,7 +1,13 @@
-// swiftformat:disable unusedArguments
 import IMGLYEditor
+import IMGLYEngine
 import SwiftUI
 
+/// Editor demonstrating the four ways to build an inspector bar item.
+///
+/// The `editor` view shows the lesson — what the documentation renders.
+/// The `body` uses `demoEditor`, which extends the same `GuideEditorConfiguration`
+/// with a pre-selected text block so the showcase opens with the inspector bar
+/// visible.
 struct InspectorBarItemEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
@@ -9,60 +15,99 @@ struct InspectorBarItemEditorSolution: View {
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        GuideEditorConfiguration { builder in
           builder.inspectorBar { inspectorBar in
             inspectorBar.items { _ in
-              // highlight-predefinedButton
+              // highlight-inspectorBar-predefinedButton
               InspectorBar.Buttons.layer()
 
-              // highlight-customizePredefinedButton
+              // highlight-inspectorBar-customizePredefinedButton
               InspectorBar.Buttons.formatText(
-                // highlight-customizePredefinedButton-action
+                // highlight-inspectorBar-customizePredefinedButton-action
                 action: { context in
                   context.eventHandler.send(.openSheet(type: .formatText()))
                 },
-                // highlight-customizePredefinedButton-action
-                // highlight-customizePredefinedButton-title
-                title: { _ in Text("Format") },
-                // highlight-customizePredefinedButton-icon
+                // highlight-inspectorBar-customizePredefinedButton-action
+                // highlight-inspectorBar-customizePredefinedButton-title
+                title: { _ in
+                  // Rebuild the button's default localized title so styling
+                  // changes keep the translated wording instead of a literal.
+                  Text(.imgly.localized("ly_img_editor_inspector_bar_button_format_text"))
+                    .fontWeight(.semibold)
+                },
+                // highlight-inspectorBar-customizePredefinedButton-title
+                // highlight-inspectorBar-customizePredefinedButton-icon
                 icon: { _ in Image.imgly.formatText },
-                // highlight-customizePredefinedButton-isEnabled
+                // highlight-inspectorBar-customizePredefinedButton-icon
+                // highlight-inspectorBar-customizePredefinedButton-isEnabled
                 isEnabled: { _ in true },
-                // highlight-customizePredefinedButton-isVisible
+                // highlight-inspectorBar-customizePredefinedButton-isEnabled
+                // highlight-inspectorBar-customizePredefinedButton-isVisible
                 isVisible: { context in
                   try context.selection.type == .text &&
                     context.engine.block.isAllowedByScope(context.selection.block, key: "text/character")
                 },
-                // highlight-customizePredefinedButton-isVisible
+                // highlight-inspectorBar-customizePredefinedButton-isVisible
               )
-              // highlight-customizePredefinedButton
+              // highlight-inspectorBar-customizePredefinedButton
 
-              // highlight-newButton
+              // highlight-inspectorBar-newButton
               InspectorBar.Button(
-                // highlight-newButton-id
+                // highlight-inspectorBar-newButton-id
                 id: "my.package.inspectorBar.button.newButton",
-                // highlight-newButton-action
+                // highlight-inspectorBar-newButton-action
               ) { _ in
                 print("New Button action")
-                // highlight-newButton-action
-                // highlight-newButton-label
+                // highlight-inspectorBar-newButton-action
+                // highlight-inspectorBar-newButton-label
               } label: { _ in
                 Label("New Button", systemImage: "star.circle")
-                // highlight-newButton-label
-                // highlight-newButton-isEnabled
+                // highlight-inspectorBar-newButton-label
+                // highlight-inspectorBar-newButton-isEnabled
               } isEnabled: { _ in
                 true
-                // highlight-newButton-isEnabled
-                // highlight-newButton-isVisible
+                // highlight-inspectorBar-newButton-isEnabled
+                // highlight-inspectorBar-newButton-isVisible
               } isVisible: { _ in
                 true
               }
-              // highlight-newButton-isVisible
-              // highlight-newButton
+              // highlight-inspectorBar-newButton-isVisible
+              // highlight-inspectorBar-newButton
 
-              // highlight-newCustomItem
+              // highlight-inspectorBar-newCustomItem
               CustomInspectorBarItem()
             }
+          }
+        }
+      }
+  }
+
+  // Demo scaffolding (not part of the lesson). Builds on `GuideEditorConfiguration`
+  // and pre-selects a text block so the showcase opens with the inspector bar
+  // visible. The default `onCreate` builds the 1080×1080 scene.
+  private var demoEditor: some View {
+    Editor(settings)
+      .imgly.configuration {
+        GuideEditorConfiguration { builder in
+          builder.inspectorBar { inspectorBar in
+            inspectorBar.items { _ in
+              InspectorBar.Buttons.formatText()
+              InspectorBar.Buttons.layer()
+              InspectorBar.Buttons.duplicate()
+              InspectorBar.Buttons.delete()
+            }
+          }
+          builder.onLoaded { context, _ in
+            let engine = context.engine
+            guard let page = try engine.scene.getCurrentPage() else { return }
+            let block = try engine.block.create(.text)
+            try engine.block.replaceText(block, text: "Headline")
+            try engine.block.setWidthMode(block, mode: .auto)
+            try engine.block.setHeightMode(block, mode: .auto)
+            try engine.block.setPositionX(block, value: 120)
+            try engine.block.setPositionY(block, value: 480)
+            try engine.block.appendChild(to: page, child: block)
+            try engine.block.setSelected(block, selected: true)
           }
         }
       }
@@ -76,19 +121,19 @@ struct InspectorBarItemEditorSolution: View {
     }
     .fullScreenCover(isPresented: $isPresented) {
       ModalEditor {
-        editor
+        demoEditor
       }
     }
   }
 }
 
-// highlight-newCustomItem-conformance
+// highlight-inspectorBar-newCustomItem-conformance
 private struct CustomInspectorBarItem: InspectorBar.Item {
-  // highlight-newCustomItem-id
+  // highlight-inspectorBar-newCustomItem-id
   var id: EditorComponentID { "my.package.inspectorBar.newCustomItem" }
 
-  // highlight-newCustomItem-body
-  func body(_ context: InspectorBar.Context) throws -> some View {
+  // highlight-inspectorBar-newCustomItem-body
+  func body(_: InspectorBar.Context) throws -> some View {
     ZStack {
       RoundedRectangle(cornerRadius: 10)
         .fill(.conicGradient(colors: [.red, .yellow, .green, .cyan, .blue, .purple, .red], center: .center))
@@ -100,15 +145,15 @@ private struct CustomInspectorBarItem: InspectorBar.Item {
     }
   }
 
-  // highlight-newCustomItem-body
-  // highlight-newCustomItem-isVisible
-  func isVisible(_ context: InspectorBar.Context) throws -> Bool {
+  // highlight-inspectorBar-newCustomItem-body
+  // highlight-inspectorBar-newCustomItem-isVisible
+  func isVisible(_: InspectorBar.Context) throws -> Bool {
     true
   }
-  // highlight-newCustomItem-isVisible
+  // highlight-inspectorBar-newCustomItem-isVisible
 }
 
-// highlight-newCustomItem-conformance
+// highlight-inspectorBar-newCustomItem-conformance
 
 #Preview {
   InspectorBarItemEditorSolution()

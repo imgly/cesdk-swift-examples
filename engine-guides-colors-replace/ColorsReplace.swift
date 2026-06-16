@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func colorsReplace(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-colorsReplace-setup
   let scene = try engine.scene.create()
 
@@ -11,7 +13,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
 
-  let imageURI = "https://img.ly/static/ubq_samples/sample_1.jpg"
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
   // highlight-colorsReplace-setup
 
   // highlight-colorsReplace-createRecolor
@@ -26,7 +28,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: recolorBlock)
 
   let recolorFill = try engine.block.createFill(.image)
-  try engine.block.setString(recolorFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(recolorFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(recolorBlock, fill: recolorFill)
 
   let recolorEffect = try engine.block.createEffect(.recolor)
@@ -55,7 +57,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: tolerancesBlock)
 
   let tolerancesFill = try engine.block.createFill(.image)
-  try engine.block.setString(tolerancesFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(tolerancesFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(tolerancesBlock, fill: tolerancesFill)
 
   let tolerancesEffect = try engine.block.createEffect(.recolor)
@@ -87,7 +89,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: greenScreenBlock)
 
   let greenScreenFill = try engine.block.createFill(.image)
-  try engine.block.setString(greenScreenFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(greenScreenFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(greenScreenBlock, fill: greenScreenFill)
 
   let greenScreenEffect = try engine.block.createEffect(.greenScreen)
@@ -111,7 +113,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: spillBlock)
 
   let spillFill = try engine.block.createFill(.image)
-  try engine.block.setString(spillFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(spillFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(spillBlock, fill: spillFill)
 
   let spillEffect = try engine.block.createEffect(.greenScreen)
@@ -138,7 +140,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: stackedBlock)
 
   let stackedFill = try engine.block.createFill(.image)
-  try engine.block.setString(stackedFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(stackedFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(stackedBlock, fill: stackedFill)
 
   let redToBlue = try engine.block.createEffect(.recolor)
@@ -171,7 +173,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: batchBlock)
 
   let batchFill = try engine.block.createFill(.image)
-  try engine.block.setString(batchFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(batchFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(batchBlock, fill: batchFill)
 
   let allGraphicBlocks = try engine.block.find(byType: .graphic)

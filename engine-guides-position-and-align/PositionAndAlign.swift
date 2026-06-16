@@ -10,9 +10,11 @@ func positionAndAlign(engine: Engine) async throws {
   try engine.block.setWidth(page, value: 800)
   try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
-
-  let imageURI = "https://img.ly/static/ubq_samples/sample_1.jpg"
   // highlight-positionAndAlign-setup
+
+  // Resolve sample assets against the bundled asset base URL.
+  let baseURL = try engine.guidesBaseURL
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
 
   // highlight-positionAndAlign-absolutePosition
   // Block 1: Absolute positioning at specific coordinates (in design units).
@@ -21,7 +23,7 @@ func positionAndAlign(engine: Engine) async throws {
   try engine.block.setWidth(block1, value: 150)
   try engine.block.setHeight(block1, value: 100)
   let fill1 = try engine.block.createFill(.image)
-  try engine.block.setString(fill1, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(fill1, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(block1, fill: fill1)
   try engine.block.appendChild(to: page, child: block1)
 
@@ -41,7 +43,7 @@ func positionAndAlign(engine: Engine) async throws {
   try engine.block.setWidth(block2, value: 150)
   try engine.block.setHeight(block2, value: 100)
   let fill2 = try engine.block.createFill(.image)
-  try engine.block.setString(fill2, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(fill2, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(block2, fill: fill2)
   try engine.block.appendChild(to: page, child: block2)
 
@@ -68,7 +70,7 @@ func positionAndAlign(engine: Engine) async throws {
     try engine.block.setWidth(block, value: 100)
     try engine.block.setHeight(block, value: 80)
     let fill = try engine.block.createFill(.image)
-    try engine.block.setString(fill, property: "fill/image/imageFileURI", value: imageURI)
+    try engine.block.setURL(fill, property: "fill/image/imageFileURI", value: imageURL)
     try engine.block.setFill(block, fill: fill)
     try engine.block.appendChild(to: page, child: block)
     try engine.block.setPositionX(block, value: x)
@@ -96,7 +98,7 @@ func positionAndAlign(engine: Engine) async throws {
   try engine.block.setWidth(singleBlock, value: 150)
   try engine.block.setHeight(singleBlock, value: 100)
   let singleFill = try engine.block.createFill(.image)
-  try engine.block.setString(singleFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(singleFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(singleBlock, fill: singleFill)
   try engine.block.appendChild(to: page, child: singleBlock)
   try engine.block.setPositionX(singleBlock, value: 500)
@@ -118,7 +120,7 @@ func positionAndAlign(engine: Engine) async throws {
     try engine.block.setWidth(block, value: 100)
     try engine.block.setHeight(block, value: 80)
     let fill = try engine.block.createFill(.image)
-    try engine.block.setString(fill, property: "fill/image/imageFileURI", value: imageURI)
+    try engine.block.setURL(fill, property: "fill/image/imageFileURI", value: imageURL)
     try engine.block.setFill(block, fill: fill)
     try engine.block.appendChild(to: page, child: block)
     try engine.block.setPositionX(block, value: x)
@@ -150,7 +152,7 @@ func positionAndAlign(engine: Engine) async throws {
     try engine.block.setWidth(block, value: 100)
     try engine.block.setHeight(block, value: 80)
     let fill = try engine.block.createFill(.image)
-    try engine.block.setString(fill, property: "fill/image/imageFileURI", value: imageURI)
+    try engine.block.setURL(fill, property: "fill/image/imageFileURI", value: imageURL)
     try engine.block.setFill(block, fill: fill)
     try engine.block.appendChild(to: page, child: block)
     try engine.block.setPositionX(block, value: 600)

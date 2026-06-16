@@ -87,44 +87,33 @@ public extension VideoEditorConfiguration {
   /// Registers all default and demo asset sources, plus text and photo roll sources.
   static let defaultLoadAssetSources: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-load-asset-sources
-    let assetSources: [String: URL] = [
-      Engine.DefaultAssetSource.sticker.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.vectorPath.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.filterLut.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.filterDuotone.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.colorsDefaultPalette.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.effect.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.blur.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.typeface.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.cropPresets.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.pagePresets.rawValue: Engine.assetBaseURL,
-
-      Engine.DemoAssetSource.image.rawValue: Engine.assetBaseURL,
-      Engine.DemoAssetSource.video.rawValue: Engine.assetBaseURL,
-      Engine.DemoAssetSource.audio.rawValue: Engine.assetBaseURL,
-      Engine.DemoAssetSource.textComponents.rawValue: Engine.assetBaseURL,
+    let basePath = try engine.editor.getSettingString("basePath")
+    guard let baseURL = URL(string: basePath) else { return }
+    let sourceIDs = [
+      "ly.img.sticker", "ly.img.vector.shape", "ly.img.filter", "ly.img.color.palette",
+      "ly.img.effect", "ly.img.blur", "ly.img.typeface", "ly.img.crop.presets",
+      "ly.img.page.presets", "ly.img.text.presets", "ly.img.text.components",
+      "ly.img.caption.presets",
+      "ly.img.image", "ly.img.video", "ly.img.audio",
     ]
-
-    try await withThrowingTaskGroup(of: Void.self) { group in
-      for assetSource in assetSources {
+    try await withThrowingTaskGroup(of: String.self) { group in
+      for id in sourceIDs {
         group.addTask {
-          try await engine.populateAssetSource(id: assetSource.key, baseURL: assetSource.value)
+          try await engine.asset.addLocalAssetSourceFromJSON(
+            baseURL.appendingPathComponent(id).appendingPathComponent("content.json"),
+          )
         }
       }
-      try await group.waitForAll()
+      for try await _ in group {}
     }
 
-    let localAssetSources: [Engine.DemoAssetSource] = [
-      .imageUpload,
-      .audioUpload,
-      .videoUpload,
+    let uploadSources: [(id: String, mimeTypes: [String])] = [
+      ("ly.img.image.upload", ["image/jpeg", "image/png", "image/svg+xml", "image/gif", "image/apng", "image/bmp"]),
+      ("ly.img.audio.upload", ["audio/mpeg", "audio/mp4", "audio/wav", "audio/x-wav", "audio/ogg", "audio/aac"]),
+      ("ly.img.video.upload", ["video/mp4", "video/quicktime"]),
     ]
-
-    for localAssetSource in localAssetSources {
-      try engine.asset.addLocalSource(
-        sourceID: localAssetSource.rawValue,
-        supportedMimeTypes: localAssetSource.mimeTypes,
-      )
+    for source in uploadSources {
+      try engine.asset.addLocalSource(sourceID: source.id, supportedMimeTypes: source.mimeTypes)
     }
 
     try await engine.asset.addSource(TextAssetSource(engine: engine))

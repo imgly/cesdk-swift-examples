@@ -50,6 +50,7 @@ func addBackground(engine: Engine) async throws {
   // highlight-addBackground-backgroundColor
 
   // Create a graphic block to demonstrate image fill on a shape
+  let baseURL = try engine.guidesBaseURL
   let imageBlock = try engine.block.create(.graphic)
   let rectShape = try engine.block.createShape(.rect)
   try engine.block.setShape(imageBlock, shape: rectShape)
@@ -62,10 +63,10 @@ func addBackground(engine: Engine) async throws {
   // highlight-addBackground-shapeFill
   if try engine.block.supportsFill(imageBlock) {
     let imageFill = try engine.block.createFill(.image)
-    try engine.block.setString(
+    try engine.block.setURL(
       imageFill,
       property: "fill/image/imageFileURI",
-      value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+      value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
     )
     try engine.block.setFill(imageBlock, fill: imageFill)
   }

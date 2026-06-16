@@ -12,16 +12,16 @@ func forSocialMedia(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 1920)
   // highlight-forSocialMedia-createScene
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-forSocialMedia-addVideo
   let videoBlock = try engine.block.create(.graphic)
   try engine.block.setShape(videoBlock, shape: engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setString(
-    videoFill,
-    property: "fill/video/fileURI",
-    // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
   )
+  try engine.block.setURL(videoFill, property: "fill/video/fileURI", value: videoURL)
   try engine.block.setFill(videoBlock, fill: videoFill)
   try engine.block.appendChild(to: page, child: videoBlock)
   try engine.block.fillParent(videoBlock)

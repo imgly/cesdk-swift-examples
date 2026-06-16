@@ -1,3 +1,4 @@
+import CoreVideo
 import Foundation
 import IMGLYEngine
 
@@ -12,15 +13,20 @@ func controlAudioVideo(engine: Engine) async throws {
   try engine.block.setWidth(page, value: 1280)
   try engine.block.setHeight(page, value: 720)
 
+  // Resolve sample assets against the engine's base URL (the bundled
+  // IMGLYAssets.bundle under test, the product CDN otherwise).
+  let baseURL = try engine.guidesBaseURL
+
   // Create a video block and track
   let videoBlock = try engine.block.create(.graphic)
   try engine.block.setShape(videoBlock, shape: try engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setString(
+  try engine.block.setURL(
     videoFill,
     property: "fill/video/fileURI",
-    // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/assets/demo/v1/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+    value: baseURL.appendingPathComponent(
+      "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+    ),
   )
   try engine.block.setFill(videoBlock, fill: videoFill)
   let track = try engine.block.create(.track)
@@ -31,10 +37,10 @@ func controlAudioVideo(engine: Engine) async throws {
   // Create an audio block
   let audio = try engine.block.create(.audio)
   try engine.block.appendChild(to: page, child: audio)
-  try engine.block.setString(
+  try engine.block.setURL(
     audio,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/assets/demo/v1/ly.img.audio/audios/far_from_home.m4a",
+    value: baseURL.appendingPathComponent("ly.img.audio/audios/far_from_home.m4a"),
   )
 
   // Time Offset and Duration

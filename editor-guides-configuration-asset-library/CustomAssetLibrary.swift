@@ -45,14 +45,15 @@ struct CustomAssetLibrary: AssetLibrary {
 
   @AssetLibraryBuilder var text: AssetLibraryContent {
     AssetLibrarySource.text(.title("Plain Text"), source: .init(id: TextAssetSource.id))
-    AssetLibrarySource.textComponent(.title("Text Designs"), source: .init(demoSource: .textComponents))
+    AssetLibrarySource.textComponent(.title("Text Designs"), source: .init(id: "ly.img.text.components"))
   }
 
   @AssetLibraryBuilder var shapes: AssetLibraryContent {
     AssetLibrarySource.shape(.title("Basic"), source: .init(
-      defaultSource: .vectorPath, config: .init(groups: ["//ly.img.cesdk.vectorpaths/category/vectorpaths"])))
+      id: "ly.img.vector.shape", config: .init(groups: ["filled", "outline", "gradient", "image"])))
     AssetLibrarySource.shape(.title("Abstract"), source: .init(
-      defaultSource: .vectorPath, config: .init(groups: ["//ly.img.cesdk.vectorpaths.abstract/category/abstract"])))
+      id: "ly.img.vector.shape",
+      config: .init(groups: ["abstract-filled", "abstract-outline", "abstract-gradient", "abstract-image"])))
   }
 
   @AssetLibraryBuilder var stickers: AssetLibraryContent {
@@ -72,7 +73,7 @@ struct CustomAssetLibrary: AssetLibrary {
       AssetLibraryGroup.audio("Audio") { audio }
     }
     AssetLibraryGroup.image("Images") { images }
-    AssetLibraryGroup.text("Text", excludedPreviewSources: [Engine.DemoAssetSource.textComponents.rawValue]) {
+    AssetLibraryGroup.text("Text", excludedPreviewSources: ["ly.img.text.components"]) {
       text
     }
     AssetLibraryGroup.shape("Shapes") { shapes }

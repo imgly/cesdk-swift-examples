@@ -3,9 +3,9 @@ import IMGLYEngine
 
 @MainActor
 func toPng(engine: Engine) async throws {
-  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets"
-  try engine.editor.setSettingString("basePath", value: assetsBase)
-  let sceneURL = URL(string: "\(assetsBase)/ly.img.template/templates/cesdk_postcard_1.scene")!
+  let baseURL = try engine.guidesBaseURL
+  try engine.editor.setSettingString("basePath", value: baseURL.absoluteString)
+  let sceneURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   try await engine.scene.load(from: sceneURL)
 
   let page = try engine.scene.getPages().first!

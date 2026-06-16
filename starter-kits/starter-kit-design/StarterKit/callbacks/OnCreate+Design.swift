@@ -81,34 +81,29 @@ public extension DesignEditorConfiguration {
   /// Registers all default and demo asset sources, plus text and photo roll sources.
   static let defaultLoadAssetSources: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-load-asset-sources
-    let assetSources: [String: URL] = [
-      Engine.DefaultAssetSource.sticker.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.vectorPath.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.filterLut.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.filterDuotone.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.colorsDefaultPalette.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.effect.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.blur.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.typeface.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.cropPresets.rawValue: Engine.assetBaseURL,
-      Engine.DefaultAssetSource.pagePresets.rawValue: Engine.assetBaseURL,
-
-      Engine.DemoAssetSource.image.rawValue: Engine.assetBaseURL,
-      Engine.DemoAssetSource.textComponents.rawValue: Engine.assetBaseURL,
+    let basePath = try engine.editor.getSettingString("basePath")
+    guard let baseURL = URL(string: basePath) else { return }
+    let sourceIDs = [
+      "ly.img.sticker", "ly.img.vector.shape", "ly.img.filter", "ly.img.color.palette",
+      "ly.img.effect", "ly.img.blur", "ly.img.typeface", "ly.img.crop.presets",
+      "ly.img.page.presets", "ly.img.text.presets", "ly.img.text.components",
+      "ly.img.caption.presets",
+      "ly.img.image",
     ]
-
-    try await withThrowingTaskGroup(of: Void.self) { group in
-      for assetSource in assetSources {
+    try await withThrowingTaskGroup(of: String.self) { group in
+      for id in sourceIDs {
         group.addTask {
-          try await engine.populateAssetSource(id: assetSource.key, baseURL: assetSource.value)
+          try await engine.asset.addLocalAssetSourceFromJSON(
+            baseURL.appendingPathComponent(id).appendingPathComponent("content.json"),
+          )
         }
       }
-      try await group.waitForAll()
+      for try await _ in group {}
     }
 
     try engine.asset.addLocalSource(
-      sourceID: Engine.DemoAssetSource.imageUpload.rawValue,
-      supportedMimeTypes: Engine.DemoAssetSource.imageUpload.mimeTypes,
+      sourceID: "ly.img.image.upload",
+      supportedMimeTypes: ["image/jpeg", "image/png", "image/svg+xml", "image/gif", "image/apng", "image/bmp"],
     )
 
     try await engine.asset.addSource(TextAssetSource(engine: engine))
