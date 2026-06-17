@@ -12,8 +12,10 @@ extension VideoEditorConfiguration {
 
         InspectorBar.Buttons.editText()
         InspectorBar.Buttons.formatText()
+        InspectorBar.Buttons.textOnPath()
         InspectorBar.Buttons.fillStroke()
         InspectorBar.Buttons.textBackground()
+        InspectorBar.Buttons.textStylePresets()
         InspectorBar.Buttons.addVoiceoverRecording()
         InspectorBar.Buttons.volume()
         InspectorBar.Buttons.clipSpeed()

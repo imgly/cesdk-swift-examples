@@ -3,11 +3,10 @@ import IMGLYEngine
 
 @MainActor
 func conversionToPng(engine: Engine) async throws {
-  try engine.editor.setSettingString("basePath", value: "https://cdn.img.ly/packages/imgly/cesdk-engine/1.76.1/assets")
-  try await engine.addDefaultAssetSources()
-  let sceneUrl =
-    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
-  try await engine.scene.load(from: sceneUrl)
+  let baseURL = try engine.guidesBaseURL
+  try engine.editor.setSettingString("basePath", value: baseURL.absoluteString)
+  let sceneURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
+  try await engine.scene.load(from: sceneURL)
 
   // highlight-conversionToPng-exportSinglePage
   let page = try engine.scene.getCurrentPage()!

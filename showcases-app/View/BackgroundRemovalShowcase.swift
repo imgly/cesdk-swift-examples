@@ -20,11 +20,9 @@ struct BackgroundRemovalShowcase: View {
             )(engine)
           }
         }
-        BackgroundRemovalPlugin(options: .init(
-          onError: { error in
-            errorMessage = error.localizedDescription
-          },
-        ))
+        BackgroundRemovalPlugin(onError: { error in
+          errorMessage = error.localizedDescription
+        })
       }
       .alert("Background Removal Error", isPresented: .constant(errorMessage != nil)) {
         Button("OK") {

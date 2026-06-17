@@ -18,6 +18,9 @@ func multiPage(engine: Engine) async throws {
   try engine.block.appendChild(to: stack, child: firstPage)
   // highlight-multiPage-createScene
 
+  // Resolve sample assets against the engine's configured base URL.
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-multiPage-stackSpacing
   // Add spacing between pages (20 pixels in screen space)
   try engine.block.setFloat(stack, property: "stack/spacing", value: 20)
@@ -33,10 +36,10 @@ func multiPage(engine: Engine) async throws {
   try engine.block.setPositionX(imageBlock1, value: 250)
   try engine.block.setPositionY(imageBlock1, value: 200)
   let imageFill1 = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill1,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(imageBlock1, fill: imageFill1)
   try engine.block.appendChild(to: firstPage, child: imageBlock1)
@@ -57,10 +60,10 @@ func multiPage(engine: Engine) async throws {
   try engine.block.setPositionX(imageBlock2, value: 250)
   try engine.block.setPositionY(imageBlock2, value: 200)
   let imageFill2 = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill2,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_2.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_2.jpg"),
   )
   try engine.block.setFill(imageBlock2, fill: imageFill2)
   try engine.block.appendChild(to: secondPage, child: imageBlock2)

@@ -9,23 +9,37 @@ class DemoAssetSource: NSObject, AssetSource {
   var credits: AssetCredits? { nil }
   var license: AssetLicense? { nil }
 
+  // Base URL the sample sticker is resolved against.
+  let baseURL: URL
+
+  init(baseURL: URL) {
+    self.baseURL = baseURL
+    super.init()
+  }
+
   // highlight-conceptsAssets-assetDefinition
-  let stickerAsset = AssetResult(
-    id: "sticker-smile",
-    label: "Smile Sticker",
-    tags: ["emoji", "happy"],
-    meta: [
-      "uri": "https://cdn.img.ly/assets/v3/ly.img.sticker/images/emoticons/imgly_sticker_emoticons_smile.svg",
-      "thumbUri": "https://cdn.img.ly/assets/v3/ly.img.sticker/images/emoticons/imgly_sticker_emoticons_smile.svg",
-      "blockType": "//ly.img.ubq/graphic",
-      "fillType": "//ly.img.ubq/fill/image",
-      "width": "62",
-      "height": "58",
-      "mimeType": "image/svg+xml",
-    ],
-    context: AssetContext(sourceID: "my-assets"),
-    groups: ["stickers"],
-  )
+  var stickerAsset: AssetResult {
+    let stickerURI = baseURL
+      .appendingPathComponent("ly.img.sticker/images/emoticons/imgly_sticker_emoticons_smile.svg")
+      .absoluteString
+    return AssetResult(
+      id: "sticker-smile",
+      label: "Smile Sticker",
+      tags: ["emoji", "happy"],
+      meta: [
+        "uri": stickerURI,
+        "thumbUri": stickerURI,
+        "blockType": "//ly.img.ubq/graphic",
+        "fillType": "//ly.img.ubq/fill/image",
+        "width": "62",
+        "height": "58",
+        "mimeType": "image/svg+xml",
+      ],
+      context: AssetContext(sourceID: "my-assets"),
+      groups: ["stickers"],
+    )
+  }
+
   // highlight-conceptsAssets-assetDefinition
 
   // highlight-conceptsAssets-assetSource
@@ -50,8 +64,10 @@ func conceptsAssets(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
 
+  let baseURL = try engine.guidesBaseURL
+
   // Register a custom asset source
-  let source = DemoAssetSource()
+  let source = DemoAssetSource(baseURL: baseURL)
   try engine.asset.addSource(source)
 
   // highlight-conceptsAssets-queryAssets
@@ -75,18 +91,21 @@ func conceptsAssets(engine: Engine) async throws {
   // Local sources store assets in memory and support dynamic add/remove
   try engine.asset.addLocalSource(sourceID: "uploads", supportedMimeTypes: ["image/svg+xml", "image/png"])
 
+  let uploadedStickerURI = baseURL
+    .appendingPathComponent("ly.img.sticker/images/emoticons/imgly_sticker_emoticons_grin.svg")
+    .absoluteString
   try engine.asset.addAsset(
     to: "uploads",
     asset: AssetDefinition(
       id: "uploaded-1",
       meta: [
-        "uri": "https://cdn.img.ly/assets/v3/ly.img.sticker/images/emoticons/imgly_sticker_emoticons_love.svg",
-        "thumbUri": "https://cdn.img.ly/assets/v3/ly.img.sticker/images/emoticons/imgly_sticker_emoticons_love.svg",
+        "uri": uploadedStickerURI,
+        "thumbUri": uploadedStickerURI,
         "blockType": "//ly.img.ubq/graphic",
         "fillType": "//ly.img.ubq/fill/image",
         "mimeType": "image/svg+xml",
       ],
-      label: ["en": "Heart Sticker"],
+      label: ["en": "Grin Sticker"],
     ),
   )
   // highlight-conceptsAssets-localSource
