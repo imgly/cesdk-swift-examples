@@ -5,7 +5,7 @@ import IMGLYEngine
 func saveDesigns(engine: Engine) async throws {
   // Demo scaffolding: load a template so every snippet has a scene to operate on.
   // In your app you would start from a scene already loaded into the editor.
-  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets"
+  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets"
   let templateUrl = URL(string: "\(assetsBase)/ly.img.template/templates/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: templateUrl)
 

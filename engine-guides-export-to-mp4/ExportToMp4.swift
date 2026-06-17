@@ -22,7 +22,7 @@ func exportToMp4(engine: Engine) async throws {
     videoFill,
     property: "fill/video/fileURI",
     // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
   )
   try engine.block.setFill(video, fill: videoFill)
   try engine.block.appendChild(to: page, child: video)

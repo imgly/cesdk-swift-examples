@@ -11,7 +11,7 @@ func adjustVolume(engine: Engine) async throws {
   try engine.block.setDuration(page, duration: 20)
 
   let audioURI = URL(
-    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.audio/audios/dance_harder.m4a",
+    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/audios/dance_harder.m4a",
   )!
 
   // highlight-adjustVolume-create-audio

@@ -4,7 +4,7 @@ import IMGLYEngine
 @MainActor
 func importTemplates(engine: Engine) async throws {
   // highlight-importTemplates-loadFromURL
-  let templatesBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.template/templates"
+  let templatesBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.template/templates"
   let sceneURL = URL(string: "\(templatesBase)/cesdk_postcard_1.scene")!
   try await engine.scene.load(from: sceneURL)
   // highlight-importTemplates-loadFromURL

@@ -16,7 +16,7 @@ func addMusic(engine: Engine) async throws {
   try engine.block.setString(
     audioBlock,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.audio/audios/far_from_home.m4a",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/audios/far_from_home.m4a",
   )
   try engine.block.appendChild(to: page, child: audioBlock)
   // highlight-addMusic-createAudioBlock
@@ -43,7 +43,7 @@ func addMusic(engine: Engine) async throws {
   // Register the audio asset source by loading its content.json. The returned ID
   // matches the `id` field in the JSON (here, `ly.img.audio`).
   let audioSourceID = try await engine.asset.addLocalAssetSourceFromJSON(
-    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.audio/content.json")!,
+    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/content.json")!,
   )
 
   // Query the first page of audio assets from the source.
@@ -72,7 +72,7 @@ func addMusic(engine: Engine) async throws {
   try engine.block.setString(
     backgroundAudio,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.0/assets/ly.img.audio/audios/dance_harder.m4a",
+    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/audios/dance_harder.m4a",
   )
   try engine.block.appendChild(to: page, child: backgroundAudio)
   try engine.block.setTimeOffset(backgroundAudio, offset: 10)
