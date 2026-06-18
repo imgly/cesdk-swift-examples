@@ -3,11 +3,6 @@ import IMGLYEngine
 
 @MainActor
 func joinAndArrangeVideo(engine: Engine) async throws {
-  let videoURL = URL(
-    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.video/videos/" +
-      "pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
-  )!
-
   // highlight-joinAndArrange-create-scene
   let scene = try engine.scene.createVideo()
   let page = try engine.block.create(.page)
@@ -16,6 +11,11 @@ func joinAndArrangeVideo(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 1080)
   try engine.block.setDuration(page, duration: 15)
   // highlight-joinAndArrange-create-scene
+
+  let baseURL = try engine.guidesBaseURL
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
 
   // highlight-joinAndArrange-create-clips
   let clipA = try await makeVideoClip(engine: engine, name: "Clip A", videoURL: videoURL, width: 1920, height: 1080)
@@ -108,7 +108,7 @@ private func makeVideoClip(
   try engine.block.setHeight(clip, value: height)
 
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setString(videoFill, property: "fill/video/fileURI", value: videoURL.absoluteString)
+  try engine.block.setURL(videoFill, property: "fill/video/fileURI", value: videoURL)
   try engine.block.setFill(clip, fill: videoFill)
   try engine.block.setContentFillMode(clip, mode: .cover)
   try await engine.block.forceLoadAVResource(videoFill)

@@ -3,6 +3,9 @@ import IMGLYEngine
 
 @MainActor
 func dataMerge(engine: Engine) async throws {
+  // Resolve sample assets against the engine's configured base URL.
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-sample-data
   // Sample record whose fields map to the template's variables and placeholders
   let record: [String: String] = [
@@ -10,7 +13,7 @@ func dataMerge(engine: Engine) async throws {
     "title": "Creative Developer",
     "email": "alex.smith@example.com",
   ]
-  let photoURL = "https://img.ly/static/ubq_samples/sample_1.jpg"
+  let photoURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
   // highlight-sample-data
 
   // highlight-setup-template
@@ -27,7 +30,7 @@ func dataMerge(engine: Engine) async throws {
   let photoBlock = try engine.block.create(.graphic)
   try engine.block.setShape(photoBlock, shape: engine.block.createShape(.rect))
   let photoFill = try engine.block.createFill(.image)
-  try engine.block.setString(photoFill, property: "fill/image/imageFileURI", value: photoURL)
+  try engine.block.setURL(photoFill, property: "fill/image/imageFileURI", value: photoURL)
   try engine.block.setFill(photoBlock, fill: photoFill)
   try engine.block.setWidth(photoBlock, value: 150)
   try engine.block.setHeight(photoBlock, value: 150)
@@ -68,10 +71,10 @@ func dataMerge(engine: Engine) async throws {
   // Find a placeholder block by its semantic name and swap its image content
   if let foundPhotoBlock = engine.block.find(byName: "profile-photo").first {
     let fill = try engine.block.getFill(foundPhotoBlock)
-    try engine.block.setString(
+    try engine.block.setURL(
       fill,
       property: "fill/image/imageFileURI",
-      value: "https://img.ly/static/ubq_samples/sample_2.jpg",
+      value: baseURL.appendingPathComponent("ly.img.image/images/sample_2.jpg"),
     )
   }
   // highlight-update-placeholder

@@ -10,13 +10,15 @@ func addMusic(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 720)
   try engine.block.setDuration(page, duration: 30)
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-addMusic-createAudioBlock
   // Create an audio block and point it at an audio file.
   let audioBlock = try engine.block.create(.audio)
-  try engine.block.setString(
+  try engine.block.setURL(
     audioBlock,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/audios/far_from_home.m4a",
+    value: baseURL.appendingPathComponent("ly.img.audio/audios/far_from_home.m4a"),
   )
   try engine.block.appendChild(to: page, child: audioBlock)
   // highlight-addMusic-createAudioBlock
@@ -43,7 +45,7 @@ func addMusic(engine: Engine) async throws {
   // Register the audio asset source by loading its content.json. The returned ID
   // matches the `id` field in the JSON (here, `ly.img.audio`).
   let audioSourceID = try await engine.asset.addLocalAssetSourceFromJSON(
-    URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/content.json")!,
+    baseURL.appendingPathComponent("ly.img.audio/content.json"),
   )
 
   // Query the first page of audio assets from the source.
@@ -69,10 +71,10 @@ func addMusic(engine: Engine) async throws {
   // Layer a second track from a different source on top of the first audio block.
   // The two blocks play simultaneously while their time ranges overlap.
   let backgroundAudio = try engine.block.create(.audio)
-  try engine.block.setString(
+  try engine.block.setURL(
     backgroundAudio,
     property: "audio/fileURI",
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.audio/audios/dance_harder.m4a",
+    value: baseURL.appendingPathComponent("ly.img.audio/audios/dance_harder.m4a"),
   )
   try engine.block.appendChild(to: page, child: backgroundAudio)
   try engine.block.setTimeOffset(backgroundAudio, offset: 10)

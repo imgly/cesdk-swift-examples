@@ -15,14 +15,17 @@ func exportToMp4(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 720)
   try engine.block.setDuration(page, duration: 5)
 
+  let baseURL = try engine.guidesBaseURL
+
   let video = try engine.block.create(.graphic)
   try engine.block.setShape(video, shape: engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setString(
+  try engine.block.setURL(
     videoFill,
     property: "fill/video/fileURI",
-    // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+    value: baseURL.appendingPathComponent(
+      "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+    ),
   )
   try engine.block.setFill(video, fill: videoFill)
   try engine.block.appendChild(to: page, child: video)

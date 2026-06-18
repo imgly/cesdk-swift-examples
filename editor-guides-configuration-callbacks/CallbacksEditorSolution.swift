@@ -28,8 +28,28 @@ struct CallbacksEditorSolution: View {
             let sceneURL = Bundle.main.url(forResource: "design-ui-empty", withExtension: "scene")!
             try await engine.scene.load(from: sceneURL) // or `engine.scene.create*`
             // Add asset sources
-            try await engine.addDefaultAssetSources(baseURL: Engine.assetBaseURL)
-            try await engine.addDemoAssetSources(withUploadAssetSources: true)
+            let basePath = try engine.editor.getSettingString("basePath")
+            guard let baseURL = URL(string: basePath) else { return }
+            let sourceIDs = [
+              "ly.img.sticker", "ly.img.vector.shape", "ly.img.filter", "ly.img.color.palette",
+              "ly.img.effect", "ly.img.blur", "ly.img.typeface", "ly.img.crop.presets",
+              "ly.img.page.presets", "ly.img.text.presets", "ly.img.text.components",
+              "ly.img.caption.presets", "ly.img.image",
+            ]
+            try await withThrowingTaskGroup(of: String.self) { group in
+              for id in sourceIDs {
+                group.addTask {
+                  try await engine.asset.addLocalAssetSourceFromJSON(
+                    baseURL.appendingPathComponent(id).appendingPathComponent("content.json"),
+                  )
+                }
+              }
+              for try await _ in group {}
+            }
+            try engine.asset.addLocalSource(
+              sourceID: "ly.img.image.upload",
+              supportedMimeTypes: ["image/jpeg", "image/png", "image/svg+xml", "image/gif", "image/apng", "image/bmp"],
+            )
             try await engine.asset.addSource(TextAssetSource(engine: engine))
             try engine.asset.addSource(PhotoRollAssetSource(engine: engine))
           }

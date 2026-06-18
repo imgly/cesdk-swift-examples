@@ -13,8 +13,10 @@ extension PhotoEditorConfiguration {
 
         InspectorBar.Buttons.editText()
         InspectorBar.Buttons.formatText()
+        InspectorBar.Buttons.textOnPath()
         InspectorBar.Buttons.fillStroke()
         InspectorBar.Buttons.textBackground()
+        InspectorBar.Buttons.textStylePresets()
         InspectorBar.Buttons.crop()
 
         InspectorBar.Buttons.adjustments()

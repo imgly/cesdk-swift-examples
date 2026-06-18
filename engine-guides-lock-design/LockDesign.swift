@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func lockDesign(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-lockDesign-setup
   let scene = try engine.scene.create()
   let page = try engine.block.create(.page)
@@ -10,13 +12,13 @@ func lockDesign(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
 
-  let imageURI = "https://img.ly/static/ubq_samples/sample_1.jpg"
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
 
   // Column 1: Fully Locked
   let imageBlock = try engine.block.create(.graphic)
   try engine.block.setShape(imageBlock, shape: engine.block.createShape(.rect))
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setString(imageFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(imageFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(imageBlock, fill: imageFill)
   try engine.block.setPositionX(imageBlock, value: 30)
   try engine.block.setPositionY(imageBlock, value: 100)
@@ -38,7 +40,7 @@ func lockDesign(engine: Engine) async throws {
   let placeholderBlock = try engine.block.create(.graphic)
   try engine.block.setShape(placeholderBlock, shape: engine.block.createShape(.rect))
   let placeholderFill = try engine.block.createFill(.image)
-  try engine.block.setString(placeholderFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(placeholderFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(placeholderBlock, fill: placeholderFill)
   try engine.block.setPositionX(placeholderBlock, value: 550)
   try engine.block.setPositionY(placeholderBlock, value: 100)

@@ -9,67 +9,71 @@ struct NavigationBarItemEditorSolution: View {
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        GuideEditorConfiguration { builder in
           builder.navigationBar { navigationBar in
             navigationBar.items { _ in
               NavigationBar.ItemGroup(placement: .topBarLeading) {
-                // highlight-predefinedButton
+                // highlight-navigationBar-predefinedButton
                 NavigationBar.Buttons.closeEditor()
               }
 
               NavigationBar.ItemGroup(placement: .principal) {
-                // highlight-customizePredefinedButton
+                // highlight-navigationBar-customizePredefinedButton
                 NavigationBar.Buttons.undo(
-                  // highlight-customizePredefinedButton-action
+                  // highlight-navigationBar-customizePredefinedButton-action
                   action: { context in
                     try context.engine?.editor.undo()
                   },
-                  // highlight-customizePredefinedButton-action
-                  // highlight-customizePredefinedButton-label
+                  // highlight-navigationBar-customizePredefinedButton-action
+                  // highlight-navigationBar-customizePredefinedButton-label
                   label: { context in
-                    Label { Text("Undo") } icon: { Image.imgly.undo }
-                      .opacity(context.state.viewMode == .preview ? 0 : 1)
-                      .labelStyle(.imgly.adaptiveIconOnly)
+                    Label {
+                      Text(.imgly.localized("ly_img_editor_navigation_bar_button_undo"))
+                    } icon: {
+                      Image.imgly.undo
+                    }
+                    .opacity(context.state.viewMode == .preview ? 0 : 1)
+                    .labelStyle(.imgly.adaptiveIconOnly)
                   },
-                  // highlight-customizePredefinedButton-label
-                  // highlight-customizePredefinedButton-isEnabled
+                  // highlight-navigationBar-customizePredefinedButton-label
+                  // highlight-navigationBar-customizePredefinedButton-isEnabled
                   isEnabled: { context in
                     try !context.state.isCreating &&
                       context.state.viewMode != .preview &&
                       context.engine?.editor.canUndo() == true
                   },
-                  // highlight-customizePredefinedButton-isEnabled
-                  // highlight-customizePredefinedButton-isVisible
+                  // highlight-navigationBar-customizePredefinedButton-isEnabled
+                  // highlight-navigationBar-customizePredefinedButton-isVisible
                   isVisible: { _ in true },
                 )
-                // highlight-customizePredefinedButton
+                // highlight-navigationBar-customizePredefinedButton
 
-                // highlight-newButton
+                // highlight-navigationBar-newButton
                 NavigationBar.Button(
-                  // highlight-newButton-id
+                  // highlight-navigationBar-newButton-id
                   id: "my.package.navigationBar.button.newButton",
-                  // highlight-newButton-action
+                  // highlight-navigationBar-newButton-action
                 ) { _ in
                   print("New Button action")
-                  // highlight-newButton-action
-                  // highlight-newButton-label
+                  // highlight-navigationBar-newButton-action
+                  // highlight-navigationBar-newButton-label
                 } label: { _ in
                   Label("New Button", systemImage: "star.circle")
-                  // highlight-newButton-label
-                  // highlight-newButton-isEnabled
+                  // highlight-navigationBar-newButton-label
+                  // highlight-navigationBar-newButton-isEnabled
                 } isEnabled: { _ in
                   true
-                  // highlight-newButton-isEnabled
-                  // highlight-newButton-isVisible
+                  // highlight-navigationBar-newButton-isEnabled
+                  // highlight-navigationBar-newButton-isVisible
                 } isVisible: { _ in
                   true
                 }
-                // highlight-newButton-isVisible
-                // highlight-newButton
+                // highlight-navigationBar-newButton-isVisible
+                // highlight-navigationBar-newButton
               }
 
               NavigationBar.ItemGroup(placement: .topBarTrailing) {
-                // highlight-newCustomItem
+                // highlight-navigationBar-newCustomItem
                 CustomNavigationBarItem()
               }
             }
@@ -92,12 +96,12 @@ struct NavigationBarItemEditorSolution: View {
   }
 }
 
-// highlight-newCustomItem-conformance
+// highlight-navigationBar-newCustomItemConformance
 private struct CustomNavigationBarItem: NavigationBar.Item {
-  // highlight-newCustomItem-id
+  // highlight-navigationBar-newCustomItem-id
   var id: EditorComponentID { "my.package.navigationBar.newCustomItem" }
 
-  // highlight-newCustomItem-body
+  // highlight-navigationBar-newCustomItem-body
   func body(_ context: NavigationBar.Context) throws -> some View {
     ZStack {
       RoundedRectangle(cornerRadius: 10)
@@ -110,15 +114,15 @@ private struct CustomNavigationBarItem: NavigationBar.Item {
     }
   }
 
-  // highlight-newCustomItem-body
-  // highlight-newCustomItem-isVisible
+  // highlight-navigationBar-newCustomItem-body
+  // highlight-navigationBar-newCustomItem-isVisible
   func isVisible(_ context: NavigationBar.Context) throws -> Bool {
     true
   }
-  // highlight-newCustomItem-isVisible
+  // highlight-navigationBar-newCustomItem-isVisible
 }
 
-// highlight-newCustomItem-conformance
+// highlight-navigationBar-newCustomItemConformance
 
 #Preview {
   NavigationBarItemEditorSolution()

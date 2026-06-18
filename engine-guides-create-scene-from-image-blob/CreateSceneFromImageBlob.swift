@@ -3,8 +3,11 @@ import IMGLYEngine
 
 @MainActor
 func createSceneFromImageBlob(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-blob-swift
-  let blob = try await URLSession.shared.data(from: .init(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!).0
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg")
+  let blob = try await URLSession.shared.data(from: imageURL).0
   // highlight-blob-swift
 
   // highlight-objectURL-swift
