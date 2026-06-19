@@ -16,6 +16,8 @@ struct ContentView: View {
   @ViewBuilder
   private func appetizeGuideDestination(for guideID: String) -> some View {
     switch guideID {
+    case "aiImageGeneration": AIImageGenerationSolution()
+    case "backgroundRemovalPlugin": BackgroundRemovalPluginSolution()
     case "forceCrop": ForceCropSolution()
     default: EmptyView()
     }

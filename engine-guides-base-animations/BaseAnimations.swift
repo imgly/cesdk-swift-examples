@@ -12,6 +12,8 @@ func baseAnimations(engine: Engine) async throws {
 
   try await engine.scene.zoom(to: page, paddingLeft: 40, paddingTop: 40, paddingRight: 40, paddingBottom: 40)
 
+  let baseURL = try engine.guidesBaseURL
+
   let block = try engine.block.create(.graphic)
   try engine.block.setShape(block, shape: engine.block.createShape(.rect))
   try engine.block.setPositionX(block, value: 100)
@@ -20,10 +22,10 @@ func baseAnimations(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 300)
   try engine.block.appendChild(to: page, child: block)
   let fill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(block, fill: fill)
 

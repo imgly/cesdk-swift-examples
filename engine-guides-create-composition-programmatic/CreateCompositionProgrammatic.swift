@@ -3,32 +3,36 @@ import IMGLYEngine
 
 @MainActor
 func createCompositionProgrammatic(engine: Engine) async throws {
+  // Resolve sample assets against the configured base URL (engine `basePath`,
+  // or the product CDN as a fallback).
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-setup
   // Roboto typeface with all variants for mixed styling
-  let robotoBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.1/assets/ly.img.typeface/fonts/Roboto"
+  let robotoBase = baseURL.appendingPathComponent("ly.img.typeface/fonts/Roboto")
   let robotoTypeface = Typeface(
     name: "Roboto",
     fonts: [
       Font(
-        uri: URL(string: "\(robotoBase)/Roboto-Regular.ttf")!,
+        uri: robotoBase.appendingPathComponent("Roboto-Regular.ttf"),
         subFamily: "Regular",
         weight: .normal,
         style: .normal,
       ),
       Font(
-        uri: URL(string: "\(robotoBase)/Roboto-Bold.ttf")!,
+        uri: robotoBase.appendingPathComponent("Roboto-Bold.ttf"),
         subFamily: "Bold",
         weight: .bold,
         style: .normal,
       ),
       Font(
-        uri: URL(string: "\(robotoBase)/Roboto-Italic.ttf")!,
+        uri: robotoBase.appendingPathComponent("Roboto-Italic.ttf"),
         subFamily: "Italic",
         weight: .normal,
         style: .italic,
       ),
       Font(
-        uri: URL(string: "\(robotoBase)/Roboto-BoldItalic.ttf")!,
+        uri: robotoBase.appendingPathComponent("Roboto-BoldItalic.ttf"),
         subFamily: "Bold Italic",
         weight: .bold,
         style: .italic,
@@ -182,10 +186,10 @@ func createCompositionProgrammatic(engine: Engine) async throws {
   try engine.block.setShape(logo, shape: logoShape)
 
   let logoFill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     logoFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/imgly_logo.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(logo, fill: logoFill)
   // highlight-image-create

@@ -72,30 +72,32 @@ func textProperties(engine: Engine) async throws {
   let textCases = try engine.block.getTextCases(text)
   // highlight-getTextCases
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-setFont
   let typeface = Typeface(
     name: "Roboto",
     fonts: [
       Font(
-        uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Bold.ttf")!,
+        uri: baseURL.appendingPathComponent("ly.img.typeface/fonts/Roboto/Roboto-Bold.ttf"),
         subFamily: "Bold",
         weight: .bold,
         style: .normal,
       ),
       Font(
-        uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-BoldItalic.ttf")!,
+        uri: baseURL.appendingPathComponent("ly.img.typeface/fonts/Roboto/Roboto-BoldItalic.ttf"),
         subFamily: "Bold Italic",
         weight: .bold,
         style: .italic,
       ),
       Font(
-        uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Italic.ttf")!,
+        uri: baseURL.appendingPathComponent("ly.img.typeface/fonts/Roboto/Roboto-Italic.ttf"),
         subFamily: "Italic",
         weight: .normal,
         style: .italic,
       ),
       Font(
-        uri: URL(string: "https://cdn.img.ly/assets/v4/ly.img.typeface/fonts/Roboto/Roboto-Regular.ttf")!,
+        uri: baseURL.appendingPathComponent("ly.img.typeface/fonts/Roboto/Roboto-Regular.ttf"),
         subFamily: "Regular",
         weight: .normal,
         style: .normal,
