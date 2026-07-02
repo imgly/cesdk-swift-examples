@@ -1,16 +1,23 @@
 // swiftformat:disable unusedArguments
 import IMGLYEditor
+import IMGLYEngine
 import SwiftUI
 
+/// Editor demonstrating how to declare and modify the canvas menu item list.
+///
+/// The highlighted regions are the lesson — what the documentation renders. The
+/// `onLoaded` block below them is demo scaffolding (not part of the lesson): it
+/// creates two graphic blocks and selects one so the canvas menu is visible the
+/// moment the showcase opens. The default `onCreate` builds the 1080×1080 scene,
+/// and the default Creator role keeps every engine scope allowed.
 struct CanvasMenuEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
 
   var editor: some View {
-    // highlight-editor
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        GuideEditorConfiguration { builder in
           builder.canvasMenu { canvasMenu in
             // highlight-canvasMenu-canvasMenuItems
             canvasMenu.items { _ in
@@ -74,8 +81,47 @@ struct CanvasMenuEditorSolution: View {
               // highlight-canvasMenu-replace
               // highlight-canvasMenu-remove
               items.remove(id: CanvasMenu.Buttons.ID.delete)
+              // highlight-canvasMenu-remove
             }
             // highlight-canvasMenu-modifyCanvasMenuItems
+          }
+          // Demo scaffolding (not part of the lesson): create two graphic blocks
+          // and select one so the canvas menu appears as soon as the editor loads.
+          builder.onLoaded { context, _ in
+            let engine = context.engine
+            guard let page = try engine.scene.getCurrentPage() else { return }
+
+            let back = try engine.block.create(.graphic)
+            try engine.block.setShape(back, shape: engine.block.createShape(.rect))
+            let backFill = try engine.block.createFill(.color)
+            try engine.block.setColor(
+              backFill,
+              property: "fill/color/value",
+              color: .rgba(r: 0.18, g: 0.4, b: 0.92, a: 1),
+            )
+            try engine.block.setFill(back, fill: backFill)
+            try engine.block.setWidth(back, value: 480)
+            try engine.block.setHeight(back, value: 480)
+            try engine.block.setPositionX(back, value: 180)
+            try engine.block.setPositionY(back, value: 200)
+            try engine.block.appendChild(to: page, child: back)
+
+            let front = try engine.block.create(.graphic)
+            try engine.block.setShape(front, shape: engine.block.createShape(.rect))
+            let frontFill = try engine.block.createFill(.color)
+            try engine.block.setColor(
+              frontFill,
+              property: "fill/color/value",
+              color: .rgba(r: 0.96, g: 0.6, b: 0.12, a: 1),
+            )
+            try engine.block.setFill(front, fill: frontFill)
+            try engine.block.setWidth(front, value: 420)
+            try engine.block.setHeight(front, value: 420)
+            try engine.block.setPositionX(front, value: 420)
+            try engine.block.setPositionY(front, value: 420)
+            try engine.block.appendChild(to: page, child: front)
+
+            try engine.block.setSelected(front, selected: true)
           }
         }
       }

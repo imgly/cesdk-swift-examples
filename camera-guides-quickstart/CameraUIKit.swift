@@ -14,11 +14,11 @@ class CameraUIKit: UIViewController {
         // highlight-initialization
         // highlight-result
         switch result {
-        case let .success(.recording(recordings)):
-          let urls = recordings.flatMap { $0.videos.map(\.url) }
-          let recordedVideos = urls
-          // Do something with the recorded videos
+        case let .success(.capture(captures)):
+          // Do something with the captured photos and videos
+          let recordedVideos = captures.videos.flatMap { $0.videos.map(\.url) }
           print(recordedVideos)
+          print(captures)
 
         case .success(.reaction):
           print("Reaction case not handled here")

@@ -13,25 +13,27 @@ func sourceSets(engine: Engine) async throws {
   try await engine.scene.zoom(to: page, paddingLeft: 50, paddingTop: 50, paddingRight: 50, paddingBottom: 50)
   // highlight-setup
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-set-source-set
   let block = try engine.block.create(DesignBlockType.graphic)
   try engine.block.setShape(block, shape: engine.block.createShape(.rect))
   let imageFill = try engine.block.createFill(.image)
   try engine.block.setSourceSet(imageFill, property: "fill/image/sourceSet", sourceSet: [
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_512x341.jpg")!,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-512x341.jpg"),
       width: 512,
       height: 341,
     ),
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_1024x683.jpg")!,
-      width: 1024,
-      height: 683,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-1249x833.jpg"),
+      width: 1249,
+      height: 833,
     ),
     .init(
-      uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
-      width: 2048,
-      height: 1366,
+      uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-1767x1178.jpg"),
+      width: 1767,
+      height: 1178,
     ),
   ])
   try engine.block.setFill(block, fill: imageFill)
@@ -47,19 +49,19 @@ func sourceSets(engine: Engine) async throws {
     ],
     payload: .init(sourceSet: [
       .init(
-        uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_512x341.jpg")!,
+        uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-512x341.jpg"),
         width: 512,
         height: 341,
       ),
       .init(
-        uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_1024x683.jpg")!,
-        width: 1024,
-        height: 683,
+        uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-1249x833.jpg"),
+        width: 1249,
+        height: 833,
       ),
       .init(
-        uri: URL(string: "https://img.ly/static/ubq_samples/sample_1_2048x1366.jpg")!,
-        width: 2048,
-        height: 1366,
+        uri: baseURL.appendingPathComponent("ly.img.image/images/sample_1-1767x1178.jpg"),
+        width: 1767,
+        height: 1178,
       ),
     ]),
   )
@@ -90,7 +92,9 @@ func sourceSets(engine: Engine) async throws {
   let videoFill = try engine.block.createFill(.video)
   try engine.block.setSourceSet(videoFill, property: "fill/video/sourceSet", sourceSet: [
     .init(
-      uri: URL(string: "https://img.ly/static/example-assets/sourceset/1x.mp4")!,
+      uri: baseURL.appendingPathComponent(
+        "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+      ),
       width: 1920,
       height: 1080,
     ),
@@ -99,7 +103,7 @@ func sourceSets(engine: Engine) async throws {
   try await engine.block.addVideoFileURIToSourceSet(
     videoFill,
     property: "fill/video/sourceSet",
-    uri: URL(string: "https://img.ly/static/example-assets/sourceset/2x.mp4")!,
+    uri: baseURL.appendingPathComponent("ly.img.video/videos/pexels-kampus-production-8154913.mp4"),
   )
   // highlight-video-source-sets
 }

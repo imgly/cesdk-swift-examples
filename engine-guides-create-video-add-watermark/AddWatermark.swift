@@ -3,8 +3,12 @@ import IMGLYEngine
 
 @MainActor
 func addWatermark(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-addWatermark-createScene
-  let videoURL = URL(string: "https://img.ly/static/ubq_video_samples/bbb.mp4")!
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
   try await engine.scene.create(fromVideo: videoURL)
 
   guard let page = try engine.scene.getCurrentPage() else {
@@ -57,8 +61,8 @@ func addWatermark(engine: Engine) async throws {
   try engine.block.setShape(logoWatermark, shape: rectShape)
 
   let imageFill = try engine.block.createFill(.image)
-  let logoURL = "https://img.ly/static/ubq_samples/imgly_logo.jpg"
-  try engine.block.setString(imageFill, property: "fill/image/imageFileURI", value: logoURL)
+  let logoURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
+  try engine.block.setURL(imageFill, property: "fill/image/imageFileURI", value: logoURL)
   try engine.block.setFill(logoWatermark, fill: imageFill)
   try engine.block.setContentFillMode(logoWatermark, mode: .contain)
   // highlight-addWatermark-createImageWatermark
@@ -83,8 +87,8 @@ func addWatermark(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: logoWatermark)
   // highlight-addWatermark-imageTimeline
 
-  // Demo scaffolding: advance the playhead so the hero capture lands on a
-  // representative video frame instead of the source clip's black opening.
-  try engine.block.setPlaybackTime(page, time: 30)
+  // Demo scaffolding: advance the playhead to the middle of the clip so the
+  // hero capture lands on a representative video frame.
+  try engine.block.setPlaybackTime(page, time: videoDuration / 2)
   try await engine.captureGuide(page, label: "hero")
 }

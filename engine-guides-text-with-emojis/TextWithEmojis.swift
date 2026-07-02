@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func textWithEmojis(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-change-default-emoji-font
   let uri = try engine.editor.getSettingString("ubq://defaultEmojiFontFileUri")
   // From a bundle
@@ -13,7 +15,7 @@ func textWithEmojis(engine: Engine) async throws {
   // From a URL
   try engine.editor.setSettingString(
     "ubq://defaultEmojiFontFileUri",
-    value: "https://cdn.img.ly/assets/v4/emoji/NotoColorEmoji.ttf",
+    value: baseURL.appendingPathComponent("emoji/NotoColorEmoji.ttf").absoluteString,
   )
   // highlight-change-default-emoji-font
 

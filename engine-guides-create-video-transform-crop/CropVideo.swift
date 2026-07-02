@@ -5,6 +5,7 @@ import IMGLYEngine
 func cropVideo(engine: Engine) async throws {
   // Demo scaffolding: a video scene with a single video block that fills the page.
   let scene = try engine.scene.createVideo()
+  let baseURL = try engine.guidesBaseURL
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 800)
@@ -14,9 +15,10 @@ func cropVideo(engine: Engine) async throws {
   let videoBlock = try engine.block.create(.graphic)
   try engine.block.setShape(videoBlock, shape: engine.block.createShape(.rect))
   let videoFill = try engine.block.createFill(.video)
-  let videoURL = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.75.0" +
-    "/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
-  try engine.block.setString(videoFill, property: "fill/video/fileURI", value: videoURL)
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
+  try engine.block.setURL(videoFill, property: "fill/video/fileURI", value: videoURL)
   try engine.block.setFill(videoBlock, fill: videoFill)
 
   let track = try engine.block.create(.track)

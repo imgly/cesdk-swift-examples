@@ -51,15 +51,17 @@ struct RotationDemoView: View {
       let page = try engine.block.create(.page)
       try engine.block.appendChild(to: scene, child: page)
 
+      let baseURL = try engine.guidesBaseURL
+
       let image = try engine.block.create(.graphic)
       let shape = try engine.block.createShape(.rect)
       try engine.block.setShape(image, shape: shape)
 
       let fill = try engine.block.createFill(.image)
-      try engine.block.setString(
+      try engine.block.setURL(
         fill,
         property: "fill/image/imageFileURI",
-        value: "https://img.ly/static/ubq_samples/sample_4.jpg",
+        value: baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg"),
       )
       try engine.block.setFill(image, fill: fill)
       try engine.block.appendChild(to: page, child: image)

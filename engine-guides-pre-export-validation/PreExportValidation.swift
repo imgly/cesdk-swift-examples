@@ -190,7 +190,8 @@ func preExportValidation(engine: Engine) async throws {
   try engine.block.setWidth(pageID, value: 800)
   try engine.block.setHeight(pageID, value: 600)
   try engine.block.appendChild(to: scene, child: pageID)
-  try addValidationDemoBlocks(engine: engine, page: pageID)
+  let baseURL = try engine.guidesBaseURL
+  try addValidationDemoBlocks(engine: engine, page: pageID, baseURL: baseURL)
 
   // highlight-validateDesign
   let allIssues = try findOutsideBlocks(engine: engine, page: pageID)
@@ -215,23 +216,23 @@ func preExportValidation(engine: Engine) async throws {
 // MARK: - Demo scene scaffolding (not part of the guide)
 
 @MainActor
-private func addValidationDemoBlocks(engine: Engine, page: DesignBlockID) throws {
-  try addOutsideImage(engine: engine, page: page)
-  try addProtrudingImage(engine: engine, page: page)
+private func addValidationDemoBlocks(engine: Engine, page: DesignBlockID, baseURL: URL) throws {
+  try addOutsideImage(engine: engine, page: page, baseURL: baseURL)
+  try addProtrudingImage(engine: engine, page: page, baseURL: baseURL)
   try addObscuredTextWithOverlap(engine: engine, page: page)
   try addUnfilledPlaceholder(engine: engine, page: page)
 }
 
 @MainActor
-private func addOutsideImage(engine: Engine, page: DesignBlockID) throws {
+private func addOutsideImage(engine: Engine, page: DesignBlockID, baseURL: URL) throws {
   let block = try engine.block.create(.graphic)
   try engine.block.setName(block, name: "Outside Image")
   try engine.block.setShape(block, shape: engine.block.createShape(.rect))
   let fill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(block, fill: fill)
   try engine.block.setWidth(block, value: 150)
@@ -242,15 +243,15 @@ private func addOutsideImage(engine: Engine, page: DesignBlockID) throws {
 }
 
 @MainActor
-private func addProtrudingImage(engine: Engine, page: DesignBlockID) throws {
+private func addProtrudingImage(engine: Engine, page: DesignBlockID, baseURL: URL) throws {
   let block = try engine.block.create(.graphic)
   try engine.block.setName(block, name: "Protruding Image")
   try engine.block.setShape(block, shape: engine.block.createShape(.rect))
   let fill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_2.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_2.jpg"),
   )
   try engine.block.setFill(block, fill: fill)
   try engine.block.setWidth(block, value: 150)

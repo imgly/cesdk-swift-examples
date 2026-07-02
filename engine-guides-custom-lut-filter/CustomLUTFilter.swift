@@ -5,6 +5,8 @@ import IMGLYEngine
 func customLutFilter(engine: Engine) async throws {
   let scene = try engine.scene.create()
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-load-scene
   let page = try engine.block.create(.page)
   try engine.block.setWidth(page, value: 100)
@@ -23,10 +25,10 @@ func customLutFilter(engine: Engine) async throws {
 
   // highlight-create-image-fill
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   // highlight-create-image-fill
 
@@ -34,11 +36,10 @@ func customLutFilter(engine: Engine) async throws {
   let lutFilter = try engine.block.createEffect(.lutFilter)
   try engine.block.setBool(lutFilter, property: "effect/enabled", value: true)
   try engine.block.setFloat(lutFilter, property: "effect/lut_filter/intensity", value: 0.9)
-  try engine.block.setString(
+  try engine.block.setURL(
     lutFilter,
     property: "effect/lut_filter/lutFileURI",
-    // swiftlint:disable:next line_length
-    value: "https://cdn.img.ly/packages/imgly/cesdk-js/1.76.1/assets/extensions/ly.img.cesdk.filters.lut/LUTs/imgly_lut_ad1920_5_5_128.png",
+    value: baseURL.appendingPathComponent("ly.img.filter.lut/LUTs/imgly_lut_ad1920_5_5_128.png"),
   )
   try engine.block.setInt(lutFilter, property: "effect/lut_filter/verticalTileCount", value: 5)
   try engine.block.setInt(lutFilter, property: "effect/lut_filter/horizontalTileCount", value: 5)

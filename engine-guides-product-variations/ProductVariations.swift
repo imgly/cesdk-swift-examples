@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func productVariations(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-productVariations-dataModel
   struct ProductVariant {
     let color: String
@@ -16,13 +18,13 @@ func productVariations(engine: Engine) async throws {
       color: "Midnight Black",
       size: "M",
       price: "$29.99",
-      imageURL: URL(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!,
+      imageURL: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
     ),
     ProductVariant(
       color: "Ocean Blue",
       size: "L",
       price: "$34.99",
-      imageURL: URL(string: "https://img.ly/static/ubq_samples/imgly_logo.jpg")!,
+      imageURL: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
     ),
   ]
   // highlight-productVariations-dataModel
@@ -59,10 +61,10 @@ func productVariations(engine: Engine) async throws {
   try engine.block.setName(imageBlock, name: "ProductImage")
   let imageFill = try engine.block.createFill(.image)
   try engine.block.setFill(imageBlock, fill: imageFill)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/imgly_logo.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
 
   // Save template as a string for further export
@@ -91,10 +93,10 @@ func productVariations(engine: Engine) async throws {
     // Replace the product image by finding the block by name
     if let block = engine.block.find(byName: "ProductImage").first {
       let fill = try engine.block.getFill(block)
-      try engine.block.setString(
+      try engine.block.setURL(
         fill,
         property: "fill/image/imageFileURI",
-        value: variant.imageURL.absoluteString,
+        value: variant.imageURL,
       )
     }
     // highlight-productVariations-replaceImage

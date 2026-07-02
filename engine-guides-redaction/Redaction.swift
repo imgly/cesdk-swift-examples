@@ -4,8 +4,6 @@ import IMGLYEngine
 
 @MainActor
 func redaction(engine: Engine) async throws {
-  let videoURL = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.75.0" +
-    "/assets/ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4"
   let segmentDuration = 5.0
 
   // highlight-redaction-create-scene
@@ -21,6 +19,11 @@ func redaction(engine: Engine) async throws {
   try engine.block.setDuration(page, duration: 5 * segmentDuration)
   // highlight-redaction-create-scene
 
+  let baseURL = try engine.guidesBaseURL
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
+
   // highlight-redaction-create-videos
   let track = try engine.block.create(.track)
   try engine.block.appendChild(to: page, child: track)
@@ -32,7 +35,7 @@ func redaction(engine: Engine) async throws {
     try engine.block.setShape(video, shape: engine.block.createShape(.rect))
 
     let videoFill = try engine.block.createFill(.video)
-    try engine.block.setString(videoFill, property: "fill/video/fileURI", value: videoURL)
+    try engine.block.setURL(videoFill, property: "fill/video/fileURI", value: videoURL)
     try engine.block.setFill(video, fill: videoFill)
 
     try engine.block.appendChild(to: track, child: video)

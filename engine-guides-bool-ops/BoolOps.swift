@@ -12,6 +12,8 @@ func boolOps(engine: Engine) async throws {
   try engine.block.appendChild(to: scene, child: page)
   // highlight-setup
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-combine-union
   let circle1 = try engine.block.create(.graphic)
   try engine.block.setShape(circle1, shape: engine.block.createShape(.ellipse))
@@ -60,10 +62,10 @@ func boolOps(engine: Engine) async throws {
   try engine.block.setPositionY(image, value: 0)
   try engine.block.setWidth(image, value: 100)
   try engine.block.setHeight(image, value: 100)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.appendChild(to: page, child: image)
 

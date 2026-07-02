@@ -16,12 +16,19 @@ struct RecordingsCameraSolution: View {
         switch result {
         // highlight-success
         // highlight-standard
-        case let .success(.recording(recordings)):
-          for recording in recordings {
-            print(recording.duration)
-            for video in recording.videos {
-              print(video.url)
-              print(video.rect)
+        case let .success(.capture(captures)):
+          for capture in captures {
+            switch capture {
+            case let .photo(photo):
+              for image in photo.images {
+                print(image.url)
+              }
+            case let .video(recording):
+              print(recording.duration)
+              for video in recording.videos {
+                print(video.url)
+                print(video.rect)
+              }
             }
           }
           // highlight-standard
@@ -37,9 +44,9 @@ struct RecordingsCameraSolution: View {
               print(video.rect)
             }
           }
-          // highlight-reaction
-          // highlight-camera
-          // highlight-success
+        // highlight-reaction
+        // highlight-camera
+        // highlight-success
 
         // highlight-failure
         case let .failure(error):

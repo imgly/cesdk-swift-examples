@@ -3,8 +3,11 @@ import IMGLYEngine
 
 @MainActor
 func createSceneFromImageURL(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg")
+
   // highlight-createFromImage-url
-  let scene = try await engine.scene.create(fromImage: URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!)
+  let scene = try await engine.scene.create(fromImage: imageURL)
   // highlight-createFromImage-url
 
   // highlight-findByType-url

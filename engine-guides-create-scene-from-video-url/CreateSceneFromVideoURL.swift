@@ -3,8 +3,13 @@ import IMGLYEngine
 
 @MainActor
 func createSceneFromVideoURL(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+  let videoURL = baseURL.appendingPathComponent(
+    "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
+  )
+
   // highlight-createFromVideo
-  let scene = try await engine.scene.create(fromVideo: URL(string: "https://img.ly/static/ubq_video_samples/bbb.mp4")!)
+  let scene = try await engine.scene.create(fromVideo: videoURL)
   // highlight-createFromVideo
 
   // highlight-findByType

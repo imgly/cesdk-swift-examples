@@ -21,11 +21,15 @@ func usingEffects(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 300)
   try engine.block.appendChild(to: page, child: block)
   let fill = try engine.block.createFill(.image)
+  // highlight-setup
 
-  try engine.block.setString(
+  let baseURL = try engine.guidesBaseURL
+
+  // highlight-setup
+  try engine.block.setURL(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(block, fill: fill)
   // highlight-setup
