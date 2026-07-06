@@ -5,39 +5,42 @@ import IMGLYCamera
 import SwiftUI
 
 struct CameraSwiftUI: View {
+  // highlight-present
   @State private var isPresented = false
 
   var body: some View {
-    // highlight-modal
     Button("Use the Camera") {
       isPresented = true
     }
-    // highlight-modal
-
-    // highlight-fullscreencover
     .fullScreenCover(isPresented: $isPresented) {
-      // highlight-fullscreencover
       // highlight-initialization
       Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                    userID: "<your unique user id>")) { result in
         // highlight-initialization
+        // highlight-present
         // highlight-result
         switch result {
         case let .success(.capture(captures)):
-          // Do something with the captured photos and videos
-          let recordedVideos = captures.videos.flatMap { $0.videos.map(\.url) }
-          print(recordedVideos)
-          print(captures)
+          for capture in captures {
+            switch capture {
+            case let .photo(photo):
+              if let url = photo.images.first?.url {
+                print("Captured photo: \(url)")
+              }
+            case let .video(recording):
+              print("Recorded videos: \(recording.videos.map(\.url))")
+            }
+          }
 
         case .success(.reaction):
           print("Reaction case not handled here")
 
         case let .failure(error):
           print(error.localizedDescription)
-          isPresented = false
         }
-        // highlight-result
+        isPresented = false
       }
     }
   }
+  // highlight-result
 }

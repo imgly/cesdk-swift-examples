@@ -9,7 +9,7 @@ extension Engine {
   /// app bundle) and provide your own base URL — see
   /// https://img.ly/docs/cesdk/swift/guides/serve-assets/.
   static let guidesFallbackBaseURL = URL(
-    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.77.0/assets",
+    string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.78.0-rc.0/assets",
   )!
 
   /// Base URL the example guides resolve their sample assets against.

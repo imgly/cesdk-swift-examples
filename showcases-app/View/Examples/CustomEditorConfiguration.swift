@@ -2,11 +2,7 @@ import IMGLYEditor
 import SwiftUI
 
 @MainActor var settings: EngineSettings {
-  if let baseURL = secrets.baseURL {
-    .init(license: secrets.licenseKey, userID: "showcases-app-user", baseURL: baseURL)
-  } else {
-    .init(license: secrets.licenseKey, userID: "showcases-app-user")
-  }
+  EngineSettings(license: secrets.licenseKey, userID: "showcases-app-user", baseURL: secrets.baseURL)
 }
 
 class ShowcasesEditorConfiguration: EditorConfiguration {

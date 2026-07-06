@@ -1,3 +1,4 @@
+// highlight-record-video-camera-helper
 import AVFoundation
 import Foundation
 
@@ -96,3 +97,5 @@ extension Camera: AVCaptureFileOutputRecordingDelegate {
     }
   }
 }
+
+// highlight-record-video-camera-helper
