@@ -16,7 +16,7 @@ struct BackgroundRemovalPluginSolution: View {
         PhotoEditorConfiguration { builder in
           builder.onCreate { engine, _ in
             let baseURL = secrets.baseURL
-              ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.77.0/assets")!
+              ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.77.1/assets")!
             let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_14.jpg")
             try await engine.scene.create(fromImage: imageURL)
           }
