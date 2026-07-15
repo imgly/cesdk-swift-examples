@@ -3,50 +3,65 @@ import IMGLYEngine
 
 @MainActor
 func customLutFilter(engine: Engine) async throws {
+  // Demo scaffolding: a scene, a page, and an image block to grade. In your
+  // app this is whatever image block the user is editing.
   let scene = try engine.scene.create()
-
   let baseURL = try engine.guidesBaseURL
 
-  // highlight-load-scene
   let page = try engine.block.create(.page)
-  try engine.block.setWidth(page, value: 100)
-  try engine.block.setHeight(page, value: 100)
+  try engine.block.setWidth(page, value: 800)
+  try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
-  try await engine.scene.zoom(to: scene, paddingLeft: 40.0, paddingTop: 40.0, paddingRight: 40.0, paddingBottom: 40.0)
-  // highlight-load-scene
 
-  // highlight-create-rect
-  let rect = try engine.block.create(.graphic)
-  try engine.block.setShape(rect, shape: engine.block.createShape(.rect))
-  try engine.block.setWidth(rect, value: 100)
-  try engine.block.setHeight(rect, value: 100)
-  try engine.block.appendChild(to: page, child: rect)
-  // highlight-create-rect
+  let imageBlock = try engine.block.create(.graphic)
+  try engine.block.setShape(imageBlock, shape: engine.block.createShape(.rect))
+  try engine.block.setWidth(imageBlock, value: 800)
+  try engine.block.setHeight(imageBlock, value: 600)
+  try engine.block.appendChild(to: page, child: imageBlock)
 
-  // highlight-create-image-fill
   let imageFill = try engine.block.createFill(.image)
   try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
     value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
-  // highlight-create-image-fill
+  try engine.block.setFill(imageBlock, fill: imageFill)
 
-  // highlight-create-lut-filter
-  let lutFilter = try engine.block.createEffect(.lutFilter)
-  try engine.block.setBool(lutFilter, property: "effect/enabled", value: true)
-  try engine.block.setFloat(lutFilter, property: "effect/lut_filter/intensity", value: 0.9)
-  try engine.block.setURL(
-    lutFilter,
-    property: "effect/lut_filter/lutFileURI",
-    value: baseURL.appendingPathComponent("ly.img.filter.lut/LUTs/imgly_lut_ad1920_5_5_128.png"),
-  )
-  try engine.block.setInt(lutFilter, property: "effect/lut_filter/verticalTileCount", value: 5)
-  try engine.block.setInt(lutFilter, property: "effect/lut_filter/horizontalTileCount", value: 5)
-  // highlight-create-lut-filter
+  // The URL of your hosted (or app-bundled) tiled-PNG LUT image.
+  let lutURL = baseURL.appendingPathComponent("ly.img.filter.lut/LUTs/imgly_lut_ad1920_5_5_128.png")
 
-  // highlight-apply-lut-filter
-  try engine.block.appendEffect(rect, effectID: lutFilter)
-  try engine.block.setFill(rect, fill: imageFill)
-  // highlight-apply-lut-filter
+  try await engine.captureGuide(page, label: "before-lut")
+
+  // highlight-customLutFilter-createEffect
+  let lutEffect = try engine.block.createEffect(.lutFilter)
+  // highlight-customLutFilter-createEffect
+
+  // highlight-customLutFilter-configure
+  try engine.block.setURL(lutEffect, property: "effect/lut_filter/lutFileURI", value: lutURL)
+  try engine.block.setInt(lutEffect, property: "effect/lut_filter/horizontalTileCount", value: 5)
+  try engine.block.setInt(lutEffect, property: "effect/lut_filter/verticalTileCount", value: 5)
+  // highlight-customLutFilter-configure
+
+  // highlight-customLutFilter-intensity
+  try engine.block.setFloat(lutEffect, property: "effect/lut_filter/intensity", value: 0.9)
+  // highlight-customLutFilter-intensity
+
+  // highlight-customLutFilter-apply
+  try engine.block.appendEffect(imageBlock, effectID: lutEffect)
+  // highlight-customLutFilter-apply
+
+  try await engine.captureGuide(page, label: "hero")
+
+  // highlight-customLutFilter-toggle
+  try engine.block.setEffectEnabled(effectID: lutEffect, enabled: false)
+  let isEnabled = try engine.block.isEffectEnabled(effectID: lutEffect)
+  print("LUT filter enabled: \(isEnabled)")
+  try engine.block.setEffectEnabled(effectID: lutEffect, enabled: true)
+  // highlight-customLutFilter-toggle
+
+  // highlight-customLutFilter-manage
+  let supportsEffects = try engine.block.supportsEffects(imageBlock)
+  let effects = try engine.block.getEffects(imageBlock)
+  print("Supports effects: \(supportsEffects), count: \(effects.count)")
+  // highlight-customLutFilter-manage
 }
