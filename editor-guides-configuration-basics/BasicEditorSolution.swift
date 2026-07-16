@@ -10,7 +10,7 @@ struct BasicEditorSolution: View {
     userID: "<your unique user id>",
     // highlight-configurationBasics-userID
     // highlight-configurationBasics-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.77.1/assets")!,
+    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.78.0-rc.3/assets")!,
     // highlight-configurationBasics-baseURL
   )
 

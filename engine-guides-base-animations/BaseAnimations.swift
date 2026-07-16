@@ -71,7 +71,7 @@ func baseAnimations(engine: Engine) async throws {
   let currentOut = try engine.block.getOutAnimation(block)
   print("Animation IDs — In: \(currentIn), Loop: \(currentLoop), Out: \(currentOut)")
 
-  if currentLoop != 0 {
+  if engine.block.isValid(currentLoop) {
     try engine.block.destroy(currentLoop)
   }
   let squeeze = try engine.block.createAnimation(.squeezeLoop)
