@@ -1,38 +1,44 @@
-// highlight-import
+// highlight-uikit-import
 import IMGLYCamera
 
-// highlight-import
+// highlight-uikit-import
 import SwiftUI
 
 class CameraUIKit: UIViewController {
   private var camera: UIViewController {
-    // highlight-ui-hosting-controller
+    // highlight-uikit-hosting
     UIHostingController(rootView:
-      // highlight-initialization
+      // highlight-uikit-initialization
       Camera(.init(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                    userID: "<your unique user id>")) { result in
-        // highlight-initialization
-        // highlight-result
+        // highlight-uikit-initialization
+        // highlight-uikit-result
         switch result {
         case let .success(.capture(captures)):
-          // Do something with the captured photos and videos
-          let recordedVideos = captures.videos.flatMap { $0.videos.map(\.url) }
-          print(recordedVideos)
-          print(captures)
+          for capture in captures {
+            switch capture {
+            case let .photo(photo):
+              if let url = photo.images.first?.url {
+                print("Captured photo: \(url)")
+              }
+            case let .video(recording):
+              print("Recorded videos: \(recording.videos.map(\.url))")
+            }
+          }
 
         case .success(.reaction):
           print("Reaction case not handled here")
 
         case let .failure(error):
           print(error.localizedDescription)
-          self.presentedViewController?.dismiss(animated: true)
         }
-        // highlight-result
+        self.presentedViewController?.dismiss(animated: true)
+        // highlight-uikit-result
       })
-    // highlight-ui-hosting-controller
+    // highlight-uikit-hosting
   }
 
-  // highlight-modal
+  // highlight-uikit-modal
   private lazy var button = UIButton(
     type: .system,
     primaryAction: UIAction(title: "Use the Camera") { [unowned self] _ in
@@ -41,7 +47,7 @@ class CameraUIKit: UIViewController {
       present(camera, animated: true)
     },
   )
-  // highlight-modal
+  // highlight-uikit-modal
 
   override func viewDidLoad() {
     super.viewDidLoad()

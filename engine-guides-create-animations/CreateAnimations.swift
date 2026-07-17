@@ -89,11 +89,20 @@ func createAnimations(engine: Engine) async throws {
   let currentLoop = try engine.block.getLoopAnimation(block)
   print("Animation IDs — In: \(currentIn), Out: \(currentOut), Loop: \(currentLoop)")
 
-  if currentIn != 0 {
+  if engine.block.isValid(currentIn) {
     try engine.block.destroy(currentIn)
     let zoomIn = try engine.block.createAnimation(.zoom)
     try engine.block.setInAnimation(block, animation: zoomIn)
     try engine.block.setDuration(zoomIn, duration: 0.8)
   }
   // highlight-createAnimations-manageLifecycle
+
+  // highlight-createAnimations-replaceMemoryLeaks
+  let currentAnimation = try engine.block.getInAnimation(block)
+  if engine.block.isValid(currentAnimation) {
+    try engine.block.destroy(currentAnimation)
+  }
+  let newAnimation = try engine.block.createAnimation(.fade)
+  try engine.block.setInAnimation(block, animation: newAnimation)
+  // highlight-createAnimations-replaceMemoryLeaks
 }

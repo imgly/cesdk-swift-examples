@@ -190,11 +190,11 @@ struct Showcases: View {
       Group {
         Showcase(view: BasicEditorSolution(), title: "Configuration: Basics")
         Showcase(view: CallbacksEditorSolution(), title: "Configuration: Callbacks")
+        Showcase(view: UiEventsEditorSolution(), title: "Configuration: UI Events")
         Showcase(view: ForceCropSolution(), title: "Configuration: Force Crop")
+        Showcase(view: CropPresetsSolution(), title: "Configuration: Crop Presets")
         Showcase(view: ThemingEditorSolution(), title: "Configuration: Theming")
         Showcase(view: ColorPaletteEditorSolution(), title: "Configuration: Color Palette")
-        Showcase(view: DefaultAssetLibraryEditorSolution(), title: "Configuration: Default Asset Library")
-        Showcase(view: CustomAssetLibraryEditorSolution(), title: "Configuration: Custom Asset Library")
         Showcase(view: NavigationBarEditorSolution(), title: "Configuration: Navigation Bar")
         Showcase(view: NavigationBarItemEditorSolution(), title: "Configuration: Navigation Bar Item")
         Showcase(view: DockEditorSolution(), title: "Configuration: Dock")
@@ -206,6 +206,15 @@ struct Showcases: View {
         Showcase(view: CanvasMenuEditorSolution(), title: "Configuration: Canvas Menu")
         Showcase(view: CanvasMenuItemEditorSolution(), title: "Configuration: Canvas Menu Item")
         Showcase(view: AddButtonEditorSolution(), title: "UI Extensions: Add a New Button")
+        Showcase(view: AssetLibraryPanelSolution(), title: "UI Extensions: Asset Library")
+        Showcase(
+          view: NotificationsAndDialogsSolution(),
+          title: "UI Extensions: Notifications and Dialogs",
+        )
+        Showcase(view: CustomizeBehaviourSolution(), title: "UI Extensions: Customize Behaviour")
+        Showcase(view: RegisterNewComponentSolution(), title: "UI Extensions: Register a New Component")
+        Showcase(view: QuickActionsEditorSolution(), title: "UI Extensions: Quick Actions")
+        Showcase(view: CreateCustomPanelSolution(), title: "UI Extensions: Create a Custom Panel")
         Showcase(view: CustomLabelsEditorSolution(), title: "Customization: Custom Labels")
         Showcase(view: HideElementsEditorSolution(), title: "Customization: Hide Elements")
         Showcase(
@@ -213,15 +222,23 @@ struct Showcases: View {
           title: "Customization: Disable or Enable Features",
         )
         Showcase(view: IconsEditorSolution(), title: "Customization: Icons")
+        Showcase(view: PageFormatSolution(), title: "Customization: Page Format")
         Showcase(view: RearrangeButtonsEditorSolution(), title: "Customization: Rearrange Buttons")
         if #available(iOS 16.1, *) {
           Showcase(view: ChangeUIFontSolution(), title: "Appearance: Change UI Font")
         }
+        Showcase(view: AssetLibraryBasicsSolution(), title: "Import Media: Asset Library Basics")
+        Showcase(view: AssetLibraryEditorSolution(), title: "Import Media: Asset Library")
+        Showcase(view: CustomFontsSolution(), title: "Text: Custom Fonts")
         Showcase(view: PhotoRollSolution(), title: "Import Media: Photo Roll")
+        Showcase(view: DualCameraSolution(), title: "Import Media: Dual Camera")
+        Showcase(view: UserUploadSolution(), title: "Import Media: User Upload")
+        Showcase(view: RefreshAssetsSolution(), title: "Import Media: Asset Library Refresh Assets")
         Showcase(view: RecordReactionSolution(), title: "Create Video: Record Reaction")
         Showcase(view: RecordVoiceoverSolution(), title: "Create Audio: Record Voiceover")
         Showcase(view: AIImageGenerationSolution(), title: "Plugin: AI Image Generation")
         Showcase(view: BackgroundRemovalPluginSolution(), title: "Plugin: Background Removal")
+        Showcase(view: CustomFeaturePluginSolution(), title: "Plugins: Custom Feature Plugin")
       }
     }.showcaseMode(.navigationLink)
     Section(title: "Documentation Camera Examples") {
@@ -234,6 +251,12 @@ struct Showcases: View {
       }
       Group {
         Showcase(view: ConfiguredCameraSolution(), title: "Configuration")
+      }
+      Group {
+        Showcase(view: TakePhotoCameraSolution(), title: "Take Photo")
+      }
+      Group {
+        Showcase(view: ReactionCameraSolution(), title: "Record Reaction")
       }
     }.showcaseMode(.navigationLink)
   }

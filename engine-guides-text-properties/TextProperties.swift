@@ -3,9 +3,17 @@ import IMGLYEngine
 
 @MainActor
 func textProperties(engine: Engine) async throws {
-  let scene = try engine.scene.create()
+  // Demo scaffolding: a Pixel-unit page so `text/fontSize` literals interpret
+  // as pixels and the captured exports show the rendered output at its
+  // intended scale.
+  let scene = try engine.scene.create(designUnit: .px)
+  let page = try engine.block.create(.page)
+  try engine.block.setWidth(page, value: 800)
+  try engine.block.setHeight(page, value: 300)
+  try engine.block.appendChild(to: scene, child: page)
+
   let text = try engine.block.create(.text)
-  try engine.block.appendChild(to: scene, child: text)
+  try engine.block.appendChild(to: page, child: text)
   try engine.block.setWidthMode(text, mode: .auto)
   try engine.block.setHeightMode(text, mode: .auto)
 
@@ -17,45 +25,60 @@ func textProperties(engine: Engine) async throws {
   try engine.block.replaceText(text, text: "!", in: "Hello World".endIndex ..< "Hello World".endIndex)
   // highlight-replaceText-single-index
   // highlight-replaceText-range
-  // Replace "World" with "Alex"
-  try engine.block.replaceText(text, text: "Alex", in: "Hello World".range(of: "World")!)
+  // Replace "World" with "CE.SDK"
+  try engine.block.replaceText(text, text: "CE.SDK", in: "Hello World".range(of: "World")!)
   // highlight-replaceText-range
+
+  try engine.block.setTextFontSize(text, fontSize: 80)
+  try engine.block.setPositionX(text, value: 230)
+  try engine.block.setPositionY(text, value: 100)
 
   try await engine.scene.zoom(to: text, paddingLeft: 100, paddingTop: 100, paddingRight: 100, paddingBottom: 100)
 
   // highlight-removeText
   // Remove the "Hello "
-  try engine.block.removeText(text, from: "Hello Alex".range(of: "Hello ")!)
+  try engine.block.removeText(text, from: "Hello CE.SDK".range(of: "Hello ")!)
   // highlight-removeText
 
   // highlight-setTextColor
   try engine.block.setTextColor(text, color: .rgba(r: 1, g: 1, b: 0))
   // highlight-setTextColor
   // highlight-setTextColor-range
-  try engine.block.setTextColor(text, color: .rgba(r: 0, g: 0, b: 0), in: "Alex".range(of: "lex")!)
+  try engine.block.setTextColor(text, color: .rgba(r: 0, g: 0, b: 0), in: "CE.SDK".range(of: "E.SDK")!)
   // highlight-setTextColor-range
   // highlight-getTextColors
   let allColors = try engine.block.getTextColors(text)
+  print("All unique colors: \(allColors)")
   // highlight-getTextColors
   // highlight-getTextColors-range
-  let colorsInRange = try engine.block.getTextColors(text, in: "Alex".range(of: "lex")!)
+  let colorsInRange = try engine.block.getTextColors(text, in: "CE.SDK!".range(of: "E.SDK!")!)
+  print("Colors in \"E.SDK!\": \(colorsInRange)")
   // highlight-getTextColors-range
 
   // highlight-backgroundColor-enabled
-  try engine.block.setBool(text, property: "backgroundColor/enabled", value: true)
+  try engine.block.setBackgroundColorEnabled(text, enabled: true)
+  // highlight-backgroundColor-enabled
 
   // highlight-backgroundColor-get-set
-  try engine.block.getColor(text, property: "backgroundColor/color") as Color
-  try engine.block.setColor(text, property: "backgroundColor/color", color: .rgba(r: 0.0, g: 0.0, b: 1.0, a: 1.0))
+  let currentBackgroundColor = try engine.block.getBackgroundColor(text)
+  print("Current background color: \(currentBackgroundColor)")
+  try engine.block.setBackgroundColor(text, r: 0.0, g: 0.0, b: 1.0, a: 1.0)
+  // highlight-backgroundColor-get-set
 
   // highlight-backgroundColor-padding
-  try engine.block.setFloat(text, property: "backgroundColor/paddingLeft", value: 1)
-  try engine.block.setFloat(text, property: "backgroundColor/paddingTop", value: 2)
-  try engine.block.setFloat(text, property: "backgroundColor/paddingRight", value: 3)
-  try engine.block.setFloat(text, property: "backgroundColor/paddingBottom", value: 4)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingLeft", value: 8)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingTop", value: 8)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingRight", value: 8)
+  try engine.block.setFloat(text, property: "backgroundColor/paddingBottom", value: 8)
+  // highlight-backgroundColor-padding
 
   // highlight-backgroundColor-cornerRadius
-  try engine.block.setFloat(text, property: "backgroundColor/cornerRadius", value: 4)
+  try engine.block.setFloat(text, property: "backgroundColor/cornerRadius", value: 12)
+  // highlight-backgroundColor-cornerRadius
+
+  // Most-evolved positive visual state — captured before setInAnimation makes
+  // the text invisible at t=0 and before setFont resets the per-range colors.
+  try await engine.captureGuide(page, label: "hero")
 
   // highlight-backgroundColor-animation
   let animation = try engine.block.createAnimation(AnimationType.slide)
@@ -63,6 +86,7 @@ func textProperties(engine: Engine) async throws {
 
   try engine.block.setInAnimation(text, animation: animation)
   try engine.block.setOutAnimation(text, animation: animation)
+  // highlight-backgroundColor-animation
 
   // highlight-setTextCase
   try engine.block.setTextCase(text, textCase: .titlecase)
@@ -70,6 +94,7 @@ func textProperties(engine: Engine) async throws {
 
   // highlight-getTextCases
   let textCases = try engine.block.getTextCases(text)
+  print("Text cases: \(textCases)")
   // highlight-getTextCases
 
   let baseURL = try engine.guidesBaseURL
@@ -108,25 +133,28 @@ func textProperties(engine: Engine) async throws {
   // highlight-setFont
 
   // highlight-setTypeface
-  try engine.block.setTypeface(text, typeface: typeface, in: "Alex".range(of: "lex")!)
+  try engine.block.setTypeface(text, typeface: typeface, in: "CE.SDK".range(of: "E.SDK")!)
   try engine.block.setTypeface(text, typeface: typeface)
   // highlight-setTypeface
 
   // highlight-getTypeface
   let currentDefaultTypeface = try engine.block.getTypeface(text)
+  print("Default typeface: \(currentDefaultTypeface.name)")
   // highlight-getTypeface
 
   // highlight-getTypefaces
   let currentTypefaces = try engine.block.getTypefaces(text)
-  let currentTypefacesOfRange = try engine.block.getTypefaces(text, in: "Alex".range(of: "lex")!)
+  let currentTypefacesOfRange = try engine.block.getTypefaces(text, in: "CE.SDK".range(of: "E.SDK")!)
+  print("Typefaces across the block: \(currentTypefaces.map(\.name))")
+  print("Typefaces in \"E.SDK\": \(currentTypefacesOfRange.map(\.name))")
   // highlight-getTypefaces
 
   // highlight-toggleBold
   if try engine.block.canToggleBoldFont(text) {
     try engine.block.toggleBoldFont(text)
   }
-  if try engine.block.canToggleBoldFont(text, in: "Alex".range(of: "lex")!) {
-    try engine.block.toggleBoldFont(text, in: "Alex".range(of: "lex")!)
+  if try engine.block.canToggleBoldFont(text, in: "CE.SDK".range(of: "E.SDK")!) {
+    try engine.block.toggleBoldFont(text, in: "CE.SDK".range(of: "E.SDK")!)
   }
   // highlight-toggleBold
 
@@ -134,8 +162,8 @@ func textProperties(engine: Engine) async throws {
   if try engine.block.canToggleItalicFont(text) {
     try engine.block.toggleItalicFont(text)
   }
-  if try engine.block.canToggleItalicFont(text, in: "Alex".range(of: "lex")!) {
-    try engine.block.toggleItalicFont(text, in: "Alex".range(of: "lex")!)
+  if try engine.block.canToggleItalicFont(text, in: "CE.SDK".range(of: "E.SDK")!) {
+    try engine.block.toggleItalicFont(text, in: "CE.SDK".range(of: "E.SDK")!)
   }
   // highlight-toggleItalic
 
@@ -145,6 +173,7 @@ func textProperties(engine: Engine) async throws {
 
   // highlight-getTextFontWeights
   let fontWeights = try engine.block.getTextFontWeights(text)
+  print("Font weights: \(fontWeights)")
   // highlight-getTextFontWeights
 
   // highlight-setTextFontStyle
@@ -153,5 +182,6 @@ func textProperties(engine: Engine) async throws {
 
   // highlight-getTextFontStyles
   let fontStyles = try engine.block.getTextFontStyles(text)
+  print("Font styles: \(fontStyles)")
   // highlight-getTextFontStyles
 }

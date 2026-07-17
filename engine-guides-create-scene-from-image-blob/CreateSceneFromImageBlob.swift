@@ -18,15 +18,6 @@ func createSceneFromImageBlob(engine: Engine) async throws {
   // highlight-objectURL-swift
 
   // highlight-initialImageURL-swift
-  let scene = try await engine.scene.create(fromImage: url)
+  try await engine.scene.create(fromImage: url)
   // highlight-initialImageURL-swift
-
-  // highlight-findByType-blob
-  let page = try engine.block.find(byType: .page).first!
-  // highlight-findByType-blob
-
-  // highlight-check-fill-blob
-  let pageFill = try engine.block.getFill(page)
-  let imageFillType = try engine.block.getType(pageFill)
-  // highlight-check-fill-blob
 }
