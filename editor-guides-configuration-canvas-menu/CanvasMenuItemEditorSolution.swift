@@ -113,7 +113,9 @@ struct CanvasMenuItemEditorSolution: View {
 // highlight-canvasMenu-newCustomItemConformance
 private struct CustomCanvasMenuItem: CanvasMenu.Item {
   // highlight-canvasMenu-newCustomItem-id
-  var id: EditorComponentID { "my.package.canvasMenu.newCustomItem" }
+  var id: EditorComponentID {
+    "my.package.canvasMenu.newCustomItem"
+  }
 
   // highlight-canvasMenu-newCustomItem-body
   func body(_ context: CanvasMenu.Context) throws -> some View {

@@ -123,9 +123,7 @@ func createSingleSourceVideoScene(engine: Engine) async throws -> DesignBlockID 
   let videoURL = try engine.guidesBaseURL.appendingPathComponent(
     "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
   )
-  let scene = try await engine.scene.create(fromVideo: videoURL)
-
-  return scene
+  return try await engine.scene.create(fromVideo: videoURL)
 }
 
 // highlight-createVideoProgrammatic-create-from-video

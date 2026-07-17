@@ -25,7 +25,7 @@ struct ModalCameraShowcase: View {
     let result: CameraResult
   }
 
-  @ViewBuilder private var label: some View {
+  private var label: some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title)
       if let subtitle {
@@ -102,7 +102,9 @@ private extension CameraResult {
   var isPhotoOnlyCapture: Bool {
     guard case let .capture(captures) = self, !captures.isEmpty else { return false }
     return captures.allSatisfy {
-      if case .photo = $0 { return true }
+      if case .photo = $0 {
+        return true
+      }
       return false
     }
   }

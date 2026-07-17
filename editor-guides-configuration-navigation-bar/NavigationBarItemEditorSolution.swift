@@ -99,7 +99,9 @@ struct NavigationBarItemEditorSolution: View {
 // highlight-navigationBar-newCustomItemConformance
 private struct CustomNavigationBarItem: NavigationBar.Item {
   // highlight-navigationBar-newCustomItem-id
-  var id: EditorComponentID { "my.package.navigationBar.newCustomItem" }
+  var id: EditorComponentID {
+    "my.package.navigationBar.newCustomItem"
+  }
 
   // highlight-navigationBar-newCustomItem-body
   func body(_ context: NavigationBar.Context) throws -> some View {

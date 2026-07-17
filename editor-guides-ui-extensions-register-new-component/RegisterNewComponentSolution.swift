@@ -97,7 +97,9 @@ private struct BrandKitLabel: View {
 
 // highlight-registerNewComponent-customItem-conformance
 private struct StatusBadgeItem: Dock.Item {
-  var id: EditorComponentID { "my.package.dock.statusBadge" }
+  var id: EditorComponentID {
+    "my.package.dock.statusBadge"
+  }
 
   func body(_ context: Dock.Context) throws -> some View {
     Text("Beta")
