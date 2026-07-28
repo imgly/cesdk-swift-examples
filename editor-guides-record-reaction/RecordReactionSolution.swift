@@ -101,7 +101,9 @@ private func buildReactionSceneManually(engine: Engine, result: CameraResult) as
   var reactionOffsetSeconds = 0.0
   for recording in reaction {
     let remainingSeconds = baseDurationSeconds - reactionOffsetSeconds
-    if remainingSeconds <= 0.0 { break }
+    if remainingSeconds <= 0.0 {
+      break
+    }
 
     guard let reactionVideo = recording.videos.first else { continue }
     let reactionBlock = try addReactionRecording(

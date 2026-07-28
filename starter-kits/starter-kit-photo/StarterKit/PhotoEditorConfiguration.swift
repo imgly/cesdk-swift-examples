@@ -14,35 +14,53 @@ public final class PhotoEditorConfiguration: EditorConfiguration {
   // MARK: - EditorConfiguration — Settings
 
   /// The zoom padding for the canvas.
-  override public var zoomPadding: CGFloat? { 0 }
+  override public var zoomPadding: CGFloat? {
+    0
+  }
 
   // MARK: - EditorConfiguration — Callbacks
 
   /// The `onCreate` handler.
-  override public var onCreate: OnCreate.Handler? { Self.defaultOnCreateHandler }
+  override public var onCreate: OnCreate.Handler? {
+    Self.defaultOnCreateHandler
+  }
 
   /// The `onLoaded` handler.
-  override public var onLoaded: OnLoaded.Handler? { Self.defaultOnLoadedHandler }
+  override public var onLoaded: OnLoaded.Handler? {
+    Self.defaultOnLoadedHandler
+  }
 
   /// The `onChanged` handler.
-  override public var onChanged: OnChanged.Handler? { Self.defaultOnChangedHandler }
+  override public var onChanged: OnChanged.Handler? {
+    Self.defaultOnChangedHandler
+  }
 
   /// The export handler.
   ///
   /// Default: Exports the scene as PNG and opens the system share sheet.
-  override public var onExport: OnExport.Handler? { Self.defaultOnExportHandler }
+  override public var onExport: OnExport.Handler? {
+    Self.defaultOnExportHandler
+  }
 
   // MARK: - EditorConfiguration — UI Components
 
   /// The navigation bar configuration.
-  override public var navigationBar: NavigationBar.Configuration? { Self.defaultNavigationBar }
+  override public var navigationBar: NavigationBar.Configuration? {
+    Self.defaultNavigationBar
+  }
 
   /// The dock configuration.
-  override public var dock: Dock.Configuration? { Self.defaultDock }
+  override public var dock: Dock.Configuration? {
+    Self.defaultDock
+  }
 
   /// The inspector bar configuration.
-  override public var inspectorBar: InspectorBar.Configuration? { Self.defaultInspectorBar }
+  override public var inspectorBar: InspectorBar.Configuration? {
+    Self.defaultInspectorBar
+  }
 
   /// The canvas menu configuration.
-  override public var canvasMenu: CanvasMenu.Configuration? { Self.defaultCanvasMenu }
+  override public var canvasMenu: CanvasMenu.Configuration? {
+    Self.defaultCanvasMenu
+  }
 }

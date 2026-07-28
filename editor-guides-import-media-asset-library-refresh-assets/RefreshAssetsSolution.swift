@@ -27,7 +27,9 @@ actor CloudImageStore {
   }
 
   /// The images the store currently serves.
-  var publishedImages: [CloudImage] { Array(catalog.prefix(publishedCount)) }
+  var publishedImages: [CloudImage] {
+    Array(catalog.prefix(publishedCount))
+  }
 
   /// Publishes one more image from the catalog. Returns `true` if the published
   /// set actually changed.
@@ -61,10 +63,21 @@ final class CloudImageAssetSource: NSObject, AssetSource {
     super.init()
   }
 
-  var id: String { Self.sourceID }
-  var supportedMIMETypes: [String]? { ["image/jpeg"] }
-  var credits: AssetCredits? { nil }
-  var license: AssetLicense? { nil }
+  var id: String {
+    Self.sourceID
+  }
+
+  var supportedMIMETypes: [String]? {
+    ["image/jpeg"]
+  }
+
+  var credits: AssetCredits? {
+    nil
+  }
+
+  var license: AssetLicense? {
+    nil
+  }
 
   func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     let needle = queryData.query?.lowercased()

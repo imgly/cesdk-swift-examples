@@ -256,7 +256,9 @@ struct BuildYourOwnUIView: View {
     HStack {
       Text(label).font(.caption).frame(width: 36, alignment: .leading)
       Slider(value: value, in: range) { editing in
-        if !editing { onChange(value.wrappedValue) }
+        if !editing {
+          onChange(value.wrappedValue)
+        }
       }
       Text("\(Int(value.wrappedValue))")
         .font(.caption.monospacedDigit())

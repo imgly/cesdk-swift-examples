@@ -15,32 +15,48 @@ public final class ApparelEditorConfiguration: EditorConfiguration {
   // MARK: - EditorConfiguration — Settings
 
   /// The zoom padding for the canvas.
-  override public var zoomPadding: CGFloat? { 16 }
+  override public var zoomPadding: CGFloat? {
+    16
+  }
 
   // MARK: - EditorConfiguration — Callbacks
 
   /// The `onCreate` handler.
-  override public var onCreate: OnCreate.Handler? { Self.defaultOnCreateHandler }
+  override public var onCreate: OnCreate.Handler? {
+    Self.defaultOnCreateHandler
+  }
 
   /// The `onChanged` handler.
-  override public var onChanged: OnChanged.Handler? { Self.defaultOnChangedHandler }
+  override public var onChanged: OnChanged.Handler? {
+    Self.defaultOnChangedHandler
+  }
 
   /// The export handler.
   ///
   /// Default: Exports the scene as PDF and opens the system share sheet.
-  override public var onExport: OnExport.Handler? { Self.defaultOnExportHandler }
+  override public var onExport: OnExport.Handler? {
+    Self.defaultOnExportHandler
+  }
 
   // MARK: - EditorConfiguration — UI Components
 
   /// The navigation bar configuration.
-  override public var navigationBar: NavigationBar.Configuration? { Self.defaultNavigationBar }
+  override public var navigationBar: NavigationBar.Configuration? {
+    Self.defaultNavigationBar
+  }
 
   /// The dock configuration.
-  override public var dock: Dock.Configuration? { Self.defaultDock }
+  override public var dock: Dock.Configuration? {
+    Self.defaultDock
+  }
 
   /// The inspector bar configuration.
-  override public var inspectorBar: InspectorBar.Configuration? { Self.defaultInspectorBar }
+  override public var inspectorBar: InspectorBar.Configuration? {
+    Self.defaultInspectorBar
+  }
 
   /// The canvas menu configuration.
-  override public var canvasMenu: CanvasMenu.Configuration? { Self.defaultCanvasMenu }
+  override public var canvasMenu: CanvasMenu.Configuration? {
+    Self.defaultCanvasMenu
+  }
 }

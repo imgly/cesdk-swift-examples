@@ -49,8 +49,7 @@ enum Output {
 enum EngineFactory {
   static func make() async throws -> Engine {
     // New initialization form: no EngineSettings
-    let engine = try await Engine(license: secrets.licenseKey)
-    return engine
+    try await Engine(license: secrets.licenseKey)
   }
 }
 

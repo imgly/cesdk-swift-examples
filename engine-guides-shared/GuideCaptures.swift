@@ -13,7 +13,7 @@ import IMGLYEngine
 struct GuideCaptures {
   typealias OnCapture = @MainActor (
     Data, String, MIMEType,
-    StaticString, StaticString, UInt, UInt
+    StaticString, StaticString, UInt, UInt,
   ) async throws -> Void
 
   let onCapture: OnCapture?

@@ -5,7 +5,7 @@ struct Showcase<Content: View>: View {
   let title: LocalizedStringKey
   var subtitle: LocalizedStringKey?
 
-  @ViewBuilder private var label: some View {
+  private var label: some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title)
       if let subtitle {

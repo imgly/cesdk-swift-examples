@@ -8,7 +8,9 @@ struct Secrets: Codable {
   let licenseKey: String
   let gatewayApiKey: String
 
-  @MainActor var baseURL: URL? { nil }
+  @MainActor var baseURL: URL? {
+    nil
+  }
 }
 
 let secrets = Secrets(

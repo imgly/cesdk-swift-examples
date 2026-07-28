@@ -10,9 +10,17 @@ final class BackendAssetSource: NSObject, AssetSource {
   let id: String
   private let catalog: [AssetResult]
 
-  var supportedMIMETypes: [String]? { nil }
-  var credits: AssetCredits? { nil }
-  var license: AssetLicense? { nil }
+  var supportedMIMETypes: [String]? {
+    nil
+  }
+
+  var credits: AssetCredits? {
+    nil
+  }
+
+  var license: AssetLicense? {
+    nil
+  }
 
   init(id: String) {
     self.id = id

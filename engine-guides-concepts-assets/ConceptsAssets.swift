@@ -5,9 +5,17 @@ import IMGLYEngine
 
 class DemoAssetSource: NSObject, AssetSource {
   let id = "my-assets"
-  var supportedMIMETypes: [String]? { nil }
-  var credits: AssetCredits? { nil }
-  var license: AssetLicense? { nil }
+  var supportedMIMETypes: [String]? {
+    nil
+  }
+
+  var credits: AssetCredits? {
+    nil
+  }
+
+  var license: AssetLicense? {
+    nil
+  }
 
   // Base URL the sample sticker is resolved against.
   let baseURL: URL
