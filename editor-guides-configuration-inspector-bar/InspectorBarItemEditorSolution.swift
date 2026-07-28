@@ -130,7 +130,9 @@ struct InspectorBarItemEditorSolution: View {
 // highlight-inspectorBar-newCustomItem-conformance
 private struct CustomInspectorBarItem: InspectorBar.Item {
   // highlight-inspectorBar-newCustomItem-id
-  var id: EditorComponentID { "my.package.inspectorBar.newCustomItem" }
+  var id: EditorComponentID {
+    "my.package.inspectorBar.newCustomItem"
+  }
 
   // highlight-inspectorBar-newCustomItem-body
   func body(_: InspectorBar.Context) throws -> some View {

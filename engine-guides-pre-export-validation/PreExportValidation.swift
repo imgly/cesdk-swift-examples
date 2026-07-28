@@ -38,7 +38,9 @@ struct ValidationResult {
 @MainActor
 private func displayName(engine: Engine, _ blockID: DesignBlockID) throws -> String {
   let name = try engine.block.getName(blockID)
-  if !name.isEmpty { return name }
+  if !name.isEmpty {
+    return name
+  }
   let kind = try engine.block.getKind(blockID)
   return kind.prefix(1).uppercased() + kind.dropFirst()
 }
@@ -128,7 +130,9 @@ private func findObscuredText(engine: Engine, page: DesignBlockID) throws -> [Va
 
     for aboveID in blocksAbove {
       // Skip text-on-text overlaps — text backgrounds are typically transparent.
-      if try engine.block.getType(aboveID) == DesignBlockType.text.rawValue { continue }
+      if try engine.block.getType(aboveID) == DesignBlockType.text.rawValue {
+        continue
+      }
       if try overlapRatio(textBounds, boundingBox(engine: engine, aboveID)) > 0 {
         issues.append(ValidationIssue(
           kind: .textObscured,

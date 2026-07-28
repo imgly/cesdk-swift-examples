@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -72,6 +72,7 @@
 		241FB6E349961ECA01DAB300 /* template_01_ig_post_1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = FC0EC5EA8855A04BA6E1648D /* template_01_ig_post_1_1.png */; };
 		253AD75F4E9B5B84A72A2E37 /* wish_you_were_here.png in Resources */ = {isa = PBXBuildFile; fileRef = D3634CA054F9A580ECCE0DA5 /* wish_you_were_here.png */; };
 		263A9F6BCDE08E7680F41827 /* AssetLibraryPanelSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2E7C4CF71C5E38D58F9C46 /* AssetLibraryPanelSolution.swift */; };
+		27875E5DE6E7331C30403595 /* ApplyTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC705C685492BEFC2C1A10 /* ApplyTransitions.swift */; };
 		292BE48A974C671A919628F5 /* FillsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3D0379EAAE4D1731D93F5 /* FillsGradient.swift */; };
 		29ADF3D32717C813A7B21775 /* apparel-ui-b-3.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B180D5F50DFED3C8A44081 /* apparel-ui-b-3.png */; };
 		2A0EF2E6927F42BB2DB6DE2B /* CreateSceneFromImageBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD68EDF31A2BAE79066E2107 /* CreateSceneFromImageBlob.swift */; };
@@ -705,6 +706,7 @@
 		A606B83A49C463028B8A3147 /* 4_3_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_3_dark.png; sourceTree = "<group>"; };
 		A73343326D412C1035F36A2C /* Architecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Architecture.swift; sourceTree = "<group>"; };
 		A766CCFAA1D7C3969B3BB049 /* CreateCustomPanelSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomPanelSolution.swift; sourceTree = "<group>"; };
+		A7CC705C685492BEFC2C1A10 /* ApplyTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyTransitions.swift; sourceTree = "<group>"; };
 		A7E15E27A10FC62C7D7014C6 /* TextAdjustSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAdjustSpacing.swift; sourceTree = "<group>"; };
 		A834A03F6F2CD958F438AF67 /* x_header.scene */ = {isa = PBXFileReference; path = x_header.scene; sourceTree = "<group>"; };
 		A839660FCC6C3703158D89ED /* RefreshAssetsSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshAssetsSolution.swift; sourceTree = "<group>"; };
@@ -1933,6 +1935,7 @@
 				48BC8EB857B058868CE0160E /* engine-guides-animation-types */,
 				D0109F15890A3A74269FC9FF /* engine-guides-annotation */,
 				FC986110223EB78882A395FB /* engine-guides-apply-template */,
+				EBEF5E918C65885428148F19 /* engine-guides-apply-transitions */,
 				B206C6D4ABB221D9EC0A93A2 /* engine-guides-auto-resize */,
 				19B4C80107CC60BD100A7349 /* engine-guides-automation-batch */,
 				F9C94C4B794DD0CA91349A96 /* engine-guides-base-animations */,
@@ -3229,6 +3232,14 @@
 			path = "engine-guides-edit-image-transform-resize";
 			sourceTree = "<group>";
 		};
+		EBEF5E918C65885428148F19 /* engine-guides-apply-transitions */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC705C685492BEFC2C1A10 /* ApplyTransitions.swift */,
+			);
+			path = "engine-guides-apply-transitions";
+			sourceTree = "<group>";
+		};
 		EC673B89789B9714EDA25442 /* engine-guides-text-edit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3417,7 +3428,7 @@
 			path = "engine-guides-create-video-control";
 			sourceTree = "<group>";
 		};
-		"TEMP_16A7FE43-5BC5-4F5B-AA34-B1336D3D0C27" /* cesdk_swift_examples */ = {
+		"TEMP_C78D0510-A1C6-4CB7-8998-333F75CF9BD5" /* . */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -3498,6 +3509,7 @@
 				17E5D4FB3E1396B3DB35CFEB /* engine-guides-settings */,
 				3E20E6C00B4198D13C5FCFE5 /* engine-guides-shared */,
 				FE9A85CB929EA23186B6BD57 /* engine-guides-import-design */,
+				EBEF5E918C65885428148F19 /* engine-guides-apply-transitions */,
 				320A128D4FC25E83202F93B6 /* engine-guides-edit-animations */,
 				CC9B2C94B8F7EBFA65CE085E /* engine-guides-colors-apply */,
 				5C40A14EC674D23898ECB656 /* engine-guides-colors-replace */,
@@ -3653,7 +3665,8 @@
 				260A60945B6962C14B9C2618 /* engine-guides-text-animations */,
 				09E70B1DAA2EA11402B42FCE /* engine-guides-placeholders */,
 			);
-			path = cesdk_swift_examples;
+			name = .;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3713,7 +3726,6 @@
 				};
 			};
 			buildConfigurationList = E8E062FB538017B95F1DA23E /* Build configuration list for PBXProject "CESDK-Showcases" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -3730,7 +3742,8 @@
 				150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
-			preferredProjectObjectVersion = 54;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0857CAE8E01659D01AB5D713 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -3862,6 +3875,7 @@
 				F80C62AFC8D223B745F7E3E7 /* Annotation.swift in Sources */,
 				3E95BB3D9BF048787B4D356E /* ApplyColors.swift in Sources */,
 				E171B9EED597393D82E5F724 /* ApplyTemplate.swift in Sources */,
+				27875E5DE6E7331C30403595 /* ApplyTransitions.swift in Sources */,
 				06A324FF0E1AB955CCEC7388 /* Architecture.swift in Sources */,
 				56B9D00AE240BDB689FC6723 /* AssetVersioning.swift in Sources */,
 				8245577D5B285437806D07F7 /* Audio.swift in Sources */,
@@ -4283,7 +4297,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.78.0;
+				MARKETING_VERSION = 1.79.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4292,7 +4306,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 6.2;
+				SWIFT_VERSION = 6.3.1;
 			};
 			name = Release;
 		};
@@ -4374,7 +4388,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.78.0;
+				MARKETING_VERSION = 1.79.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4384,7 +4398,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.2;
+				SWIFT_VERSION = 6.3.1;
 			};
 			name = Debug;
 		};
@@ -4449,7 +4463,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAIImageGeneration-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.78.0;
+				version = 1.79.0;
 			};
 		};
 		0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */ = {
@@ -4457,7 +4471,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.78.0;
+				version = 1.79.0;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -4465,7 +4479,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.78.0;
+				version = 1.79.0;
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -4481,7 +4495,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginBackgroundRemoval-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.78.0;
+				version = 1.79.0;
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

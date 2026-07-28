@@ -19,7 +19,9 @@ struct DisableOrEnableFeaturesEditorSolution: View {
     case conditionalEnable = "Conditional Enable"
     case conditionalVisibility = "Conditional Visibility"
     case appState = "App State"
-    var id: Self { self }
+    var id: Self {
+      self
+    }
   }
 
   @State private var selectedDemo: Demo = .disableFeature

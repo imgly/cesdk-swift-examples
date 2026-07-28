@@ -16,7 +16,7 @@ struct BackgroundRemovalPluginSolution: View {
         PhotoEditorConfiguration { builder in
           builder.onCreate { engine, _ in
             let baseURL = secrets.baseURL
-              ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.78.0/assets")!
+              ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.79.0/assets")!
             let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_14.jpg")
             try await engine.scene.create(fromImage: imageURL)
           }
@@ -28,7 +28,7 @@ struct BackgroundRemovalPluginSolution: View {
   // The lesson code shown in the documentation. The runtime demo above wraps
   // this in `onCreate` so the showcase has an image to operate on; the rendered
   // snippet keeps the minimal integration developers add to their own editor.
-  @ViewBuilder var editor: some View {
+  var editor: some View {
     // highlight-bgRemovalPlugin-basicSetup
     Editor(settings)
       .imgly.configuration {

@@ -17,14 +17,18 @@ struct ThemingEditorSolution: View {
     case followSystem = "Follow System"
     case forceDark = "Force Dark"
     case runtimeToggle = "Runtime Toggle"
-    var id: Self { self }
+    var id: Self {
+      self
+    }
   }
 
   enum ThemeOption: String, CaseIterable, Identifiable {
     case system = "System"
     case light = "Light"
     case dark = "Dark"
-    var id: Self { self }
+    var id: Self {
+      self
+    }
 
     var colorScheme: ColorScheme? {
       switch self {

@@ -104,26 +104,30 @@ func controlAudioVideo(engine: Engine) async throws {
 
   // Thumbnail Previews
   let videoThumbnailTask = Task {
-    for try await thumbnail in engine.block.generateVideoThumbnailSequence(
+    for try await _ in engine.block.generateVideoThumbnailSequence(
       videoFill, /* video fill or page */
       thumbnailHeight: 128, /* width will be calculated from aspect ratio */
       timeRange: 0.5 ... 9.5, /* inclusive time range in seconds */
       numberOfFrames: 10, /* number of thumbnails to generate */
     ) {
-      if Task.isCancelled { break }
+      if Task.isCancelled {
+        break
+      }
 
       // Use the thumbnail...
     }
   }
   let audioThumbnailTask = Task {
-    for try await thumbnail in engine.block.generateAudioThumbnailSequence(
+    for try await _ in engine.block.generateAudioThumbnailSequence(
       audio,
       samplesPerChunk: 20,
       timeRange: 0.5 ... 9.5,
       numberOfSamples: 10 * 20,
       numberOfChannels: 2,
     ) {
-      if Task.isCancelled { break }
+      if Task.isCancelled {
+        break
+      }
 
       // Draw wave pattern...
     }

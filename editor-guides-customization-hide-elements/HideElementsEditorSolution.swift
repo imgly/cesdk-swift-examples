@@ -17,7 +17,9 @@ struct HideElementsEditorSolution: View {
     case hideDock = "Hide Dock"
     case removeItems = "Remove Items"
     case minimalUI = "Minimal UI"
-    var id: Self { self }
+    var id: Self {
+      self
+    }
   }
 
   @State private var selectedDemo: Demo = .hideDock

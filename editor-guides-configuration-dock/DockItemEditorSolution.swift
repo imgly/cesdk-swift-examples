@@ -67,7 +67,9 @@ struct DockItemEditorSolution: View {
 
 // highlight-dock-customItem-conformance
 private struct CustomDockItem: Dock.Item {
-  var id: EditorComponentID { "my.package.dock.newCustomItem" }
+  var id: EditorComponentID {
+    "my.package.dock.newCustomItem"
+  }
 
   func body(_ context: Dock.Context) throws -> some View {
     ZStack {

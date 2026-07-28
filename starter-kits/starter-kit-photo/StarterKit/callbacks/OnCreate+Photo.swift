@@ -84,6 +84,7 @@ public extension PhotoEditorConfiguration {
       "ly.img.sticker", "ly.img.vector.shape", "ly.img.filter", "ly.img.color.palette",
       "ly.img.effect", "ly.img.blur", "ly.img.typeface", "ly.img.crop.presets",
       "ly.img.page.presets", "ly.img.text", "ly.img.text.styles", "ly.img.text.curves", "ly.img.text.components",
+      "ly.img.image",
     ]
     try await withThrowingTaskGroup(of: String.self) { group in
       for id in defaultSourceIDs {

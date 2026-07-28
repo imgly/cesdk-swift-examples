@@ -283,7 +283,9 @@ private func visuallySortBlocks(
   }
   return measured
     .sorted { lhs, rhs in
-      if lhs.y == rhs.y { return lhs.x < rhs.x }
+      if lhs.y == rhs.y {
+        return lhs.x < rhs.x
+      }
       return lhs.y < rhs.y
     }
     .map(\.block)
