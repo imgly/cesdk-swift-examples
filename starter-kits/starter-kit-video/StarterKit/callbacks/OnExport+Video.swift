@@ -16,7 +16,12 @@ extension VideoEditorConfiguration {
       }
       eventHandler.send(.exportProgress(.relative(0)))
       let mimeType: MIMEType = .mp4
-      let stream = try await engine.block.exportVideo(page, mimeType: mimeType) { _ in }
+      // videoBitrate: .auto derives a bounded bitrate from the resolution/framerate.
+      let stream = try await engine.block.exportVideo(
+        page,
+        mimeType: mimeType,
+        options: VideoExportOptions(videoBitrate: .auto),
+      ) { _ in }
 
       var lastReportedProgress = 0
       for try await export in stream {

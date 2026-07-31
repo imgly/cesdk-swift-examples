@@ -8,19 +8,20 @@ func importFromSceneFile(engine: Engine) async throws {
   let baseURL = try engine.guidesBaseURL
 
   // Prepare a local archive for the next section: load a sample template and
-  // save it as a ZIP. In production, archiveURL points to your own ZIP — a
-  // remote URL on your CDN or a local file URL — and loadArchive(from:)
-  // accepts either.
+  // save it as an archive. In production, archiveURL points to your own
+  // archive — a remote URL on your CDN or a local file URL — and load(from:)
+  // accepts either. Archives use the .imgly extension now (.zip remains
+  // loadable).
   let setupSceneURL = baseURL
     .appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   try await engine.scene.load(from: setupSceneURL)
   let archiveData = try await engine.scene.saveToArchive()
   let archiveURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("imported-template-\(UUID().uuidString).zip")
+    .appendingPathComponent("imported-template-\(UUID().uuidString).imgly")
   try archiveData.write(to: archiveURL)
 
   // highlight-importFromSceneFile-loadFromArchive
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-importFromSceneFile-loadFromArchive
 
   // highlight-importFromSceneFile-loadFromURL

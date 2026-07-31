@@ -70,7 +70,7 @@ func imglyPremiumAssets(engine: Engine) async throws {
     guard let engine, let uri = asset.meta?["uri"], let url = URL(string: uri) else {
       return nil
     }
-    try await engine.scene.loadArchive(from: url)
+    try await engine.scene.load(from: url)
     return nil
   })
   // highlight-imglyPremium-source

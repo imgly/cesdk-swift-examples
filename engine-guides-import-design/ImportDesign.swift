@@ -20,15 +20,16 @@ func importDesign(engine: Engine) async throws {
   // highlight-importDesign-loadFromString
 
   // Produce a self-contained archive for the next section by saving the current
-  // scene. In production archiveURL points to your own ZIP — a remote URL on
-  // your CDN or a local file URL — created earlier with saveToArchive().
+  // scene. In production archiveURL points to your own archive — a remote URL on
+  // your CDN or a local file URL — created earlier with saveToArchive(). Archives
+  // use the .imgly extension now (.zip remains loadable).
   let archiveData = try await engine.scene.saveToArchive()
   let archiveURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("imported-design-\(UUID().uuidString).zip")
+    .appendingPathComponent("imported-design-\(UUID().uuidString).imgly")
   try archiveData.write(to: archiveURL)
 
   // highlight-importDesign-loadFromArchive
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-importDesign-loadFromArchive
 
   // highlight-importDesign-createFromImage

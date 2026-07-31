@@ -30,12 +30,12 @@ func saveDesigns(engine: Engine) async throws {
   _ = compressed
 
   // highlight-saveDesigns-writeScene
-  let sceneURL = outputDir.appendingPathComponent("scene.scene")
+  let sceneURL = outputDir.appendingPathComponent("scene.imgly")
   try sceneString.write(to: sceneURL, atomically: true, encoding: .utf8)
   // highlight-saveDesigns-writeScene
 
   // highlight-saveDesigns-writeArchive
-  let archiveURL = outputDir.appendingPathComponent("scene.zip")
+  let archiveURL = outputDir.appendingPathComponent("archive.imgly")
   try archiveBlob.write(to: archiveURL)
   // highlight-saveDesigns-writeArchive
 
@@ -45,6 +45,6 @@ func saveDesigns(engine: Engine) async throws {
   // highlight-saveDesigns-loadScene
 
   // highlight-saveDesigns-loadArchive
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-saveDesigns-loadArchive
 }
