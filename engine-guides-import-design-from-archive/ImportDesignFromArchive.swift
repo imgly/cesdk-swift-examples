@@ -12,18 +12,18 @@ func importDesignFromArchive(engine: Engine) async throws {
 
   // highlight-importDesignFromArchive-createArchive
   let archiveBlob = try await engine.scene.saveToArchive()
-  let archiveURL = FileManager.default.temporaryDirectory.appendingPathComponent("design.zip")
+  let archiveURL = FileManager.default.temporaryDirectory.appendingPathComponent("design.imgly")
   try archiveBlob.write(to: archiveURL)
   // highlight-importDesignFromArchive-createArchive
 
   // highlight-importDesignFromArchive-loadFromURL
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-importDesignFromArchive-loadFromURL
 
   // highlight-importDesignFromArchive-loadFromData
-  let dataURL = FileManager.default.temporaryDirectory.appendingPathComponent("design-from-data.zip")
+  let dataURL = FileManager.default.temporaryDirectory.appendingPathComponent("design-from-data.imgly")
   try archiveBlob.write(to: dataURL)
-  try await engine.scene.loadArchive(from: dataURL)
+  try await engine.scene.load(from: dataURL)
   // highlight-importDesignFromArchive-loadFromData
 
   // highlight-importDesignFromArchive-modify

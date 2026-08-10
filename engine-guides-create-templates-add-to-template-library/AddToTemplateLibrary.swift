@@ -13,14 +13,14 @@ func addToTemplateLibrary(engine: Engine) async throws {
   // highlight-addToTemplateLibrary-saveString
   let templateString = try await engine.scene.saveToString()
   let stringURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("template-\(UUID().uuidString).scene")
+    .appendingPathComponent("template-\(UUID().uuidString).imgly")
   try templateString.write(to: stringURL, atomically: true, encoding: .utf8)
   // highlight-addToTemplateLibrary-saveString
 
   // highlight-addToTemplateLibrary-saveArchive
   let templateArchive = try await engine.scene.saveToArchive()
   let archiveURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("template-\(UUID().uuidString).zip")
+    .appendingPathComponent("template-\(UUID().uuidString).imgly")
   try templateArchive.write(to: archiveURL)
   // highlight-addToTemplateLibrary-saveArchive
 
