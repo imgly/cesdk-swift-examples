@@ -62,7 +62,7 @@ func useTemplatesProgrammatically(engine: Engine) async throws {
   // highlight-useTemplatesProgrammatic-saveTemplate
   // Serialize the template to a string and persist it for reuse.
   let templateString = try await engine.scene.saveToString()
-  let templateURL = outputDir.appendingPathComponent("template.scene")
+  let templateURL = outputDir.appendingPathComponent("template.imgly")
   try templateString.write(to: templateURL, atomically: true, encoding: .utf8)
   // highlight-useTemplatesProgrammatic-saveTemplate
 

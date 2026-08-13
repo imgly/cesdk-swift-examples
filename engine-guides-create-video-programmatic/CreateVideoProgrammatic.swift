@@ -54,7 +54,11 @@ func createVideoProgrammatic(engine: Engine) async throws {
 
   // highlight-createVideoProgrammatic-export-video
   // Export a compact preview file; use your delivery size and frame rate in production.
+  // videoBitrate: .auto derives a bounded bitrate from the resolution/framerate. It is
+  // recommended over the default .system mode. Pass .custom(bitsPerSecond) instead
+  // for an explicit bitrate.
   let exportOptions = VideoExportOptions(
+    videoBitrate: .auto,
     framerate: 15,
     targetWidth: 640,
     targetHeight: 360,

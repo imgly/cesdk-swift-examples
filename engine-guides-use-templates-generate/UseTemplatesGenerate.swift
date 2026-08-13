@@ -68,7 +68,7 @@ func useTemplatesGenerate(engine: Engine) async throws {
   // import the template's registered variables (and settings) into the engine.
   // Use a serialized string for stored data, a URL for a remote or bundled
   // `.scene` file with `engine.scene.load(from: URL)`, or
-  // `engine.scene.loadArchive(from:)` for an archive that bundles its assets.
+  // `engine.scene.load(from:)` for an archive that bundles its assets.
   try await engine.scene.load(from: templateString, overrideEditorConfig: true)
   // highlight-generate-load
 

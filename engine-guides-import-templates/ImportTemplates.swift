@@ -35,14 +35,15 @@ func importTemplates(engine: Engine) async throws {
   // highlight-importTemplates-loadFromString
 
   // Prepare a local archive for the next section by saving the current scene.
-  // In production, archiveURL points to your own ZIP — a remote URL on your CDN
-  // or a local file URL — and loadArchive(from:) accepts either.
+  // In production, archiveURL points to your own archive — a remote URL on your
+  // CDN or a local file URL — and load(from:) accepts either. Archives use the
+  // .imgly extension now (.zip remains loadable).
   let archiveData = try await engine.scene.saveToArchive()
   let archiveURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("imported-template-\(UUID().uuidString).zip")
+    .appendingPathComponent("imported-template-\(UUID().uuidString).imgly")
   try archiveData.write(to: archiveURL)
 
   // highlight-importTemplates-loadFromArchive
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-importTemplates-loadFromArchive
 }

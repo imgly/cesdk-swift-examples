@@ -3,20 +3,20 @@ import IMGLYEngine
 
 @MainActor
 func importFromInDesign(engine: Engine) async throws {
-  // Stand in for the .cesdk archive your server produces from an IDML file with
+  // Stand in for the .imgly archive your server produces from an IDML file with
   // the @imgly/idml-importer package. In production, archiveURL points to that
   // archive — a remote URL on your CDN or a local file URL — and
-  // loadArchive(from:) accepts either.
+  // load(from:) accepts either.
   let baseURL = try engine.guidesBaseURL
   let sceneURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   try await engine.scene.load(from: sceneURL)
   let archiveData = try await engine.scene.saveToArchive()
   let archiveURL = FileManager.default.temporaryDirectory
-    .appendingPathComponent("converted-indesign-\(UUID().uuidString).cesdk")
+    .appendingPathComponent("converted-indesign-\(UUID().uuidString).imgly")
   try archiveData.write(to: archiveURL)
 
   // highlight-importFromInDesign-loadArchive
-  try await engine.scene.loadArchive(from: archiveURL)
+  try await engine.scene.load(from: archiveURL)
   // highlight-importFromInDesign-loadArchive
 
   // highlight-importFromInDesign-verifyImport
