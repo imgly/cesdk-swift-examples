@@ -18,6 +18,19 @@ struct CustomVideoEditor: View {
               }
             })(engine)
           }
+          builder.dock { dock in
+            dock.modify { _, items in
+              items.addLast { Dock.Buttons.captions() }
+            }
+          }
+          builder.inspectorBar { inspectorBar in
+            inspectorBar.modify { _, items in
+              items.addFirst {
+                InspectorBar.Buttons.editCaptions()
+                InspectorBar.Buttons.captionStyle()
+              }
+            }
+          }
           builder.assetLibrary { al in
             al.modify { categories in
               categories.modifySections(of: AssetLibraryCategory.ID.videos) { sections in
