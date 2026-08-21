@@ -51,7 +51,7 @@ struct Showcases: View {
       Showcase(
         view: CustomVideoEditor(),
         title: "Custom Video Editor",
-        subtitle: "Custom video scene and adds Unsplash asset source and library.",
+        subtitle: "Custom video scene with captions, and adds Unsplash asset source and library.",
       )
     }
     Section(title: "Camera",
@@ -230,13 +230,16 @@ struct Showcases: View {
         Showcase(view: AssetLibraryBasicsSolution(), title: "Import Media: Asset Library Basics")
         Showcase(view: AssetLibraryEditorSolution(), title: "Import Media: Asset Library")
         Showcase(view: CustomFontsSolution(), title: "Text: Custom Fonts")
+        Showcase(view: VariableFontsSolution(), title: "Text: Variable Fonts")
         Showcase(view: PhotoRollSolution(), title: "Import Media: Photo Roll")
         Showcase(view: DualCameraSolution(), title: "Import Media: Dual Camera")
         Showcase(view: UserUploadSolution(), title: "Import Media: User Upload")
         Showcase(view: RefreshAssetsSolution(), title: "Import Media: Asset Library Refresh Assets")
         Showcase(view: RecordReactionSolution(), title: "Create Video: Record Reaction")
+        Showcase(view: AddCaptionsSolution(), title: "Create Video: Add Captions")
         Showcase(view: RecordVoiceoverSolution(), title: "Create Audio: Record Voiceover")
         Showcase(view: AIImageGenerationSolution(), title: "Plugin: AI Image Generation")
+        Showcase(view: AutoCaptionsPluginSolution(), title: "Plugin: Auto Captions")
         Showcase(view: BackgroundRemovalPluginSolution(), title: "Plugin: Background Removal")
         Showcase(view: CustomFeaturePluginSolution(), title: "Plugins: Custom Feature Plugin")
       }

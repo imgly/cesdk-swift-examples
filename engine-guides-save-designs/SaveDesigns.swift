@@ -29,6 +29,15 @@ func saveDesigns(engine: Engine) async throws {
   // highlight-saveDesigns-compression
   _ = compressed
 
+  // highlight-saveDesigns-archiveCompression
+  let compressedArchive = try await engine.scene.saveToArchive(
+    options: SaveToArchiveOptions(
+      compression: CompressionOptions(format: .zstd, level: .default),
+    ),
+  )
+  // highlight-saveDesigns-archiveCompression
+  _ = compressedArchive
+
   // highlight-saveDesigns-writeScene
   let sceneURL = outputDir.appendingPathComponent("scene.imgly")
   try sceneString.write(to: sceneURL, atomically: true, encoding: .utf8)
