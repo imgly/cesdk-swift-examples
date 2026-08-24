@@ -19,6 +19,7 @@ extension VideoEditorConfiguration {
         Dock.Buttons.overlaysLibrary() // Video overlays
         Dock.Buttons.textLibrary() // Text tools
         Dock.Buttons.stickersAndShapesLibrary() // Stickers and shapes
+        Dock.Buttons.captions() // Caption creation, import and styling
         Dock.Buttons.audioLibrary() // Audio tracks
         Dock.Buttons.voiceover() // Voice recording
         Dock.Buttons.resize() // Aspect ratio and canvas size
