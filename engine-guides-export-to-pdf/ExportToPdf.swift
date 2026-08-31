@@ -1,6 +1,14 @@
 import Foundation
 import IMGLYEngine
 
+/// Stand-in for a destination that is not a plain file, for example a multipart
+/// upload. A real implementation sends the bytes on and drops them; collecting
+/// them would put the whole document back in memory, which is what a streamed
+/// export exists to avoid.
+private func upload(_ chunk: Data) throws {
+  print("Sending \(chunk.count) bytes")
+}
+
 @MainActor
 func exportToPdf(engine: Engine) async throws {
   // Demo scaffolding: build a small scene with renderable content so every
@@ -30,6 +38,66 @@ func exportToPdf(engine: Engine) async throws {
   let pdfBlob = try await engine.block.export(scene, mimeType: .pdf)
   try pdfBlob.write(to: exportsDirectory.appendingPathComponent("design.pdf"))
   // highlight-exportToPdf-export
+
+  // highlight-exportToPdf-progress
+  // Report per-page progress as the PDF is written. The closure runs once per
+  // page; only PDF exports invoke it.
+  let progressBlob = try await engine.block.export(
+    scene,
+    mimeType: .pdf,
+    onProgress: { exportedPages, totalPages in
+      print("Exported \(exportedPages) of \(totalPages) pages")
+    },
+  )
+  try progressBlob.write(to: exportsDirectory.appendingPathComponent("design-with-progress.pdf"))
+  // highlight-exportToPdf-progress
+
+  // highlight-exportToPdf-stream
+  // Write the document straight into a file as it is encoded. Nothing buffers
+  // the finished PDF, so peak memory stays bounded by a single page rather than
+  // growing with the page count.
+  try await engine.block.export(
+    scene,
+    to: exportsDirectory.appendingPathComponent("design-streamed.pdf"),
+    mimeType: .pdf,
+    onProgress: { exportedPages, totalPages in
+      print("Streamed \(exportedPages) of \(totalPages) pages")
+    },
+  )
+  // highlight-exportToPdf-stream
+
+  // highlight-exportToPdf-chunks
+  // Hand the chunks to a destination that is not a plain file. The closure runs
+  // while the encoder does, so a slow destination throttles the encoder instead
+  // of letting chunks queue up.
+  try await engine.block.export(scene) { chunk in
+    try upload(chunk)
+  }
+  // highlight-exportToPdf-chunks
+
+  // highlight-exportToPdf-chunkSize
+  // Choose how large a chunk may get. This is the memory held for one chunk, so
+  // lower it for a memory-tight destination and raise it when the per-chunk work
+  // is expensive, for example one request per chunk.
+  try await engine.block.export(scene, options: ExportOptions(pdfChunkSize: 64 * 1024)) { chunk in
+    try upload(chunk)
+  }
+  // highlight-exportToPdf-chunkSize
+
+  // highlight-exportToPdf-cancel
+  // Cancelling the task that runs the export stops the export itself. Keep the
+  // task in your view model and cancel it from your Cancel button.
+  let exportTask = Task {
+    try await engine.block.export(scene, mimeType: .pdf)
+  }
+  exportTask.cancel()
+  do {
+    _ = try await exportTask.value
+  } catch {
+    // A cancelled export produces no data.
+    print("Export cancelled: \(error)")
+  }
+  // highlight-exportToPdf-cancel
 
   // highlight-exportToPdf-highCompatibility
   let highCompatibilityOptions = ExportOptions(exportPdfWithHighCompatibility: true)

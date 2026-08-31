@@ -70,10 +70,12 @@ public extension DesignEditorConfiguration {
   /// Loads the built-in empty design scene.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    let sceneURL = Bundle(for: DesignEditorConfiguration.self).url(
-      forResource: "design-ui-empty",
-      withExtension: "scene",
-    )!
+    #if SWIFT_PACKAGE
+      let bundle = Bundle.module
+    #else
+      let bundle = Bundle(for: DesignEditorConfiguration.self)
+    #endif
+    let sceneURL = bundle.url(forResource: "design-ui-empty", withExtension: "scene")!
     try await engine.scene.load(from: sceneURL)
     // highlight-starter-kit-on-create-scene
   }

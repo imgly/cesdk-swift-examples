@@ -70,10 +70,12 @@ public extension PostcardEditorConfiguration {
   /// Loads the built-in empty postcard scene.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    let sceneURL = Bundle(for: PostcardEditorConfiguration.self).url(
-      forResource: "postcard-empty",
-      withExtension: "scene",
-    )!
+    #if SWIFT_PACKAGE
+      let bundle = Bundle.module
+    #else
+      let bundle = Bundle(for: PostcardEditorConfiguration.self)
+    #endif
+    let sceneURL = bundle.url(forResource: "postcard-empty", withExtension: "scene")!
     try await engine.scene.load(from: sceneURL)
     // highlight-starter-kit-on-create-scene
   }

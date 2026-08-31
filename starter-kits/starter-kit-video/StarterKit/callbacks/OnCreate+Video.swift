@@ -79,7 +79,12 @@ public extension VideoEditorConfiguration {
   /// Loads the built-in empty video scene.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    let sceneURL = Bundle(for: VideoEditorConfiguration.self).url(forResource: "video-empty", withExtension: "scene")!
+    #if SWIFT_PACKAGE
+      let bundle = Bundle.module
+    #else
+      let bundle = Bundle(for: VideoEditorConfiguration.self)
+    #endif
+    let sceneURL = bundle.url(forResource: "video-empty", withExtension: "scene")!
     try await engine.scene.load(from: sceneURL)
     // highlight-starter-kit-on-create-scene
   }
