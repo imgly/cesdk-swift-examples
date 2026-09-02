@@ -71,10 +71,12 @@ public extension ApparelEditorConfiguration {
   /// Loads the built-in empty apparel scene.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    let sceneURL = Bundle(for: ApparelEditorConfiguration.self).url(
-      forResource: "apparel-ui-b-empty",
-      withExtension: "scene",
-    )!
+    #if SWIFT_PACKAGE
+      let bundle = Bundle.module
+    #else
+      let bundle = Bundle(for: ApparelEditorConfiguration.self)
+    #endif
+    let sceneURL = bundle.url(forResource: "apparel-ui-b-empty", withExtension: "scene")!
     try await engine.scene.load(from: sceneURL)
     // highlight-starter-kit-on-create-scene
   }
