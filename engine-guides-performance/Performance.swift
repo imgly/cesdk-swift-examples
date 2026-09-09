@@ -80,4 +80,15 @@ func performance(engine: Engine) async throws {
   let blob = try await engine.block.export(page, mimeType: .jpeg, options: options)
   // highlight-performance-exportSettings
   _ = blob
+
+  // highlight-performance-streamedPdf
+  // Stream a multi-page PDF into a file instead of building it in memory. Peak
+  // memory then tracks a single page rather than the size of the document.
+  guard let scene = try engine.scene.get() else { return }
+  try await engine.block.export(
+    scene,
+    to: FileManager.default.temporaryDirectory.appendingPathComponent("design.pdf"),
+    mimeType: .pdf,
+  )
+  // highlight-performance-streamedPdf
 }

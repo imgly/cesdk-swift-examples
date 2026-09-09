@@ -70,7 +70,12 @@ public extension PhotoEditorConfiguration {
   /// Creates a scene from the default photo image.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    let imageURL = Bundle(for: PhotoEditorConfiguration.self).url(forResource: "photo-ui-empty", withExtension: "png")!
+    #if SWIFT_PACKAGE
+      let bundle = Bundle.module
+    #else
+      let bundle = Bundle(for: PhotoEditorConfiguration.self)
+    #endif
+    let imageURL = bundle.url(forResource: "photo-ui-empty", withExtension: "png")!
     try await engine.scene.create(fromImage: imageURL)
     // highlight-starter-kit-on-create-scene
   }

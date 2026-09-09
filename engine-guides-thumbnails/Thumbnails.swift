@@ -19,7 +19,7 @@ private final class StockPhotoSource: NSObject, AssetSource {
     nil
   }
 
-  private let host = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.81.1/assets"
+  private let host = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.82.0-rc.2/assets"
 
   func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     let asset = AssetResult(
@@ -49,7 +49,7 @@ private final class StockPhotoSource: NSObject, AssetSource {
 @MainActor
 func thumbnails(engine: Engine) async throws {
   // Base path the example asset URIs are built from. Replace with your own host.
-  let baseURL = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.81.1/assets"
+  let baseURL = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.82.0-rc.2/assets"
 
   // highlight-thumbnails-basic
   try engine.asset.addLocalSource(sourceID: "my-images")

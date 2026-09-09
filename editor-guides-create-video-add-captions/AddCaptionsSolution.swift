@@ -54,7 +54,7 @@ struct AddCaptionsSolution: View {
   /// The video the demo opens with, so the canvas shows footage behind the captions sheet.
   private static let sampleVideoURL: URL = {
     let baseURL = secrets.baseURL
-      ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.81.1/assets")!
+      ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.82.0-rc.2/assets")!
     return baseURL.appendingPathComponent("ly.img.video/videos/pexels-kampus-production-8154913.mp4")
   }()
 
