@@ -10,7 +10,7 @@ extension DesignEditorConfiguration {
       builder.items { _ in
         Dock.Buttons.elementsLibrary()
         Dock.Buttons.photoRoll()
-        Dock.Buttons.imglyCamera()
+        Dock.Buttons.systemCamera()
         Dock.Buttons.imagesLibrary()
         Dock.Buttons.textLibrary()
         Dock.Buttons.shapesLibrary()

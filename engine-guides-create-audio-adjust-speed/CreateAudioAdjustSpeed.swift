@@ -11,14 +11,12 @@ func createAudioAdjustSpeed(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 1080)
   // highlight-createAudioAdjustSpeed-setup
 
-  let baseURL = try engine.guidesBaseURL
-
   // highlight-createAudioAdjustSpeed-createAudio
   let audioBlock = try engine.block.create(.audio)
-  try engine.block.setURL(
+  try engine.block.setString(
     audioBlock,
     property: "audio/fileURI",
-    value: baseURL.appendingPathComponent("ly.img.audio/audios/far_from_home.m4a"),
+    value: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.2-rc.0/assets/ly.img.audio/audios/far_from_home.m4a",
   )
   // Wait for the audio resource to load so duration and speed APIs work correctly.
   try await engine.block.forceLoadAVResource(audioBlock)

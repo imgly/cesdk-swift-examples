@@ -3,22 +3,18 @@ import SwiftUI
 
 struct BasicEditorSolution: View {
   let settings = EngineSettings(
-    // highlight-configurationBasics-license
-    license: secrets.licenseKey,
-    // highlight-configurationBasics-license
-    // highlight-configurationBasics-userID
+    // highlight-license
+    license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+    // highlight-userID
     userID: "<your unique user id>",
-    // highlight-configurationBasics-userID
-    // highlight-configurationBasics-baseURL
-    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.82.0/assets")!,
-    // highlight-configurationBasics-baseURL
+    // highlight-baseURL
+    baseURL: URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.2-rc.0/assets")!,
   )
 
   var editor: some View {
-    // highlight-configurationBasics-editor
+    // highlight-editor
     Editor(settings)
-      .imgly.configuration { GuideEditorConfiguration() }
-    // highlight-configurationBasics-editor
+      .imgly.configuration { DesignEditorConfiguration() }
   }
 
   @State private var isPresented = false

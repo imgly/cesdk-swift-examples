@@ -21,8 +21,6 @@ func usingFills(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: block)
   // highlight-setup
 
-  let baseURL = try engine.guidesBaseURL
-
   // highlight-supportsFill
   try engine.block.supportsFill(scene) // Returns false
   try engine.block.supportsFill(block) // Returns true
@@ -46,10 +44,10 @@ func usingFills(engine: Engine) async throws {
 
   // highlight-createFill
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   // highlight-createFill
 
@@ -65,10 +63,10 @@ func usingFills(engine: Engine) async throws {
   let duplicateBlock = try engine.block.duplicate(block)
   try engine.block.setPositionX(duplicateBlock, value: 450)
   let autoDuplicateFill = try engine.block.getFill(duplicateBlock)
-  try engine.block.setURL(
+  try engine.block.setString(
     autoDuplicateFill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_2.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_2.jpg",
   )
 
   // let manualDuplicateFill = try engine.block.duplicate(autoDuplicateFill)

@@ -12,8 +12,6 @@ func baseAnimations(engine: Engine) async throws {
 
   try await engine.scene.zoom(to: page, paddingLeft: 40, paddingTop: 40, paddingRight: 40, paddingBottom: 40)
 
-  let baseURL = try engine.guidesBaseURL
-
   let block = try engine.block.create(.graphic)
   try engine.block.setShape(block, shape: engine.block.createShape(.rect))
   try engine.block.setPositionX(block, value: 100)
@@ -22,10 +20,10 @@ func baseAnimations(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 300)
   try engine.block.appendChild(to: page, child: block)
   let fill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     fill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(block, fill: fill)
 
@@ -71,7 +69,7 @@ func baseAnimations(engine: Engine) async throws {
   let currentOut = try engine.block.getOutAnimation(block)
   print("Animation IDs — In: \(currentIn), Loop: \(currentLoop), Out: \(currentOut)")
 
-  if engine.block.isValid(currentLoop) {
+  if currentLoop != 0 {
     try engine.block.destroy(currentLoop)
   }
   let squeeze = try engine.block.createAnimation(.squeezeLoop)

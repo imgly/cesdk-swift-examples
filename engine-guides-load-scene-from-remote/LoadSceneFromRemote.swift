@@ -3,17 +3,17 @@ import IMGLYEngine
 
 @MainActor
 func loadSceneFromRemote(engine: Engine) async throws {
-  let baseURL = try engine.guidesBaseURL
-
-  let sceneURL =
-    baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
+  // highlight-url
+  let sceneUrl =
+    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
+  // highlight-url
 
   // highlight-load-remote
-  try await engine.scene.load(from: sceneURL)
+  let scene = try await engine.scene.load(from: sceneUrl)
   // highlight-load-remote
 
   // highlight-modify-text-remote
-  guard let text = try engine.block.find(byType: .text).first else { return }
+  let text = try engine.block.find(byType: .text).first!
   try engine.block.setDropShadowEnabled(text, enabled: true)
   // highlight-modify-text-remote
 }

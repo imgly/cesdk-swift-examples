@@ -1,4 +1,3 @@
-// highlight-record-video-camera-helper
 import AVFoundation
 import Foundation
 
@@ -20,7 +19,7 @@ final class Camera: NSObject, @unchecked Sendable {
 
   init(
     videoDevice: AVCaptureDevice = .default(for: .video)!,
-    audioDevice: AVCaptureDevice = .default(for: .audio)!,
+    audioDevice: AVCaptureDevice = .default(for: .audio)!
   ) throws {
     videoInput = try AVCaptureDeviceInput(device: videoDevice)
     audioInput = try AVCaptureDeviceInput(device: audioDevice)
@@ -97,5 +96,3 @@ extension Camera: AVCaptureFileOutputRecordingDelegate {
     }
   }
 }
-
-// highlight-record-video-camera-helper

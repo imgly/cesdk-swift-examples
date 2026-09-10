@@ -11,11 +11,9 @@ extension DesignEditorConfiguration {
         InspectorBar.Buttons.replace()
 
         InspectorBar.Buttons.editText()
-        InspectorBar.Buttons.textPresets()
         InspectorBar.Buttons.formatText()
         InspectorBar.Buttons.fillStroke()
         InspectorBar.Buttons.textBackground()
-        InspectorBar.Buttons.textOnPath()
         InspectorBar.Buttons.crop()
 
         InspectorBar.Buttons.adjustments()

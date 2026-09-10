@@ -70,12 +70,7 @@ public extension PhotoEditorConfiguration {
   /// Creates a scene from the default photo image.
   static let defaultCreateScene: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-create-scene
-    #if SWIFT_PACKAGE
-      let bundle = Bundle.module
-    #else
-      let bundle = Bundle(for: PhotoEditorConfiguration.self)
-    #endif
-    let imageURL = bundle.url(forResource: "photo-ui-empty", withExtension: "png")!
+    let imageURL = Bundle(for: PhotoEditorConfiguration.self).url(forResource: "photo-ui-empty", withExtension: "png")!
     try await engine.scene.create(fromImage: imageURL)
     // highlight-starter-kit-on-create-scene
   }
@@ -83,25 +78,31 @@ public extension PhotoEditorConfiguration {
   /// Registers all default and demo asset sources, plus text and photo roll sources.
   static let defaultLoadAssetSources: OnCreate.Callback = { engine in
     // highlight-starter-kit-on-load-asset-sources
-    let basePath = try engine.editor.getSettingString("basePath")
-    guard let baseURL = URL(string: basePath) else { return }
-    let defaultSourceIDs = [
-      "ly.img.sticker", "ly.img.vector.shape", "ly.img.filter", "ly.img.color.palette",
-      "ly.img.effect", "ly.img.blur", "ly.img.typeface", "ly.img.crop.presets",
-      "ly.img.page.presets", "ly.img.text", "ly.img.text.styles", "ly.img.text.curves", "ly.img.text.components",
-      "ly.img.image",
+    let assetSources: [String: URL] = [
+      Engine.DefaultAssetSource.sticker.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.vectorPath.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.filterLut.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.filterDuotone.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.colorsDefaultPalette.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.effect.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.blur.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.typeface.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.cropPresets.rawValue: Engine.assetBaseURL,
+      Engine.DefaultAssetSource.pagePresets.rawValue: Engine.assetBaseURL,
+
+      Engine.DemoAssetSource.textComponents.rawValue: Engine.assetBaseURL,
     ]
-    try await withThrowingTaskGroup(of: String.self) { group in
-      for id in defaultSourceIDs {
+
+    try await withThrowingTaskGroup(of: Void.self) { group in
+      for assetSource in assetSources {
         group.addTask {
-          try await engine.asset.addLocalAssetSourceFromJSON(
-            baseURL.appendingPathComponent(id).appendingPathComponent("content.json"),
-          )
+          try await engine.populateAssetSource(id: assetSource.key, baseURL: assetSource.value)
         }
       }
-      for try await _ in group {}
+      try await group.waitForAll()
     }
 
+    try await engine.asset.addSource(TextAssetSource(engine: engine))
     try engine.asset.addSource(PhotoRollAssetSource(engine: engine))
     // highlight-starter-kit-on-load-asset-sources
   }

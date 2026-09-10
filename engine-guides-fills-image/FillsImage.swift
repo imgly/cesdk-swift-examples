@@ -18,10 +18,6 @@ func fillsImage(engine: Engine) async throws {
   try engine.block.setPositionY(block, value: 50)
   try engine.block.appendChild(to: page, child: block)
 
-  let baseURL = try engine.guidesBaseURL
-  let imagesURL = baseURL.appendingPathComponent("ly.img.image/images")
-  let sampleImageURL = imagesURL.appendingPathComponent("sample_1.jpg")
-
   // highlight-fillsImage-checkSupport
   let canHaveFill = try engine.block.supportsFill(block)
   print("Block supports fills: \(canHaveFill)")
@@ -29,10 +25,10 @@ func fillsImage(engine: Engine) async throws {
 
   // highlight-fillsImage-createImageFill
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: sampleImageURL,
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(block, fill: imageFill)
   // highlight-fillsImage-createImageFill
@@ -65,9 +61,9 @@ func fillsImage(engine: Engine) async throws {
     imageFill,
     property: "fill/image/sourceSet",
     sourceSet: [
-      Source(uri: imagesURL.appendingPathComponent("sample_1-512x341.jpg"), width: 512, height: 341),
-      Source(uri: imagesURL.appendingPathComponent("sample_1-883x589.jpg"), width: 883, height: 589),
-      Source(uri: imagesURL.appendingPathComponent("sample_1-1767x1178.jpg"), width: 1767, height: 1178),
+      Source(uri: URL(string: "https://img.ly/static/ubq_samples/sample_1.jpg")!, width: 512, height: 341),
+      Source(uri: URL(string: "https://img.ly/static/ubq_samples/sample_1.jpg")!, width: 1024, height: 683),
+      Source(uri: URL(string: "https://img.ly/static/ubq_samples/sample_1.jpg")!, width: 2048, height: 1366),
     ],
   )
   // highlight-fillsImage-sourceSet
