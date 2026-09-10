@@ -30,6 +30,7 @@ extension VideoEditorConfiguration {
         InspectorBar.Buttons.effect()
         InspectorBar.Buttons.blur()
         InspectorBar.Buttons.animation()
+        InspectorBar.Buttons.transition()
         InspectorBar.Buttons.shape()
 
         InspectorBar.Buttons.selectGroup()
