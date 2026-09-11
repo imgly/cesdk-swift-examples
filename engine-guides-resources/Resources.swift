@@ -9,8 +9,6 @@ func resources(engine: Engine) async throws {
   try engine.block.appendChild(to: scene, child: page)
   // highlight-resources-setup
 
-  let baseURL = try engine.guidesBaseURL
-
   // highlight-resources-onDemandLoading
   // Create a graphic block with an image fill.
   // The image loads on-demand when the engine renders the block.
@@ -19,10 +17,10 @@ func resources(engine: Engine) async throws {
   try engine.block.setShape(imageBlock, shape: rectShape)
 
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_4.jpg",
   )
   try engine.block.setFill(imageBlock, fill: imageFill)
   try engine.block.setEnum(imageBlock, property: "contentFill/mode", value: "Cover")
@@ -45,12 +43,10 @@ func resources(engine: Engine) async throws {
   try engine.block.setShape(videoBlock, shape: videoShape)
 
   let videoFill = try engine.block.createFill(.video)
-  try engine.block.setURL(
+  try engine.block.setString(
     videoFill,
     property: "fill/video/fileURI",
-    value: baseURL.appendingPathComponent(
-      "ly.img.video/videos/pexels-drone-footage-of-a-surfer-barrelling-a-wave-12715991.mp4",
-    ),
+    value: "https://img.ly/static/ubq_video_samples/bbb.mp4",
   )
   try engine.block.setFill(videoBlock, fill: videoFill)
   try engine.block.setEnum(videoBlock, property: "contentFill/mode", value: "Cover")
@@ -91,7 +87,7 @@ func resources(engine: Engine) async throws {
 
   // highlight-resources-detectMIMEType
   // Detect the MIME type of a resource.
-  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_4.jpg")
+  let imageURL = URL(string: "https://img.ly/static/ubq_samples/sample_4.jpg")!
   let mimeType = try await engine.editor.getMIMEType(url: imageURL)
   print("MIME type: \(mimeType)")
   // highlight-resources-detectMIMEType

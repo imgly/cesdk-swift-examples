@@ -3,8 +3,6 @@ import IMGLYEngine
 
 @MainActor
 func createAnimations(engine: Engine) async throws {
-  let baseURL = try engine.guidesBaseURL
-
   // highlight-setup
   let scene = try engine.scene.createVideo()
 
@@ -23,10 +21,10 @@ func createAnimations(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 300)
   try engine.block.appendChild(to: page, child: block)
   let fill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     fill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(block, fill: fill)
   // highlight-setup
@@ -89,20 +87,11 @@ func createAnimations(engine: Engine) async throws {
   let currentLoop = try engine.block.getLoopAnimation(block)
   print("Animation IDs — In: \(currentIn), Out: \(currentOut), Loop: \(currentLoop)")
 
-  if engine.block.isValid(currentIn) {
+  if currentIn != 0 {
     try engine.block.destroy(currentIn)
     let zoomIn = try engine.block.createAnimation(.zoom)
     try engine.block.setInAnimation(block, animation: zoomIn)
     try engine.block.setDuration(zoomIn, duration: 0.8)
   }
   // highlight-createAnimations-manageLifecycle
-
-  // highlight-createAnimations-replaceMemoryLeaks
-  let currentAnimation = try engine.block.getInAnimation(block)
-  if engine.block.isValid(currentAnimation) {
-    try engine.block.destroy(currentAnimation)
-  }
-  let newAnimation = try engine.block.createAnimation(.fade)
-  try engine.block.setInAnimation(block, animation: newAnimation)
-  // highlight-createAnimations-replaceMemoryLeaks
 }

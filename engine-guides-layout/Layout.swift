@@ -28,9 +28,6 @@ func layout(engine: Engine) async throws {
   try engine.block.setBool(stack, property: "stack/spacingInScreenspace", value: true)
   // highlight-layout-verticalStack
 
-  // Resolve sample assets against the bundled asset base URL.
-  let baseURL = try engine.guidesBaseURL
-
   // highlight-layout-addBlocks
   // Add an image block to the first page.
   let block1 = try engine.block.create(.graphic)
@@ -41,10 +38,10 @@ func layout(engine: Engine) async throws {
   try engine.block.setPositionX(block1, value: 25)
   try engine.block.setPositionY(block1, value: 25)
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setURL(
+  try engine.block.setString(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
+    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
   )
   try engine.block.setFill(block1, fill: imageFill)
   try engine.block.appendChild(to: page1, child: block1)

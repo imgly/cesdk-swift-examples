@@ -5,7 +5,7 @@ struct Section<Content: View>: View {
   var subtitle: String?
   @ViewBuilder let content: Content
 
-  var header: some View {
+  @ViewBuilder var header: some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title).font(.headline)
       if let subtitle {
