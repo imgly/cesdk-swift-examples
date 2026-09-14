@@ -8,17 +8,23 @@ struct DefaultPanelSolution: View {
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        GuideEditorConfiguration { builder in
+        DesignEditorConfiguration { builder in
           builder.dock { dock in
-            dock.items { _ in
-              Dock.Button(id: "open_library_panel") { context in
-                // highlight-open-panel
-                context.eventHandler.send(
-                  .openSheet(type: .libraryAdd { context.assetLibrary.elementsTab }),
-                )
-                // highlight-open-panel
-              } label: { _ in
-                Label("Open Library", systemImage: "arrow.up.circle")
+            dock.modify { _, items in
+              items.addFirst {
+                Dock.Button(
+                  id: "custom_panel",
+                ) { context in
+                  // highlight-open-panel
+                  context.eventHandler.send(
+                    .openSheet(
+                      type: .libraryAdd { context.assetLibrary.elementsTab },
+                    ),
+                  )
+                  // highlight-open-panel
+                } label: { _ in
+                  Label("Open Panel", systemImage: "arrow.up.circle")
+                }
               }
             }
           }

@@ -18,9 +18,10 @@ struct CameraShowcase: ViewModifier {
             print(error.localizedDescription)
             isCameraSheetShown = false
 
-          case let .success(.capture(captures)):
-            let urls = captures.videos.flatMap { $0.videos.map(\.url) }
-            shareItem = .url(urls)
+          case let .success(.recording(recordings)):
+            let urls = recordings.flatMap { $0.videos.map(\.url) }
+            let recordedVideos = urls
+            shareItem = .url(recordedVideos)
 
           case .success(.reaction):
             print("Reaction case not handled here")

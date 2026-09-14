@@ -1,14 +1,7 @@
 // swiftformat:disable unusedArguments
 import IMGLYEditor
-import IMGLYEngine
 import SwiftUI
 
-/// Editor demonstrating the range of canvas menu items: predefined buttons,
-/// customized predefined buttons, new buttons, and fully custom items.
-///
-/// The highlighted regions are the lesson. The `onLoaded` block is demo
-/// scaffolding (not part of the lesson): it creates a graphic block and selects
-/// it so the canvas menu is visible the moment the showcase opens.
 struct CanvasMenuItemEditorSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
                                 userID: "<your unique user id>")
@@ -16,7 +9,7 @@ struct CanvasMenuItemEditorSolution: View {
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        GuideEditorConfiguration { builder in
+        DesignEditorConfiguration { builder in
           builder.canvasMenu { canvasMenu in
             canvasMenu.items { _ in
               // highlight-canvasMenu-predefinedButton
@@ -31,11 +24,7 @@ struct CanvasMenuItemEditorSolution: View {
                 // highlight-canvasMenu-customizePredefinedButton-action
                 // highlight-canvasMenu-customizePredefinedButton-label
                 label: { _ in
-                  Label {
-                    Text(.imgly.localized("ly_img_editor_canvas_menu_button_delete"))
-                  } icon: {
-                    Image.imgly.delete
-                  }
+                  Label { Text("Delete") } icon: { Image.imgly.delete }
                 },
                 // highlight-canvasMenu-customizePredefinedButton-label
                 // highlight-canvasMenu-customizePredefinedButton-isEnabled
@@ -75,23 +64,6 @@ struct CanvasMenuItemEditorSolution: View {
               CustomCanvasMenuItem()
             }
           }
-          // Demo scaffolding (not part of the lesson): create a graphic block and
-          // select it so the canvas menu appears as soon as the editor loads.
-          builder.onLoaded { context, _ in
-            let engine = context.engine
-            guard let page = try engine.scene.getCurrentPage() else { return }
-            let block = try engine.block.create(.graphic)
-            try engine.block.setShape(block, shape: engine.block.createShape(.rect))
-            let fill = try engine.block.createFill(.color)
-            try engine.block.setColor(fill, property: "fill/color/value", color: .rgba(r: 0.96, g: 0.6, b: 0.12, a: 1))
-            try engine.block.setFill(block, fill: fill)
-            try engine.block.setWidth(block, value: 540)
-            try engine.block.setHeight(block, value: 540)
-            try engine.block.setPositionX(block, value: 270)
-            try engine.block.setPositionY(block, value: 270)
-            try engine.block.appendChild(to: page, child: block)
-            try engine.block.setSelected(block, selected: true)
-          }
         }
       }
   }
@@ -113,9 +85,7 @@ struct CanvasMenuItemEditorSolution: View {
 // highlight-canvasMenu-newCustomItemConformance
 private struct CustomCanvasMenuItem: CanvasMenu.Item {
   // highlight-canvasMenu-newCustomItem-id
-  var id: EditorComponentID {
-    "my.package.canvasMenu.newCustomItem"
-  }
+  var id: EditorComponentID { "my.package.canvasMenu.newCustomItem" }
 
   // highlight-canvasMenu-newCustomItem-body
   func body(_ context: CanvasMenu.Context) throws -> some View {

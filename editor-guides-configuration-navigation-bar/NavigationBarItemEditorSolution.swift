@@ -9,71 +9,67 @@ struct NavigationBarItemEditorSolution: View {
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        GuideEditorConfiguration { builder in
+        DesignEditorConfiguration { builder in
           builder.navigationBar { navigationBar in
             navigationBar.items { _ in
               NavigationBar.ItemGroup(placement: .topBarLeading) {
-                // highlight-navigationBar-predefinedButton
+                // highlight-predefinedButton
                 NavigationBar.Buttons.closeEditor()
               }
 
               NavigationBar.ItemGroup(placement: .principal) {
-                // highlight-navigationBar-customizePredefinedButton
+                // highlight-customizePredefinedButton
                 NavigationBar.Buttons.undo(
-                  // highlight-navigationBar-customizePredefinedButton-action
+                  // highlight-customizePredefinedButton-action
                   action: { context in
                     try context.engine?.editor.undo()
                   },
-                  // highlight-navigationBar-customizePredefinedButton-action
-                  // highlight-navigationBar-customizePredefinedButton-label
+                  // highlight-customizePredefinedButton-action
+                  // highlight-customizePredefinedButton-label
                   label: { context in
-                    Label {
-                      Text(.imgly.localized("ly_img_editor_navigation_bar_button_undo"))
-                    } icon: {
-                      Image.imgly.undo
-                    }
-                    .opacity(context.state.viewMode == .preview ? 0 : 1)
-                    .labelStyle(.imgly.adaptiveIconOnly)
+                    Label { Text("Undo") } icon: { Image.imgly.undo }
+                      .opacity(context.state.viewMode == .preview ? 0 : 1)
+                      .labelStyle(.imgly.adaptiveIconOnly)
                   },
-                  // highlight-navigationBar-customizePredefinedButton-label
-                  // highlight-navigationBar-customizePredefinedButton-isEnabled
+                  // highlight-customizePredefinedButton-label
+                  // highlight-customizePredefinedButton-isEnabled
                   isEnabled: { context in
                     try !context.state.isCreating &&
                       context.state.viewMode != .preview &&
                       context.engine?.editor.canUndo() == true
                   },
-                  // highlight-navigationBar-customizePredefinedButton-isEnabled
-                  // highlight-navigationBar-customizePredefinedButton-isVisible
+                  // highlight-customizePredefinedButton-isEnabled
+                  // highlight-customizePredefinedButton-isVisible
                   isVisible: { _ in true },
                 )
-                // highlight-navigationBar-customizePredefinedButton
+                // highlight-customizePredefinedButton
 
-                // highlight-navigationBar-newButton
+                // highlight-newButton
                 NavigationBar.Button(
-                  // highlight-navigationBar-newButton-id
+                  // highlight-newButton-id
                   id: "my.package.navigationBar.button.newButton",
-                  // highlight-navigationBar-newButton-action
+                  // highlight-newButton-action
                 ) { _ in
                   print("New Button action")
-                  // highlight-navigationBar-newButton-action
-                  // highlight-navigationBar-newButton-label
+                  // highlight-newButton-action
+                  // highlight-newButton-label
                 } label: { _ in
                   Label("New Button", systemImage: "star.circle")
-                  // highlight-navigationBar-newButton-label
-                  // highlight-navigationBar-newButton-isEnabled
+                  // highlight-newButton-label
+                  // highlight-newButton-isEnabled
                 } isEnabled: { _ in
                   true
-                  // highlight-navigationBar-newButton-isEnabled
-                  // highlight-navigationBar-newButton-isVisible
+                  // highlight-newButton-isEnabled
+                  // highlight-newButton-isVisible
                 } isVisible: { _ in
                   true
                 }
-                // highlight-navigationBar-newButton-isVisible
-                // highlight-navigationBar-newButton
+                // highlight-newButton-isVisible
+                // highlight-newButton
               }
 
               NavigationBar.ItemGroup(placement: .topBarTrailing) {
-                // highlight-navigationBar-newCustomItem
+                // highlight-newCustomItem
                 CustomNavigationBarItem()
               }
             }
@@ -96,14 +92,12 @@ struct NavigationBarItemEditorSolution: View {
   }
 }
 
-// highlight-navigationBar-newCustomItemConformance
+// highlight-newCustomItem-conformance
 private struct CustomNavigationBarItem: NavigationBar.Item {
-  // highlight-navigationBar-newCustomItem-id
-  var id: EditorComponentID {
-    "my.package.navigationBar.newCustomItem"
-  }
+  // highlight-newCustomItem-id
+  var id: EditorComponentID { "my.package.navigationBar.newCustomItem" }
 
-  // highlight-navigationBar-newCustomItem-body
+  // highlight-newCustomItem-body
   func body(_ context: NavigationBar.Context) throws -> some View {
     ZStack {
       RoundedRectangle(cornerRadius: 10)
@@ -116,15 +110,15 @@ private struct CustomNavigationBarItem: NavigationBar.Item {
     }
   }
 
-  // highlight-navigationBar-newCustomItem-body
-  // highlight-navigationBar-newCustomItem-isVisible
+  // highlight-newCustomItem-body
+  // highlight-newCustomItem-isVisible
   func isVisible(_ context: NavigationBar.Context) throws -> Bool {
     true
   }
-  // highlight-navigationBar-newCustomItem-isVisible
+  // highlight-newCustomItem-isVisible
 }
 
-// highlight-navigationBar-newCustomItemConformance
+// highlight-newCustomItem-conformance
 
 #Preview {
   NavigationBarItemEditorSolution()

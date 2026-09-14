@@ -6,11 +6,9 @@ struct Secrets: Codable {
   let ciBuildsHost: String
   let githubRepo: String
   let licenseKey: String
-  let gatewayApiKey: String
+  let falAIProxyURL: String
 
-  @MainActor var baseURL: URL? {
-    nil
-  }
+  @MainActor var baseURL: URL? { nil }
 }
 
 let secrets = Secrets(
@@ -19,5 +17,5 @@ let secrets = Secrets(
   ciBuildsHost: "",
   githubRepo: "",
   licenseKey: "",
-  gatewayApiKey: "",
+  falAIProxyURL: "",
 )

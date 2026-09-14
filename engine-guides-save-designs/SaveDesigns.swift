@@ -5,10 +5,9 @@ import IMGLYEngine
 func saveDesigns(engine: Engine) async throws {
   // Demo scaffolding: load a template so every snippet has a scene to operate on.
   // In your app you would start from a scene already loaded into the editor.
-  let baseURL = try engine.guidesBaseURL
-  try engine.editor.setSettingString("basePath", value: baseURL.absoluteString)
-  let templateURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
-  try await engine.scene.load(from: templateURL)
+  let assetsBase = "https://cdn.img.ly/packages/imgly/cesdk-swift/1.76.2/assets"
+  let templateUrl = URL(string: "\(assetsBase)/ly.img.template/templates/cesdk_postcard_1.scene")!
+  try await engine.scene.load(from: templateUrl)
 
   let outputDir = FileManager.default.temporaryDirectory
 
@@ -29,22 +28,13 @@ func saveDesigns(engine: Engine) async throws {
   // highlight-saveDesigns-compression
   _ = compressed
 
-  // highlight-saveDesigns-archiveCompression
-  let compressedArchive = try await engine.scene.saveToArchive(
-    options: SaveToArchiveOptions(
-      compression: CompressionOptions(format: .zstd, level: .default),
-    ),
-  )
-  // highlight-saveDesigns-archiveCompression
-  _ = compressedArchive
-
   // highlight-saveDesigns-writeScene
-  let sceneURL = outputDir.appendingPathComponent("scene.imgly")
+  let sceneURL = outputDir.appendingPathComponent("scene.scene")
   try sceneString.write(to: sceneURL, atomically: true, encoding: .utf8)
   // highlight-saveDesigns-writeScene
 
   // highlight-saveDesigns-writeArchive
-  let archiveURL = outputDir.appendingPathComponent("archive.imgly")
+  let archiveURL = outputDir.appendingPathComponent("scene.zip")
   try archiveBlob.write(to: archiveURL)
   // highlight-saveDesigns-writeArchive
 
@@ -54,6 +44,6 @@ func saveDesigns(engine: Engine) async throws {
   // highlight-saveDesigns-loadScene
 
   // highlight-saveDesigns-loadArchive
-  try await engine.scene.load(from: archiveURL)
+  try await engine.scene.loadArchive(from: archiveURL)
   // highlight-saveDesigns-loadArchive
 }

@@ -3,6 +3,7 @@ import IMGLYEngine
 
 @MainActor
 func colorsAdjust(engine: Engine) async throws {
+  // highlight-colorsAdjust-setup
   let scene = try engine.scene.create()
 
   let page = try engine.block.create(.page)
@@ -10,11 +11,8 @@ func colorsAdjust(engine: Engine) async throws {
   try engine.block.setHeight(page, value: 600)
   try engine.block.appendChild(to: scene, child: page)
 
-  // Resolve sample assets against the bundled asset base URL.
-  let baseURL = try engine.guidesBaseURL
-  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
+  let imageURI = "https://img.ly/static/ubq_samples/sample_1.jpg"
 
-  // highlight-colorsAdjust-setup
   let imageBlock = try engine.block.create(.graphic)
   try engine.block.setShape(imageBlock, shape: engine.block.createShape(.rect))
   try engine.block.setWidth(imageBlock, value: 400)
@@ -24,7 +22,7 @@ func colorsAdjust(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: imageBlock)
 
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setURL(imageFill, property: "fill/image/imageFileURI", value: imageURL)
+  try engine.block.setString(imageFill, property: "fill/image/imageFileURI", value: imageURI)
   try engine.block.setFill(imageBlock, fill: imageFill)
   // highlight-colorsAdjust-setup
 
@@ -83,7 +81,7 @@ func colorsAdjust(engine: Engine) async throws {
   try engine.block.setPositionY(secondImageBlock, value: 50)
   try engine.block.appendChild(to: page, child: secondImageBlock)
   let secondFill = try engine.block.createFill(.image)
-  try engine.block.setURL(secondFill, property: "fill/image/imageFileURI", value: imageURL)
+  try engine.block.setString(secondFill, property: "fill/image/imageFileURI", value: imageURI)
   try engine.block.setFill(secondImageBlock, fill: secondFill)
 
   let combinedAdjustments = try engine.block.createEffect(.adjustments)
@@ -107,7 +105,7 @@ func colorsAdjust(engine: Engine) async throws {
   try engine.block.setPositionY(tempBlock, value: 50)
   try engine.block.appendChild(to: page, child: tempBlock)
   let tempFill = try engine.block.createFill(.image)
-  try engine.block.setURL(tempFill, property: "fill/image/imageFileURI", value: imageURL)
+  try engine.block.setString(tempFill, property: "fill/image/imageFileURI", value: imageURI)
   try engine.block.setFill(tempBlock, fill: tempFill)
 
   let refinementEffect = try engine.block.createEffect(.adjustments)
