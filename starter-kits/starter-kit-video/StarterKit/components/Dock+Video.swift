@@ -21,6 +21,7 @@ extension VideoEditorConfiguration {
         Dock.Buttons.stickersAndShapesLibrary() // Stickers and shapes
         Dock.Buttons.audioLibrary() // Audio tracks
         Dock.Buttons.voiceover() // Voice recording
+        Dock.Buttons.reorder() // Clip reordering
         Dock.Buttons.resize() // Aspect ratio and canvas size
       }
       // highlight-starter-kit-dock
