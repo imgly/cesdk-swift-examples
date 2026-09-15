@@ -11,19 +11,11 @@ func undoAndHistory(engine: Engine) async throws {
   // highlight-undoAndHistory-setup
 
   // highlight-undoAndHistory-subscribe
-  // Subscribe to history updates.
   let historyTask = Task {
-    for await kind in engine.editor.onHistoryUpdatedWithKind {
-      switch kind {
-      case .activated:
-        print("Active history switched, scene unchanged.")
-      case .updated:
-        let canUndo = try engine.editor.canUndo()
-        let canRedo = try engine.editor.canRedo()
-        print("History updated — canUndo: \(canUndo), canRedo: \(canRedo)")
-      @unknown default:
-        break
-      }
+    for await _ in engine.editor.onHistoryUpdated {
+      let canUndo = try engine.editor.canUndo()
+      let canRedo = try engine.editor.canRedo()
+      print("History updated — canUndo: \(canUndo), canRedo: \(canRedo)")
     }
   }
   // highlight-undoAndHistory-subscribe

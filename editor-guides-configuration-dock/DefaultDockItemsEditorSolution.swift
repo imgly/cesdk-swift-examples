@@ -63,6 +63,7 @@ struct DefaultDockItemsEditorSolution: View {
               Dock.Buttons.stickersAndShapesLibrary()
               Dock.Buttons.audioLibrary()
               Dock.Buttons.voiceover()
+              Dock.Buttons.reorder()
               Dock.Buttons.resize()
             }
             // highlight-videoEditor-dockItems

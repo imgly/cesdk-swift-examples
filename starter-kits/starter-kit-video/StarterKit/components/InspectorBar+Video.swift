@@ -31,6 +31,9 @@ extension VideoEditorConfiguration {
 
         InspectorBar.Buttons.layer()
         InspectorBar.Buttons.split()
+        InspectorBar.Buttons.moveAsClip()
+        InspectorBar.Buttons.moveAsOverlay()
+        InspectorBar.Buttons.reorder()
         InspectorBar.Buttons.duplicate()
         InspectorBar.Buttons.delete()
       }
