@@ -11,7 +11,7 @@ struct ModalPhotoPicker<Editor: View>: View {
     let url: URL
   }
 
-  @ViewBuilder private var label: some View {
+  private var label: some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title)
       if let subtitle {
@@ -27,7 +27,7 @@ struct ModalPhotoPicker<Editor: View>: View {
   init(
     title: LocalizedStringKey,
     subtitle: LocalizedStringKey? = nil,
-    @ViewBuilder editor: @escaping (URL) -> Editor
+    @ViewBuilder editor: @escaping (URL) -> Editor,
   ) {
     self.title = title
     self.subtitle = subtitle

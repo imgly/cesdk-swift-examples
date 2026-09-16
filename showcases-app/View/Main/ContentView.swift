@@ -1,6 +1,5 @@
 import AVFoundation
 @_spi(Internal) import IMGLYCoreUI
-import enum IMGLYEngine.LicenseError
 import SwiftUI
 
 @MainActor
@@ -16,6 +15,8 @@ struct ContentView: View {
   @ViewBuilder
   private func appetizeGuideDestination(for guideID: String) -> some View {
     switch guideID {
+    case "aiImageGeneration": AIImageGenerationSolution()
+    case "backgroundRemovalPlugin": BackgroundRemovalPluginSolution()
     case "forceCrop": ForceCropSolution()
     default: EmptyView()
     }
@@ -49,10 +50,6 @@ struct ContentView: View {
     }
     // `StackNavigationViewStyle` forces to deinitialize the view and thus its engine when exiting a showcase.
     .navigationViewStyle(.stack)
-    .alert("License Key Required", isPresented: .constant(secrets.licenseKey.isEmpty)) {} message: {
-      let message = LicenseError.missing.errorDescription ?? ""
-      Text(verbatim: "Please enter a `licenseKey` in `Secrets.swift`!\n\(message)")
-    }
     .modifier(CameraShowcase(isCameraSheetShown: $isCameraSheetShown))
     .accessibilityIdentifier("showcases")
     .onAppear {

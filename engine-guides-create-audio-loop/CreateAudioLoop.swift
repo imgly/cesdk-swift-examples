@@ -10,12 +10,13 @@ func createAudioLoop(engine: Engine) async throws {
   try engine.block.setDuration(page, duration: 30)
   // highlight-createAudioLoop-setup
 
-  let audioURI = "https://cdn.img.ly/assets/demo/v1/ly.img.audio/audios/far_from_home.m4a"
+  let baseURL = try engine.guidesBaseURL
+  let audioURL = baseURL.appendingPathComponent("ly.img.audio/audios/far_from_home.m4a")
 
   // highlight-createAudioLoop-createAudioBlock
   // Create an audio block and set the audio source
   let audioBlock = try engine.block.create(.audio)
-  try engine.block.setString(audioBlock, property: "audio/fileURI", value: audioURI)
+  try engine.block.setURL(audioBlock, property: "audio/fileURI", value: audioURL)
   // highlight-createAudioLoop-createAudioBlock
 
   // highlight-createAudioLoop-loadAudioResource

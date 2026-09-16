@@ -1,78 +1,101 @@
 import IMGLYEditor
+import IMGLYEngine
 import SwiftUI
 
-/// This example demonstrates how to integrate photo library access in CE.SDK iOS.
+/// Demonstrates how to let users add media from their device's photo library
+/// in CE.SDK iOS.
 ///
-/// This example shows how to:
-/// - Use the default photos picker mode (privacy-friendly, no permissions)
-/// - Enable full photo library access mode
-/// - Configure Info.plist for photo library permissions
+/// Photo Roll ships as a built-in asset source with two access modes:
+/// - `photosPicker` (default): opens the system photos picker, no permissions.
+/// - `fullLibraryAccess`: browses the library in an in-app sheet, requires
+///   photo library permission.
 struct PhotoRollSolution: View {
-  let settings = EngineSettings(
-    license: secrets.licenseKey,
-    userID: "<your unique user id>",
-  )
-
-  // highlight-photoRoll-default
-  // Default Photos Picker Mode
-  // The photo roll button opens the system photos picker
-  // No permissions required, maximum privacy
-  var editorWithPhotosPicker: some View {
-    Editor(settings)
-      .imgly.configuration { DesignEditorConfiguration() }
-    // PhotoRollAssetSource is automatically registered in default mode
-    // Dock includes Dock.Buttons.photoRoll() by default
-    // Users tap Photo Roll → System picker opens → Select photos
+  var settings: EngineSettings {
+    EngineSettings(license: secrets.licenseKey, // pass nil for evaluation mode with watermark
+                   userID: "<your unique user id>")
   }
 
-  // highlight-photoRoll-default
-
-  // highlight-photoRoll-fullAccess
-  // Full Library Access Mode
-  // Photo library is loaded directly into the CE.SDK Asset Panel
-  // Requires photo library permissions on first use
-  var editorWithFullLibrary: some View {
+  /// Default photos-picker configuration. Presented in the showcase and shown
+  /// as the primary lesson in the guide.
+  var editor: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        GuideEditorConfiguration { builder in
           builder.onCreate { engine, _ in
-            // Load or create scene
-            let sceneURL = Bundle.main.url(forResource: "design-ui-empty", withExtension: "scene")!
-            try await engine.scene.load(from: sceneURL) // or `engine.scene.create*`
-            // Add asset sources
-            try await engine.addDefaultAssetSources()
-            try await engine.addDemoAssetSources(withUploadAssetSources: true)
-            try await engine.asset.addSource(TextAssetSource(engine: engine))
+            // GuideEditorConfiguration ships no scene, so build the page the
+            // editor renders on. The default OnCreate would do this, but the
+            // source registration below needs to run in the same callback.
+            let scene = try engine.scene.create()
+            let page = try engine.block.create(.page)
+            try engine.block.appendChild(to: scene, child: page)
+            try engine.block.setWidth(page, value: 1080)
+            try engine.block.setHeight(page, value: 1080)
+
+            // highlight-photoRoll-picker
+            try engine.asset.addSource(PhotoRollAssetSource(engine: engine))
+            // highlight-photoRoll-picker
+          }
+          // highlight-photoRoll-dock
+          builder.dock { dock in
+            dock.items { _ in
+              Dock.Buttons.photoRoll()
+            }
+          }
+          // highlight-photoRoll-dock
+          // highlight-photoRoll-onUpload
+          builder.onUpload { _, sourceID, asset, existing in
+            guard sourceID == PhotoRollAssetSource.id else { return try await existing(asset) }
+            // AssetDefinition is immutable, so build a new one to tag the import.
+            let tagged = AssetDefinition(
+              id: asset.id,
+              groups: asset.groups,
+              meta: asset.meta,
+              payload: asset.payload,
+              label: asset.label,
+              tags: ["en": ["photo-roll"]],
+            )
+            return try await existing(tagged)
+          }
+          // highlight-photoRoll-onUpload
+        }
+      }
+  }
+
+  /// Full library access configuration. Registering the source with
+  /// `.fullLibraryAccess` makes the same dock button open the in-app library.
+  var fullLibraryEditor: some View {
+    Editor(settings)
+      .imgly.configuration {
+        GuideEditorConfiguration { builder in
+          builder.onCreate { engine, _ in
+            let scene = try engine.scene.create()
+            let page = try engine.block.create(.page)
+            try engine.block.appendChild(to: scene, child: page)
+            try engine.block.setWidth(page, value: 1080)
+            try engine.block.setHeight(page, value: 1080)
+
+            // highlight-photoRoll-fullLibrary
             try engine.asset.addSource(PhotoRollAssetSource(engine: engine, mode: .fullLibraryAccess))
+            // highlight-photoRoll-fullLibrary
+          }
+          builder.dock { dock in
+            dock.items { _ in
+              Dock.Buttons.photoRoll()
+            }
           }
         }
       }
-    // IMPORTANT: Add NSPhotoLibraryUsageDescription to Info.plist
-    // <key>NSPhotoLibraryUsageDescription</key>
-    // <string>We need access to your photo library to let you add photos to your designs.</string>
   }
 
-  // highlight-photoRoll-fullAccess
-
   @State private var isPresented = false
-  @State private var useFullLibrary = false
 
   var body: some View {
-    VStack {
-      Toggle("Enable Full Library Access", isOn: $useFullLibrary)
-        .padding()
-
-      Button("Use the Editor") {
-        isPresented = true
-      }
+    Button("Use the Editor") {
+      isPresented = true
     }
     .fullScreenCover(isPresented: $isPresented) {
       ModalEditor {
-        if useFullLibrary {
-          editorWithFullLibrary
-        } else {
-          editorWithPhotosPicker
-        }
+        editor
       }
     }
   }

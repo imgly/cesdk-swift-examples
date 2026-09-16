@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func editorState(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-editorState-setup
   let scene = try engine.scene.create()
   let page = try engine.block.create(.page)
@@ -19,10 +21,10 @@ func editorState(engine: Engine) async throws {
   try engine.block.setPositionY(imageBlock, value: 175)
 
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(imageBlock, fill: imageFill)
   try engine.block.appendChild(to: page, child: imageBlock)

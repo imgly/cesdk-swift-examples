@@ -3,10 +3,10 @@ import IMGLYEngine
 
 @MainActor
 func templating(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-templating-loadTemplate
-  let templateURL = URL(
-    string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene",
-  )!
+  let templateURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   try await engine.scene.load(from: templateURL)
   // highlight-templating-loadTemplate
 
