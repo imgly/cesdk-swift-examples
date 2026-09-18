@@ -14,7 +14,9 @@ public final class VideoEditorConfiguration: EditorConfiguration {
   // MARK: - EditorConfiguration — Settings
 
   /// The zoom padding for the canvas.
-  override public var zoomPadding: CGFloat? { 1 }
+  override public var zoomPadding: CGFloat? {
+    1
+  }
 
   /// The asset library configuration.
   ///
@@ -28,27 +30,41 @@ public final class VideoEditorConfiguration: EditorConfiguration {
   // MARK: - EditorConfiguration — Callbacks
 
   /// The `onCreate` handler.
-  override public var onCreate: OnCreate.Handler? { Self.defaultOnCreateHandler }
+  override public var onCreate: OnCreate.Handler? {
+    Self.defaultOnCreateHandler
+  }
 
   /// The export handler.
   ///
   /// Default: Exports the current page as MP4 and opens the system share sheet.
-  override public var onExport: OnExport.Handler? { Self.defaultOnExportHandler }
+  override public var onExport: OnExport.Handler? {
+    Self.defaultOnExportHandler
+  }
 
   // MARK: - EditorConfiguration — UI Components
 
   /// The navigation bar configuration.
-  override public var navigationBar: NavigationBar.Configuration? { Self.defaultNavigationBar }
+  override public var navigationBar: NavigationBar.Configuration? {
+    Self.defaultNavigationBar
+  }
 
   /// The dock configuration.
-  override public var dock: Dock.Configuration? { Self.defaultDock }
+  override public var dock: Dock.Configuration? {
+    Self.defaultDock
+  }
 
   /// The inspector bar configuration.
-  override public var inspectorBar: InspectorBar.Configuration? { Self.defaultInspectorBar }
+  override public var inspectorBar: InspectorBar.Configuration? {
+    Self.defaultInspectorBar
+  }
 
   /// The canvas menu configuration.
-  override public var canvasMenu: CanvasMenu.Configuration? { Self.defaultCanvasMenu }
+  override public var canvasMenu: CanvasMenu.Configuration? {
+    Self.defaultCanvasMenu
+  }
 
   /// The bottom panel configuration.
-  override public var bottomPanel: BottomPanel.Configuration? { Self.defaultBottomPanel }
+  override public var bottomPanel: BottomPanel.Configuration? {
+    Self.defaultBottomPanel
+  }
 }

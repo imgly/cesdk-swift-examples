@@ -3,22 +3,21 @@ import IMGLYEngine
 
 @MainActor
 func loadSceneFromBlob(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-fetch-blob
-  let sceneURL =
-    URL(string: "https://cdn.img.ly/assets/demo/v1/ly.img.template/templates/cesdk_postcard_1.scene")!
+  let sceneURL = baseURL.appendingPathComponent("ly.img.templates/templates/cesdk_business_card_1.scene")
   let sceneBlob = try await URLSession.shared.data(from: sceneURL).0
   // highlight-fetch-blob
 
   // highlight-read-blob
-  let blobString = String(data: sceneBlob, encoding: .utf8)!
+  guard let blobString = String(data: sceneBlob, encoding: .utf8) else { return }
   // highlight-read-blob
 
   // highlight-load-blob
-  let scene = try await engine.scene.load(from: blobString)
+  try await engine.scene.load(from: blobString)
   // highlight-load-blob
 
-  // highlight-modify-text-blob
   let text = try engine.block.find(byType: .text).first!
   try engine.block.setDropShadowEnabled(text, enabled: true)
-  // highlight-modify-text-blob
 }
