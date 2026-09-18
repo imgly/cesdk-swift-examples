@@ -14,6 +14,8 @@ func conceptsBlocks(engine: Engine) async throws {
   try await engine.scene.zoom(to: page, paddingLeft: 40, paddingTop: 40, paddingRight: 40, paddingBottom: 40)
   // highlight-setup
 
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-block-types
   // Find the page block - pages contain all design elements
   let pages = try engine.block.find(byType: .page)
@@ -66,10 +68,10 @@ func conceptsBlocks(engine: Engine) async throws {
 
   // Create an image fill and attach it to the graphic
   let imageFill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     imageFill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(graphic, fill: imageFill)
 

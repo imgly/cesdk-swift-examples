@@ -14,7 +14,10 @@ struct SceneSelection<Editor: View>: View {
   typealias Scenes = [(title: String, colorPalette: [(name: LocalizedStringResource, color: CGColor)]?)]
 
   struct Scene: Identifiable {
-    var id: URL { url }
+    var id: URL {
+      url
+    }
+
     /// Scene title.
     let title: LocalizedStringKey
     /// Scene file.
@@ -30,7 +33,7 @@ struct SceneSelection<Editor: View>: View {
 
   init(
     scenes: Scenes,
-    @ViewBuilder editor: @escaping (_ sceneURL: URL, _ colorPalette: [NamedColor]?) -> Editor
+    @ViewBuilder editor: @escaping (_ sceneURL: URL, _ colorPalette: [NamedColor]?) -> Editor,
   ) {
     self.scenes = scenes.map {
       let resource = $0.title.replacingOccurrences(of: " ", with: "_").lowercased()

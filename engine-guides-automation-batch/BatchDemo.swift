@@ -49,8 +49,7 @@ enum Output {
 enum EngineFactory {
   static func make() async throws -> Engine {
     // New initialization form: no EngineSettings
-    let engine = try await Engine(license: secrets.licenseKey)
-    return engine
+    try await Engine(license: secrets.licenseKey)
   }
 }
 
@@ -117,9 +116,9 @@ func processRecord(_ record: Record) async throws -> URL {
   let engine = try await EngineFactory.make()
 
   // Load the template archive.
-  // loadArchive returns a block ID for the loaded scene root.
+  // load(from:) returns a block ID for the loaded scene root.
   // We'll use `.scene.get()` so we don't need to save the reference
-  let scene = try await engine.scene.loadArchive(from: Template.archiveURL)
+  let scene = try await engine.scene.load(from: Template.archiveURL)
 
   // Apply variables
   try applyVariables(engine, values: record.variables)

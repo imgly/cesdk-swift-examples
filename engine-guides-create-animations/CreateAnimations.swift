@@ -3,6 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func createAnimations(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-setup
   let scene = try engine.scene.createVideo()
 
@@ -21,10 +23,10 @@ func createAnimations(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 300)
   try engine.block.appendChild(to: page, child: block)
   let fill = try engine.block.createFill(.image)
-  try engine.block.setString(
+  try engine.block.setURL(
     fill,
     property: "fill/image/imageFileURI",
-    value: "https://img.ly/static/ubq_samples/sample_1.jpg",
+    value: baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg"),
   )
   try engine.block.setFill(block, fill: fill)
   // highlight-setup
@@ -34,41 +36,35 @@ func createAnimations(engine: Engine) async throws {
     return
   }
 
-  let slideAnimation = try engine.block.createAnimation(.slide)
-  try engine.block.setInAnimation(block, animation: slideAnimation)
-  try engine.block.setDuration(slideAnimation, duration: 1.0)
+  let slideIn = try engine.block.createAnimation(.slide)
+  try engine.block.setInAnimation(block, animation: slideIn)
+  try engine.block.setDuration(slideIn, duration: 1.2)
   // highlight-createAnimations-checkSupport
 
   // highlight-createAnimations-entranceAnimation
-  let fadeIn = try engine.block.createAnimation(.fade)
-  try engine.block.destroy(try engine.block.getInAnimation(block))
-  try engine.block.setInAnimation(block, animation: fadeIn)
-  try engine.block.setDuration(fadeIn, duration: 0.8)
-  try engine.block.setEnum(fadeIn, property: "animationEasing", value: "EaseOut")
+  try engine.block.setEnum(slideIn, property: "animationEasing", value: "EaseOut")
+  try engine.block.setFloat(slideIn, property: "animation/slide/direction", value: 1.5 * .pi)
   // highlight-createAnimations-entranceAnimation
 
   // highlight-createAnimations-exitAnimation
   let fadeOut = try engine.block.createAnimation(.fade)
   try engine.block.setOutAnimation(block, animation: fadeOut)
-  try engine.block.setDuration(fadeOut, duration: 0.6)
+  try engine.block.setDuration(fadeOut, duration: 1.0)
   try engine.block.setEnum(fadeOut, property: "animationEasing", value: "EaseIn")
   // highlight-createAnimations-exitAnimation
 
   // highlight-createAnimations-loopAnimation
   let pulsatingLoop = try engine.block.createAnimation(.pulsatingLoop)
   try engine.block.setLoopAnimation(block, animation: pulsatingLoop)
-  try engine.block.setDuration(pulsatingLoop, duration: 2.0)
+  try engine.block.setDuration(pulsatingLoop, duration: 1.5)
   // highlight-createAnimations-loopAnimation
 
   // highlight-createAnimations-animationProperties
-  let allProperties = try engine.block.findAllProperties(fadeIn)
-  try engine.block.setEnum(fadeIn, property: "animationEasing", value: "EaseInOut")
+  let slideProperties = try engine.block.findAllProperties(slideIn)
+  print("Slide animation properties: \(slideProperties)")
 
-  let slideIn = try engine.block.createAnimation(.slide)
-  try engine.block.destroy(try engine.block.getInAnimation(block))
-  try engine.block.setInAnimation(block, animation: slideIn)
-  try engine.block.setDuration(slideIn, duration: 1.0)
-  try engine.block.setFloat(slideIn, property: "animation/slide/direction", value: 0.5 * .pi)
+  let easingOptions = try engine.block.getEnumValues(ofProperty: "animationEasing")
+  print("Available easing options: \(easingOptions)")
   // highlight-createAnimations-animationProperties
 
   // highlight-createAnimations-textAnimation
@@ -77,27 +73,36 @@ func createAnimations(engine: Engine) async throws {
   try engine.block.setPositionY(text, value: 400)
   try engine.block.setWidth(text, value: 600)
   try engine.block.setHeight(text, value: 100)
-  try engine.block.replaceText(text, text: "Animated text with word-by-word reveal")
+  try engine.block.replaceText(text, text: "Entrance • Exit • Loop")
   try engine.block.appendChild(to: page, child: text)
 
-  let baselineAnimation = try engine.block.createAnimation(.baseline)
-  try engine.block.setInAnimation(text, animation: baselineAnimation)
-  try engine.block.setDuration(baselineAnimation, duration: 2.0)
-  try engine.block.setEnum(baselineAnimation, property: "textAnimationWritingStyle", value: "Word")
-  try engine.block.setFloat(baselineAnimation, property: "textAnimationOverlap", value: 0.4)
+  let textAnimation = try engine.block.createAnimation(.fade)
+  try engine.block.setInAnimation(text, animation: textAnimation)
+  try engine.block.setDuration(textAnimation, duration: 1.5)
+  try engine.block.setEnum(textAnimation, property: "textAnimationWritingStyle", value: "Word")
+  try engine.block.setFloat(textAnimation, property: "textAnimationOverlap", value: 0.3)
   // highlight-createAnimations-textAnimation
 
   // highlight-createAnimations-manageLifecycle
   let currentIn = try engine.block.getInAnimation(block)
   let currentOut = try engine.block.getOutAnimation(block)
   let currentLoop = try engine.block.getLoopAnimation(block)
-  let inType = try engine.block.getType(currentIn)
+  print("Animation IDs — In: \(currentIn), Out: \(currentOut), Loop: \(currentLoop)")
 
-  try engine.block.destroy(currentIn)
-  let zoomIn = try engine.block.createAnimation(.zoom)
-  try engine.block.setInAnimation(block, animation: zoomIn)
-  try engine.block.setDuration(zoomIn, duration: 0.5)
-
-  let easingOptions = try engine.block.getEnumValues(ofProperty: "animationEasing")
+  if engine.block.isValid(currentIn) {
+    try engine.block.destroy(currentIn)
+    let zoomIn = try engine.block.createAnimation(.zoom)
+    try engine.block.setInAnimation(block, animation: zoomIn)
+    try engine.block.setDuration(zoomIn, duration: 0.8)
+  }
   // highlight-createAnimations-manageLifecycle
+
+  // highlight-createAnimations-replaceMemoryLeaks
+  let currentAnimation = try engine.block.getInAnimation(block)
+  if engine.block.isValid(currentAnimation) {
+    try engine.block.destroy(currentAnimation)
+  }
+  let newAnimation = try engine.block.createAnimation(.fade)
+  try engine.block.setInAnimation(block, animation: newAnimation)
+  // highlight-createAnimations-replaceMemoryLeaks
 }

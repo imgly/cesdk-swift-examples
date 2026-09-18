@@ -6,13 +6,24 @@ import SwiftUI
 
 extension Dock.Buttons.ID {
   /// The id of the ``Dock/Buttons/designColors(action:title:icon:isEnabled:isVisible:)`` button.
-  static var designColors: EditorComponentID { "ly.img.component.dock.button.postcard.designColors" }
+  static var designColors: EditorComponentID {
+    "ly.img.component.dock.button.postcard.designColors"
+  }
+
   /// The id of the ``Dock/Buttons/greetingColors(action:title:icon:isEnabled:isVisible:)`` button.
-  static var greetingColors: EditorComponentID { "ly.img.component.dock.button.postcard.namedColors" }
+  static var greetingColors: EditorComponentID {
+    "ly.img.component.dock.button.postcard.namedColors"
+  }
+
   /// The id of the ``Dock/Buttons/greetingFont(action:title:icon:isEnabled:isVisible:)`` button.
-  static var greetingFont: EditorComponentID { "ly.img.component.dock.button.postcard.greetingFont" }
+  static var greetingFont: EditorComponentID {
+    "ly.img.component.dock.button.postcard.greetingFont"
+  }
+
   /// The id of the ``Dock/Buttons/greetingSize(action:title:icon:isEnabled:isVisible:)`` button.
-  static var greetingSize: EditorComponentID { "ly.img.component.dock.button.postcard.greetingSize" }
+  static var greetingSize: EditorComponentID {
+    "ly.img.component.dock.button.postcard.greetingSize"
+  }
 }
 
 // MARK: - Dock Buttons

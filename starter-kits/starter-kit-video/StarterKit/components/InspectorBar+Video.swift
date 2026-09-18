@@ -8,12 +8,18 @@ extension VideoEditorConfiguration {
     InspectorBar.Configuration { builder in
       // highlight-starter-kit-inspector-bar
       builder.items { _ in
+        // Caption-only buttons, kept at the start so a caption selection leads with them.
+        InspectorBar.Buttons.editCaptions()
+        InspectorBar.Buttons.captionStyle()
+
         InspectorBar.Buttons.replace()
 
         InspectorBar.Buttons.editText()
+        InspectorBar.Buttons.textPresets()
         InspectorBar.Buttons.formatText()
         InspectorBar.Buttons.fillStroke()
         InspectorBar.Buttons.textBackground()
+        InspectorBar.Buttons.textOnPath()
         InspectorBar.Buttons.addVoiceoverRecording()
         InspectorBar.Buttons.volume()
         InspectorBar.Buttons.clipSpeed()
@@ -24,6 +30,7 @@ extension VideoEditorConfiguration {
         InspectorBar.Buttons.effect()
         InspectorBar.Buttons.blur()
         InspectorBar.Buttons.animation()
+        InspectorBar.Buttons.transition()
         InspectorBar.Buttons.shape()
 
         InspectorBar.Buttons.selectGroup()
@@ -31,9 +38,6 @@ extension VideoEditorConfiguration {
 
         InspectorBar.Buttons.layer()
         InspectorBar.Buttons.split()
-        InspectorBar.Buttons.moveAsClip()
-        InspectorBar.Buttons.moveAsOverlay()
-        InspectorBar.Buttons.reorder()
         InspectorBar.Buttons.duplicate()
         InspectorBar.Buttons.delete()
       }
