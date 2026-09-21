@@ -60,7 +60,9 @@ public final class RemoteAssetSource: NSObject {
 // MARK: - AssetSource
 
 extension RemoteAssetSource: AssetSource {
-  public var id: String { manifest.id }
+  public var id: String {
+    manifest.id
+  }
 
   public func findAssets(queryData: AssetQueryData) async throws -> AssetQueryResult {
     let url = Endpoint.assets(queryData: queryData).url(with: host, path: path)!
@@ -91,11 +93,17 @@ extension RemoteAssetSource: AssetSource {
     try engine.block.ensureMetadataKeys(block, asset: asset, sourceID: manifest.id)
   }
 
-  public var supportedMIMETypes: [String]? { manifest.supportedMimeTypes }
+  public var supportedMIMETypes: [String]? {
+    manifest.supportedMimeTypes
+  }
 
-  public var credits: AssetCredits? { .init(ras: manifest.credits) }
+  public var credits: AssetCredits? {
+    .init(ras: manifest.credits)
+  }
 
-  public var license: AssetLicense? { .init(ras: manifest.license) }
+  public var license: AssetLicense? {
+    .init(ras: manifest.license)
+  }
 }
 
 // MARK: - Decodable types

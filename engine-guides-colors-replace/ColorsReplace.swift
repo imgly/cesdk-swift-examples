@@ -3,15 +3,17 @@ import IMGLYEngine
 
 @MainActor
 func colorsReplace(engine: Engine) async throws {
+  let baseURL = try engine.guidesBaseURL
+
   // highlight-colorsReplace-setup
   let scene = try engine.scene.create()
 
   let page = try engine.block.create(.page)
   try engine.block.setWidth(page, value: 800)
-  try engine.block.setHeight(page, value: 600)
+  try engine.block.setHeight(page, value: 450)
   try engine.block.appendChild(to: scene, child: page)
 
-  let imageURI = "https://img.ly/static/ubq_samples/sample_1.jpg"
+  let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_1.jpg")
   // highlight-colorsReplace-setup
 
   // highlight-colorsReplace-createRecolor
@@ -26,7 +28,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: recolorBlock)
 
   let recolorFill = try engine.block.createFill(.image)
-  try engine.block.setString(recolorFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(recolorFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(recolorBlock, fill: recolorFill)
 
   let recolorEffect = try engine.block.createEffect(.recolor)
@@ -43,9 +45,8 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendEffect(recolorBlock, effectID: recolorEffect)
   // highlight-colorsReplace-createRecolor
 
-  // highlight-colorsReplace-configureRecolor
-  // Fine-tune which pixels the Recolor effect affects. All three tolerances
-  // accept values between `0` and `1`.
+  try await engine.captureGuide(page, label: "after-recolor")
+
   let tolerancesBlock = try engine.block.create(.graphic)
   try engine.block.setShape(tolerancesBlock, shape: engine.block.createShape(.rect))
   try engine.block.setPositionX(tolerancesBlock, value: 300)
@@ -55,10 +56,15 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: tolerancesBlock)
 
   let tolerancesFill = try engine.block.createFill(.image)
-  try engine.block.setString(tolerancesFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(tolerancesFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(tolerancesBlock, fill: tolerancesFill)
 
+  // highlight-colorsReplace-configureRecolor
   let tolerancesEffect = try engine.block.createEffect(.recolor)
+  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/colorMatch", value: 0.3)
+  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/brightnessMatch", value: 0.2)
+  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/smoothness", value: 0.1)
+  // highlight-colorsReplace-configureRecolor
   try engine.block.setColor(
     tolerancesEffect,
     property: "effect/recolor/fromColor",
@@ -69,11 +75,7 @@ func colorsReplace(engine: Engine) async throws {
     property: "effect/recolor/toColor",
     color: .rgba(r: 0.3, g: 0.7, b: 0.3, a: 1),
   )
-  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/colorMatch", value: 0.3)
-  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/brightnessMatch", value: 0.2)
-  try engine.block.setFloat(tolerancesEffect, property: "effect/recolor/smoothness", value: 0.1)
   try engine.block.appendEffect(tolerancesBlock, effectID: tolerancesEffect)
-  // highlight-colorsReplace-configureRecolor
 
   // highlight-colorsReplace-createGreenScreen
   // Create a Green Screen effect. `fromColor` picks the color to remove; any
@@ -87,7 +89,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: greenScreenBlock)
 
   let greenScreenFill = try engine.block.createFill(.image)
-  try engine.block.setString(greenScreenFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(greenScreenFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(greenScreenBlock, fill: greenScreenFill)
 
   let greenScreenEffect = try engine.block.createEffect(.greenScreen)
@@ -99,9 +101,8 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendEffect(greenScreenBlock, effectID: greenScreenEffect)
   // highlight-colorsReplace-createGreenScreen
 
-  // highlight-colorsReplace-configureGreenScreen
-  // Control how the Green Screen effect cuts out the background. `spill`
-  // reduces color bleed from the removed background onto subject edges.
+  try await engine.captureGuide(page, label: "after-green-screen")
+
   let spillBlock = try engine.block.create(.graphic)
   try engine.block.setShape(spillBlock, shape: engine.block.createShape(.rect))
   try engine.block.setPositionX(spillBlock, value: 50)
@@ -111,20 +112,21 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: spillBlock)
 
   let spillFill = try engine.block.createFill(.image)
-  try engine.block.setString(spillFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(spillFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(spillBlock, fill: spillFill)
 
+  // highlight-colorsReplace-configureGreenScreen
   let spillEffect = try engine.block.createEffect(.greenScreen)
+  try engine.block.setFloat(spillEffect, property: "effect/green_screen/colorMatch", value: 0.4)
+  try engine.block.setFloat(spillEffect, property: "effect/green_screen/smoothness", value: 0.2)
+  try engine.block.setFloat(spillEffect, property: "effect/green_screen/spill", value: 0.5)
+  // highlight-colorsReplace-configureGreenScreen
   try engine.block.setColor(
     spillEffect,
     property: "effect/green_screen/fromColor",
     color: .rgba(r: 0.2, g: 0.8, b: 0.3, a: 1),
   )
-  try engine.block.setFloat(spillEffect, property: "effect/green_screen/colorMatch", value: 0.4)
-  try engine.block.setFloat(spillEffect, property: "effect/green_screen/smoothness", value: 0.2)
-  try engine.block.setFloat(spillEffect, property: "effect/green_screen/spill", value: 0.5)
   try engine.block.appendEffect(spillBlock, effectID: spillEffect)
-  // highlight-colorsReplace-configureGreenScreen
 
   // highlight-colorsReplace-manageEffects
   // Stack multiple Recolor effects on a single block, then toggle individual
@@ -138,7 +140,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: stackedBlock)
 
   let stackedFill = try engine.block.createFill(.image)
-  try engine.block.setString(stackedFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(stackedFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(stackedBlock, fill: stackedFill)
 
   let redToBlue = try engine.block.createEffect(.recolor)
@@ -171,7 +173,7 @@ func colorsReplace(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: batchBlock)
 
   let batchFill = try engine.block.createFill(.image)
-  try engine.block.setString(batchFill, property: "fill/image/imageFileURI", value: imageURI)
+  try engine.block.setURL(batchFill, property: "fill/image/imageFileURI", value: imageURL)
   try engine.block.setFill(batchBlock, fill: batchFill)
 
   let allGraphicBlocks = try engine.block.find(byType: .graphic)
@@ -194,4 +196,6 @@ func colorsReplace(engine: Engine) async throws {
     try engine.block.appendEffect(blockID, effectID: batchRecolor)
   }
   // highlight-colorsReplace-batchProcessing
+
+  try await engine.captureGuide(page, label: "hero")
 }

@@ -10,7 +10,10 @@ extension Format {
 }
 
 private struct Format: Identifiable {
-  var id: URL { image }
+  var id: URL {
+    image
+  }
+
   /// Scene title.
   let title: LocalizedStringKey
   /// Image size.
@@ -30,7 +33,7 @@ struct PhotoSelection<Editor: View>: View {
 
   init(
     formats: Formats,
-    @ViewBuilder editor: @escaping (_ imageURL: URL, _ size: CGSize?) -> Editor
+    @ViewBuilder editor: @escaping (_ imageURL: URL, _ size: CGSize?) -> Editor,
   ) {
     self.formats = formats.map {
       .init($0.resource, title: $0.title, size: $0.size)
