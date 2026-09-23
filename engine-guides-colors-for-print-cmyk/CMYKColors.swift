@@ -90,6 +90,9 @@ func cmykColors(engine: Engine) async throws {
   // highlight-cmykColors-convert
   // Convert between sRGB and CMYK using the editor API. Conversions are not
   // perfectly reversible because the color gamuts differ.
+  // Converting CMYK to sRGB reads the document CMYK profile, which is a resource. Load it once
+  // first, so the conversion does not have to handle COLOR.PROFILE_NOT_LOADED.
+  try await engine.editor.loadCMYKProfile()
   let rgbBlue = Color.rgba(r: 0.2, g: 0.4, b: 0.9, a: 1.0)
   let convertedCmyk = try engine.editor.convertColorToColorSpace(color: rgbBlue, colorSpace: .cmyk)
   print("RGB to CMYK conversion: \(convertedCmyk)")

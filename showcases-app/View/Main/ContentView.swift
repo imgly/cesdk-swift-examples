@@ -9,17 +9,14 @@ struct ContentView: View {
 
   // MARK: - Appetize Deep Linking
 
-  var appetizeGuideID: String?
+  /// The showcase the docs asked for, or `nil` so an unknown ID lands on the
+  /// showcase list instead of an empty screen. Resolved once, so a body update
+  /// does not rebuild the pushed showcase.
+  private let appetizeGuideDestination: AnyView?
   @State private var isShowingAppetizeGuide = false
 
-  @ViewBuilder
-  private func appetizeGuideDestination(for guideID: String) -> some View {
-    switch guideID {
-    case "aiImageGeneration": AIImageGenerationSolution()
-    case "backgroundRemovalPlugin": BackgroundRemovalPluginSolution()
-    case "forceCrop": ForceCropSolution()
-    default: EmptyView()
-    }
+  init(appetizeGuideID: String? = nil) {
+    appetizeGuideDestination = appetizeGuideID.flatMap(AppetizeGuides.destination(for:))
   }
 
   var body: some View {
@@ -39,9 +36,9 @@ struct ContentView: View {
       }
       .imgly.buildInfo(ciBuildsHost: secrets.ciBuildsHost, githubRepo: secrets.githubRepo)
       .background {
-        if let guideID = appetizeGuideID {
+        if let destination = appetizeGuideDestination {
           NavigationLink(isActive: $isShowingAppetizeGuide) {
-            appetizeGuideDestination(for: guideID)
+            destination
           } label: {
             EmptyView()
           }
@@ -54,7 +51,7 @@ struct ContentView: View {
     .accessibilityIdentifier("showcases")
     .onAppear {
       try? AVAudioSession.sharedInstance().setCategory(.playback)
-      if appetizeGuideID != nil {
+      if appetizeGuideDestination != nil {
         isShowingAppetizeGuide = true
       }
     }
