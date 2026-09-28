@@ -40,7 +40,7 @@ struct AutoCaptionsPluginSolution: View {
   /// The video the demo opens with, so Generate Automatically has speech to transcribe.
   private static let sampleVideoURL: URL = {
     let baseURL = secrets.baseURL
-      ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.82.2/assets")!
+      ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.83.0-rc.3/assets")!
     return baseURL.appendingPathComponent("ly.img.video/videos/pexels-kampus-production-8154913.mp4")
   }()
 }

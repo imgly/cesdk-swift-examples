@@ -29,7 +29,22 @@ struct RecordVoiceoverSolution: View {
           // highlight-recordVoiceover-bottomPanel
           builder.bottomPanel { bottomPanel in
             bottomPanel.content { context in
-              DefaultTimelineComponent(context: context)
+              Timeline(context: context, configuration: .init { builder in
+                // The timeline renders tracks alone by default, so declare the playback controls.
+                builder.header { _ in
+                  Timeline.ItemGroup(placement: .leading) {
+                    Timeline.Labels.timecode()
+                    Timeline.Spacer()
+                  }
+                  Timeline.ItemGroup(placement: .center) {
+                    Timeline.Buttons.playPause()
+                  }
+                  Timeline.ItemGroup(placement: .trailing) {
+                    Timeline.Spacer()
+                    Timeline.Buttons.toggleExpanded()
+                  }
+                }
+              })
             }
           }
           // highlight-recordVoiceover-bottomPanel

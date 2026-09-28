@@ -26,6 +26,7 @@
 		09A7BC3BBD19E12DBCACCDC5 /* template_05_x_header.scene in Resources */ = {isa = PBXBuildFile; fileRef = 0A00FD0DD2BDC1EA4F51FB4A /* template_05_x_header.scene */; };
 		0A00576C7F0C1CC37FB7B52F /* Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD71099538AD52898AC4901 /* Trim.swift */; };
 		0B7185D4AC89981F71B45C99 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101750DC1BC245477FAAB802 /* Resources.swift */; };
+		0BDEFAC04FEFCA9D6E805E4A /* AppetizeGuides.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D10F3021835F55F09AAF8D /* AppetizeGuides.swift */; };
 		0C576191E5F1AB4F1C6F80FA /* ImportFromInDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3728D4126BA44BBF91EAC3 /* ImportFromInDesign.swift */; };
 		0C7C92C09007C1378EF04AE1 /* Placeholders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D4B0A0A6F86AEA49A49F8B /* Placeholders.swift */; };
 		0D4E1D13FD9895C0AFE1D02C /* RemoteAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */; };
@@ -348,6 +349,7 @@
 		CFD21FC0CAE59AC80613E871 /* AddBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C00EC2F8BBB1B8245F14AF /* AddBackground.swift */; };
 		D03CC59C8EADAE5FBDBA1754 /* template_04_x_profile_picture_1_1.scene in Resources */ = {isa = PBXBuildFile; fileRef = 7C43E63382C9735AC77104EB /* template_04_x_profile_picture_1_1.scene */; };
 		D149718E5313F86BAE50078E /* 1_1_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = F52937D3AC44258A85335345 /* 1_1_dark.png */; };
+		D1957312104C7EBD9035D2E8 /* VideoTimelineEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB21E0DF0F60C42BEEACBC05 /* VideoTimelineEditorSolution.swift */; };
 		D207C477145F158A9044E493 /* URIResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A40C978234024C6A48BCBC /* URIResolver.swift */; };
 		D248029BF8B0C25271D70B4D /* CMYKColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8BECD5668894348BF4334E /* CMYKColors.swift */; };
 		D2DD4CD7208E2253B0374D4F /* template_07_business_card.scene in Resources */ = {isa = PBXBuildFile; fileRef = BE9DBF3F7E835988A7DF0B62 /* template_07_business_card.scene */; };
@@ -727,6 +729,7 @@
 		A83C840E0427291437B565EB /* LockDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockDesign.swift; sourceTree = "<group>"; };
 		A96EFB99B1507732B340D9F1 /* original_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = original_dark.png; sourceTree = "<group>"; };
 		A97DBC5A5E164D538EBB3968 /* AnimationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTypes.swift; sourceTree = "<group>"; };
+		A9D10F3021835F55F09AAF8D /* AppetizeGuides.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppetizeGuides.swift; sourceTree = "<group>"; };
 		AAA97BA25BA3114CC821091C /* sample_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_image.jpg; sourceTree = "<group>"; };
 		AC17792CBBAD40ECDD558519 /* my-plants.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my-plants.png"; sourceTree = "<group>"; };
 		AD36451869C947383D2688ED /* IntegrateWithSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrateWithSwiftUI.swift; sourceTree = "<group>"; };
@@ -855,6 +858,7 @@
 		FA1979F209C2FCD8EA5B3D40 /* AssetLibraryBasicsSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetLibraryBasicsSolution.swift; sourceTree = "<group>"; };
 		FA731ABCC7827ADFD3519760 /* ShadowsAndGlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowsAndGlows.swift; sourceTree = "<group>"; };
 		FAAC4C9F4CB8CC08F9ACAB39 /* OnExport+Postcard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnExport+Postcard.swift"; sourceTree = "<group>"; };
+		FB21E0DF0F60C42BEEACBC05 /* VideoTimelineEditorSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTimelineEditorSolution.swift; sourceTree = "<group>"; };
 		FB8EF3A08AD06B73A2A4973D /* PexelsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PexelsResponse.swift; sourceTree = "<group>"; };
 		FC0EC5EA8855A04BA6E1648D /* template_01_ig_post_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template_01_ig_post_1_1.png; sourceTree = "<group>"; };
 		FCF8110CD832614D8D44324A /* 4_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_3.png; sourceTree = "<group>"; };
@@ -1954,6 +1958,7 @@
 				81B82303944A79C8801A623F /* editor-guides-configuration-panel */,
 				2EE4FE3B02C09FEB3C0D7F63 /* editor-guides-configuration-theming */,
 				BAD8A6EDC98F58D84D42F3C3 /* editor-guides-configuration-ui-events */,
+				C3F2249D252C2102683F6DED /* editor-guides-configuration-video-timeline */,
 				F4063AE6B399A12C1CA39A9D /* editor-guides-create-audio-audio-record-voiceover */,
 				49060AC020D1C48EDA425A11 /* editor-guides-create-video-add-captions */,
 				F87D3D5CD0EEE24DBC39CC4D /* editor-guides-crop-presets */,
@@ -2903,6 +2908,14 @@
 			path = "engine-guides-control-av";
 			sourceTree = "<group>";
 		};
+		C3F2249D252C2102683F6DED /* editor-guides-configuration-video-timeline */ = {
+			isa = PBXGroup;
+			children = (
+				FB21E0DF0F60C42BEEACBC05 /* VideoTimelineEditorSolution.swift */,
+			);
+			path = "editor-guides-configuration-video-timeline";
+			sourceTree = "<group>";
+		};
 		C6106079380712596DF922E0 /* StarterKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3147,6 +3160,7 @@
 		D948A5CF8015E076EC6CA150 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				A9D10F3021835F55F09AAF8D /* AppetizeGuides.swift */,
 				4DF70B5F8DE6228FC3942C16 /* ContentView.swift */,
 			);
 			path = Main;
@@ -3507,7 +3521,7 @@
 			path = "engine-guides-create-video-control";
 			sourceTree = "<group>";
 		};
-		"TEMP_F579C5BF-3E52-4F0F-9271-D3269BC98929" /* . */ = {
+		"TEMP_C2B2BBFA-10B8-41C6-8D72-EE8ACC0C89CF" /* . */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -3516,6 +3530,7 @@
 				779B0C459B93284D1ABFCA2C /* editor-guides-ui-extensions-asset-library */,
 				08A9EA956529EFCD7B5C6079 /* editor-guides-configuration-inspector-bar */,
 				3A0229B193CFA4C14EAF1B04 /* editor-guides-change-ui-font */,
+				C3F2249D252C2102683F6DED /* editor-guides-configuration-video-timeline */,
 				CB58E43FC9B8BC3C723C0103 /* editor-guides-ui-extensions-create-custom-panel */,
 				84CF484A769651893C42E815 /* camera-guides-take-photo */,
 				1F1960344E48014B1A0F246B /* editor-guides-ui-extensions-notifications-and-dialogs */,
@@ -4163,6 +4178,7 @@
 				7C85E88353831E30CF6B4AE9 /* AddCaptionsSolution.swift in Sources */,
 				FDB111DADA8CA62B2D2EE0E8 /* ApparelEditorConfiguration.swift in Sources */,
 				F895D9BFABB0F7E3F35EF2B9 /* ApparelEditorStarterKit.swift in Sources */,
+				0BDEFAC04FEFCA9D6E805E4A /* AppetizeGuides.swift in Sources */,
 				036C55A7FF2A40F24F26E75B /* AssetLibraryBasicsSolution.swift in Sources */,
 				49EFDEEF66F1BA76BACF96E9 /* AssetLibraryEditorSolution.swift in Sources */,
 				263A9F6BCDE08E7680F41827 /* AssetLibraryPanelSolution.swift in Sources */,
@@ -4291,6 +4307,7 @@
 				28D56DB146DE5229A8C6CDCF /* VariableFontsSolution.swift in Sources */,
 				3F03FF8D33F25D8B5AD22E81 /* VideoEditorConfiguration.swift in Sources */,
 				EFDE680B2C51272391D9FF50 /* VideoEditorStarterKit.swift in Sources */,
+				D1957312104C7EBD9035D2E8 /* VideoTimelineEditorSolution.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4392,7 +4409,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.82.2;
+				MARKETING_VERSION = 1.83.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4483,7 +4500,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.82.2;
+				MARKETING_VERSION = 1.83.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4558,7 +4575,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAIImageGeneration-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.82.2;
+				version = "1.83.0-rc.3";
 			};
 		};
 		0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */ = {
@@ -4566,7 +4583,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.82.2;
+				version = "1.83.0-rc.3";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -4574,7 +4591,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.82.2;
+				version = "1.83.0-rc.3";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -4590,7 +4607,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAutoCaptions-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.82.2;
+				version = "1.83.0-rc.3";
 			};
 		};
 		4824595CEC4E9D761E3F4D64 /* XCRemoteSwiftPackageReference "IMGLYPluginBackgroundRemoval-swift" */ = {
@@ -4598,7 +4615,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginBackgroundRemoval-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.82.2;
+				version = "1.83.0-rc.3";
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
