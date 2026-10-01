@@ -55,6 +55,24 @@ func textProperties(engine: Engine) async throws {
   print("Colors in \"E.SDK!\": \(colorsInRange)")
   // highlight-getTextColors-range
 
+  // highlight-setTextBackgroundColor
+  try engine.block.setTextBackgroundColor(text, color: .rgba(r: 1, g: 0.9, b: 0.3), in: "CE.SDK".range(of: "CE")!)
+  // A fully transparent color removes the background again:
+  // try engine.block.setTextBackgroundColor(text, color: .rgba(r: 0, g: 0, b: 0, a: 0), in: "CE.SDK".range(of: "CE")!)
+  // highlight-setTextBackgroundColor
+  // highlight-getTextBackgroundColors
+  let allBackgroundColors = try engine.block.getTextBackgroundColors(text)
+  print("All unique background colors: \(allBackgroundColors)")
+  // highlight-getTextBackgroundColors
+
+  // highlight-textBackground-geometry
+  try engine.block.setFloat(text, property: "text/backgroundPadding/left", value: 4)
+  try engine.block.setFloat(text, property: "text/backgroundPadding/right", value: 4)
+  try engine.block.setFloat(text, property: "text/backgroundPadding/top", value: 2)
+  try engine.block.setFloat(text, property: "text/backgroundPadding/bottom", value: 2)
+  try engine.block.setFloat(text, property: "text/backgroundCornerRadius", value: 4)
+  // highlight-textBackground-geometry
+
   // highlight-backgroundColor-enabled
   try engine.block.setBackgroundColorEnabled(text, enabled: true)
   // highlight-backgroundColor-enabled

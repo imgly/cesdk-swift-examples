@@ -59,6 +59,7 @@ func applyColors(engine: Engine) async throws {
   try await engine.captureGuide(page, label: "hero")
 
   // highlight-applyColors-convertColor
+  try await engine.editor.loadCMYKProfile()
   let cmykFromRgb = try engine.editor.convertColorToColorSpace(color: rgbaBlue, colorSpace: .cmyk)
   let rgbFromCmyk = try engine.editor.convertColorToColorSpace(color: cmykRed, colorSpace: .sRGB)
   print("CMYK from RGB: \(cmykFromRgb)")

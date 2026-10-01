@@ -10,6 +10,7 @@ func colorConversion(engine: Engine) async throws {
 
   // highlight-colorConversion-toSrgb
   let cmykCyan = Color.cmyk(c: 1.0, m: 0.0, y: 0.0, k: 0.0, tint: 1.0)
+  try await engine.editor.loadCMYKProfile()
   let cyanAsSrgb = try engine.editor.convertColorToColorSpace(color: cmykCyan, colorSpace: .sRGB)
   print("CMYK cyan as sRGB: \(cyanAsSrgb)")
   // highlight-colorConversion-toSrgb

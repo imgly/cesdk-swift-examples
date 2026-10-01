@@ -205,6 +205,7 @@ struct Showcases: View {
         Showcase(view: InspectorBarItemEditorSolution(), title: "Configuration: Inspector Bar Item")
         Showcase(view: CanvasMenuEditorSolution(), title: "Configuration: Canvas Menu")
         Showcase(view: CanvasMenuItemEditorSolution(), title: "Configuration: Canvas Menu Item")
+        Showcase(view: VideoTimelineEditorSolution(), title: "Configuration: Video Timeline")
         Showcase(view: AddButtonEditorSolution(), title: "UI Extensions: Add a New Button")
         Showcase(view: AssetLibraryPanelSolution(), title: "UI Extensions: Asset Library")
         Showcase(

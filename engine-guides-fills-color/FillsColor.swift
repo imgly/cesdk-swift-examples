@@ -150,6 +150,7 @@ func fillsColor(engine: Engine) async throws {
 
   // highlight-fillsColor-convertColor
   let rgbColor = Color.rgba(r: 1.0, g: 0.0, b: 0.0)
+  try await engine.editor.loadCMYKProfile()
   let cmykColor = try engine.editor.convertColorToColorSpace(color: rgbColor, colorSpace: .cmyk)
   print("Converted CMYK color:", cmykColor)
   // highlight-fillsColor-convertColor
