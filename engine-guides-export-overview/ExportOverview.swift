@@ -54,6 +54,8 @@ func exportOverview(engine: Engine) async throws {
   // something to read without making a network request.
   let audioBlock = try engine.block.create(.audio)
   try engine.block.appendChild(to: page, child: audioBlock)
+  // A new audio block has no end, so give it a length before exporting it.
+  try engine.block.setDuration(audioBlock, duration: 1.0)
   let audioBuffer = engine.editor.createBuffer()
   try engine.editor.setBufferLength(url: audioBuffer, length: 96000)
   try engine.block.setURL(audioBlock, property: "audio/fileURI", value: audioBuffer)
@@ -120,8 +122,7 @@ func exportOverview(engine: Engine) async throws {
   // highlight-exportOverview-video
 
   // highlight-exportOverview-audio
-  let audioOptions = AudioExportOptions(skipEncoding: true)
-  let audioStream = try await engine.block.exportAudio(audioBlock, mimeType: .wav, options: audioOptions)
+  let audioStream = try await engine.block.exportAudio(audioBlock, mimeType: .wav)
   for try await event in audioStream {
     if case let .finished(audio) = event {
       try audio.write(to: exportsDirectory.appendingPathComponent("design.wav"))
