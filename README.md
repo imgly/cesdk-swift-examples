@@ -25,7 +25,7 @@ You can run the SDK in evaluation mode by passing `nil` or an empty string as th
 ### Using a License Key
 
 In order to run the `CESDK-Showcases` application in this repository with a license key, use the instructions below:
-1. Get a free trial license at https://img.ly/forms/free-trial.
+1. Request a license at https://img.ly/forms/contact-sales/.
 2. Copy the license key.
 3. Include the license key in the `secrets/Secrets.swift` file:
 ```
