@@ -110,20 +110,4 @@ func pages(engine: Engine) async throws {
   let pagesByType = try engine.block.find(byType: .page)
   print("Pages found by type:", pagesByType)
   // highlight-pages-findPages
-
-  // highlight-pages-singlePageMode
-  // Enable single page mode and show only the second page
-  try engine.editor.setSettingBool("features/singlePageModeEnabled", value: true)
-  try engine.scene.setCurrentPages([secondPage])
-
-  // Or show more pages. Two pages form a facing pair
-  try engine.scene.setCurrentPages([firstPage, secondPage])
-
-  // Read the shown pages. The array is empty while the mode is disabled
-  let currentPages = try engine.scene.getCurrentPages()
-  print("Current pages:", currentPages)
-
-  // Turn the mode off to show every page again
-  try engine.editor.setSettingBool("features/singlePageModeEnabled", value: false)
-  // highlight-pages-singlePageMode
 }

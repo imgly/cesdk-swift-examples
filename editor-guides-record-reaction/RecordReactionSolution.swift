@@ -75,7 +75,7 @@ private func buildReactionSceneManually(engine: Engine, result: CameraResult) as
   guard
     case let .reaction(video, reaction) = result,
     let baseVideo = video.videos.first,
-    !reaction.isEmpty
+    let firstReactionVideo = reaction.first?.videos.first
   else {
     return
   }
@@ -83,7 +83,7 @@ private func buildReactionSceneManually(engine: Engine, result: CameraResult) as
   try await engine.scene.create(fromVideo: baseVideo.url)
 
   guard let page = try engine.scene.getCurrentPage() else { return }
-  let sceneFrame = reaction.flatMap(\.videos).reduce(baseVideo.rect) { $0.union($1.rect) }
+  let sceneFrame = baseVideo.rect.union(firstReactionVideo.rect)
   setFrame(engine: engine, designBlock: page, rect: sceneFrame)
 
   guard let baseVideoBlock = try engine.block.find(byType: .graphic).first else { return }
