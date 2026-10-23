@@ -27,6 +27,11 @@ func settings(engine: Engine) async throws {
   let modes = try engine.editor.getSettingEnumOptions("doubleClickSelectionMode")
   try engine.editor.setSettingEnum("doubleClickSelectionMode", value: "Direct")
   let selectionMode = try engine.editor.getSettingEnum("doubleClickSelectionMode")
+
+  // Show blocks with motion blur sharp while editing; video exports still blur them
+  try engine.editor.setSettingBool("features/previewMotionBlurEnabled", value: false)
+  // Use the line heights of engine versions before 1.73
+  try engine.editor.setSettingBool("features/fontLineGapEnabled", value: false)
   // highlight-settings-read-write
 
   // highlight-settings-observe

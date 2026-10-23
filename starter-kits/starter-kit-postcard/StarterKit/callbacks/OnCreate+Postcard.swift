@@ -52,6 +52,9 @@ public extension PostcardEditorConfiguration {
     try engine.editor.setSettingEnum("touch/pinchAction", value: "Zoom")
     try engine.editor.setSettingEnum("touch/rotateAction", value: "None")
 
+    // Press and hold an image, then drag it onto another image to exchange the two.
+    try engine.editor.setSettingBool("dragToSwapFills/enabled", value: true)
+
     try ([
       "appearance/adjustments", "appearance/filter", "appearance/effect",
       "appearance/blur", "appearance/shadow",

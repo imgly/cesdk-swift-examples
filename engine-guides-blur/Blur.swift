@@ -35,6 +35,14 @@ func blur(engine: Engine) async throws {
   try engine.block.setFloat(uniformBlur, property: "blur/uniform/intensity", value: 0.8)
   // highlight-blur-uniform
 
+  // highlight-blur-blockMode
+  // Blur the whole block, its stroke included. The blur spreads past the frame.
+  try engine.block.setStrokeEnabled(uniformCell, enabled: true)
+  try engine.block.setStrokeWidth(uniformCell, width: 8)
+  try engine.block.setEnum(uniformBlur, property: "blur/uniform/mode", value: "Block")
+  print(try engine.block.getEnum(uniformBlur, property: "blur/uniform/mode")) // "Block"
+  // highlight-blur-blockMode
+
   // highlight-blur-linear
   let linearBlur = try engine.block.createBlur(.linear)
   try engine.block.setFloat(linearBlur, property: "blur/linear/blurRadius", value: 35)

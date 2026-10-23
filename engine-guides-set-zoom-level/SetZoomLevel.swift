@@ -88,6 +88,15 @@ func setZoomLevel(engine: Engine) async throws {
   try engine.scene.unstable_disableCameraPositionClamping()
   // highlight-setZoomLevel-positionClamping
 
+  // highlight-setZoomLevel-safeArea
+  try engine.editor.setSafeAreaInsets(right: 80)
+
+  let safeAreaInsets = engine.editor.getSafeAreaInsets()
+  print("Safe area insets: \(safeAreaInsets)")
+
+  try engine.editor.setSafeAreaInsets(left: 0, top: 0, right: 0, bottom: 0)
+  // highlight-setZoomLevel-safeArea
+
   // highlight-setZoomLevel-subscribe
   let zoomTask = Task {
     for await _ in engine.scene.onZoomLevelChanged {
