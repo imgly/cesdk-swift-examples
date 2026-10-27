@@ -431,4 +431,15 @@ func fillsGradient(engine: Engine) async throws {
   // highlight-fillsGradient-getLinearPosition
 
   try await engine.captureGuide(page, label: "hero")
+
+  // The focal point step comes after the hero capture, so the recorded
+  // snapshot keeps its content.
+  // highlight-fillsGradient-radialFocalPoint
+  // Move the first color stop up and to the left of the center.
+  try engine.block.setFloat(radialFill, property: "fill/gradient/radial/focalX", value: -0.2)
+  try engine.block.setFloat(radialFill, property: "fill/gradient/radial/focalY", value: -0.2)
+  let focalX = try engine.block.getFloat(radialFill, property: "fill/gradient/radial/focalX")
+  let focalY = try engine.block.getFloat(radialFill, property: "fill/gradient/radial/focalY")
+  print("Radial focal offset:", focalX, focalY)
+  // highlight-fillsGradient-radialFocalPoint
 }

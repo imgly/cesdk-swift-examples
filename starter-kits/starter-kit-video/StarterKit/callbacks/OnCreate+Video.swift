@@ -52,6 +52,9 @@ public extension VideoEditorConfiguration {
     try engine.editor.setSettingBool("touch/dragStartCanSelect", value: false)
     try engine.editor.setSettingEnum("touch/pinchAction", value: "Scale")
 
+    // Press and hold an image, then drag it onto another image to exchange the two.
+    try engine.editor.setSettingBool("dragToSwapFills/enabled", value: true)
+
     try engine.editor.setSettingBool("controlGizmo/showMoveHandles", value: false)
     try engine.editor.setSettingBool("controlGizmo/showRotateHandles", value: false)
     try engine.editor.setSettingBool("controlGizmo/showScaleHandles", value: false)

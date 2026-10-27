@@ -36,6 +36,7 @@ extension VideoEditorConfiguration {
         InspectorBar.Buttons.selectGroup()
         InspectorBar.Buttons.enterGroup()
 
+        InspectorBar.Buttons.separateAudio()
         InspectorBar.Buttons.layer()
         InspectorBar.Buttons.split()
         InspectorBar.Buttons.duplicate()

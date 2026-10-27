@@ -31,7 +31,7 @@ func colorsBasics(engine: Engine) async throws {
   try engine.block.setFill(cmykBlock, fill: cmykFill)
   try engine.block.appendChild(to: page, child: cmykBlock)
 
-  // Set fill color using a CMYK color (values 0.0-1.0, tint controls opacity)
+  // Set fill color using a CMYK color (values 0.0-1.0, tint scales ink)
   let cmykColor = Color.cmyk(c: 0.0, m: 0.8, y: 0.95, k: 0.0, tint: 1.0)
   try engine.block.setColor(cmykFill, property: "fill/color/value", color: cmykColor)
   // highlight-colorsBasics-cmyk
@@ -94,4 +94,49 @@ func colorsBasics(engine: Engine) async throws {
     }
   }
   // highlight-colorsBasics-getColor
+
+  // highlight-colorsBasics-convertColors
+  try await engine.editor.loadCMYKProfile()
+
+  let swatches: [(label: String, color: Color)] = [
+    ("CMYK fill", cmykColor),
+    ("CMYK stroke", cmykStroke),
+    ("Spot MyBrand Blue", .spot(name: "MyBrand Blue", tint: 1.0)),
+  ]
+
+  func logConversions(_ step: String) throws {
+    print(step)
+    for swatch in swatches {
+      let converted = try engine.editor.convertColorToColorSpace(color: swatch.color, colorSpace: .sRGB)
+      print("\(swatch.label): \(converted)")
+    }
+  }
+
+  try logConversions("Bundled default profile")
+  // highlight-colorsBasics-convertColors
+
+  // highlight-colorsBasics-setProfile
+  let profileURL = URL(string: "bundle://ly.img.cesdk/colorprofiles/CGATS001Compat-v2-micro.icc")!
+  try await engine.scene.setCMYKProfile(from: profileURL)
+  let profileInfo = try engine.scene.getCMYKProfileInfo()
+  print("Document profile hash: \(profileInfo.contentHash)")
+  try logConversions("Document profile")
+  // highlight-colorsBasics-setProfile
+
+  // highlight-colorsBasics-intentBPC
+  try engine.scene.setColorRenderingIntent(.perceptual)
+  engine.scene.setBlackPointCompensationEnabled(false)
+  try logConversions("Perceptual intent, black point compensation off")
+  // highlight-colorsBasics-intentBPC
+
+  // highlight-colorsBasics-checkMode
+  let mode = try engine.block.getEnum(scene, property: "scene/colorConversionMode")
+  print("Color conversion mode: \(mode)")
+  // highlight-colorsBasics-checkMode
+
+  // highlight-colorsBasics-legacyMode
+  try engine.block.setEnum(scene, property: "scene/colorConversionMode", value: "Legacy")
+  try logConversions("Legacy mode")
+  try engine.block.setEnum(scene, property: "scene/colorConversionMode", value: "Managed")
+  // highlight-colorsBasics-legacyMode
 }

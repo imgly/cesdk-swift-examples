@@ -13,7 +13,7 @@ func scriptStyle(engine: Engine) async throws {
   try engine.block.replaceText(text, text: content)
 
   // highlight-superscript
-  // Raise the cents of the price above the baseline.
+  // Raise the cents of the price above the rest of the line.
   // Superscript text is scaled down and raised automatically.
   let cents = content.index(content.startIndex, offsetBy: 3) ..< content.index(content.startIndex, offsetBy: 5)
   try engine.block.setTextScriptStyle(text, scriptStyle: .superscript, in: cents)
@@ -24,7 +24,7 @@ func scriptStyle(engine: Engine) async throws {
   // highlight-superscript
 
   // highlight-subscript
-  // Lower the "2" of the water formula below the baseline
+  // Lower the "2" of the water formula below the rest of the line
   let waterDigit = content.index(content.startIndex, offsetBy: 7) ..< content.index(content.startIndex, offsetBy: 8)
   try engine.block.setTextScriptStyle(text, scriptStyle: .subscript, in: waterDigit)
   // highlight-subscript
@@ -56,7 +56,7 @@ func scriptStyle(engine: Engine) async throws {
   // highlight-adjust
 
   // highlight-reset
-  // Reset a range back to the normal baseline
+  // Reset a range back to regular text
   try engine.block.setTextScriptStyle(text, scriptStyle: .normal, in: exponent)
   // highlight-reset
 

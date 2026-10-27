@@ -155,6 +155,19 @@ func createShapes(engine: Engine) async throws {
   print("Star properties:", starProperties)
   // highlight-createShapes-discoverProperties
 
+  // highlight-createShapes-starRadii
+  // Radii are fractions of half the frame size. Roundness goes from 0 to 1.
+  try engine.block.setFloat(starShape, property: "shape/star/outerRadius", value: 0.9)
+  try engine.block.setFloat(starShape, property: "shape/star/innerRadius", value: 0.45)
+  try engine.block.setFloat(starShape, property: "shape/star/outerRoundness", value: 0.3)
+  try engine.block.setFloat(starShape, property: "shape/star/innerRoundness", value: 0.2)
+  // Clockwise, in degrees. At 30 degrees a six-point star turns by half a tip.
+  try engine.block.setFloat(starShape, property: "shape/star/rotation", value: 30)
+
+  // innerDiameter reports the ratio of the inner to the outer radius
+  print(try engine.block.getFloat(starShape, property: "shape/star/innerDiameter")) // 0.5
+  // highlight-createShapes-starRadii
+
   // highlight-createShapes-cornerRadius
   try engine.block.setFloat(rectShape, property: "shape/rect/cornerRadiusTL", value: 20)
   try engine.block.setFloat(rectShape, property: "shape/rect/cornerRadiusTR", value: 20)

@@ -65,4 +65,40 @@ func stroke(engine: Engine) async throws {
   // highlight-stroke-corner
 
   try await engine.captureGuide(page, label: "hero")
+
+  // Demo scaffolding: a stroked star with sharp corners. It comes after the
+  // hero capture, so the recorded snapshots keep their content.
+  let star = try engine.block.create(.graphic)
+  try engine.block.setShape(star, shape: engine.block.createShape(.star))
+  try engine.block.setWidth(star, value: 150)
+  try engine.block.setHeight(star, value: 150)
+  try engine.block.setPositionX(star, value: 630)
+  try engine.block.setPositionY(star, value: 20)
+  try engine.block.setFillEnabled(star, enabled: false)
+  try engine.block.setStrokeEnabled(star, enabled: true)
+  try engine.block.setStrokeWidth(star, width: 10)
+  try engine.block.appendChild(to: page, child: star)
+
+  // highlight-stroke-miterLimit
+  // Bevel each corner whose miter is longer than 1.5 times the stroke width.
+  try engine.block.setStrokeCornerGeometry(star, cornerGeometry: .miter)
+  try engine.block.setFloat(star, property: "stroke/miterLimit", value: 1.5)
+  let miterLimit = try engine.block.getFloat(star, property: "stroke/miterLimit")
+  print("Stroke miter limit: \(miterLimit)")
+  // highlight-stroke-miterLimit
+
+  // highlight-stroke-fill
+  let strokeGradient = try engine.block.createFill(.linearGradient)
+  try engine.block.setGradientColorStops(
+    strokeGradient,
+    property: "fill/gradient/colors",
+    colors: [
+      GradientColorStop(color: .rgba(r: 0.0, g: 0.0, b: 1.0), stop: 0),
+      GradientColorStop(color: .rgba(r: 0.9, g: 0.2, b: 0.5), stop: 1),
+    ],
+  )
+  try engine.block.setStrokeFill(star, fill: strokeGradient)
+  let strokeFill = try engine.block.getStrokeFill(star)
+  print("Stroke uses the gradient: \(strokeFill == strokeGradient)")
+  // highlight-stroke-fill
 }

@@ -147,6 +147,11 @@ func conceptsBlocks(engine: Engine) async throws {
   try engine.block.setEnum(graphic, property: "blend/mode", value: "Multiply")
   let blendMode = try engine.block.getEnum(graphic, property: "blend/mode")
   print("Graphic blend mode:", blendMode)
+
+  // Vec2 properties hold two coordinates, such as the position of a block
+  try engine.block.setVec2(graphic, property: "position", value: SIMD2(200, 100))
+  let position = try engine.block.getVec2(graphic, property: "position")
+  print("Graphic position:", position.x, position.y)
   // highlight-property-accessors
 
   // highlight-uuid-identity
@@ -209,6 +214,11 @@ func conceptsBlocks(engine: Engine) async throws {
   // Query block state - indicates loading status
   let graphicState = try engine.block.getState(graphic)
   print("Graphic state:", graphicState)
+
+  // An error state carries the engine error behind it when the engine knows it
+  if case let .error(_, engineError?) = graphicState {
+    print(engineError.code, engineError.message)
+  }
 
   // Subscribe to state changes (useful for loading indicators)
   let stateTask = Task {

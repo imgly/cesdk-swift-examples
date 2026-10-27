@@ -202,4 +202,16 @@ func textProperties(engine: Engine) async throws {
   let fontStyles = try engine.block.getTextFontStyles(text)
   print("Font styles: \(fontStyles)")
   // highlight-getTextFontStyles
+
+  // highlight-setTextBaselineShift
+  // Raise the last character, the exclamation mark, 20 design units
+  let content = try engine.block.getString(text, property: "text/text")
+  let lastCharacter = content.index(before: content.endIndex) ..< content.endIndex
+  try engine.block.setTextBaselineShift(text, baselineShift: 20, in: lastCharacter)
+  // highlight-setTextBaselineShift
+
+  // highlight-getTextBaselineShifts
+  let baselineShifts = try engine.block.getTextBaselineShifts(text)
+  print("Baseline shifts: \(baselineShifts)") // [0.0, 20.0]
+  // highlight-getTextBaselineShifts
 }

@@ -16,6 +16,15 @@ func saveDesigns(engine: Engine) async throws {
   let sceneString = try await engine.scene.saveToString()
   // highlight-saveDesigns-saveToString
 
+  // highlight-saveDesigns-saveWithDataURIs
+  // The default schemes have no "data", so a data: URI fails the save.
+  // Add "data" to keep data: URIs in the string.
+  let sceneWithDataURIs = try await engine.scene.saveToString(
+    allowedResourceSchemes: ["blob", "bundle", "data", "file", "http", "https"],
+  )
+  // highlight-saveDesigns-saveWithDataURIs
+  _ = sceneWithDataURIs
+
   // highlight-saveDesigns-saveToArchive
   let archiveBlob = try await engine.scene.saveToArchive()
   // highlight-saveDesigns-saveToArchive

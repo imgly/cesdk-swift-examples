@@ -35,6 +35,17 @@ func modifyingScenes(engine: Engine) async throws {
   print("Layout: \(layout)")
   // highlight-scene-properties
 
+  // highlight-frame-rate-and-markers
+  // The preview motion blur and video exports without a frame rate use this rate
+  try engine.block.setFloat(scene, property: "scene/frameRate", value: 25)
+
+  // Markers name points or spans on the scene timeline
+  try engine.scene.addMarker(name: "intro", time: 0, duration: 2.5)
+  try engine.scene.addMarker(name: "beat", time: 4)
+  try engine.scene.removeMarker(at: 1)
+  print("Markers:", try engine.scene.getMarkers()) // [SceneMarker(name: "intro", time: 0.0, duration: 2.5)]
+  // highlight-frame-rate-and-markers
+
   // highlight-page-navigation
   let pages = try engine.scene.getPages()
   print("Number of pages: \(pages.count)")

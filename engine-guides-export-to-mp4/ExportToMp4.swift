@@ -99,6 +99,17 @@ func exportToMp4(engine: Engine) async throws {
   }
   // highlight-exportToMp4-quality
 
+  // highlight-exportToMp4-cover
+  // Override current playback with a cover from the exported video start.
+  let coverOptions = VideoExportOptions(coverTimeOffset: 0)
+  let coverStream = try await engine.block.exportVideo(page, mimeType: .mp4, options: coverOptions)
+  for try await event in coverStream {
+    if case let .finished(video: blob) = event {
+      try blob.write(to: exportsDirectory.appendingPathComponent("video-cover.mp4"))
+    }
+  }
+  // highlight-exportToMp4-cover
+
   // highlight-exportToMp4-partial
   let partialOptions = VideoExportOptions(
     timeOffset: 1,
