@@ -43,7 +43,7 @@ func compoundShapes(engine: Engine) async throws {
   try engine.block.setFloat(diamond, property: "shape/anchor/y", value: 20)
   try engine.block.setFloat(diamond, property: "shape/position/x", value: 50)
   try engine.block.setFloat(diamond, property: "shape/position/y", value: 50)
-  try engine.block.setFloat(diamond, property: "shape/rotation", value: 45)
+  try engine.block.setFloat(diamond, property: "shape/rotation", value: .pi / 4)
   // highlight-compoundShapes-placeSubshape
 
   // highlight-compoundShapes-combineMode

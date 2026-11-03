@@ -46,7 +46,7 @@ func wipeEffects(engine: Engine) async throws -> WipeEffectsGuideResult {
   // highlight-wipeEffects-linear
   // Hide the left half of the block with a soft edge
   let linearWipe = try engine.block.createEffect(.linearWipe)
-  try engine.block.setFloat(linearWipe, property: "effect/linear_wipe/angle", value: 90)
+  try engine.block.setFloat(linearWipe, property: "effect/linear_wipe/angle", value: .pi / 2)
   try engine.block.setFloat(linearWipe, property: "effect/linear_wipe/completion", value: 0.5)
   try engine.block.setFloat(linearWipe, property: "effect/linear_wipe/feather", value: 40)
   try engine.block.appendEffect(linearBlock, effectID: linearWipe)
@@ -68,7 +68,7 @@ func wipeEffects(engine: Engine) async throws -> WipeEffectsGuideResult {
   // Diagonal stripes, 60 design units wide, each half hidden
   let blinds = try engine.block.createEffect(.venetianBlinds)
   try engine.block.setFloat(blinds, property: "effect/venetian_blinds/completion", value: 0.5)
-  try engine.block.setFloat(blinds, property: "effect/venetian_blinds/direction", value: 45)
+  try engine.block.setFloat(blinds, property: "effect/venetian_blinds/direction", value: .pi / 4)
   try engine.block.setFloat(blinds, property: "effect/venetian_blinds/width", value: 60)
   try engine.block.setFloat(blinds, property: "effect/venetian_blinds/feather", value: 2)
   try engine.block.appendEffect(blindsBlock, effectID: blinds)
@@ -78,7 +78,7 @@ func wipeEffects(engine: Engine) async throws -> WipeEffectsGuideResult {
   // Reveal the block from the right over its 2 second duration
   try engine.block.setDuration(revealBlock, duration: 2)
   let reveal = try engine.block.createEffect(.linearWipe)
-  try engine.block.setFloat(reveal, property: "effect/linear_wipe/angle", value: 90)
+  try engine.block.setFloat(reveal, property: "effect/linear_wipe/angle", value: .pi / 2)
   try engine.block.appendEffect(revealBlock, effectID: reveal)
   try engine.block.setKeyframes(reveal, property: "effect/linear_wipe/completion", keyframes: [
     Keyframe(time: 0, value: .float(1), easing: .preset(.easeOut)),

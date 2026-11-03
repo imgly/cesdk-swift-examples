@@ -161,8 +161,8 @@ func createShapes(engine: Engine) async throws {
   try engine.block.setFloat(starShape, property: "shape/star/innerRadius", value: 0.45)
   try engine.block.setFloat(starShape, property: "shape/star/outerRoundness", value: 0.3)
   try engine.block.setFloat(starShape, property: "shape/star/innerRoundness", value: 0.2)
-  // Clockwise, in degrees. At 30 degrees a six-point star turns by half a tip.
-  try engine.block.setFloat(starShape, property: "shape/star/rotation", value: 30)
+  // Clockwise, in radians. At .pi / 6 (30°) a six-point star turns by half a tip.
+  try engine.block.setFloat(starShape, property: "shape/star/rotation", value: .pi / 6)
 
   // innerDiameter reports the ratio of the inner to the outer radius
   print(try engine.block.getFloat(starShape, property: "shape/star/innerDiameter")) // 0.5

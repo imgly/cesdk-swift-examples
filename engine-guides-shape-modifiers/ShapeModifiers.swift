@@ -79,7 +79,7 @@ func shapeModifiers(engine: Engine) async throws {
   // Each copy turns 30 degrees further about the anchor and does not move
   try engine.block.setFloat(repeater, property: "modifier/repeater/anchorX", value: 20)
   try engine.block.setFloat(repeater, property: "modifier/repeater/anchorY", value: 220)
-  try engine.block.setFloat(repeater, property: "modifier/repeater/rotation", value: 30)
+  try engine.block.setFloat(repeater, property: "modifier/repeater/rotation", value: .pi / 6)
   try engine.block.setFloat(repeater, property: "modifier/repeater/positionX", value: 0)
   try engine.block.setFloat(repeater, property: "modifier/repeater/positionY", value: 0)
   // The copies fade from full opacity towards 10%
@@ -128,7 +128,7 @@ func shapeModifiers(engine: Engine) async throws {
 
   // Turn the path 45 degrees at the center of the block, less towards the edge
   let twist = try engine.block.createModifier(.twist)
-  try engine.block.setFloat(twist, property: "modifier/twist/angle", value: 45)
+  try engine.block.setFloat(twist, property: "modifier/twist/angle", value: .pi / 4)
   try engine.block.setFloat(twist, property: "modifier/twist/centerX", value: 180)
   try engine.block.setFloat(twist, property: "modifier/twist/centerY", value: 180)
   try engine.block.appendModifier(flowerShape, modifierID: twist)

@@ -63,7 +63,7 @@ func anchorSkewAutoOrient(engine: Engine) async throws -> AnchorSkewAutoOrientGu
 
   // highlight-anchorSkewAutoOrient-skew
   let sign = try createRect(x: 1150, y: 200, width: 240, height: 160, color: .rgba(r: 0.95, g: 0.7, b: 0.1, a: 1))
-  try engine.block.setFloat(sign, property: "transform/skew", value: 20)
+  try engine.block.setFloat(sign, property: "transform/skew", value: .pi / 9) // 20 degrees
   try engine.block.setFloat(sign, property: "transform/skewAxis", value: 0)
   // highlight-anchorSkewAutoOrient-skew
 
@@ -73,9 +73,9 @@ func anchorSkewAutoOrient(engine: Engine) async throws -> AnchorSkewAutoOrientGu
   try engine.block.setFloat(blade, property: "transform/anchor/x", value: 20)
   try engine.block.setFloat(blade, property: "transform/anchor/y", value: 300)
   try engine.block.setKeyframes(blade, property: "transform/skew", keyframes: [
-    Keyframe(time: 0, value: .float(-20)),
-    Keyframe(time: 0.5, value: .float(20)),
-    Keyframe(time: 1, value: .float(-20)),
+    Keyframe(time: 0, value: .float(-.pi / 9)),
+    Keyframe(time: 0.5, value: .float(.pi / 9)),
+    Keyframe(time: 1, value: .float(-.pi / 9)),
   ])
   // highlight-anchorSkewAutoOrient-animateSkew
 

@@ -172,7 +172,7 @@ func keyframes(engine: Engine) async throws {
   try engine.block.setDuration(bar, duration: 5)
   try engine.block.setFloat(bar, property: "transform/anchor/x", value: 160)
   try engine.block.setFloat(bar, property: "transform/anchor/y", value: 40)
-  try engine.block.setFloat(bar, property: "transform/skew", value: 20)
+  try engine.block.setFloat(bar, property: "transform/skew", value: .pi / 9)
   try engine.block.setKeyframes(bar, property: "rotation", keyframes: [
     Keyframe(time: 0, value: .float(0)),
     Keyframe(time: 1, value: .float(.pi)),
