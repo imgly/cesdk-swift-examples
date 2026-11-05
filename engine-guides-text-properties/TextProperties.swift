@@ -78,9 +78,9 @@ func textProperties(engine: Engine) async throws {
   // highlight-backgroundColor-enabled
 
   // highlight-backgroundColor-get-set
-  let currentBackgroundColor = try engine.block.getBackgroundColor(text)
+  let currentBackgroundColor: Color = try engine.block.getColor(text, property: "backgroundColor/color")
   print("Current background color: \(currentBackgroundColor)")
-  try engine.block.setBackgroundColor(text, r: 0.0, g: 0.0, b: 1.0, a: 1.0)
+  try engine.block.setColor(text, property: "backgroundColor/color", color: .rgba(r: 0.0, g: 0.0, b: 1.0, a: 1.0))
   // highlight-backgroundColor-get-set
 
   // highlight-backgroundColor-padding

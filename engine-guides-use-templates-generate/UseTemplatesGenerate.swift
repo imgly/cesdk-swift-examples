@@ -64,8 +64,8 @@ func useTemplatesGenerate(engine: Engine) async throws {
   let templateString = try await engine.scene.saveToString()
 
   // highlight-generate-load
-  // Load a template as the active scene. Pass `overrideEditorConfig: true` to
-  // import the template's registered variables (and settings) into the engine.
+  // Load a template as the active scene. The load restores the template's
+  // variables. Pass `overrideEditorConfig: true` to also import its settings.
   // Use a serialized string for stored data, a URL for a remote or bundled
   // `.scene` file with `engine.scene.load(from: URL)`, or
   // `engine.scene.load(from:)` for an archive that bundles its assets.
@@ -139,8 +139,8 @@ func useTemplatesGenerate(engine: Engine) async throws {
   ]
 
   for record in records {
-    // A reload with `overrideEditorConfig: true` re-imports the template's
-    // own variables, resetting them to their serialized defaults each record.
+    // Each reload replaces the variables with the template's saved values,
+    // so no value of the previous record carries over.
     try await engine.scene.load(from: templateString, overrideEditorConfig: true)
     for (key, value) in record {
       try engine.variable.set(key: key, value: value)

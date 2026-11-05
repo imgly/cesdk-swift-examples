@@ -132,6 +132,7 @@
 		4181F6ED803F9D5BD075248F /* 3_2.png in Resources */ = {isa = PBXBuildFile; fileRef = B43B75829A6D71462198F1CE /* 3_2.png */; };
 		421625231AC503A04E501C6B /* OnExport+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420315ED23BC54E95ED828B6 /* OnExport+Video.swift */; };
 		422F87728D446929ED54D295 /* DesignEditorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CE6762BFC8F9AACC6D8C29 /* DesignEditorConfiguration.swift */; };
+		4286822274A1EA181D8A7406 /* ExportToWebm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */; };
 		429A149305E31953D67B4508 /* MultiPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB52C1827F64880E91377A /* MultiPage.swift */; };
 		43E47866A48DC5DACC16FAE2 /* SizeLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB337CE478164BA4B2287810 /* SizeLimits.swift */; };
 		4569C16A47B4C380221AB9A9 /* milli-surf-school.scene in Resources */ = {isa = PBXBuildFile; fileRef = 02B5DE7A2AB450E182FDEB89 /* milli-surf-school.scene */; };
@@ -346,6 +347,7 @@
 		BD9B691F70AF5398106A4DB1 /* UnsplashAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B0FA3ABED0662A275C5A7 /* UnsplashAssetSource.swift */; };
 		BDC1E05BB0FDAEBBB23E5174 /* IMGLYPluginBackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = 5DC00A6470BBB0920ACCDBC7 /* IMGLYPluginBackgroundRemoval */; };
 		BDE67EBD7382944FA31BD523 /* template_07_business_card.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D11022620E1D80771DB7294 /* template_07_business_card.png */; };
+		BF41ACC0BB84600F5604C0BD /* ValueSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */; };
 		BF462AB879C47B00AB44824F /* Collage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B8E7502A636FB8590A4395 /* Collage.swift */; };
 		BFBD735EFD328D445AA2A376 /* QuickActionsEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E14161E45B897EE87BA2E /* QuickActionsEditorSolution.swift */; };
 		C0681C848C01249A86CB7087 /* monthly-review.scene in Resources */ = {isa = PBXBuildFile; fileRef = E0F7EF69D819E13F1665223B /* monthly-review.scene */; };
@@ -604,6 +606,7 @@
 		3A2FA4A5E4B805E933D81834 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAssetSource.swift; sourceTree = "<group>"; };
 		3C197647F343E1BABF5869A2 /* CanvasMenu+Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasMenu+Photo.swift"; sourceTree = "<group>"; };
+		3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSets.swift; sourceTree = "<group>"; };
 		3D30BCF86948CDDE9CD4A179 /* SpotColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotColors.swift; sourceTree = "<group>"; };
 		3D77999E522561716BC615F1 /* instagram_story_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram_story_dark.png; sourceTree = "<group>"; };
 		3D915444F86B38E0C98D71FA /* 1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_1.png; sourceTree = "<group>"; };
@@ -620,6 +623,7 @@
 		4202796D7E1A40E18DB9AAC3 /* ContentModerationEditorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModerationEditorConfiguration.swift; sourceTree = "<group>"; };
 		420315ED23BC54E95ED828B6 /* OnExport+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnExport+Video.swift"; sourceTree = "<group>"; };
 		433978547116CE7AD89D9AA0 /* PhotoEditorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorConfiguration.swift; sourceTree = "<group>"; };
+		455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportToWebm.swift; sourceTree = "<group>"; };
 		46B4DECAD57EC2BB5F9BB7F3 /* AddToTemplateLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToTemplateLibrary.swift; sourceTree = "<group>"; };
 		46EB888E92CB8AFED9EB5910 /* apparel-ui-b-empty_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apparel-ui-b-empty_dark.png"; sourceTree = "<group>"; };
 		492CE17F8FC3930A1BEACD14 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
@@ -2280,6 +2284,7 @@
 				89C1788D6C419C0B5B792E34 /* engine-guides-export-to-pdf */,
 				8901F54EBFA5D45E8F2B09F0 /* engine-guides-export-to-png */,
 				CE24401B8BE9A5F49B15AF6B /* engine-guides-export-to-raw-data */,
+				91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */,
 				5ADD05D52F4AB91B98818F3A /* engine-guides-export-to-webp */,
 				DA2B3722D7749B04CE3A6864 /* engine-guides-export-with-color-mask */,
 				689FD285B6EE9CB80821ED4D /* engine-guides-fills-color */,
@@ -2390,6 +2395,7 @@
 				8B2B38B452C1B636BE1C2C74 /* engine-guides-using-camera */,
 				7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */,
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
+				CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */,
 				62C132EDC7939FE6BCB5D8BC /* engine-guides-variable-bindings */,
 				1013EE656C2D6DC8EBFCC093 /* engine-guides-video-transform */,
 				E03A096F84AD508A6467E806 /* engine-guides-wipe-effects */,
@@ -2774,6 +2780,14 @@
 				0FCC6A2C49D76EEF68E766CA /* EditingWorkflow.swift */,
 			);
 			path = "engine-guides-editing-workflow";
+			sourceTree = "<group>";
+		};
+		91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */ = {
+			isa = PBXGroup;
+			children = (
+				455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */,
+			);
+			path = "engine-guides-export-to-webm";
 			sourceTree = "<group>";
 		};
 		92F5951BF7FE20833C7F3255 /* engine-guides-conversion-to-pdf */ = {
@@ -3335,6 +3349,14 @@
 			path = "engine-guides-design-generation";
 			sourceTree = "<group>";
 		};
+		CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */ = {
+			isa = PBXGroup;
+			children = (
+				3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */,
+			);
+			path = "engine-guides-value-sets";
+			sourceTree = "<group>";
+		};
 		D0109F15890A3A74269FC9FF /* engine-guides-annotation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3857,7 +3879,7 @@
 			path = "engine-guides-create-video-control";
 			sourceTree = "<group>";
 		};
-		"TEMP_E59E8FDD-8D41-42F1-8A4A-CD3D4538309E" /* . */ = {
+		"TEMP_8EE2BDA2-BD46-4164-B983-3ECFEB9C1B93" /* . */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -3952,6 +3974,7 @@
 				CC9B2C94B8F7EBFA65CE085E /* engine-guides-colors-apply */,
 				5C40A14EC674D23898ECB656 /* engine-guides-colors-replace */,
 				9A64517917C4626F4C1F41E3 /* engine-guides-blur */,
+				CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */,
 				3D052C6A5649A8EB2600F243 /* engine-guides-create-audio-loop */,
 				44E61DF3A78C477E709A3171 /* engine-guides-create-video-trim */,
 				0E4D3C3DF856C97124CAD6AF /* engine-guides-text-effects */,
@@ -4077,6 +4100,7 @@
 				689FD285B6EE9CB80821ED4D /* engine-guides-fills-color */,
 				766FFB3488CB50F18D86EE90 /* engine-guides-text-subscript-superscript */,
 				D52C829C6F631AAFAD3F8F98 /* engine-guides-color-effects */,
+				91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */,
 				33DDA2947B64B00D9E2420BC /* engine-guides-remote-asset */,
 				45C2552F9D1549BEA36A1722 /* engine-guides-import-media-from-remote-source-getty-images */,
 				AB82E7B1A7CF734920106448 /* engine-guides-text-designs */,
@@ -4408,6 +4432,7 @@
 				148594C77C18C41B5FE7EA1D /* ExportOverview.swift in Sources */,
 				31B5B0CF6BE26C926C45150B /* ExportToMp4.swift in Sources */,
 				D2E21F95D4BAE50EB25F3659 /* ExportToPdf.swift in Sources */,
+				4286822274A1EA181D8A7406 /* ExportToWebm.swift in Sources */,
 				9612527A8A46B77BF97FC719 /* ExportWithColorMask.swift in Sources */,
 				33457AEBFEF4C626A6DC78CE /* Fade.swift in Sources */,
 				7C328687C55ED2DED514B46F /* FillsColor.swift in Sources */,
@@ -4539,6 +4564,7 @@
 				CB9780A7731D9678AFF54E05 /* UsingCamera.swift in Sources */,
 				F65D286BE1E8D1EC6B5CE313 /* UsingEffects.swift in Sources */,
 				F7739CC80F6FC24DCC8211C4 /* UsingFills.swift in Sources */,
+				BF41ACC0BB84600F5604C0BD /* ValueSets.swift in Sources */,
 				DAFF0448AD81FF5189B5FBC6 /* VariableBindings.swift in Sources */,
 				32AB22ECF9F6266712DEB222 /* VideoTransform.swift in Sources */,
 				69101785AFAC348F6A4D5E33 /* WipeEffects.swift in Sources */,
@@ -4805,7 +4831,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.85.2;
+				MARKETING_VERSION = 1.86.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4814,7 +4840,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 6.3.1;
+				SWIFT_VERSION = 6.3.3;
 			};
 			name = Release;
 		};
@@ -4896,7 +4922,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.85.2;
+				MARKETING_VERSION = 1.86.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4906,7 +4932,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.3.1;
+				SWIFT_VERSION = 6.3.3;
 			};
 			name = Debug;
 		};
@@ -4971,7 +4997,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAIImageGeneration-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.2;
+				version = "1.86.0-rc.0";
 			};
 		};
 		0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */ = {
@@ -4979,7 +5005,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.2;
+				version = "1.86.0-rc.0";
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -4987,7 +5013,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.2;
+				version = "1.86.0-rc.0";
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -5003,7 +5029,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAutoCaptions-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.2;
+				version = "1.86.0-rc.0";
 			};
 		};
 		4824595CEC4E9D761E3F4D64 /* XCRemoteSwiftPackageReference "IMGLYPluginBackgroundRemoval-swift" */ = {
@@ -5011,7 +5037,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginBackgroundRemoval-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.2;
+				version = "1.86.0-rc.0";
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

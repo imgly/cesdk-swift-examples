@@ -86,6 +86,11 @@ func createThumbnail(engine: Engine) async throws {
   print("WebP thumbnail: \(webpThumbnail.count) bytes")
   // highlight-createThumbnail-webp
 
+  // highlight-createThumbnail-preview
+  let preview = try await engine.block.exportPreview(page)
+  print("Preview: \(preview.count) bytes")
+  // highlight-createThumbnail-preview
+
   // highlight-createThumbnail-multiple
   let targetSizes: [(width: Float, height: Float)] = [(150, 150), (400, 300), (800, 600)]
   var responsiveSet: [Data] = []

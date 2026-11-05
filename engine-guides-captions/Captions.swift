@@ -110,13 +110,13 @@ func addCaptions(engine: Engine) async throws {
 
   // highlight-addCaptions-styleCaptions
   // Style properties also sync only with caption blocks under the same caption
-  // track. Set text color, drop shadow, and background with dedicated styling
-  // setters, then use property-keyed setters for automatic font sizing.
+  // track. Set text color and drop shadow with dedicated styling setters, then
+  // use property-keyed setters for the background color and automatic font sizing.
   try engine.block.setTextColor(caption1, color: Color.rgba(r: 0.9, g: 0.9, b: 0.0, a: 1.0))
   try engine.block.setDropShadowEnabled(caption1, enabled: true)
   try engine.block.setDropShadowColor(caption1, color: Color.rgba(r: 0.0, g: 0.0, b: 0.0, a: 0.8))
   try engine.block.setBackgroundColorEnabled(caption1, enabled: true)
-  try engine.block.setBackgroundColor(caption1, r: 0.0, g: 0.0, b: 0.0, a: 0.7)
+  try engine.block.setColor(caption1, property: "backgroundColor/color", color: .rgba(r: 0.0, g: 0.0, b: 0.0, a: 0.7))
   try engine.block.setBool(caption1, property: "caption/automaticFontSizeEnabled", value: true)
   try engine.block.setFloat(caption1, property: "caption/minAutomaticFontSize", value: 24)
   try engine.block.setFloat(caption1, property: "caption/maxAutomaticFontSize", value: 72)
