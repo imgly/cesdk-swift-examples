@@ -64,7 +64,7 @@ func srgbColors(engine: Engine) async throws {
 
   // highlight-srgbColors-convertToSrgb
   // Converting CMYK reads the document CMYK profile, which is a resource. Load it once first.
-  try await engine.editor.loadCMYKProfile()
+  try await engine.editor.loadColorProfiles()
   let cmykOrange = Color.cmyk(c: 0.0, m: 0.5, y: 1.0, k: 0.0, tint: 1.0)
   let convertedToSrgb = try engine.editor.convertColorToColorSpace(color: cmykOrange, colorSpace: .sRGB)
   print("CMYK converted to sRGB: \(convertedToSrgb)")

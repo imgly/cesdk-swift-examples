@@ -54,6 +54,7 @@ enum AppetizeGuides {
       "uiEvents": { AnyView(UiEventsEditorSolution()) },
       "userUpload": { AnyView(UserUploadSolution()) },
       "variableFonts": { AnyView(VariableFontsSolution()) },
+      "voiceIsolationPlugin": { AnyView(VoiceIsolationPluginSolution()) },
     ]
     if #available(iOS 16.1, *) {
       destinations["changeUIFont"] = { AnyView(ChangeUIFontSolution()) }

@@ -32,6 +32,8 @@ func settings(engine: Engine) async throws {
   try engine.editor.setSettingBool("features/previewMotionBlurEnabled", value: false)
   // Use the line heights of engine versions before 1.73
   try engine.editor.setSettingBool("features/fontLineGapEnabled", value: false)
+  // Let clicks, taps, hover and marquee selection pass over blocks with a locked transform
+  try engine.editor.setSettingBool("features/transformLockedClickThroughEnabled", value: true)
   // highlight-settings-read-write
 
   // highlight-settings-observe

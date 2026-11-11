@@ -121,6 +121,7 @@
 		3C26E60444D8B75FF3AAA833 /* CompositionGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69695E316F92D894DB4BD4A4 /* CompositionGroups.swift */; };
 		3C624EFE4116821F1B22D39F /* Showcases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF7BA0A9E1487EFE6C5668 /* Showcases.swift */; };
 		3CAE3A214852C38B0A47E602 /* DataMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FEB391B6A8B7D01526B6F9 /* DataMerge.swift */; };
+		3DB5C7FFA26EF8EF07C5479E /* IMGLYPluginVoiceIsolation in Frameworks */ = {isa = PBXBuildFile; productRef = AA91CE446D128EAF3AB6112B /* IMGLYPluginVoiceIsolation */; };
 		3DCAB19937AD5A3E5766D1E6 /* ImportDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF2F422306D87BAE25B40BD /* ImportDesign.swift */; };
 		3E307D984AF8F874002D0AD1 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = C424D4D7375D274C7B285B47 /* Stroke.swift */; };
 		3E95BB3D9BF048787B4D356E /* ApplyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CA65C33D9B35ABBA242C /* ApplyColors.swift */; };
@@ -132,6 +133,7 @@
 		4181F6ED803F9D5BD075248F /* 3_2.png in Resources */ = {isa = PBXBuildFile; fileRef = B43B75829A6D71462198F1CE /* 3_2.png */; };
 		421625231AC503A04E501C6B /* OnExport+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420315ED23BC54E95ED828B6 /* OnExport+Video.swift */; };
 		422F87728D446929ED54D295 /* DesignEditorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CE6762BFC8F9AACC6D8C29 /* DesignEditorConfiguration.swift */; };
+		4286822274A1EA181D8A7406 /* ExportToWebm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */; };
 		429A149305E31953D67B4508 /* MultiPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB52C1827F64880E91377A /* MultiPage.swift */; };
 		43E47866A48DC5DACC16FAE2 /* SizeLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB337CE478164BA4B2287810 /* SizeLimits.swift */; };
 		4569C16A47B4C380221AB9A9 /* milli-surf-school.scene in Resources */ = {isa = PBXBuildFile; fileRef = 02B5DE7A2AB450E182FDEB89 /* milli-surf-school.scene */; };
@@ -160,6 +162,7 @@
 		53BB6026A2C86BF45517F399 /* NotificationsAndDialogsSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D174A6162729DBF37B9123 /* NotificationsAndDialogsSolution.swift */; };
 		53DDE3A7CB2DD1389F4E4E3D /* CallbacksEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2A50B7E2B10DCEBDE1E01E /* CallbacksEditorSolution.swift */; };
 		54922D959F249A1F60F149EF /* x_profile_picture_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 59F67F1C18207D3EC3E464F6 /* x_profile_picture_dark.png */; };
+		54C6D77DE2E98B1A03E8E354 /* VoiceIsolationPluginSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5748E414B5E0277E620D10 /* VoiceIsolationPluginSolution.swift */; };
 		5514EFE88A4576E72738CD39 /* ForceCropSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CDEB77FC6CE0556DD5021 /* ForceCropSolution.swift */; };
 		552C771C5AB6CFCFAA561EF1 /* ForceTrimSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9449645AA451EE2BBDAB63 /* ForceTrimSolution.swift */; };
 		56B9D00AE240BDB689FC6723 /* AssetVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD714D4A62973CDCE94D12B /* AssetVersioning.swift */; };
@@ -346,6 +349,7 @@
 		BD9B691F70AF5398106A4DB1 /* UnsplashAssetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B0FA3ABED0662A275C5A7 /* UnsplashAssetSource.swift */; };
 		BDC1E05BB0FDAEBBB23E5174 /* IMGLYPluginBackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = 5DC00A6470BBB0920ACCDBC7 /* IMGLYPluginBackgroundRemoval */; };
 		BDE67EBD7382944FA31BD523 /* template_07_business_card.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D11022620E1D80771DB7294 /* template_07_business_card.png */; };
+		BF41ACC0BB84600F5604C0BD /* ValueSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */; };
 		BF462AB879C47B00AB44824F /* Collage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B8E7502A636FB8590A4395 /* Collage.swift */; };
 		BFBD735EFD328D445AA2A376 /* QuickActionsEditorSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E14161E45B897EE87BA2E /* QuickActionsEditorSolution.swift */; };
 		C0681C848C01249A86CB7087 /* monthly-review.scene in Resources */ = {isa = PBXBuildFile; fileRef = E0F7EF69D819E13F1665223B /* monthly-review.scene */; };
@@ -604,6 +608,7 @@
 		3A2FA4A5E4B805E933D81834 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		3AB6D8E89F4476A8BBCB7BDC /* RemoteAssetSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAssetSource.swift; sourceTree = "<group>"; };
 		3C197647F343E1BABF5869A2 /* CanvasMenu+Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasMenu+Photo.swift"; sourceTree = "<group>"; };
+		3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSets.swift; sourceTree = "<group>"; };
 		3D30BCF86948CDDE9CD4A179 /* SpotColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotColors.swift; sourceTree = "<group>"; };
 		3D77999E522561716BC615F1 /* instagram_story_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram_story_dark.png; sourceTree = "<group>"; };
 		3D915444F86B38E0C98D71FA /* 1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_1.png; sourceTree = "<group>"; };
@@ -620,6 +625,7 @@
 		4202796D7E1A40E18DB9AAC3 /* ContentModerationEditorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModerationEditorConfiguration.swift; sourceTree = "<group>"; };
 		420315ED23BC54E95ED828B6 /* OnExport+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnExport+Video.swift"; sourceTree = "<group>"; };
 		433978547116CE7AD89D9AA0 /* PhotoEditorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorConfiguration.swift; sourceTree = "<group>"; };
+		455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportToWebm.swift; sourceTree = "<group>"; };
 		46B4DECAD57EC2BB5F9BB7F3 /* AddToTemplateLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToTemplateLibrary.swift; sourceTree = "<group>"; };
 		46EB888E92CB8AFED9EB5910 /* apparel-ui-b-empty_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apparel-ui-b-empty_dark.png"; sourceTree = "<group>"; };
 		492CE17F8FC3930A1BEACD14 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
@@ -950,6 +956,7 @@
 		FE7E3871425A84F17E857C29 /* VideoEditorStarterKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorStarterKit.swift; sourceTree = "<group>"; };
 		FF2916D5EC6485F387CBDD9C /* ColorEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorEffects.swift; sourceTree = "<group>"; };
 		FF3F70DDEA40CABB09910382 /* thank_you.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thank_you.png; sourceTree = "<group>"; };
+		FF5748E414B5E0277E620D10 /* VoiceIsolationPluginSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceIsolationPluginSolution.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,6 +977,7 @@
 				BDC1E05BB0FDAEBBB23E5174 /* IMGLYPluginBackgroundRemoval in Frameworks */,
 				61355C18F27F1873BF862816 /* IMGLYPluginAIImageGeneration in Frameworks */,
 				FB44927C98B1A2A7720A887E /* IMGLYPluginAutoCaptions in Frameworks */,
+				3DB5C7FFA26EF8EF07C5479E /* IMGLYPluginVoiceIsolation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1100,6 +1108,14 @@
 				698B3D5748354736951AC18A /* TextEffects.swift */,
 			);
 			path = "engine-guides-text-effects";
+			sourceTree = "<group>";
+		};
+		0FCF9234F158237FE3CD64BB /* editor-guides-voice-isolation-plugin */ = {
+			isa = PBXGroup;
+			children = (
+				FF5748E414B5E0277E620D10 /* VoiceIsolationPluginSolution.swift */,
+			);
+			path = "editor-guides-voice-isolation-plugin";
 			sourceTree = "<group>";
 		};
 		1013EE656C2D6DC8EBFCC093 /* engine-guides-video-transform */ = {
@@ -2184,6 +2200,7 @@
 				32C1806F0A8D9A9CEFAE0760 /* editor-guides-ui-extensions-quick-actions */,
 				1AD7403BF785E3A4D64C7EA8 /* editor-guides-ui-extensions-register-new-component */,
 				2757164E1CF9A6BD229B46AC /* editor-guides-variable-fonts */,
+				0FCF9234F158237FE3CD64BB /* editor-guides-voice-isolation-plugin */,
 				D3E189A12DE2CBEDCD31587D /* engine-guides-add-background */,
 				757D7CD225E6D3E2915A83FB /* engine-guides-anchor-skew-auto-orient */,
 				48BC8EB857B058868CE0160E /* engine-guides-animation-types */,
@@ -2280,6 +2297,7 @@
 				89C1788D6C419C0B5B792E34 /* engine-guides-export-to-pdf */,
 				8901F54EBFA5D45E8F2B09F0 /* engine-guides-export-to-png */,
 				CE24401B8BE9A5F49B15AF6B /* engine-guides-export-to-raw-data */,
+				91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */,
 				5ADD05D52F4AB91B98818F3A /* engine-guides-export-to-webp */,
 				DA2B3722D7749B04CE3A6864 /* engine-guides-export-with-color-mask */,
 				689FD285B6EE9CB80821ED4D /* engine-guides-fills-color */,
@@ -2390,6 +2408,7 @@
 				8B2B38B452C1B636BE1C2C74 /* engine-guides-using-camera */,
 				7CC40897ACA4E02CD1736CB6 /* engine-guides-using-effects */,
 				315AE0B9011BB9E97FA0E5DB /* engine-guides-using-fills */,
+				CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */,
 				62C132EDC7939FE6BCB5D8BC /* engine-guides-variable-bindings */,
 				1013EE656C2D6DC8EBFCC093 /* engine-guides-video-transform */,
 				E03A096F84AD508A6467E806 /* engine-guides-wipe-effects */,
@@ -2774,6 +2793,14 @@
 				0FCC6A2C49D76EEF68E766CA /* EditingWorkflow.swift */,
 			);
 			path = "engine-guides-editing-workflow";
+			sourceTree = "<group>";
+		};
+		91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */ = {
+			isa = PBXGroup;
+			children = (
+				455C3F16204E2EB6008CAE0C /* ExportToWebm.swift */,
+			);
+			path = "engine-guides-export-to-webm";
 			sourceTree = "<group>";
 		};
 		92F5951BF7FE20833C7F3255 /* engine-guides-conversion-to-pdf */ = {
@@ -3335,6 +3362,14 @@
 			path = "engine-guides-design-generation";
 			sourceTree = "<group>";
 		};
+		CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */ = {
+			isa = PBXGroup;
+			children = (
+				3D2EABCEF95C5C5F79E689F7 /* ValueSets.swift */,
+			);
+			path = "engine-guides-value-sets";
+			sourceTree = "<group>";
+		};
 		D0109F15890A3A74269FC9FF /* engine-guides-annotation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3857,7 +3892,7 @@
 			path = "engine-guides-create-video-control";
 			sourceTree = "<group>";
 		};
-		"TEMP_D3B119FC-9C95-4EAC-83EB-A979D8C1A3BD" /* . */ = {
+		"TEMP_729640B1-85C4-4C8A-B663-E8F28105B2C8" /* . */ = {
 			isa = PBXGroup;
 			children = (
 				B61664195BA6D3391E319916 /* editor-guides-customization-hide-elements */,
@@ -3870,6 +3905,7 @@
 				CB58E43FC9B8BC3C723C0103 /* editor-guides-ui-extensions-create-custom-panel */,
 				84CF484A769651893C42E815 /* camera-guides-take-photo */,
 				1F1960344E48014B1A0F246B /* editor-guides-ui-extensions-notifications-and-dialogs */,
+				0FCF9234F158237FE3CD64BB /* editor-guides-voice-isolation-plugin */,
 				140387CEB4E726F9A4C40824 /* editor-guides-customization-icons */,
 				4AA40D203C548789A9C6AF4E /* editor-guides-ui-extensions-add-button */,
 				1AD7403BF785E3A4D64C7EA8 /* editor-guides-ui-extensions-register-new-component */,
@@ -3952,6 +3988,7 @@
 				CC9B2C94B8F7EBFA65CE085E /* engine-guides-colors-apply */,
 				5C40A14EC674D23898ECB656 /* engine-guides-colors-replace */,
 				9A64517917C4626F4C1F41E3 /* engine-guides-blur */,
+				CF4F574397DC21D867B8CDA3 /* engine-guides-value-sets */,
 				3D052C6A5649A8EB2600F243 /* engine-guides-create-audio-loop */,
 				44E61DF3A78C477E709A3171 /* engine-guides-create-video-trim */,
 				0E4D3C3DF856C97124CAD6AF /* engine-guides-text-effects */,
@@ -4077,6 +4114,7 @@
 				689FD285B6EE9CB80821ED4D /* engine-guides-fills-color */,
 				766FFB3488CB50F18D86EE90 /* engine-guides-text-subscript-superscript */,
 				D52C829C6F631AAFAD3F8F98 /* engine-guides-color-effects */,
+				91562E3A73FF23CCE41FE636 /* engine-guides-export-to-webm */,
 				33DDA2947B64B00D9E2420BC /* engine-guides-remote-asset */,
 				45C2552F9D1549BEA36A1722 /* engine-guides-import-media-from-remote-source-getty-images */,
 				AB82E7B1A7CF734920106448 /* engine-guides-text-designs */,
@@ -4167,6 +4205,7 @@
 				5DC00A6470BBB0920ACCDBC7 /* IMGLYPluginBackgroundRemoval */,
 				3115DBC80EF35F272A159275 /* IMGLYPluginAIImageGeneration */,
 				68A61524C970C85A962727F0 /* IMGLYPluginAutoCaptions */,
+				AA91CE446D128EAF3AB6112B /* IMGLYPluginVoiceIsolation */,
 			);
 			productName = "CESDK-Showcases";
 			productReference = 0E46FB7CEB411B5F37AA132B /* CESDK-Showcases.app */;
@@ -4197,6 +4236,7 @@
 				09BF17B1E5D5D984FB2F6A80 /* XCRemoteSwiftPackageReference "IMGLYPluginAIImageGeneration-swift" */,
 				1F3C6CDE4C4A47DD8CC34628 /* XCRemoteSwiftPackageReference "IMGLYPluginAutoCaptions-swift" */,
 				4824595CEC4E9D761E3F4D64 /* XCRemoteSwiftPackageReference "IMGLYPluginBackgroundRemoval-swift" */,
+				A78E0A8DDD9510F375FCCBF1 /* XCRemoteSwiftPackageReference "IMGLYPluginVoiceIsolation-swift" */,
 				0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */,
 				150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
@@ -4408,6 +4448,7 @@
 				148594C77C18C41B5FE7EA1D /* ExportOverview.swift in Sources */,
 				31B5B0CF6BE26C926C45150B /* ExportToMp4.swift in Sources */,
 				D2E21F95D4BAE50EB25F3659 /* ExportToPdf.swift in Sources */,
+				4286822274A1EA181D8A7406 /* ExportToWebm.swift in Sources */,
 				9612527A8A46B77BF97FC719 /* ExportWithColorMask.swift in Sources */,
 				33457AEBFEF4C626A6DC78CE /* Fade.swift in Sources */,
 				7C328687C55ED2DED514B46F /* FillsColor.swift in Sources */,
@@ -4539,6 +4580,7 @@
 				CB9780A7731D9678AFF54E05 /* UsingCamera.swift in Sources */,
 				F65D286BE1E8D1EC6B5CE313 /* UsingEffects.swift in Sources */,
 				F7739CC80F6FC24DCC8211C4 /* UsingFills.swift in Sources */,
+				BF41ACC0BB84600F5604C0BD /* ValueSets.swift in Sources */,
 				DAFF0448AD81FF5189B5FBC6 /* VariableBindings.swift in Sources */,
 				32AB22ECF9F6266712DEB222 /* VideoTransform.swift in Sources */,
 				69101785AFAC348F6A4D5E33 /* WipeEffects.swift in Sources */,
@@ -4704,6 +4746,7 @@
 				3F03FF8D33F25D8B5AD22E81 /* VideoEditorConfiguration.swift in Sources */,
 				EFDE680B2C51272391D9FF50 /* VideoEditorStarterKit.swift in Sources */,
 				D1957312104C7EBD9035D2E8 /* VideoTimelineEditorSolution.swift in Sources */,
+				54C6D77DE2E98B1A03E8E354 /* VoiceIsolationPluginSolution.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4805,7 +4848,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.85.3;
+				MARKETING_VERSION = 1.86.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4814,7 +4857,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 6.3.1;
+				SWIFT_VERSION = 6.3.3;
 			};
 			name = Release;
 		};
@@ -4896,7 +4939,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 1.85.3;
+				MARKETING_VERSION = 1.86.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4906,7 +4949,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.3.1;
+				SWIFT_VERSION = 6.3.3;
 			};
 			name = Debug;
 		};
@@ -4971,7 +5014,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAIImageGeneration-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.3;
+				version = 1.86.0;
 			};
 		};
 		0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */ = {
@@ -4979,7 +5022,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.3;
+				version = 1.86.0;
 			};
 		};
 		10597E39A033ABD8B233CD14 /* XCRemoteSwiftPackageReference "IMGLYEngine-swift" */ = {
@@ -4987,7 +5030,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYEngine-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.3;
+				version = 1.86.0;
 			};
 		};
 		150F161C090426538C39E173 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -5003,7 +5046,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginAutoCaptions-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.3;
+				version = 1.86.0;
 			};
 		};
 		4824595CEC4E9D761E3F4D64 /* XCRemoteSwiftPackageReference "IMGLYPluginBackgroundRemoval-swift" */ = {
@@ -5011,7 +5054,7 @@
 			repositoryURL = "https://github.com/imgly/IMGLYPluginBackgroundRemoval-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.85.3;
+				version = 1.86.0;
 			};
 		};
 		4D2B057734A5412CF39C2B92 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -5020,6 +5063,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 26.0.0;
+			};
+		};
+		A78E0A8DDD9510F375FCCBF1 /* XCRemoteSwiftPackageReference "IMGLYPluginVoiceIsolation-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/imgly/IMGLYPluginVoiceIsolation-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 1.86.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -5054,6 +5105,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0FE27C34D3DCA1C11CCC3135 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */;
 			productName = IMGLYUI;
+		};
+		AA91CE446D128EAF3AB6112B /* IMGLYPluginVoiceIsolation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A78E0A8DDD9510F375FCCBF1 /* XCRemoteSwiftPackageReference "IMGLYPluginVoiceIsolation-swift" */;
+			productName = IMGLYPluginVoiceIsolation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

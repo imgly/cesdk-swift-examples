@@ -242,6 +242,7 @@ struct Showcases: View {
         Showcase(view: AIImageGenerationSolution(), title: "Plugin: AI Image Generation")
         Showcase(view: AutoCaptionsPluginSolution(), title: "Plugin: Auto Captions")
         Showcase(view: BackgroundRemovalPluginSolution(), title: "Plugin: Background Removal")
+        Showcase(view: VoiceIsolationPluginSolution(), title: "Plugin: Voice Isolation")
         Showcase(view: CustomFeaturePluginSolution(), title: "Plugins: Custom Feature Plugin")
       }
     }.showcaseMode(.navigationLink)
