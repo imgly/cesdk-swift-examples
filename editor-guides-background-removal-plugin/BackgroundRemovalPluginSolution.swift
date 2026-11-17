@@ -8,44 +8,31 @@ import SwiftUI
 
 struct BackgroundRemovalPluginSolution: View {
   let settings = EngineSettings(license: secrets.licenseKey,
-                                userID: "<your unique user id>",
-                                baseURL: secrets.baseURL)
+                                userID: "<your unique user id>")
 
   var body: some View {
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration { builder in
+        PhotoEditorConfiguration { builder in
           builder.onCreate { engine, _ in
-            try await DesignEditorConfiguration.defaultOnCreate(
-              createScene: { engine in
-                try await DesignEditorConfiguration.defaultCreateScene(engine)
-                let basePath = try engine.editor.getSettingString("basePath")
-                guard let page = try engine.scene.getPages().first,
-                      let imageURL = URL(string: "\(basePath)/ly.img.image/images/sample_14.jpg") else { return }
-                let colorFill = try engine.block.getFill(page)
-                let imageFill = try engine.block.createFill(.image)
-                try engine.block.setURL(imageFill, property: "fill/image/imageFileURI", value: imageURL)
-                try engine.block.setFill(page, fill: imageFill)
-                try engine.block.destroy(colorFill)
-              },
-            )(engine)
+            let baseURL = secrets.baseURL
+              ?? URL(string: "https://cdn.img.ly/packages/imgly/cesdk-swift/1.85.4/assets")!
+            let imageURL = baseURL.appendingPathComponent("ly.img.image/images/sample_14.jpg")
+            try await engine.scene.create(fromImage: imageURL)
           }
         }
-        BackgroundRemovalPlugin(inspectorBarModifier: { items, button in
-          items.addFirst { button }
-        })
+        BackgroundRemovalPlugin()
       }
   }
 
   // The lesson code shown in the documentation. The runtime demo above wraps
-  // this in `onCreate` so the showcase has an image to operate on, and adds the
-  // inspector bar button for images on the page; the rendered snippet keeps the
-  // minimal integration developers add to their own editor.
+  // this in `onCreate` so the showcase has an image to operate on; the rendered
+  // snippet keeps the minimal integration developers add to their own editor.
   var editor: some View {
     // highlight-bgRemovalPlugin-basicSetup
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration()
+        PhotoEditorConfiguration()
         BackgroundRemovalPlugin()
       }
     // highlight-bgRemovalPlugin-basicSetup
@@ -63,7 +50,7 @@ struct BackgroundRemovalErrorHandlingSolution: View {
     // highlight-bgRemovalPlugin-errorHandling
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration()
+        PhotoEditorConfiguration()
         BackgroundRemovalPlugin(onError: { error in
           errorMessage = error.localizedDescription
         })
@@ -87,7 +74,7 @@ struct BackgroundRemovalVisionSolution: View {
     // highlight-bgRemovalPlugin-visionBackend
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration()
+        PhotoEditorConfiguration()
         BackgroundRemovalPlugin(configuration: VisionBackgroundRemovalConfiguration())
       }
     // highlight-bgRemovalPlugin-visionBackend
@@ -104,7 +91,7 @@ struct BackgroundRemovalIMGLYTuningSolution: View {
     // highlight-bgRemovalPlugin-imglyTuning
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration()
+        PhotoEditorConfiguration()
         BackgroundRemovalPlugin(
           configuration: IMGLYBackgroundRemovalConfiguration(
             model: .fp32,
@@ -127,7 +114,7 @@ struct BackgroundRemovalPlacementSolution: View {
     // highlight-bgRemovalPlugin-buttonPlacement
     Editor(settings)
       .imgly.configuration {
-        DesignEditorConfiguration()
+        PhotoEditorConfiguration()
         BackgroundRemovalPlugin(
           dockModifier: { items, button in
             items.addLast { button }
@@ -135,26 +122,5 @@ struct BackgroundRemovalPlacementSolution: View {
         )
       }
     // highlight-bgRemovalPlugin-buttonPlacement
-  }
-}
-
-// MARK: - Inspector Bar Button Placement
-
-struct BackgroundRemovalInspectorBarPlacementSolution: View {
-  let settings = EngineSettings(license: secrets.licenseKey,
-                                userID: "<your unique user id>")
-
-  var body: some View {
-    // highlight-bgRemovalPlugin-inspectorBarPlacement
-    Editor(settings)
-      .imgly.configuration {
-        DesignEditorConfiguration()
-        BackgroundRemovalPlugin(
-          inspectorBarModifier: { items, button in
-            items.addLast { button }
-          },
-        )
-      }
-    // highlight-bgRemovalPlugin-inspectorBarPlacement
   }
 }

@@ -54,10 +54,6 @@ func performance(engine: Engine) async throws {
   }
   // highlight-performance-memoryMonitoring
 
-  // highlight-performance-releaseMemory
-  engine.editor.releaseMemory()
-  // highlight-performance-releaseMemory
-
   // highlight-performance-maxExportSize
   let maxExportSize = try engine.editor.getMaxExportSize()
 

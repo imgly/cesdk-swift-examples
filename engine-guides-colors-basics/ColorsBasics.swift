@@ -96,7 +96,7 @@ func colorsBasics(engine: Engine) async throws {
   // highlight-colorsBasics-getColor
 
   // highlight-colorsBasics-convertColors
-  try await engine.editor.loadColorProfiles()
+  try await engine.editor.loadCMYKProfile()
 
   let swatches: [(label: String, color: Color)] = [
     ("CMYK fill", cmykColor),
@@ -117,9 +117,8 @@ func colorsBasics(engine: Engine) async throws {
 
   // highlight-colorsBasics-setProfile
   let profileURL = URL(string: "bundle://ly.img.cesdk/colorprofiles/CGATS001Compat-v2-micro.icc")!
-  let defaultCMYK = ProfileSlot(role: .default, space: .cmyk)
-  try await engine.scene.setDocumentColorProfile(defaultCMYK, from: profileURL)
-  let profileInfo = try engine.scene.getDocumentColorProfileInfo(defaultCMYK)
+  try await engine.scene.setCMYKProfile(from: profileURL)
+  let profileInfo = try engine.scene.getCMYKProfileInfo()
   print("Document profile hash: \(profileInfo.contentHash)")
   try logConversions("Document profile")
   // highlight-colorsBasics-setProfile

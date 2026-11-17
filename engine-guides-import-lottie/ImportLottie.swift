@@ -6,8 +6,7 @@ import IMGLYEngine
 @MainActor
 func importLottie(engine: Engine, archiveURL: URL) async throws {
   // highlight-importLottie-loadArchive
-  // The load restores the variables that the importer created for the slots. `overrideEditorConfig: true` also
-  // restores the editor settings of the archive.
+  // `overrideEditorConfig: true` also loads the variables that the importer created for the slots.
   try await engine.scene.load(from: archiveURL, overrideEditorConfig: true, waitForResources: true)
   // highlight-importLottie-loadArchive
 
