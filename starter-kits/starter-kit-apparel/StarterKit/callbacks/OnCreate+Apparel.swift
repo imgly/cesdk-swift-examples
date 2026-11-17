@@ -43,6 +43,7 @@ public extension ApparelEditorConfiguration {
   ///
   /// Sets editor role, touch gestures, camera clamping, and global scopes.
   static let defaultPreCreateScene: OnCreate.Callback = { engine in
+    try engine.editor.setSettingBool("clip/defaultTransitionOverlapEnabled", value: false)
     try engine.editor.setRole("Adopter")
     try engine.editor.setSettingEnum("camera/clamping/overshootMode", value: "Center")
 

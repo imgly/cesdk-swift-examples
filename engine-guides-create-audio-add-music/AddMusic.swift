@@ -3,7 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func addMusic(engine: Engine) async throws {
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 1280)

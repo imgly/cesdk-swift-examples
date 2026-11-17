@@ -35,6 +35,7 @@ func undoAndHistory(engine: Engine) async throws {
   try engine.block.setHeight(block, value: 100)
   try engine.block.setFill(block, fill: engine.block.createFill(.color))
   try engine.block.appendChild(to: page, child: block)
+  try engine.editor.addUndoStep()
   // highlight-undoAndHistory-createBlock
 
   // highlight-undoAndHistory-undo

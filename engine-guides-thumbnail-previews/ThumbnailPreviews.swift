@@ -18,7 +18,8 @@ func thumbnailPreviews(engine: Engine) async throws {
   // Demo scaffolding: a ten-second video page carrying one video clip and one
   // audio clip, so every sequence below previews real media. In your app you
   // start from a scene the user is already editing.
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 1280)

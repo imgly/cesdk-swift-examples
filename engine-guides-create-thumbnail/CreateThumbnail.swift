@@ -116,7 +116,8 @@ func createThumbnail(engine: Engine) async throws {
   // highlight-createThumbnail-save
 
   // highlight-createThumbnail-video
-  let videoScene = try engine.scene.createVideo()
+  let videoScene = try engine.scene.create()
+  try engine.block.setEnum(videoScene, property: "scene/mode", value: "Video")
   let videoPage = try engine.block.create(.page)
   try engine.block.appendChild(to: videoScene, child: videoPage)
   try engine.block.setWidth(videoPage, value: 1280)

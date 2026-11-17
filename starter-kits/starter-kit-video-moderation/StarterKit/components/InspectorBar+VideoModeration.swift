@@ -1,0 +1,48 @@
+import IMGLYEditor
+
+// MARK: - Inspector Bar
+
+extension VideoModerationEditorConfiguration {
+  /// The default inspector bar configuration.
+  static var defaultInspectorBar: InspectorBar.Configuration {
+    InspectorBar.Configuration { builder in
+      // highlight-starter-kit-inspector-bar
+      builder.items { _ in
+        // Caption-only buttons, kept at the start so a caption selection leads with them.
+        InspectorBar.Buttons.editCaptions()
+        InspectorBar.Buttons.captionStyle()
+
+        InspectorBar.Buttons.replace()
+
+        InspectorBar.Buttons.editText()
+        InspectorBar.Buttons.textPresets()
+        InspectorBar.Buttons.formatText()
+        InspectorBar.Buttons.fillStroke()
+        InspectorBar.Buttons.textBackground()
+        InspectorBar.Buttons.textOnPath()
+        InspectorBar.Buttons.addVoiceoverRecording()
+        InspectorBar.Buttons.volume()
+        InspectorBar.Buttons.clipSpeed()
+        InspectorBar.Buttons.crop()
+
+        InspectorBar.Buttons.adjustments()
+        InspectorBar.Buttons.filter()
+        InspectorBar.Buttons.effect()
+        InspectorBar.Buttons.blur()
+        InspectorBar.Buttons.animation()
+        InspectorBar.Buttons.transition()
+        InspectorBar.Buttons.shape()
+
+        InspectorBar.Buttons.selectGroup()
+        InspectorBar.Buttons.enterGroup()
+
+        InspectorBar.Buttons.separateAudio()
+        InspectorBar.Buttons.layer()
+        InspectorBar.Buttons.split()
+        InspectorBar.Buttons.duplicate()
+        InspectorBar.Buttons.delete()
+      }
+      // highlight-starter-kit-inspector-bar
+    }
+  }
+}

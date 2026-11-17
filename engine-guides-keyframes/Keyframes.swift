@@ -124,6 +124,12 @@ func keyframes(engine: Engine) async throws {
   print(animatedProperties, opacityKeyframes[1].easing, positionMode == .relative)
   // highlight-keyframes-readBack
 
+  // highlight-keyframes-animatedValue
+  // At 50% of the duration, after the fade-in ends at 40%: .float(1)
+  let opacityAtHalfTime = try engine.block.getAnimatedValue(block, property: "opacity", time: 0.5)
+  print("opacity at 50%: \(opacityAtHalfTime)")
+  // highlight-keyframes-animatedValue
+
   // highlight-keyframes-staticValue
   // Changes the static value only. The absolute opacity track still replaces it.
   try engine.block.setOpacity(block, value: 0.5)

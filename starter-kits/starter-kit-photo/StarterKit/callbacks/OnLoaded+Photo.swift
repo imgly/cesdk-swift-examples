@@ -8,7 +8,7 @@ extension PhotoEditorConfiguration {
   static var defaultOnLoadedHandler: OnLoaded.Handler {
     { context, existing in
       try await existing()
-      for try await _ in context.engine.editor.onHistoryUpdated {
+      for try await _ in context.engine.editor.onHistoryUpdatedWithKind {
         let editMode = context.engine.editor.getEditMode()
         let isCrop = editMode == .crop
         try context.engine.editor.setSettingBool("page/allowResizeInteraction", value: isCrop)
