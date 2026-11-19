@@ -36,7 +36,8 @@ func architecture(engine: Engine) async throws {
   let designScene = try engine.scene.create()
 
   // Video mode — time-based content with playback and timeline.
-  let videoScene = try engine.scene.createVideo()
+  let videoScene = try engine.scene.create()
+  try engine.block.setEnum(videoScene, property: "scene/mode", value: "Video")
   // highlight-architecture-sceneModes
 
   _ = designScene

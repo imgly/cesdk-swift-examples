@@ -6,7 +6,8 @@ func createAnimations(engine: Engine) async throws {
   let baseURL = try engine.guidesBaseURL
 
   // highlight-setup
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
 
   let page = try engine.block.create(.page)
   try engine.block.setWidth(page, value: 800)

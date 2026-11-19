@@ -4,7 +4,8 @@ import IMGLYEngine
 @MainActor
 func controlAVPlayback(engine: Engine) async throws {
   // Demo scaffolding: a video scene with a single video block on a track.
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 1920)

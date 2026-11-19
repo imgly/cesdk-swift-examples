@@ -81,7 +81,7 @@ func markersAndFrameRate(engine: Engine) async throws -> MarkersAndFrameRateGuid
 
   // highlight-markersAndFrameRate-removeMarker
   // Remove the second "beat" by its index in the list
-  try engine.scene.removeMarker(at: 2)
+  try engine.scene.removeMarker(index: 2)
   let markerCountAfterRemove = try engine.scene.getMarkers().count
   print(markerCountAfterRemove) // 3
   // highlight-markersAndFrameRate-removeMarker
@@ -104,7 +104,7 @@ func markersAndFrameRate(engine: Engine) async throws -> MarkersAndFrameRateGuid
   }
   var markerIndexErrorCode: EngineErrorCode?
   do {
-    try engine.scene.removeMarker(at: 10)
+    try engine.scene.removeMarker(index: 10)
   } catch let error as EngineError {
     markerIndexErrorCode = error.catalogCode
     print(markerIndexErrorCode == .sceneMarkerIndexOutOfRange) // true

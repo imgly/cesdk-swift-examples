@@ -8,7 +8,8 @@ func exportToMp4(engine: Engine) async throws {
   // Demo scaffolding: build a video scene with a single page and a video fill so
   // the exportVideo calls below have something to encode. In your app you would
   // start from a scene already loaded into the editor instead.
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.block.setWidth(page, value: 1280)

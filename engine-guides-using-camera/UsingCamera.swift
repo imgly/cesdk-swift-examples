@@ -4,7 +4,7 @@ import IMGLYEngine
 @MainActor
 func usingCamera(engine: Engine) async throws {
   // highlight-record-video-setup
-  try engine.scene.createVideo()
+  try engine.block.setEnum(engine.scene.create(), property: "scene/mode", value: "Video")
   let stack = try engine.block.find(byType: .stack).first!
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: stack, child: page)

@@ -42,7 +42,7 @@ func modifyingScenes(engine: Engine) async throws {
   // Markers name points or spans on the scene timeline
   try engine.scene.addMarker(name: "intro", time: 0, duration: 2.5)
   try engine.scene.addMarker(name: "beat", time: 4)
-  try engine.scene.removeMarker(at: 1)
+  try engine.scene.removeMarker(index: 1)
   print("Markers:", try engine.scene.getMarkers()) // [SceneMarker(name: "intro", time: 0.0, duration: 2.5)]
   // highlight-frame-rate-and-markers
 

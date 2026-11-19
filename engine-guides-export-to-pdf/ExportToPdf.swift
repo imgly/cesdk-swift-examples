@@ -129,4 +129,14 @@ func exportToPdf(engine: Engine) async throws {
   let a4Blob = try await engine.block.export(page, mimeType: .pdf, options: a4Options)
   try a4Blob.write(to: exportsDirectory.appendingPathComponent("design-a4.pdf"))
   // highlight-exportToPdf-targetSize
+
+  // highlight-exportToPdf-coverTime
+  // Show each page at 2 seconds, whatever its playback time is.
+  for coverPage in try engine.block.find(byType: .page) {
+    try engine.block.setDouble(coverPage, property: "playback/coverTime", value: 2)
+    try engine.block.setBool(coverPage, property: "playback/coverTimeEnabled", value: true)
+  }
+  let coverTimeBlob = try await engine.block.export(scene, mimeType: .pdf)
+  try coverTimeBlob.write(to: exportsDirectory.appendingPathComponent("design-cover-time.pdf"))
+  // highlight-exportToPdf-coverTime
 }
