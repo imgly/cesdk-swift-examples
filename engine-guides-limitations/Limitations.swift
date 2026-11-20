@@ -27,15 +27,12 @@ func limitations(engine: Engine) async throws {
   // highlight-limitations-checkExportFeasibility
   let desiredWidth = 3840
   let desiredHeight = 2160
-  let limitKnown = maxExportSize < Int(Int32.max)
-  let canExport4K = limitKnown
-    && desiredWidth <= maxExportSize
+  let canExport4K = desiredWidth <= maxExportSize
     && desiredHeight <= maxExportSize
   // highlight-limitations-checkExportFeasibility
 
   _ = usedMemoryMB
   _ = availableMemoryMB
   _ = memoryUtilization
-  _ = limitKnown
   _ = canExport4K
 }

@@ -117,6 +117,33 @@ struct VariableFontsSolution: View {
 
   // highlight-variableFonts-switchWeight
 
+  // highlight-variableFonts-variationAxes
+  /// Sets the `wght` axis of the first word directly. A `wght` value can lie
+  /// between the named weights, such as 450 between Regular (400) and Medium (500).
+  @discardableResult
+  static func setHeadlineAxes(engine: Engine, headline: DesignBlockID) throws -> [[VariationAxisValue]] {
+    let text = try engine.block.getString(headline, property: "text/text")
+    try engine.block.setTextVariationAxes(
+      headline,
+      axes: [VariationAxisValue(tag: "wght", value: 450)],
+      in: text.range(of: "Variable"),
+    )
+
+    // [[VariationAxisValue(tag: "wght", value: 450.0)], []]
+    return try engine.block.getTextVariationAxes(headline)
+  }
+
+  // highlight-variableFonts-variationAxes
+
+  // highlight-variableFonts-fontAxes
+  /// Reads the axes of the font file and the range of each axis. For Jost:
+  /// `[VariationAxis(tag: "wght", minValue: 100.0, defaultValue: 400.0, maxValue: 900.0)]`
+  static func readFontAxes(engine: Engine) async throws -> [VariationAxis] {
+    try await engine.editor.getFontInfo(fontFileURI: jostVariableFontURL.absoluteString).variationAxes
+  }
+
+  // highlight-variableFonts-fontAxes
+
   /// Demo scaffolding: builds the sample page and the headline the
   /// weight-switching snippet operates on. Replace this with your own scene setup.
   private static func createSampleScene(engine: Engine) throws -> (page: DesignBlockID, headline: DesignBlockID) {
@@ -174,6 +201,8 @@ struct VariableFontsSolution: View {
 
             try Self.createWeightSamples(engine: engine, page: page)
             try Self.switchHeadlineWeight(engine: engine, headline: headline)
+            try Self.setHeadlineAxes(engine: engine, headline: headline)
+            _ = try await Self.readFontAxes(engine: engine)
           }
 
           // Select the headline after loading so the inspector bar surfaces and the

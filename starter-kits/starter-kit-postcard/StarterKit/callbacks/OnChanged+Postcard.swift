@@ -55,7 +55,7 @@ extension PostcardEditorConfiguration {
           if let stack = try? context.engine.block.find(byType: .stack).first {
             let layoutAxis = state.verticalSizeClass == .compact ? "Horizontal" : "Vertical"
             try context.engine.block.setEnum(stack, property: "stack/axis", value: layoutAxis)
-            try context.engine.block.setInt(stack, property: "stack/spacing", value: 16)
+            try context.engine.block.setFloat(stack, property: "stack/spacing", value: 16)
           }
 
           let pages = try context.engine.scene.getPages()

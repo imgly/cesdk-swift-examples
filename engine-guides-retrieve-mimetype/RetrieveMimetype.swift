@@ -30,6 +30,13 @@ func retrieveMimetype(engine: Engine) async throws {
   try engine.block.appendChild(to: page, child: graphic)
   // highlight-retrieveMimetype-embed
 
+  // highlight-retrieveMimetype-fileSupport
+  let formats = engine.editor.getFileFormats()
+  print("Media formats: \(formats.map(\.mimeType))")
+  let support = try await engine.editor.checkFileSupport(url: imageBuffer)
+  print("Inspection: \(support.inspection), uses: \(support.uses)")
+  // highlight-retrieveMimetype-fileSupport
+
   // highlight-retrieveMimetype-findTransient
   let transientResources = try engine.editor.findAllTransientResources()
   print("Found \(transientResources.count) transient resources")

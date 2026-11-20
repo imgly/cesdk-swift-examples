@@ -42,6 +42,8 @@ struct CustomFontsSolution: View {
     ],
   )
 
+  static let uploadedFontURL = URL(string: "https://fonts.gstatic.com/s/codystar/v19/FwZY7-Q1xVk-40qxOt6A.ttf")!
+
   var editor: some View {
     Editor(settings)
       .imgly.configuration {
@@ -101,10 +103,37 @@ struct CustomFontsSolution: View {
               ),
             )
             // highlight-customFonts-addAsset
+
+            try await Self.addFontFile(
+              engine: engine,
+              to: typefaceSourceID,
+              fontFileURL: Self.uploadedFontURL,
+            )
           }
         }
       }
   }
+
+  // highlight-customFonts-registerFontFile
+  static func addFontFile(engine: Engine, to sourceID: String, fontFileURL: URL) async throws {
+    let info = try await engine.editor.getFontInfo(fontFileURI: fontFileURL.absoluteString)
+    let typeface = Typeface(
+      name: info.family,
+      fonts: [
+        Font(uri: fontFileURL, subFamily: info.subFamily, weight: info.fontWeight, style: info.style),
+      ],
+    )
+    try engine.asset.addAsset(
+      to: sourceID,
+      asset: AssetDefinition(
+        id: fontFileURL.absoluteString,
+        payload: AssetPayload(typeface: typeface),
+        label: ["en": info.family],
+      ),
+    )
+  }
+
+  // highlight-customFonts-registerFontFile
 
   // Programmatic apply pattern shown in the docs. Highlight-only — the
   // example value flow above wires the editor; this helper documents how to
@@ -119,6 +148,55 @@ struct CustomFontsSolution: View {
   }
 
   // highlight-customFonts-applyProgrammatically
+
+  // highlight-customFonts-fontRequest
+  @MainActor
+  private static func applyStoredFontRequest(
+    engine: Engine,
+    textBlock: DesignBlockID,
+    typeface: Typeface,
+    font: IMGLYEngine.Font,
+    sourceID: String,
+  ) async throws {
+    try engine.editor.setTypefaceResolver { request in
+      request.family == typeface.name ? FontResolverResult(typeface: typeface, font: font) : nil
+    }
+    defer { try? engine.editor.setTypefaceResolver(nil) }
+    let request = FontRequest(
+      family: typeface.name,
+      subFamily: font.subFamily,
+      weight: font.weight,
+      style: font.style,
+      assetSourceID: sourceID,
+      assetID: "orbitron",
+    )
+    try engine.block.setFontRequest(textBlock, request: request)
+    try await engine.block.forceLoadResources([textBlock])
+    print("Stored requests: \(try engine.block.getFontRequests(textBlock))")
+  }
+
+  // highlight-customFonts-fontRequest
+
+  // highlight-customFonts-renderDiagnostics
+  @MainActor
+  private static func inspectTextRendering(engine: Engine, textBlock: DesignBlockID) async throws {
+    // Wait for font resources when the application needs a settled snapshot.
+    try await engine.block.forceLoadResources([textBlock])
+    let diagnostics = try engine.block.getTextRenderDiagnostics(textBlock)
+    print("Rendered text: \(diagnostics.fontUsage.text); state: \(diagnostics.fontUsage.state)")
+    for run in diagnostics.fontUsage.runs {
+      print("[\(run.from), \(run.to)): \(run.requestedFontFileURI) -> \(run.actualFontFileURI ?? "unresolved"); " +
+        "\(run.status); effective font size: \(run.effectiveFontSize)")
+    }
+    print("Missing glyph ranges: \(diagnostics.missingGlyphRanges)")
+    if let layout = diagnostics.layout {
+      print("Lines: \(layout.visibleLineCount)/\(layout.totalLineCount) visible, " +
+        "\(layout.clippedLineCount) clipped; required height: \(layout.requiredHeight); " +
+        "font scale: \(layout.fontScale); overshoot: \(layout.overshoot)")
+    }
+  }
+
+  // highlight-customFonts-renderDiagnostics
 
   // Demo scaffolding: matches `editor`'s typeface registration and adds a
   // dock, inspector bar, and pre-selected text block so the captured hero
@@ -150,6 +228,11 @@ struct CustomFontsSolution: View {
                 label: ["en": "Orbitron"],
               ),
             )
+            try await Self.addFontFile(
+              engine: engine,
+              to: typefaceSourceID,
+              fontFileURL: Self.uploadedFontURL,
+            )
 
             // Pre-create a text block and apply Orbitron Bold so the hero
             // shows the registered typeface rendered on canvas.
@@ -166,6 +249,14 @@ struct CustomFontsSolution: View {
               fontFileURL: Self.orbitron.fonts[1].uri,
               typeface: Self.orbitron,
             )
+            try await Self.applyStoredFontRequest(
+              engine: engine,
+              textBlock: text,
+              typeface: Self.orbitron,
+              font: Self.orbitron.fonts[1],
+              sourceID: typefaceSourceID,
+            )
+            try await Self.inspectTextRendering(engine: engine, textBlock: text)
           }
 
           // Select the text block after the editor has loaded so the inspector

@@ -4,7 +4,8 @@ import IMGLYEngine
 @MainActor
 func cropVideo(engine: Engine) async throws {
   // Demo scaffolding: a video scene with a single video block that fills the page.
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let baseURL = try engine.guidesBaseURL
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)

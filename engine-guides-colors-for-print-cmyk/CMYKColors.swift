@@ -123,4 +123,15 @@ func cmykColors(engine: Engine) async throws {
     ],
   )
   // highlight-cmykColors-gradient
+
+  // highlight-cmykColors-softProofCMYK
+  try engine.editor.setSoftProofColorSpace(.cmyk)
+  engine.editor.setSoftProofEnabled(true)
+  // highlight-cmykColors-softProofCMYK
+
+  // highlight-cmykColors-softProofRGB
+  try engine.editor.setSoftProofColorSpace(.rgb)
+  // highlight-cmykColors-softProofRGB
+
+  engine.editor.setSoftProofEnabled(false)
 }

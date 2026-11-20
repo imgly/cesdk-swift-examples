@@ -43,6 +43,7 @@ public extension VideoEditorConfiguration {
   /// Sets editor role, touch gestures, camera clamping, gizmo handles, and global scopes.
   static let defaultPreCreateScene: OnCreate.Callback = { engine in
     try engine.editor.setRole("Adopter")
+    try engine.editor.setSettingBool("clip/defaultTransitionOverlapEnabled", value: false)
     try engine.editor.setSettingEnum("camera/clamping/overshootMode", value: "Center")
 
     let highlightColor: IMGLYEngine.Color = try engine.editor.getSettingColor("highlightColor")

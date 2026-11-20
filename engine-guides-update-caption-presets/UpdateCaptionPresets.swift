@@ -5,7 +5,8 @@ import IMGLYEngine
 func updateCaptionPresets(engine: Engine) async throws {
   // A caption block to apply presets to. Caption tracks and blocks are covered
   // in the Add Captions guide; this is the minimum a preset needs to target.
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
   let page = try engine.block.create(.page)
   try engine.block.appendChild(to: scene, child: page)
   try engine.editor.setSettingBool("features/videoCaptionsEnabled", value: true)

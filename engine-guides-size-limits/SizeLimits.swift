@@ -43,8 +43,8 @@ func sizeLimits(engine: Engine) async throws {
 
   // highlight-sizeLimits-maxExportSize
   // The engine reports the maximum export size supported on the current device.
-  // The value is an upper bound — exports may still fail for memory or other
-  // reasons. When the limit is unknown, the engine returns Int32.max.
+  // The value is an upper bound of at most 23170 px. Exports may still fail
+  // for memory or other reasons.
   let maxExportSize = try engine.editor.getMaxExportSize()
   // highlight-sizeLimits-maxExportSize
 
