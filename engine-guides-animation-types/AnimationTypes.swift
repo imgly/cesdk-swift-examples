@@ -3,7 +3,8 @@ import IMGLYEngine
 
 @MainActor
 func animationTypes(engine: Engine) async throws {
-  let scene = try engine.scene.createVideo()
+  let scene = try engine.scene.create()
+  try engine.block.setEnum(scene, property: "scene/mode", value: "Video")
 
   let page = try engine.block.create(.page)
   try engine.block.setWidth(page, value: 1920)
@@ -11,7 +12,7 @@ func animationTypes(engine: Engine) async throws {
   try engine.block.appendChild(to: scene, child: page)
 
   let pageFill = try engine.block.createFill(.color)
-  try engine.block.setColor(pageFill, property: "fill/color/value", r: 1, g: 1, b: 1, a: 1)
+  try engine.block.setColor(pageFill, property: "fill/color/value", color: .rgba(r: 1, g: 1, b: 1, a: 1))
   try engine.block.setFill(page, fill: pageFill)
 
   let baseURL = try engine.guidesBaseURL

@@ -47,6 +47,7 @@ enum AppetizeGuides {
       "registerNewComponent": { AnyView(RegisterNewComponentSolution()) },
       "starterKitApparelEditor": { AnyView(ApparelEditorStarterKit()) },
       "starterKitDesignEditor": { AnyView(DesignEditorStarterKit()) },
+      "starterKitMemoriesEditor": { AnyView(MemoriesEditorStarterKit()) },
       "starterKitPhotoEditor": { AnyView(PhotoEditorStarterKit()) },
       "starterKitPostcardEditor": { AnyView(PostcardEditorStarterKit()) },
       "starterKitVideoEditor": { AnyView(VideoEditorStarterKit()) },

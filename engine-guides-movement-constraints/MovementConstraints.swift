@@ -45,7 +45,7 @@ func movementConstraints(engine: Engine) async throws {
 
   // highlight-movement-constraint-read
   // Read the resolved constraint, walking the priority chain:
-  // block > parent page > blockType > scene-wide.
+  // block > page slice > parent page > blockType > scene-wide.
   let active = try engine.editor.getMovementConstraint(block)
   // highlight-movement-constraint-read
 

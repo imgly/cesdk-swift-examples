@@ -140,4 +140,25 @@ func colorsBasics(engine: Engine) async throws {
   try logConversions("Legacy mode")
   try engine.block.setEnum(scene, property: "scene/colorConversionMode", value: "Managed")
   // highlight-colorsBasics-legacyMode
+
+  // highlight-colorsBasics-exportOutputProfile
+  let outputCMYK = ProfileSlot(role: .output, space: .cmyk)
+  let outputProfileURL = URL(string: "bundle://ly.img.cesdk/colorprofiles/CGATS001Compat-v2-micro.icc")!
+  try await engine.scene.setDocumentColorProfile(outputCMYK, from: outputProfileURL)
+  let printPDF = try await engine.block.export(
+    page,
+    mimeType: .pdf,
+    options: ExportOptions(
+      outputColorSpace: .cmyk,
+      outputProfileMode: .convert,
+      embedProfiles: true,
+      preserveBlack: true,
+    ),
+  )
+  print("Print PDF bytes: \(printPDF.count)")
+  // highlight-colorsBasics-exportOutputProfile
+  precondition(!printPDF.isEmpty)
+  let pdfText = String(bytes: printPDF, encoding: .isoLatin1)
+  precondition(pdfText?.contains("/OutputIntents") == true)
+  precondition(pdfText?.contains("/DefaultCMYK") == false)
 }

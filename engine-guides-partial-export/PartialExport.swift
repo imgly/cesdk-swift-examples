@@ -123,6 +123,18 @@ func partialExport(engine: Engine) async throws {
   }
   // highlight-partialExport-exportCurrentPage
 
+  // highlight-partialExport-exportArea
+  let areaWidth = try engine.block.getWidth(page1) / 2
+  let areaHeight = try engine.block.getHeight(page1) / 2
+  let areaOptions = ExportOptions(
+    targetWidth: areaWidth * 2,
+    targetHeight: areaHeight * 2,
+    exportArea: CGRect(x: 0, y: 0, width: CGFloat(areaWidth), height: CGFloat(areaHeight)),
+  )
+  let areaData = try await engine.block.export(page1, mimeType: .png, options: areaOptions)
+  try areaData.write(to: exportsDirectory.appendingPathComponent("page-area.png"))
+  // highlight-partialExport-exportArea
+
   // highlight-partialExport-exportAllPages
   let pages = try engine.scene.getPages()
   let pageStream = try await engine.block.export(pages, mimeType: .png)
